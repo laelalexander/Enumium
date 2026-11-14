@@ -153,8 +153,8 @@ function applyMode() {
 }
 function bounds() { return new THREE.Box3().setFromObject(activeRoot()); }
 let framed = false;
-function frame() {
-  const b = bounds(); if (b.isEmpty()) return;
+function frame(box) {
+  const b = box && box.isBox3 ? box : bounds(); if (b.isEmpty()) return;
   const s = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3()); const r = Math.max(s.x, s.y, s.z) || 1;
   ctl.target.copy(c); cam.position.copy(c).add(new THREE.Vector3(r * 1.25, -r * 1.55, r * 0.95));
   cam.near = r / 500; cam.far = r * 60; cam.updateProjectionMatrix();
@@ -244,6 +244,7 @@ let view = null, isAsm = false; // view: null = automatic, 'table' or 'assembled
 $('#tbl').onclick = () => { if (inAsm) exitAsm(); view = 'table'; layout(true); frame(); };
 $('#asm').onclick = async () => {
   if (asmDoc) return enterAsm();
+  if (!isSpread()) { view = 'table'; layout(true); asmBtn(); return; } // Disassemble back onto the table
   const poses = await loadPoses();
   if (!poses.size && atOrigin()) return toast('This project has no assembly positions yet, so the parts stay on the table. Ask Anatomy to "add assembly poses to parts.json" and the Assemble button will put them together.');
   if (poses.size && poses.size < parts.size) toast(`${parts.size - poses.size} of ${parts.size} parts have no assembly position and stay where their files put them.`);
@@ -269,44 +270,89 @@ async function loadAsm() {
       asmRoot.add(g); asmParts.set(path, { group: g, born: performance.now(), step: g.userData.step });
     } catch { bad++; }
   }));
-  asmData = { steps, name: doc.name || doc.title }; asmLoaded = key; applyMode();
+  asmData = { steps, name: doc.name || doc.title }; asmLoaded = key; asmTable = false; applyMode();
   if (bad) toast(`${bad} part file${bad === 1 ? '' : 's'} in assembly.json could not be read.`);
 }
+// Assemble: parts start laid out on the table and fly into place one step at a time (step order from assembly.json).
+// Disassemble: the reverse, last step first, back to the table. Clicking a step builds up to exactly that step.
+let asmState = 'table', asmGen = 0; // 'table' | 'assembled' (where the parts are heading)
 async function enterAsm() {
+  if (inAsm) return asmState === 'assembled' ? goToStep(0) : goToStep(asmData.steps.length);
   toast('Loading the assembly…');
   try { await loadAsm(); } catch (e) { return toast('Could not read assembly.json: ' + e.message); }
   $('#toast').classList.add('hidden');
   inAsm = true; root.visible = false; asmRoot.visible = true; select(null);
-  $('#tbl').classList.remove('on'); $('#asm').classList.add('on'); $('#partsHdr').textContent = 'ASSEMBLY STEPS';
-  showStep(0); framed = false; updateZ(); frameAll(); play();
+  $('#tbl').classList.remove('on'); $('#partsHdr').textContent = 'ASSEMBLY STEPS';
+  if (!asmTable) tableSlots();
+  for (const [, v] of asmParts) { v.group.visible = true; v.group.position.copy(v.slot.pos); v.group.quaternion.identity(); }
+  asmShown = 0; renderSteps(); updateZ(); frameUnion(); goToStep(asmData.steps.length);
 }
 function exitAsm() {
-  clearInterval(asmTimer); inAsm = false; asmRoot.visible = false; root.visible = true; select(null);
-  $('#partsHdr').textContent = 'PARTS'; updateZ(); renderParts();
+  clearTimeout(asmTimer); asmGen++; anim = null; inAsm = false; asmRoot.visible = false; root.visible = true; select(null);
+  $('#partsHdr').textContent = 'PARTS'; asmBtn(); updateZ(); renderParts();
 }
-function frameAll() { for (const [, v] of asmParts) v.group.visible = true; frame(); showStep(asmShown); }
-function showStep(k, fresh = false) {
-  asmShown = k; const now = performance.now();
-  for (const [, v] of asmParts) {
-    const was = v.group.visible; v.group.visible = v.step <= k;
-    if (v.group.visible && (!was || (fresh && v.step === k))) v.born = now;
-  }
-  renderSteps();
+// Table slots for every assembly part, laid out in build order beside the assembled product.
+let asmTable = false;
+function tableSlots() {
+  const items = [...asmParts.values()].sort((a, b) => a.step - b.step || a.group.userData.path.localeCompare(b.group.userData.path));
+  const home = new THREE.Box3(); for (const v of items) { v.home = { pos: v.group.position.clone(), q: v.group.quaternion.clone() }; home.expandByObject(v.group); }
+  const boxes = items.map(v => partBox(v.group)), sz = b => b.getSize(new THREE.Vector3());
+  const area = boxes.reduce((a, b) => a + sz(b).x * sz(b).y, 0), gap = Math.max(4, Math.sqrt(area / Math.max(1, items.length)) * 0.15);
+  const rowW = Math.max(...boxes.map(b => sz(b).x), Math.sqrt(area) * 1.6);
+  const x0 = home.isEmpty() ? 0 : home.max.x + gap * 4, y0 = home.isEmpty() ? 0 : home.max.y;
+  let x = 0, y = 0, rowH = 0;
+  items.forEach((v, i) => {
+    const b = boxes[i], s = sz(b);
+    if (x > 0 && x + s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
+    v.slot = { pos: new THREE.Vector3(x0 + x - b.min.x, y0 + y - s.y - b.min.y, -b.min.z) };
+    x += s.x + gap; rowH = Math.max(rowH, s.y);
+  });
+  asmTable = true;
 }
-function play() {
-  clearInterval(asmTimer); const total = asmData.steps.length; let k = 0; showStep(0, true);
-  asmTimer = setInterval(() => { k++; if (k > total) return clearInterval(asmTimer); showStep(k, true); }, 1100);
+function frameUnion() { // frame both the table and the assembled product so nothing flies off screen
+  const saved = [...asmParts.values()].map(v => [v, v.group.position.clone(), v.group.quaternion.clone()]);
+  const b = new THREE.Box3();
+  for (const [v] of saved) { v.group.position.copy(v.slot.pos); v.group.quaternion.identity(); b.expandByObject(v.group); v.group.position.copy(v.home.pos); v.group.quaternion.copy(v.home.q); b.expandByObject(v.group); }
+  for (const [v, p, q] of saved) { v.group.position.copy(p); v.group.quaternion.copy(q); }
+  frame(b); framed = true;
+}
+// Move to step k: parts of steps 1..k (and step 0) in place, the rest on the table. Steps play one after another.
+const STEP_MS = 1100;
+function goToStep(k) {
+  clearTimeout(asmTimer);
+  const total = asmData.steps.length, from = asmShown, dir = k >= from ? 1 : -1;
+  const order = []; // steps to play, in order
+  if (dir > 0) for (let s = from === 0 ? 0 : from + 1; s <= k; s++) order.push(s); else for (let s = from; s > k; s--) order.push(s);
+  if (dir < 0 && k === 0) order.push(0);
+  const gen = ++asmGen;
+  const list = [];
+  order.forEach((st, i) => {
+    for (const [, v] of asmParts) if (v.step === st) {
+      const t = dir > 0 ? { pos: v.home.pos, q: v.home.q } : { pos: v.slot.pos, q: new THREE.Quaternion() };
+      list.push({ g: v.group, t, p0: v.group.position.clone(), q0: v.group.quaternion.clone(), d: i * STEP_MS });
+    }
+  });
+  asmState = k >= total ? 'assembled' : k === 0 ? 'table' : 'partial'; asmBtn();
+  if (!list.length) { asmShown = k; return renderSteps(); }
+  const t0 = performance.now(), dur = 900;
+  anim = { t0, list, end: t0 + (order.length - 1) * STEP_MS + dur, dur, noFrame: true };
+  // tick the step list as each step lands
+  order.forEach((st, i) => setTimeout(() => { if (!inAsm || gen !== asmGen) return; asmShown = Math.max(0, dir > 0 ? st : st - 1); renderSteps(); }, i * STEP_MS + dur));
+  asmTimer = setTimeout(() => { if (gen !== asmGen) return; asmShown = k; renderSteps(); }, (order.length - 1) * STEP_MS + dur + 20);
+}
+function asmBtn() {
+  const assembled = inAsm ? asmState === 'assembled' : !isSpread();
+  $('#asm').textContent = assembled ? 'Disassemble' : 'Assemble'; $('#asm').classList.toggle('on', inAsm || !isSpread());
 }
 function renderSteps() {
   if (!asmData) return;
   const counts = new Map(); for (const [, v] of asmParts) counts.set(v.step, (counts.get(v.step) || 0) + 1);
   $('#parts').innerHTML = asmData.steps.map((st, i) => `<div data-step="${i + 1}" class="${i + 1 <= asmShown ? 'done' : ''} ${i + 1 === asmShown ? 'sel' : ''}">${i + 1 <= asmShown ? '✓' : '○'} ${esc(st.n)}. ${esc(st.title)} <span style="opacity:.6">(${counts.get(i + 1) || 0})</span></div>`).join('')
-    + `<div data-replay="1" style="color:var(--holo);margin-top:6px">↻ Play again</div>`;
+    + `<div data-step="0" style="color:var(--muted);margin-top:6px">${asmShown === 0 ? '✓' : '○'} All parts on the table</div>`;
 }
 $('#parts').addEventListener('click', e => {
   if (!inAsm) return; e.stopImmediatePropagation();
-  const d = e.target.closest('[data-step]'); if (d) { clearInterval(asmTimer); return showStep(Number(d.dataset.step), true); }
-  if (e.target.closest('[data-replay]')) play();
+  const d = e.target.closest('[data-step]'); if (d) goToStep(Number(d.dataset.step));
 }, true);
 function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 7000); }
 function isSpread() { return view ? view === 'table' : atOrigin() && !posesKnown.size; }
@@ -340,7 +386,7 @@ async function loadPoses() {
 }
 
 function layout(animate = false) {
-  const on = isSpread(); $('#tbl').classList.toggle('on', on); $('#asm').classList.toggle('on', !on);
+  const on = isSpread(); $('#tbl').classList.toggle('on', on); $('#asm').classList.toggle('on', !on); $('#asm').textContent = on ? 'Assemble' : 'Disassemble';
   const items = [...parts.entries()].map(([p, v]) => ({ p, g: v.group, b: partBox(v.group) }));
   const target = new Map();
   if (!on) {
@@ -376,7 +422,7 @@ function stepAnim(now) {
     let k = Math.min(1, Math.max(0, (now - anim.t0 - a.d) / anim.dur)); k = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
     a.g.position.lerpVectors(a.p0, a.t.pos, k); a.g.quaternion.slerpQuaternions(a.q0, a.t.q, k);
   }
-  if (now >= anim.end) { anim = null; updateZ(); frame(); }
+  if (now >= anim.end) { const nf = anim.noFrame; anim = null; if (!nf) { updateZ(); frame(); } }
 }
 renderer.domElement.addEventListener('pointerdown', () => { /* user takes over; keep spinning only if they re-enable */ });
 // ---------------------------------------------------------------- style controls (saved per viewer)
