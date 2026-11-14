@@ -340,7 +340,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);
     }
-    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js')) {
+    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'viewer.html')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
       if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
       res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': parts[0] === 'vendor' ? 'max-age=3600' : 'no-store' });

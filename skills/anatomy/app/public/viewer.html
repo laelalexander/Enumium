@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy · Live 3D</title>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/"}}</script>
+<style>
+:root { --holo: #5ff3ff; --holo2: #8a7dff; --text: #d8fbff; --muted: #6fa9b3; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: radial-gradient(ellipse at 50% 60%, #06222b 0%, #020a0e 70%); color: var(--text);
+  font: 13px/1.5 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+canvas { display: block; }
+.hud { position: fixed; pointer-events: none; text-shadow: 0 0 8px #5ff3ff88; }
+.tl { top: 14px; left: 16px; } .tr { top: 14px; right: 16px; text-align: right; } .bl { bottom: 14px; left: 16px; } .br { bottom: 14px; right: 16px; }
+.title { font-size: 15px; font-weight: 600; letter-spacing: .04em; max-width: 60vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: .2em; color: var(--holo); }
+.live i { width: 7px; height: 7px; border-radius: 50%; background: var(--holo); box-shadow: 0 0 10px var(--holo); animation: p 1.2s infinite; }
+.live.idle { color: var(--muted); } .live.idle i { background: var(--muted); box-shadow: none; animation: none; }
+@keyframes p { 50% { opacity: .25; } }
+.sub { color: var(--muted); font-size: 11px; letter-spacing: .08em; }
+.parts { margin-top: 8px; max-height: 50vh; overflow: hidden; font-size: 11px; color: var(--muted); }
+.parts div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; transition: color 2s; }
+.parts div.new { color: var(--holo); }
+.ctl { pointer-events: auto; display: flex; gap: 6px; }
+.ctl button { background: #06303a99; border: 1px solid #1f6b78; color: var(--text); border-radius: 8px; padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+.ctl button.on { border-color: var(--holo); box-shadow: 0 0 10px #5ff3ff55 inset; }
+.empty { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); letter-spacing: .1em; pointer-events: none; text-align: center; }
+.scan { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
+</style>
+</head>
+<body>
+<div class="scan"></div>
+<div class="hud tl"><div class="live" id="live"><i></i>LIVE</div><div class="title" id="title">Anatomy</div><div class="sub" id="sub">waiting for geometry…</div></div>
+<div class="hud tr"><div class="sub">PARTS</div><div class="parts" id="parts"></div></div>
+<div class="hud bl"><div class="ctl" id="mode"><button data-m="holo" class="on">Hologram</button><button data-m="outline">Outline</button><button data-m="solid">Solid</button></div></div>
+<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="fit">Fit</button></div></div>
+<div class="empty" id="empty">NO 3D GEOMETRY YET<br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+const id = new URLSearchParams(location.search).get('id');
+const $ = s => document.querySelector(s);
+const api = p => fetch(p, { cache: 'no-store' }).then(r => r.json());
+const ext = p => p.toLowerCase().split('.').pop();
+const MESH = ['stl', '3mf', 'obj', 'glb'];
+const SKIP = /(^|\/)(\.venv|venv|\.tools|node_modules|\.anatomy|__pycache__)\//;
+
+// ---------------------------------------------------------------- scene
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x020a0e, 0.0006);
+const cam = new THREE.PerspectiveCamera(38, 1, 0.1, 100000); cam.up.set(0, 0, 1);
+const ctl = new OrbitControls(cam, renderer.domElement); ctl.enableDamping = true; ctl.autoRotate = true; ctl.autoRotateSpeed = 0.6;
+scene.add(new THREE.HemisphereLight(0xbff8ff, 0x0a2a33, 1.0));
+const dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(1, -1, 2); scene.add(dl);
+const root = new THREE.Group(); scene.add(root);
+
+// holographic floor: polar grid and a glowing ring
+const floor = new THREE.Group(); scene.add(floor);
+const polar = new THREE.PolarGridHelper(1, 16, 8, 64, 0x1f6b78, 0x0f3a42); polar.rotation.x = Math.PI / 2;
+polar.material.transparent = true; polar.material.opacity = 0.5; floor.add(polar);
+const ring = new THREE.Mesh(new THREE.RingGeometry(1.0, 1.015, 128), new THREE.MeshBasicMaterial({ color: 0x5ff3ff, transparent: true, opacity: 0.7, side: THREE.DoubleSide, blending: THREE.AdditiveBlending }));
+floor.add(ring);
+
+const uniforms = { uTime: { value: 0 } };
+function holoMaterial() {
+  return new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
+    uniforms: { uTime: uniforms.uTime, uReveal: { value: 0 }, uMinZ: { value: 0 }, uMaxZ: { value: 1 }, uColor: { value: new THREE.Color(0x5ff3ff) } },
+    vertexShader: `varying vec3 vN; varying vec3 vV; varying vec3 vW;
+      void main() { vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vec4 mv = viewMatrix * w;
+        vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform float uTime; uniform float uReveal; uniform float uMinZ; uniform float uMaxZ; uniform vec3 uColor;
+      varying vec3 vN; varying vec3 vV; varying vec3 vW;
+      void main() {
+        float h = (vW.z - uMinZ) / max(uMaxZ - uMinZ, 1e-3);
+        if (h > uReveal) discard;
+        float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2);
+        float scan = 0.55 + 0.45 * sin(vW.z * 0.9 - uTime * 3.0);
+        float edge = smoothstep(uReveal - 0.04, uReveal, h) * step(uReveal, 0.999);
+        vec3 c = uColor * (0.06 + 0.85 * f) * scan + vec3(0.7, 1.0, 1.0) * edge * 1.5;
+        gl_FragColor = vec4(c, 0.10 + 0.7 * f + edge);
+      }`,
+  });
+}
+const edgeMat = () => new THREE.LineBasicMaterial({ color: 0x5ff3ff, transparent: true, opacity: 0.0, blending: THREE.AdditiveBlending, depthWrite: false });
+const solidMat = () => new THREE.MeshStandardMaterial({ color: 0x9fd8e6, metalness: 0.2, roughness: 0.45 });
+
+let mode = 'holo';
+const parts = new Map(); // path -> { group, mtime, born }
+
+function geometriesOf(obj) { const gs = []; obj.updateMatrixWorld(true); obj.traverse(o => { if (o.isMesh) { const g = o.geometry.clone(); g.applyMatrix4(o.matrixWorld); gs.push(g); } }); return gs; }
+async function load(p) {
+  const url = `/p/${id}/${p.split('/').map(encodeURIComponent).join('/')}`;
+  const e = ext(p);
+  if (e === 'stl') return [new STLLoader().parse(await (await fetch(url, { cache: 'no-store' })).arrayBuffer())];
+  if (e === '3mf') return geometriesOf(new ThreeMFLoader().parse(await (await fetch(url, { cache: 'no-store' })).arrayBuffer()));
+  if (e === 'obj') return geometriesOf(new OBJLoader().parse(await (await fetch(url, { cache: 'no-store' })).text()));
+  if (e === 'glb') return geometriesOf((await new GLTFLoader().loadAsync(url)).scene);
+  return [];
+}
+function build(geos) {
+  const g = new THREE.Group();
+  for (const geo of geos) {
+    geo.computeVertexNormals(); // STL facet normals are often zero or missing
+    const holo = new THREE.Mesh(geo, holoMaterial()); holo.userData.kind = 'holo';
+    const solid = new THREE.Mesh(geo, solidMat()); solid.userData.kind = 'solid';
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), edgeMat()); edges.userData.kind = 'edges';
+    g.add(holo, solid, edges);
+  }
+  return g;
+}
+function applyMode() {
+  for (const { group } of parts.values()) group.traverse(o => {
+    if (o.userData.kind === 'holo') o.visible = mode === 'holo';
+    if (o.userData.kind === 'solid') o.visible = mode === 'solid';
+    if (o.userData.kind === 'edges') o.visible = mode !== 'solid' || true;
+    if (o.userData.kind === 'edges') o.material.color.set(mode === 'solid' ? 0x0b3b44 : 0x5ff3ff);
+  });
+}
+function bounds() { return new THREE.Box3().setFromObject(root); }
+let framed = false;
+function frame() {
+  const b = bounds(); if (b.isEmpty()) return;
+  const s = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3()); const r = Math.max(s.x, s.y, s.z) || 1;
+  ctl.target.copy(c); cam.position.copy(c).add(new THREE.Vector3(r * 1.25, -r * 1.55, r * 0.95));
+  cam.near = r / 500; cam.far = r * 60; cam.updateProjectionMatrix();
+  const fr = Math.max(s.x, s.y) * 0.8 || 1; floor.position.set(c.x, c.y, b.min.z); floor.scale.setScalar(fr);
+  scene.fog.density = 0.25 / r;
+  framed = true;
+}
+function updateZ() {
+  const b = bounds(); if (b.isEmpty()) return;
+  root.traverse(o => { if (o.material && o.material.uniforms) { o.material.uniforms.uMinZ.value = b.min.z; o.material.uniforms.uMaxZ.value = b.max.z; } });
+}
+
+// ---------------------------------------------------------------- polling the project
+let lastChange = 0, running = false;
+async function poll() {
+  try {
+    const [files, meta] = await Promise.all([api(`/api/projects/${id}/files`), api(`/api/projects/${id}`)]);
+    $('#title').textContent = meta.title || 'Anatomy';
+    running = !!meta.running;
+    $('#live').classList.toggle('idle', !running); $('#live').lastChild.textContent = running ? 'LIVE' : 'IDLE';
+    let meshes = files.filter(f => MESH.includes(ext(f.path)) && !SKIP.test(f.path));
+    // Prefer an assembled export when the project has one.
+    const asm = meshes.filter(f => /assembl/i.test(f.path));
+    if (asm.length) meshes = asm;
+    meshes = meshes.sort((a, b) => b.mtime - a.mtime).slice(0, 80);
+    const keep = new Set(meshes.map(f => f.path));
+    for (const [p, v] of parts) if (!keep.has(p)) { root.remove(v.group); parts.delete(p); }
+    let changed = false;
+    for (const f of meshes) {
+      const have = parts.get(f.path);
+      if (have && have.mtime === f.mtime) continue;
+      if (Date.now() - f.mtime < 1500) continue; // still being written
+      try {
+        const g = build(await load(f.path));
+        if (have) root.remove(have.group);
+        root.add(g); parts.set(f.path, { group: g, mtime: f.mtime, born: performance.now() });
+        changed = true; lastChange = Date.now();
+      } catch {}
+    }
+    if (changed) { applyMode(); updateZ(); if (!framed || parts.size <= 3) frame(); renderParts(); }
+    $('#empty').style.display = parts.size ? 'none' : '';
+    const ago = lastChange ? Math.round((Date.now() - lastChange) / 1000) : null;
+    $('#sub').textContent = `${parts.size} part${parts.size === 1 ? '' : 's'}${ago !== null ? ` · updated ${ago < 60 ? ago + 's' : Math.round(ago / 60) + 'm'} ago` : ''}`;
+  } catch {}
+  setTimeout(poll, 2500);
+}
+function renderParts() {
+  const list = [...parts.entries()].sort((a, b) => b[1].born - a[1].born);
+  $('#parts').innerHTML = list.slice(0, 24).map(([p, v]) => `<div class="${performance.now() - v.born < 8000 ? 'new' : ''}">${p.split('/').pop()}</div>`).join('');
+  setTimeout(() => $('#parts').querySelectorAll('.new').forEach(d => d.classList.remove('new')), 8000);
+}
+
+// ---------------------------------------------------------------- loop
+function resize() { renderer.setSize(innerWidth, innerHeight); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+const clock = new THREE.Clock();
+(function loop() {
+  requestAnimationFrame(loop);
+  const t = clock.getElapsedTime(); uniforms.uTime.value = t;
+  const now = performance.now();
+  for (const { group, born } of parts.values()) {
+    const k = Math.min(1, (now - born) / 2200); // materialize bottom-up over ~2 s
+    group.traverse(o => {
+      if (o.material && o.material.uniforms) o.material.uniforms.uReveal.value = k;
+      if (o.userData.kind === 'edges') o.material.opacity = (mode === 'solid' ? 0.35 : 0.85) * k;
+    });
+  }
+  ring.material.opacity = 0.45 + 0.25 * Math.sin(t * 2);
+  ctl.update(); renderer.render(scene, cam);
+})();
+
+$('#mode').onclick = e => { const m = e.target.dataset.m; if (!m) return; mode = m; $('#mode').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); applyMode(); };
+$('#spin').onclick = () => { ctl.autoRotate = !ctl.autoRotate; $('#spin').classList.toggle('on', ctl.autoRotate); };
+$('#fit').onclick = frame;
+renderer.domElement.addEventListener('pointerdown', () => { /* user takes over; keep spinning only if they re-enable */ });
+poll();
+</script>
+</body>
+</html>

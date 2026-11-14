@@ -275,6 +275,7 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
     <span class="pill" id="rStatus">idle</span>
     <div class="spacer"></div>
     <div class="vswitch" id="vswitch"><button data-v="live" class="on">Live</button><button data-v="results">Results</button></div>
+    <button class="ghost" id="holoBtn" title="Pop-out 3D view that updates as Anatomy works">3D view ↗</button>
     <button class="ghost hidden" id="filesBtn">Files</button>
     <button class="ghost" id="reveal">Open folder</button>
     <button class="ghost hidden" id="stop">Stop</button>
@@ -609,6 +610,7 @@ $('#pvReveal').onclick = () => api(`/api/projects/${cur}/reveal?path=${encodeURI
 $('#reveal').onclick = () => api(`/api/projects/${cur}/reveal`, { method: 'POST' });
 $('#filesBtn').onclick = () => { const a = document.querySelector('aside.right'); a.style.display = a.style.display === 'block' ? '' : 'block'; };
 $('#back').onclick = () => location.hash = '';
+$('#holoBtn').onclick = () => window.open(`/viewer.html?id=${encodeURIComponent(cur)}`, 'anatomy3d-' + cur, 'width=980,height=720');
 $('#stop').onclick = () => api(`/api/projects/${cur}/stop`, { method: 'POST' });
 $('#replyGo').onclick = async () => {
   const m = $('#replyIn').value.trim(); if (!m || running) return;
