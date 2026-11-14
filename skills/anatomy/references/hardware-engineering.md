@@ -9,9 +9,12 @@ Everything is original work derived from the blueprint. Tag every number `[obser
 00-design-basis.md      requirements, operating conditions, key numbers and their sources, system block diagram
 mechanical/             parametric CAD source, STEP/STL, drawings, tolerance + fastener notes, mechanism analysis
 electrical/             schematic, netlist, BOM, PCB design files and layout notes, power budget, test points
-firmware-controls/      state machine, pinout, driver plan, code skeleton that compiles or simulates
+firmware-controls/      controls design and pinout table (code lives in software/)
 thermal-fluid/          (when relevant) heat load, airflow or refrigerant cycle calculations
-bom/bom.csv             unified bill of materials: ref, description, manufacturer, MPN, qty, unit cost, supplier link or source, alt part
+bom/                    bom.csv, bom.md, order-list.md, check_bom.py: every line BUY or BUILD (see parts-and-bom.md)
+print/                  STL, sliced G-code, slicer projects and profiles, print plan (see 3d-print-gcode.md)
+drawings/               part and assembly drawing PDFs and the combined drawing set (see drawings.md)
+software/               one folder per software layer: firmware, bootloader/BIOS, app, backend (see software-phase.md)
 build-instructions.md   step by step assembly, wiring, programming, calibration
 test-and-commissioning.md  bring-up checklist, acceptance tests, expected readings, failure diagnosis
 safety-and-compliance.md   hazards, protections, applicable standards, what must be certified before sale or install
@@ -24,13 +27,14 @@ Scale the package to the product. A bracket needs mechanics and notes; an e-ink 
 - Parametric source (CadQuery/build123d or OpenSCAD) with all key dimensions as named parameters. Export STEP (for CAD handoff) and STL (for printing). Check watertightness, units (mm), wall thickness, overhangs, and split large parts with alignment features.
 - Mechanisms are more than shapes: state the degrees of freedom, motion range, loads and forces, fits and clearances (e.g. H7/g6 or print-tolerance offsets), and fastener choices (thread, length, torque, boss/insert design). Do first-order checks by calculation: torque and gear ratio, spring rate, beam deflection and stress against material yield with a safety factor, bearing loads, snap-fit strain. Show the arithmetic.
 - Enclosures: board mounting, connector and button cutouts aligned to the actual PCB outline, cable strain relief, ingress protection goal, thermal path, serviceability, tolerance stack-up for anything that must align.
-- Drawings: dimensioned orthographic views with title block, units, tolerances, section views; an exploded assembly with numbered balloons that match the BOM.
+- Drawings: follow `drawings.md` (title block, full dimensions and tolerances, sections, exploded assembly ballooned to the BOM).
+- Printed parts: follow `3d-print-gcode.md` through to verified G-code for the user's printer.
 - Manufacturing route per part: FDM/SLA print, CNC, sheet metal, injection molding (note draft angles, wall thickness, undercuts), with a note on what changes between prototype and production.
 
 ## Electrical and PCBA
 Deliver design files and the reasoning, not just a picture.
 1. **Requirements to architecture**: functions, interfaces, power rails, signal types. Block diagram first.
-2. **Part selection with real parts**: manufacturer part numbers, package, key ratings, availability and cost source, and a second-source alternate for critical or scarce parts. Check datasheet facts you rely on (voltage limits, logic levels, pin functions, timing, required external components) and cite the datasheet. Do not invent part numbers; if you cannot confirm a part exists and fits, say so and mark it `[assumed]`.
+2. **Part selection with real parts** (every part BUY or BUILD per `parts-and-bom.md`): manufacturer part numbers, package, key ratings, availability and cost source, and a second-source alternate for critical or scarce parts. Check datasheet facts you rely on (voltage limits, logic levels, pin functions, timing, required external components) and cite the datasheet. Do not invent part numbers; if you cannot confirm a part exists and fits, say so and mark it `[assumed]`.
 3. **Schematic**: complete, with power, decoupling, pull-ups, reset, programming/debug header, protection (ESD, reverse polarity, fusing), test points, net names and reference designators. Output a netlist plus a rendered schematic (KiCad `.kicad_sch` if `kicad-cli` or generation is feasible; otherwise SKiDL/schemdraw to SVG with a machine-readable netlist). Run an electrical rules check yourself: unconnected pins, power pins without a source, nets with no driver.
 4. **Calculations**: power budget per rail (typical and peak), regulator headroom and dissipation, LED/resistor values, divider ratios, RC timings, battery life estimate, current through connectors and traces.
 5. **PCB design**: board outline and mounting holes tied to the mechanical model, stackup (layers, copper weight, thickness), placement strategy (connectors at edges, decoupling at pins, antenna keep-out, thermal pads), trace widths from current and impedance needs, return paths and plane strategy, high-speed or sensitive-signal rules, clearance and creepage if mains voltage is present, fabrication notes. Where tooling allows, produce `.kicad_pcb` or Gerber/drill files; otherwise provide a placement and routing spec precise enough for a layout engineer plus a rendered floorplan image. Say which one you produced.
@@ -39,6 +43,7 @@ Deliver design files and the reasoning, not just a picture.
 7. **Design for test**: test points, bring-up order (power rails first, then clocks, then peripherals), expected voltages and waveforms.
 
 ## Firmware and controls
+Follow `software-phase.md`: firmware (and any bootloader/BIOS, companion app or backend) is a full development phase with source, a real build, tests and flashing instructions. In addition:
 State machine or task diagram, pin assignments that match the schematic exactly, driver and library plan (named, versioned), timing and power-state behavior (sleep, wake, refresh), update/OTA plan, fault handling. Provide a skeleton that compiles or simulates (PlatformIO/Arduino/ESP-IDF/Python), and say whether you built it. Keep generated pinouts and the schematic in sync by deriving both from one table.
 
 ## Thermal / fluid / HVAC systems

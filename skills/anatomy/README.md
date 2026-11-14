@@ -9,7 +9,7 @@ The first target is a 7.5 inch e-ink desk display (calendar and weather over wif
 | Path | What it is |
 |------|------------|
 | `SKILL.md` | The skill itself: principles and the six-step workflow |
-| `references/` | Detail the skill loads on demand (recon playbook, blueprint template, stack signals, prototype phase, hardware engineering, KiCad PCB) |
+| `references/` | Detail the skill loads on demand: recon playbook, blueprint template, stack signals, prototype phase, hardware engineering, KiCad PCB, parts and BOM (buy or build), drawings, 3D print to G-code, firmware/software phase |
 | `evals/` | Five test prompts with graders: e-ink display, HVAC system, fd, jq, Hacker News |
 | `app/` | The Anatomy desktop app: `server.js` (local server, runs Claude Code headless), `public/index.html` (the UI), `Start-Anatomy.ps1` and `Anatomy.vbs` (launch with no console) |
 | `install-anatomy.ps1` | Windows installer for the skill, the app and its icon, Node.js, and KiCad |
@@ -38,11 +38,20 @@ Options:
 - `-SkipKiCad` installs only the skill.
 - `-Package` also builds `anatomy.skill` (a zip with an `anatomy\` root) next to the script. If you only have an `anatomy.skill` file and no `SKILL.md`, put it next to the script and it installs from that instead. `anatomy.skill` is git-ignored; rebuild it from source rather than committing it.
 
+## Hardware standards
+
+Every hardware package has to meet these before it's handed over:
+
+- **Every part is BUY or BUILD.** A BUY part has a manufacturer, an MPN or a standard designation (e.g. `ISO 4762 M3x8 A2`), the spec relied on, and a supplier link. A BUILD part has its design files in the package. A script checks the BOM against the drawings, the CAD and the assembly steps. See `references/parts-and-bom.md`.
+- **Production-quality drawings.** Part drawings have title blocks, full dimensions and tolerances, and section views. Assembly drawings are exploded with balloons that match the BOM. Everything is collected in one drawing set, and Claude checks each page. FreeCAD TechDraw is preferred. See `references/drawings.md`.
+- **3D printed parts end in verified G-code.** Parts are designed for printing, the meshes are checked, and each part is sliced headless (PrusaSlicer CLI) for the printer in Settings. The G-code is checked by script and comes with previews and a print plan. See `references/3d-print-gcode.md`.
+- **Firmware, BIOS and software are a full phase.** For each layer: requirements, architecture, buildable source, a real build, tests, and flashing and update instructions. See `references/software-phase.md`.
+
 ## Using the Anatomy app
 
 Double-click the **Anatomy** icon. It opens in its own window, with no terminal.
 
-1. Type what you want dissected and rebuilt in the prompt box (or pick an example). Attach datasheets, photos or specs with **Attach files**, or drag them in. Pick Opus (best for long hardware builds) or Sonnet.
+1. Type what you want dissected and rebuilt in the prompt box (or pick an example). Attach datasheets, photos or specs with **Attach files**, or drag them in. Pick the model: Fable (default, the most capable, uses your plan's limits fastest), Opus or Sonnet. Use **Settings** to enter your 3D printer, materials, suppliers and tools. Claude reads them at the start of every project (stored in `C:\\Anatomy\\anatomy-settings.md`).
 2. Click **Start anatomy**. The window switches to the live view:
    - **Progress** (left) walks through the six steps of the skill: Scope, Gather evidence, Analyze, Blueprint, Prototype, Verify. Claude's own plan appears under it.
    - **Activity** (center) shows what Claude is doing in plain sentences: files it reads and writes, commands it runs (click a row for the output), and a summary card at the end.

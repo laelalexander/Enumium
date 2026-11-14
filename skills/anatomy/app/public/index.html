@@ -168,9 +168,10 @@ main.feed { display: flex; flex-direction: column; min-height: 0; }
       <button class="ghost" id="attach" title="Datasheets, photos, specs">＋ Attach files</button>
       <input type="file" id="fileIn" multiple class="hidden">
       <div class="seg" id="model" title="Model">
-        <button data-m="opus" class="on">Opus</button><button data-m="sonnet">Sonnet</button>
+        <button data-m="claude-fable-5-2" class="on" title="Most capable. Uses your plan's limits fastest.">Fable</button><button data-m="opus">Opus</button><button data-m="sonnet">Sonnet</button>
       </div>
       <div class="spacer"></div>
+      <button class="ghost" id="settingsBtn" title="Printer, materials, suppliers">Settings</button>
       <button class="primary" id="go" disabled>Start anatomy</button>
     </div>
   </div>
@@ -213,6 +214,14 @@ main.feed { display: flex; flex-direction: column; min-height: 0; }
     </aside>
   </div>
 </section>
+
+<div id="settings" class="hidden" style="position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:11">
+  <div style="width:min(720px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><b style="flex:1">Settings</b><span class="empty">Claude reads this at the start of every project.</span></div>
+    <textarea id="settingsText" style="width:100%;height:50vh;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:13px/1.5 var(--mono);outline:0"></textarea>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px"><button class="ghost" id="settingsCancel">Cancel</button><button class="primary" id="settingsSave">Save</button></div>
+  </div>
+</div>
 
 <div id="drawer" class="hidden">
   <div class="panel">
@@ -265,7 +274,7 @@ function md(src) {
 }
 
 // ---------------- home ----------------
-let attached = [], model = 'opus';
+let attached = [], model = 'claude-fable-5-2';
 const promptEl = $('#prompt');
 promptEl.addEventListener('input', () => $('#go').disabled = !promptEl.value.trim());
 promptEl.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) $('#go').click(); });
@@ -503,6 +512,10 @@ $('#replyGo').onclick = async () => {
   await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) }).catch(e => alert(e.message));
 };
 $('#replyIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#replyGo').click(); } });
+
+$('#settingsBtn').onclick = async () => { const { text } = await api('/api/settings'); $('#settingsText').value = text; $('#settings').classList.remove('hidden'); };
+$('#settingsCancel').onclick = () => $('#settings').classList.add('hidden');
+$('#settingsSave').onclick = async () => { await api('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: $('#settingsText').value }) }); $('#settings').classList.add('hidden'); };
 
 route();
 </script>

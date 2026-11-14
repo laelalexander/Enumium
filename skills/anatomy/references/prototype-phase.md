@@ -18,6 +18,7 @@ Use when a runnable build is too heavy, the backend can't be reproduced, or the 
 3. Mock data must be clearly sample data. Label anything simulated.
 
 ## Mode C: Physical product: 3D print
+The full standard is in `3d-print-gcode.md`: every printed part ends in G-code sliced for the user's printer and checked by script. The steps below are the minimum.
 Use for hardware or objects where a printable part makes sense (enclosures, brackets, mechanisms, fixtures, scale models).
 1. Derive dimensions, tolerances, materials and assembly from the blueprint; mark each dimension `[observed]` (measured/spec sheet), `[inferred]` or `[assumed]`. If real measurements are missing, ask the user for them rather than inventing critical ones.
 2. Model parametrically so dimensions can be adjusted: write OpenSCAD (`.scad`) or CadQuery/build123d Python with named parameters at the top.
@@ -26,6 +27,7 @@ Use for hardware or objects where a printable part makes sense (enclosures, brac
 5. State plainly that fit is unverified until physically printed and measured, and list the tolerances most likely to need tuning.
 
 ## Mode D: Physical product: drawings
+The full standard is in `drawings.md`.
 Use for products where manufacturing or review needs technical documents rather than a print file, or when no CAD tooling is available.
 1. Produce dimensioned orthographic drawings (front, top, side, plus section and detail views where needed) as SVG or PDF, with title block, units, scale, tolerances and revision. Generate them from the same parametric model as Mode C when both are requested so they cannot drift.
 2. Add an exploded assembly view and a bill of materials (part, quantity, material, source/spec) as CSV or markdown.

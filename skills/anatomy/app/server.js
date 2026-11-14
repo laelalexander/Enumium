@@ -106,6 +106,28 @@ function findKiCadBin() {
   return null;
 }
 
+const SETTINGS = path.join(ROOT, 'anatomy-settings.md');
+const DEFAULT_SETTINGS = `# Anatomy settings
+
+Claude reads this file at the start of every project. Edit it from the Settings button in the app.
+
+## 3D printer
+- Printer model:
+- Bed size (mm):
+- Nozzle (mm): 0.4
+- Firmware / slicer: (e.g. Prusa, Klipper, Marlin, Bambu)
+- Materials on hand: PLA, PETG
+- Slicer profile files: (paths to .ini/.3mf/.json, if any)
+
+## Preferences
+- Preferred suppliers: Digi-Key, Mouser, LCSC, McMaster-Carr
+- Region / currency: USA, USD
+- Tools on hand: (soldering iron, multimeter, ...)
+`;
+function readSettings() {
+  try { return fs.readFileSync(SETTINGS, 'utf8'); } catch { fs.writeFileSync(SETTINGS, DEFAULT_SETTINGS); return DEFAULT_SETTINGS; }
+}
+
 const PHASES = ['Scope', 'Gather evidence', 'Analyze', 'Blueprint', 'Prototype', 'Verify'];
 function systemAppend() {
   const kicad = findKiCadBin();
@@ -117,6 +139,8 @@ function systemAppend() {
     'Before each significant action, write one short plain sentence saying what you are doing and why, so the user can follow along.',
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
+    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
+    'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
 }
@@ -127,6 +151,15 @@ function cleanEnv() {
     // Markers inherited when the server was started from inside another Claude session.
     if (k === 'CLAUDECODE' || k.startsWith('CLAUDE_CODE_') || k === 'ANTHROPIC_BASE_URL') delete env[k];
   }
+  const extra = [];
+  if (process.platform === 'win32') {
+    for (const d of [path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Prusa3D', 'PrusaSlicer')]) if (fs.existsSync(d)) extra.push(d);
+    for (const b of [process.env.ProgramFiles, process.env.LOCALAPPDATA && path.join(process.env.LOCALAPPDATA, 'Programs')].filter(Boolean)) {
+      let ds = []; try { ds = fs.readdirSync(b).filter(n => /^FreeCAD/i.test(n)); } catch {}
+      for (const n of ds) { const bin = path.join(b, n, 'bin'); if (fs.existsSync(bin)) extra.push(bin); }
+    }
+  }
+  if (extra.length) env.PATH = extra.join(path.delimiter) + path.delimiter + (env.PATH || '');
   const kicad = findKiCadBin();
   if (kicad) env.PATH = kicad + path.delimiter + (env.PATH || '');
   return env;
@@ -255,7 +288,7 @@ const server = http.createServer(async (req, res) => {
         while (fs.existsSync(path.join(ROOT, id))) id = `${base}-${n++}`;
         fs.mkdirSync(path.join(ROOT, id, 'inputs'), { recursive: true });
         const title = prompt.trim().split('\n')[0].slice(0, 80);
-        writeMeta(id, { title, prompt: prompt.trim(), model: model || 'opus', status: 'new',
+        writeMeta(id, { title, prompt: prompt.trim(), model: model || 'claude-fable-5-2', status: 'new',
           created: new Date().toISOString(), updated: new Date().toISOString() });
         fs.writeFileSync(path.join(ROOT, id, 'CLAUDE.md'),
           `# Anatomy project\n\nUse the \`anatomy\` skill for all work in this folder.\n\nBrief:\n\n${prompt.trim()}\n\nInputs from the user (datasheets, photos, references) are in \`inputs/\`.\n`);
@@ -311,6 +344,15 @@ const server = http.createServer(async (req, res) => {
         const rel = url.searchParams.get('path');
         const p = rel ? safeJoin(dir, rel) : dir;
         if (process.platform === 'win32') execFile('explorer.exe', rel ? ['/select,', p] : [p], () => {});
+        return send(res, 200, { ok: true });
+      }
+    }
+
+    if (parts[1] === 'settings') {
+      if (req.method === 'GET') return send(res, 200, { text: readSettings() });
+      if (req.method === 'PUT') {
+        const { text } = JSON.parse((await readBody(req, 1024 * 1024)).toString('utf8') || '{}');
+        fs.writeFileSync(SETTINGS, String(text || ''));
         return send(res, 200, { ok: true });
       }
     }
