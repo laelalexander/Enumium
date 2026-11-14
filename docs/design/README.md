@@ -54,6 +54,23 @@ Each sheet is A3, third-angle, front/top/right views with overall dimensions. ST
 | **wrist_cheek_plain**<br>Plain cheek plate | x1<br>[SVG](../../3d-workflow/design/drawings/wrist_cheek_plain.svg) · [PNG](../../3d-workflow/design/png/wrist_cheek_plain.png) · [STEP](../../3d-workflow/design/cad/step/wrist_cheek_plain.step) · [STL](../../3d-workflow/design/cad/stl/wrist_cheek_plain.stl) | [<img src="../../3d-workflow/design/png/wrist_cheek_plain.png" width="360">](../../3d-workflow/design/drawings/wrist_cheek_plain.svg) |
 | **wrist_tube_block**<br>Spacer block that clamps the incoming tube | x1<br>[SVG](../../3d-workflow/design/drawings/wrist_tube_block.svg) · [PNG](../../3d-workflow/design/png/wrist_tube_block.png) · [STEP](../../3d-workflow/design/cad/step/wrist_tube_block.step) · [STL](../../3d-workflow/design/cad/stl/wrist_tube_block.stl) | [<img src="../../3d-workflow/design/png/wrist_tube_block.png" width="360">](../../3d-workflow/design/drawings/wrist_tube_block.svg) |
 
+## Cut and machined parts, fasteners
+
+Everything that is made but not printed lives in [`3d-workflow/fab/`](../../3d-workflow/fab/) (`python run.py cut`, also run by `build`):
+
+| Part | What | Files |
+|---|---|---|
+| BASE-01 | 18 x 18 in plywood base board, gearbox pocket underneath | DXF mm + inch, 1:1 template, drawing, STEP |
+| YAW-01 | 6 mm aluminium turntable adapter disc (new: the 12 in turntable cannot reach the printed plate's bolt circle) | same |
+| GSK-01..03 | turntable gasket, gripper jaw pads, leg foot pads | same |
+| ENC-01..06 | electronics enclosure: base, lid with E-stop, four walls with IEC inlet, glands, USB, vents | same |
+| TUBE-01..04, SHAFT-01, LEG-01 | tubes with cross-pin positions, joint shafts with flat, base legs | drawing, STEP |
+
+- [`fab/CUTLIST.md`](../../3d-workflow/fab/CUTLIST.md): stock, cut sizes in mm and inches, kerf, offcuts, wire harness cut lengths, base stability check.
+- [`fab/FASTENERS.md`](../../3d-workflow/fab/FASTENERS.md): 18 numbered fasteners (F01-F18) with ISO standard, length worked out from the clamped stack, washer, nut and torque. Every drawing's hole table calls these numbers out.
+- Every part drawing (printed and cut) now has third-angle views, a hatched section A-A, ordinate dimensions from a datum corner, and a hole table with each hole's size and depth in **mm [in]** and the exact screw or fit for it. Holes are read from the CAD solid itself.
+- DXF layers: `CUT_OUTSIDE`, `CUT_INSIDE`, `POCKET_<depth>MM_<side>`, `MARK` (punch or engrave only), `NOTES` (never cut). Origin is the part's lower-left corner. Templates: print at 100 % and check the 100 mm and 4 in bars.
+
 ## 3D control surface and virtual test table
 
 `python run.py ui` opens a browser app ([`3d-workflow/control/`](../../3d-workflow/control)) that assembles every

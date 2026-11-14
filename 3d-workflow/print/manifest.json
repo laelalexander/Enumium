@@ -15,7 +15,7 @@
    ],
    "supports": false,
    "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-   "volume_cm3": 243.7,
+   "volume_cm3": 241.2,
    "brim": false,
    "plates": [
     1
@@ -35,7 +35,7 @@
    ],
    "supports": false,
    "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-   "volume_cm3": 126.4,
+   "volume_cm3": 123.9,
    "brim": false,
    "plates": [
     5
@@ -75,7 +75,7 @@
    ],
    "supports": false,
    "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-   "volume_cm3": 208.5,
+   "volume_cm3": 206.0,
    "brim": false,
    "plates": [
     1
@@ -95,7 +95,7 @@
    ],
    "supports": false,
    "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-   "volume_cm3": 126.4,
+   "volume_cm3": 123.9,
    "brim": false,
    "plates": [
     5
@@ -135,7 +135,7 @@
    ],
    "supports": false,
    "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-   "volume_cm3": 173.4,
+   "volume_cm3": 170.8,
    "brim": false,
    "plates": [
     3
@@ -155,7 +155,7 @@
    ],
    "supports": false,
    "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-   "volume_cm3": 126.4,
+   "volume_cm3": 123.9,
    "brim": false,
    "plates": [
     5
@@ -237,7 +237,7 @@
    ],
    "supports": false,
    "why": "Fixed jaw on the bed: rod and lead-screw bores vertical, no overhangs",
-   "volume_cm3": 221.5,
+   "volume_cm3": 221.0,
    "brim": true,
    "plates": [
     3

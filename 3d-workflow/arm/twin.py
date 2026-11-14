@@ -68,10 +68,17 @@ def model(d=None):
     printed = [dict(id=n, qty=q, note=note, stl=f"{n}.stl", drawing=f"{n}.svg", step=f"{n}.step", obj=f"{n}.obj",
                     code=code.strip(), bbox_mm=d.get("parts", {}).get(n, {}).get("bbox_mm"), print=manifest.get(n))
                for n, (code, q, note) in H.parts(ratios).items()]
-    purchased = [dict(item=a, qty=q, search=s, use=u) for a, q, s, u in B.AMAZON_ITEMS]
+    STOCK = [("round tube", ["TUBE-01", "TUBE-02", "TUBE-03", "TUBE-04"]), ("12 mm hardened", ["SHAFT-01"]), ("Plywood", ["BASE-01"]),
+             ("plate 6 mm", ["YAW-01"]), ("sheet 5052", [f"ENC-0{i}" for i in range(1, 7)]), ("angle 10 x 10", ["ANG"]),
+             ("Neoprene", ["GSK-01"]), ("Rubber sheet", ["GSK-02", "GSK-03"]), ("Hardwood", ["LEG-01"])]
+    purchased = [dict(item=a, qty=q, search=s, use=u, makes=next((m for k, m in STOCK if k.lower() in a.lower()), None))
+                 for a, q, s, u in B.AMAZON_ITEMS]
+    fj = HERE / "fab" / "fab.json"
+    fabricated = json.loads(fj.read_text(encoding="utf-8")) if fj.exists() else []
     return dict(
         generated_by="python -m arm.twin", stl_base="../design/cad/stl/", drawing_base="../design/drawings/",
         step_base="../design/cad/step/", obj_base="../design/cad/obj/", print_base="../print/", sheet_base="../design/drawings/",
+        fab_base="../fab/", fabricated=fabricated,
         payload_lb=d["payload_lb"], extension_in=d["extension_in"], l1_mm=d["l1_mm"], l2_mm=d["l2_mm"],
         max_extension_mm=round(D.MAX_EXTENSION * 1000), safety=D.SAFETY,
         mass=dict(tube_kg_per_m=D.TUBE_KG_PER_M, joint_hw_kg=D.JOINT_HW_KG, gripper_kg=D.GRIPPER_KG,

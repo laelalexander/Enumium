@@ -45,13 +45,13 @@ The `gcode/plate_N.gcode` files are reference slices from PrusaSlicer with a gen
 
 | Plate | Parts | Height | Filament | Time (est.) | Check |
 |---|---|---|---|---|---|
-| 1 | shoulder_cheek_motor, elbow_cheek_motor | 12 mm | 151 g | 9h 13m | pass |
+| 1 | shoulder_cheek_motor, elbow_cheek_motor | 12 mm | 150 g | 9h 09m | pass |
 | 2 | base_top_plate | 80 mm | 306 g | 18h 32m | pass |
-| 3 (supports) | wrist_cheek_motor, tube_socket, shoulder_tube_block, gripper_body | 120 mm | 178 g | 12h 58m | pass |
+| 3 (supports) | wrist_cheek_motor, tube_socket, shoulder_tube_block, gripper_body | 120 mm | 178 g | 12h 55m | pass |
 | 4 (supports) | tube_socket, tube_socket, elbow_tube_block, wrist_tube_block, gripper_adapter | 62 mm | 71 g | 4h 26m | pass |
 | 5 | shoulder_cheek_plain, elbow_cheek_plain, wrist_cheek_plain, gripper_jaw | 30 mm | 68 g | 4h 20m | pass |
 
-Total: **774 g** PETG (about 0.77 kg), **49h 31m** at PrusaSlicer's estimate. Bambu printers run faster; Bambu Studio's estimate will be lower.
+Total: **773 g** PETG (about 0.77 kg), **49h 24m** at PrusaSlicer's estimate. Bambu printers run faster; Bambu Studio's estimate will be lower.
 
 Each check confirms: all extrusion inside the bed, top layer equals the tallest part, filament weight and time present.
 

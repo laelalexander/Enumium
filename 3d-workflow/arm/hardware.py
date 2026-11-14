@@ -13,7 +13,13 @@ HW = dict(
     motor_pilot=38.1, motor_pcd_sq=47.14, motor_hole=5.5,   # NEMA23 face: MEASURE gearbox flange
     hub_pcd=40.0, hub_hole=5.5, hub_bore=14.0,              # shaft clamp hub flange: MEASURE
     nema17_sq=31.0, nema17_pilot=22.5,
-    turntable_pcd=170.0, turntable_hole=6.5,                # MEASURE turntable bolt circle
+    insert_m4_hole=5.6,    # M4 heat-set insert (OD 5.7-6.0, L 8.1): pilot hole for PETG
+    turntable_pcd=170.0, turntable_hole=6.5,                # base_top_plate -> YAW-01 disc bolt circle (M6)
+    # 12 in round turntable bearing (typical listing values; MEASURE yours, then python run.py cut)
+    turntable_od=305.0, turntable_id=200.0, turntable_h=12.0,
+    turntable_fixed_pcd=285.0, turntable_rot_pcd=230.0, turntable_ring_holes=4, turntable_ring_hole=5.5,
+    yaw_flange_sq=60.0,    # yaw gearbox output flange, square (MEASURE): sets the BASE-01 underside pocket
+    hub_flange_od=52.0,    # clamp-hub flange OD (MEASURE): sets the YAW-01 centre clearance
 )
 
 def belt_center_mm(ratio, small_teeth=16):
@@ -41,7 +47,7 @@ def cheek(motor_side: bool, center_mm: float):
     code = f'''t, x0, L = 12.0, {x0}, {L}
 plate = cq.Workplane("XY").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges("|Y").fillet(8)
 # bearing recess on outer face (y=+t/2 side) + shaft clearance
-plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).circle({h["bearing_od"] + 0.15}/2).extrude(-{h["bearing_w"] + 0.2}))
+plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).circle({h["bearing_od"] + 0.15}/2).extrude({h["bearing_w"] + 0.2}))   # XZ normal is -Y: +extrude cuts into the plate
 plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).circle(10.0).extrude(t))
 # block bolt holes (M5)
 plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))
@@ -92,7 +98,7 @@ body = body.cut(cq.Workplane("YZ").circle({h["nema17_pilot"]}/2).extrude(5))
 body = body.cut(cq.Workplane("YZ").pushPoints([({s}, {s}), ({s}, -{s}), (-{s}, {s}), (-{s}, -{s})]).circle(1.7).extrude(12))
 body = body.cut(cq.Workplane("YZ").workplane(offset=45).circle(5.0).extrude(65))                      # lead screw clearance
 body = body.cut(cq.Workplane("YZ").workplane(offset=40).pushPoints([(20, 0), (-20, 0)]).circle(4.05).extrude(70))   # 8 mm rods
-body = body.cut(cq.Workplane("XY").workplane(offset=-17).pushPoints([(60, 20), (60, -20), (92, 20), (92, -20)]).circle(2.0).extrude(11))
+body = body.cut(cq.Workplane("XY").workplane(offset=-17).pushPoints([(60, 20), (60, -20), (92, 20), (92, -20)]).circle({h["insert_m4_hole"]}/2).extrude(11))   # M4 heat-set inserts
 fixed = cq.Workplane("XY").box(10, 62, 56, centered=(False, True, True)).translate((110, 0, 0))
 body = body.union(fixed)
 result = body.cut(cq.Workplane("YZ").workplane(offset=110).pushPoints([(20, 0), (-20, 0)]).circle(4.05).extrude(10))

@@ -19,30 +19,17 @@ PRICE = [
     (r"16T", 7.0, "each"), (r"pulley, 12 mm bore", 14.0, "each"), (r"belt, 15 mm", 9.0, "each"),
     (r"DM542", 28.0, "each"), (r"NEMA 17", 32.0, "kit"), (r"8 mm linear", 9.0, "rod + LM8UU"),
     (r"power supply", 34.0, "each"), (r"Arduino", 22.0, "each (clone ~18)"), (r"E-stop", 14.0, "each"),
-    (r"limit switch", 8.0, "5-pack"), (r"Fuse", 9.0, "kit"), (r"M5 screws", 0.0, "see fastener lines"),
+    (r"limit switch", 8.0, "5-pack"), (r"Fuse", 9.0, "kit"), (r"Fasteners F01", 0.0, "see fastener lines"), (r"aluminium plate 6 mm", 24.0, "each"), (r"sheet 5052", 70.0, "each"), (r"angle 10 x 10", 6.0, "per 1 m"), (r"Neoprene", 9.0, "each"), (r"Rubber sheet", 9.0, "each"), (r"Hardwood 2 x 2", 6.0, "each"), (r"glands", 9.0, "kit"), (r"grommet", 2.0, "each"),
     (r"filament", 22.0, "per 1 kg spool"), (r"Plywood", 18.0, "each"),
 ]
 GEARMOTOR_PRICE = {"n23_20": 85.0, "n23_20_b3": 85.0, "n23_20_b5": 85.0}   # gearmotor only; belt stage parts are separate lines
 
 
 def fasteners():
-    """Counted from the printed-part hole patterns in arm/hardware.py and the assembly in docs/ASSEMBLY.md."""
-    j = 3  # pitch joints
-    return [
-        ("M5 x 90 socket head + nyloc nut", 4 * j + j, "4 through each cheek-block-cheek stack, 1 cross pin per tube block"),
-        ("M5 x 60 socket head + nyloc nut", 3, "cross pin through each tube_socket"),
-        ("M5 x 20 socket head", 4 * j + 4, "tube_socket and base_top_plate to clamp-hub flanges (check hub thread)"),
-        ("M5 x 16 socket head + washer", 4 * j, "gearmotor flange to motor cheek (slotted holes)"),
-        ("M5 x 35 socket head + washer + nut", 4, "yaw gearmotor to the base board"),
-        ("M6 x 20 socket head + nyloc nut", 8, "turntable rotating ring to base_top_plate"),
-        ("M6 x 35 bolt + T-nut", 8, "turntable fixed ring to the base board"),
-        ("M4 x 14 socket head", 4, "gripper body to gripper_adapter"),
-        ("M4 heat-set insert (5.7 mm OD, 4 mm long)", 4, "in gripper_body for the adapter screws"),
-        ("M3 x 10 socket head", 8, "NEMA17 to gripper body (4), T8 nut flange to jaw (4)"),
-        ("M3 nut", 4, "T8 nut flange"),
-        ("M3 x 12 screw + nut", 10, "limit switches (2 each)"),
-        ("Wood screws 4 x 16 mm", 24, "PSU, Mega standoffs, drivers, E-stop box to the bench board"),
-    ]
+    """From the fastener schedule (arm/fasteners.py), the same numbers the drawings call out."""
+    from .fasteners import FASTENERS
+    from .fab import fastener_count
+    return [(f"{k} {d} ({std})", fastener_count(k), where) for k, (d, std, q, tq, stack, where) in FASTENERS.items()]
 
 
 ELECTRICAL_EXTRA = [  # needed to wire ELE-001 but not itemised in BOM.md
@@ -57,8 +44,8 @@ ELECTRICAL_EXTRA = [  # needed to wire ELE-001 but not itemised in BOM.md
     ("Cable chain or spiral wrap", "2 m", 1, 10.0, "motor cables along the arm"),
 ]
 TOOLS = [("Calipers", "check every HW dimension"), ("12 mm reamer or drill", "shaft bores"), ("8 mm reamer or drill", "rod bores"),
-         ("Hacksaw or chop saw + deburr tool", "cut tubes"), ("Drill + 5.5 mm bit", "cross-pin holes in tubes"),
-         ("Soldering iron with heat-set insert tip", "M4 inserts"), ("Multimeter", "motor phase pairs, wiring checks"),
+         ("Hacksaw or chop saw + deburr tool", "cut tubes"), ("Drill press, V-block, 5.5 / 3.0 / 8.0 mm bits, 90° countersink", "cross-pin holes, BASE-01, legs"), ("Jigsaw or CNC router; or send fab/dxf to a laser / waterjet shop", "plates and panels"), ("Torque screwdriver 0.5-5 N·m", "fastener torques in fab/FASTENERS.md"),
+         ("Soldering iron with heat-set insert tip", "F10 M4 inserts"), ("Multimeter", "motor phase pairs, wiring checks"),
          ("Hex keys, blue threadlocker", "assembly")]
 
 
@@ -80,7 +67,7 @@ def rows(filament_g=None):
                         use=f"J{['yaw','shoulder','elbow','wrist'].index(j) + 1} {j}" + (f"; {dr.ratio:g}:1 total with belt stage" if dr.ratio > 20 else ""),
                         lead="1-3 weeks if shipped from overseas"))
     for item, qty, search, use in B.AMAZON_ITEMS:
-        if re.search(r"M5 screws", item):
+        if re.search(r"Fasteners F01", item):
             continue
         p, unit = price_for(item)
         q = qty
@@ -88,11 +75,13 @@ def rows(filament_g=None):
             q = max(1, math.ceil(filament_g * 1.25 / 1000))   # +25 % for supports, brims, a reprint
             item = f"PETG filament 1.75 mm, 1 kg (prints need {filament_g:.0f} g; +25 % allowance) + 250 g TPU 95A for jaw pads"
         cat = "Electronics" if re.search(r"driver|supply|Arduino|E-stop|limit|Fuse", item, re.I) else "Mechanical"
-        if re.search(r"filament|Plywood", item, re.I):
+        if re.search(r"filament|Plywood|plate 6 mm|sheet|angle|Neoprene|Hardwood", item, re.I):
             cat = "Materials"
         out.append(dict(cat=cat, item=item, qty=q, unit=unit or "each", price=p or 0, search=search, use=use, lead=""))
     for item, qty, use in fasteners():
-        out.append(dict(cat="Fasteners", item=item, qty=qty, unit="each", price=0.25 if "insert" not in item else 0.3, search=item, use=use, lead=""))
+        if qty:
+            out.append(dict(cat="Fasteners", item=item, qty=qty, unit="each", price=0.3 if "insert" in item else (0.5 if "foot" in item or "standoff" in item else 0.2),
+                            search=item.split(" (")[0][4:], use=use, lead=""))
     for item, unit, qty, p, use in ELECTRICAL_EXTRA:
         out.append(dict(cat="Wiring", item=item, qty=qty, unit=unit, price=p, search=item, use=use, lead=""))
     # limit switches are sold in packs: one pack covers all five

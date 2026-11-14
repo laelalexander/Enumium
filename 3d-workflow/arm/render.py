@@ -13,8 +13,13 @@ DESIGN = HERE / "design"
 WIDTH = 2400  # px; A3 sheets are 1600x1131 user units, so this is 1.5x
 
 
+FAB = HERE / "fab"
+
+
 def sources():
-    return sorted([*(DESIGN / "drawings").glob("*.svg"), *(DESIGN / "schematics").glob("*.svg")])
+    """(svg, png) pairs: design drawings + schematics -> design/png, cut-part drawings -> fab/png."""
+    d = [(s, DESIGN / "png" / f"{s.stem}.png") for s in sorted([*(DESIGN / "drawings").glob("*.svg"), *(DESIGN / "schematics").glob("*.svg")])]
+    return d + [(s, FAB / "png" / f"{s.stem}.png") for s in sorted((FAB / "drawings").glob("*.svg"))]
 
 
 def _cairosvg():
@@ -55,9 +60,9 @@ def _playwright():
 
 
 def main(argv=None):
-    out = DESIGN / "png"
-    out.mkdir(parents=True, exist_ok=True)
     srcs = sources()
+    for _, dst in srcs:
+        dst.parent.mkdir(parents=True, exist_ok=True)
     if not srcs:
         sys.exit("no SVGs in design/; run `python run.py build` first")
     errors = []
@@ -68,11 +73,11 @@ def main(argv=None):
             errors.append(f"{name}: {e.__class__.__name__}: {e}".splitlines()[0])
             continue
         try:
-            for s in srcs:
-                run(s, out / f"{s.stem}.png")
+            for s, dst in srcs:
+                run(s, dst)
         finally:
             getattr(run, "close", lambda: None)()
-        print(f"rendered {len(srcs)} PNGs to {out} with {name}")
+        print(f"rendered {len(srcs)} PNGs to design/png and fab/png with {name}")
         return True
     print("PNG rendering skipped: no backend available.\n  " + "\n  ".join(errors) +
           "\n  The SVG drawings are complete; see docs/design/README.md to enable PNG export.")

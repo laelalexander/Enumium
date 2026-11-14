@@ -1,0 +1,36 @@
+Type,Part,Description,Length / size mm,Length / size in,Qty,Stock / material,Notes
+Tube,TUBE-01,UPPER ARM TUBE,320,12.598,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],"pins at 27, 290 mm from the left end"
+Tube,TUBE-02,FOREARM TUBE,320,12.598,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],"pins at 27, 290 mm from the left end"
+Tube,TUBE-03,RISER TUBE,150,5.906,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],pins at 120 mm from the left end
+Tube,TUBE-04,WRIST STUB TUBE,120,4.724,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],pins at 27 mm from the left end
+Angle,ANG,"enclosure corner angle, front/back walls, top and bottom",470,18.504,4,10 x 10 x 1.5 aluminium angle,"deburr, transfer-drill from panels"
+Angle,ANG,"enclosure corner angle, side walls, top and bottom",294,11.575,4,10 x 10 x 1.5 aluminium angle,"deburr, transfer-drill from panels"
+Angle,ANG,"enclosure corner angle, vertical corners",90,3.543,4,10 x 10 x 1.5 aluminium angle,"deburr, transfer-drill from panels"
+Wood,LEG-01,base leg,200,7.874,4,Hardwood 45 x 45,square ends
+Rod,SHAFT-01,joint shaft (as bought 150),150,5.906,3,12 mm h6 rod,"one flat, chamfer ends"
+Sheet,BASE-01,BASE BOARD,457.2 x 457.2 x 19,18.000 x 18.000 x 0.748,1,3/4 in Baltic birch plywood (18-19 mm),DXF fab/dxf/mm/BASE-01.dxf
+Sheet,YAW-01,TURNTABLE ADAPTER DISC,300.0 x 300.0 x 6,11.811 x 11.811 x 0.236,1,6061-T6 aluminium plate 6 mm [.236] (or 12 mm Baltic birch),DXF fab/dxf/mm/YAW-01.dxf
+Sheet,GSK-01,TURNTABLE SEAT GASKET,305.0 x 305.0 x 1.5,12.008 x 12.008 x 0.059,1,Neoprene 60A sheet 1.5 mm [1/16 in],DXF fab/dxf/mm/GSK-01.dxf
+Sheet,GSK-02,GRIPPER JAW PAD,56.0 x 50.0 x 3,2.205 x 1.969 x 0.118,2,TPU 95A (print flat) or 3 mm neoprene with adhesive back,DXF fab/dxf/mm/GSK-02.dxf
+Sheet,GSK-03,LEG FOOT PAD,45.0 x 45.0 x 3,1.772 x 1.772 x 0.118,4,"Rubber sheet 3 mm [1/8 in], 60A",DXF fab/dxf/mm/GSK-03.dxf
+Sheet,ENC-01,ENCLOSURE BASE PLATE,480.0 x 320.0 x 3,18.898 x 12.598 x 0.118,1,5052 aluminium 3 mm (earth it) or 3 mm acrylic,DXF fab/dxf/mm/ENC-01.dxf
+Sheet,ENC-02,ENCLOSURE LID,480.0 x 320.0 x 3,18.898 x 12.598 x 0.118,1,5052 aluminium 3 mm or 3 mm acrylic,DXF fab/dxf/mm/ENC-02.dxf
+Sheet,ENC-03,ENCLOSURE FRONT WALL,480.0 x 110.0 x 3,18.898 x 4.331 x 0.118,1,5052 aluminium 3 mm or 3 mm acrylic,DXF fab/dxf/mm/ENC-03.dxf
+Sheet,ENC-04,ENCLOSURE BACK WALL,480.0 x 110.0 x 3,18.898 x 4.331 x 0.118,1,5052 aluminium 3 mm or 3 mm acrylic,DXF fab/dxf/mm/ENC-04.dxf
+Sheet,ENC-05,ENCLOSURE LEFT WALL,314.0 x 110.0 x 3,12.362 x 4.331 x 0.118,1,5052 aluminium 3 mm or 3 mm acrylic,DXF fab/dxf/mm/ENC-05.dxf
+Sheet,ENC-06,ENCLOSURE RIGHT WALL (ARM SIDE),314.0 x 110.0 x 3,12.362 x 4.331 x 0.118,1,5052 aluminium 3 mm or 3 mm acrylic,DXF fab/dxf/mm/ENC-06.dxf
+Cable,,J1 yaw motor cable,1300,51.2,1,4-core shielded 18 AWG,ferrules at driver; motor plug or solder + heatshrink at motor
+Cable,,J1 yaw limit switch,1300,51.2,1,2-core 22 AWG (twisted),"ferrule at Mega terminal, 100 nF across switch"
+Cable,,J2 shoulder motor cable,1800,70.9,1,4-core shielded 18 AWG,ferrules at driver; motor plug or solder + heatshrink at motor
+Cable,,J2 shoulder limit switch,1800,70.9,1,2-core 22 AWG (twisted),"ferrule at Mega terminal, 100 nF across switch"
+Cable,,J3 elbow motor cable,2300,90.6,1,4-core shielded 18 AWG,ferrules at driver; motor plug or solder + heatshrink at motor
+Cable,,J3 elbow limit switch,2300,90.6,1,2-core 22 AWG (twisted),"ferrule at Mega terminal, 100 nF across switch"
+Cable,,J4 wrist motor cable,2700,106.3,1,4-core shielded 18 AWG,ferrules at driver; motor plug or solder + heatshrink at motor
+Cable,,J4 wrist limit switch,2700,106.3,1,2-core 22 AWG (twisted),"ferrule at Mega terminal, 100 nF across switch"
+Cable,,J5 gripper motor cable,3000,118.1,1,4-core shielded 18 AWG,ferrules at driver; motor plug or solder + heatshrink at motor
+Cable,,J5 gripper limit switch,3000,118.1,1,2-core 22 AWG (twisted),"ferrule at Mega terminal, 100 nF across switch"
+Cable,,PSU V+ to fuse to E-stop to bus,600,23.6,1,14 AWG red silicone,ferrules
+Cable,,PSU V- to GND bus,400,15.7,1,14 AWG black silicone,ferrules
+Cable,,Bus to each driver VCC/GND (x5),1750,68.9,1,18 AWG red + black,"ferrules, 350 mm each"
+Cable,,Mega to drivers STEP/DIR/ENA,4500,177.2,1,"22 AWG hookup, 3 colours","15 leads of 300 mm, ferrules at drivers"
+Cable,,Mains IEC inlet to PSU L/N/PE,400,15.7,1,18 AWG 3-core mains flex (H05VV-F 1.0 mm²),fork terminals at PSU; qualified person only

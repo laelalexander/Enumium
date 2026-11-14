@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""One entry point.  python run.py [check|build|png|print|procure|book|ui|sim|console]
+"""One entry point.  python run.py [check|build|png|cut|print|procure|book|ui|sim|console]
   check    verify Python + dependencies (default first step)
   build    size drives, generate parts, BOM, CAD, drawings, design/index.html, then PNGs if a renderer exists
   png      re-render design/png/*.png from the SVG drawings only (no CAD rebuild)
+  cut      cut / machined parts: DXF (mm + inch), 1:1 templates, drawings, cut list, fastener schedule -> fab/
   print    orient printed parts, plate them, slice + verify with PrusaSlicer -> print/  (--bed 256x256x256)
   procure  procurement list with quantities and planning prices -> docs/PROCUREMENT.md, docs/procurement.csv
   book     build book PDF (blueprints, assembly plan, BOM, procurement, print plan) -> ../docs/design/
@@ -31,8 +32,11 @@ def main():
     if cmd == "build":
         from arm import build, drawings
         build.build(5.0, 1.0); drawings.main()
+        from arm import fab; fab.main()
         from arm import render; render.main()
         print("\nOpen", HERE / "design" / "index.html", "in a browser. Next: python run.py sim")
+    elif cmd == "cut":
+        from arm import fab; sys.exit(fab.main())
     elif cmd == "print":
         from arm import printprep; sys.exit(printprep.main(sys.argv[2:]))
     elif cmd == "procure":

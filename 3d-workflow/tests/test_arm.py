@@ -111,3 +111,49 @@ def test_procurement_covers_bom():
     rows = procure.rows()
     assert sum(1 for r in rows if r["cat"] == "Motors") == 4
     assert all(r["qty"] > 0 for r in rows)
+
+
+def _features(code):
+    import math, cadquery as cq
+    from arm import sheets
+    ns = {"cq": cq, "math": math}; exec("import math\n" + code, ns)
+    v = ns["result"].val()
+    return sheets.features(v, v.BoundingBox())
+
+
+def test_cheek_has_bearing_seat_counterbore():
+    """Regression: the bearing recess was extruded away from the plate and cut nothing."""
+    from arm import hardware as H
+    f = _features(H.cheek(True, 107.9))
+    cb = [x for x in f if x["cb"]]
+    assert len(cb) == 1 and abs(cb[0]["cb"][0] - 28.15) < 0.01 and abs(cb[0]["cb"][1] - 8.2) < 0.01
+    assert sum(1 for x in f if x["kind"] == "slot") == 4
+
+
+def test_gripper_insert_holes_fit_m4_inserts():
+    from arm import hardware as H
+    f = _features(H.gripper_body())
+    assert sum(1 for x in f if abs(x["dia"] - 5.6) < 0.01) == 4      # M4 heat-set pilot, was 4.0
+    assert sum(1 for x in f if abs(x["dia"] - 3.4) < 0.01) == 4      # NEMA 17 screws (break into the pocket)
+
+
+def test_fab_package_dual_units_and_fasteners(tmp_path, monkeypatch):
+    import ezdxf
+    from arm import fab, fasteners
+    monkeypatch.setattr(fab, "OUT", tmp_path)
+    assert fab.main() == 0
+    for p in fab.parts():
+        mm = ezdxf.readfile(tmp_path / "dxf/mm" / f"{p.pid}.dxf"); inch = ezdxf.readfile(tmp_path / "dxf/inch" / f"{p.pid}.dxf")
+        assert mm.header["$INSUNITS"] == 4 and inch.header["$INSUNITS"] == 1
+        svg = (tmp_path / "drawings" / f"{p.pid}.svg").read_text(encoding="utf-8")
+        assert "HOLE AND FASTENER TABLE" in svg and "[" in svg
+    # every printed-part hole maps to a fastener or fit, never the fallback
+    from arm import hardware as H
+    for name, (code, q, n) in H.parts({"shoulder": 5, "elbow": 3}).items():
+        spec = fasteners.for_part(name)
+        for f in _features(code):
+            assert spec(f) != "Fit to the mating part (see assembly)", (name, f["dia"])
+    # all four tube cuts fit one 48 in length
+    import json
+    d = json.loads((fab.HERE / "design" / "design.json").read_text(encoding="utf-8"))
+    assert sum(t["length"] + 3 for t in fab.tubes(d)) < 1219

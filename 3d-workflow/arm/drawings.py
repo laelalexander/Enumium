@@ -53,30 +53,29 @@ def sheet(title, partno, body, notes, scale_txt, rev="A"):
 <text x="1472" y="1064" font-size="12">SCALE {scale_txt}</text><text x="1382" y="1090" font-size="11">REV {rev} DRAFT | mm | A3</text>
 <text x="1172" y="920" font-size="13" font-weight="bold">NOTES</text>{nl}</g></svg>'''
 
+PART_NO = {}   # filled in main(): P-01 ... in BOM order
+
+
 def part_drawing(name, code, qty, note):
+    """Production sheet from arm/sheets.py: third-angle views, section, ordinate dims and hole + fastener table, mm [in]."""
+    from . import sheets as S, fasteners as FA
     shape = load_shape(code)
-    bb = shape.val().BoundingBox()
-    X, Y, Z = bb.xlen, bb.ylen, bb.zlen
-    n = next(n for n in (1, 1.5, 2, 2.5, 3, 4, 5, 8) if (X + Y) * PXMM / n <= 640 and (X + Z) * PXMM / n <= 1000)
-    S = PXMM / n
-    sv = shape.val()
-    front, fw, fh = view_svg(sv.rotate((0, 0, 0), (1, 0, 0), -90), (0, 0, 1), S)   # x right, z up
-    top, tw, th = view_svg(sv, (0, 0, 1), S)                                                                           # x right, y up
-    side, sw, sh = view_svg(sv.rotate((0, 0, 0), (1, 1, 1), -120), (0, 0, 1), S)   # y right, z up
-    ox, oy = 110, 90
-    tx, ty = ox, oy + fh + 90
-    sx = ox + max(fw, tw) + 140
-    body = (f'<g transform="translate({ox},{oy})">{front}</g><g transform="translate({tx},{ty})">{top}</g>'
-            f'<g transform="translate({sx},{oy})">{side}</g>')
-    body += hdim(ox, ox + fw, oy - 20, f"{fw/S:.1f}") + vdim(ox - 30, oy, oy + fh, f"{fh/S:.1f}")
-    body += hdim(tx, tx + tw, ty + th + 30, f"{tw/S:.1f}") + vdim(tx - 30, ty, ty + th, f"{th/S:.1f}")
-    body += hdim(sx, sx + sw, oy - 20, f"{sw/S:.1f}") + vdim(sx + sw + 30, oy, oy + sh, f"{sh/S:.1f}")
-    body += (f'<text x="{ox}" y="{oy-45}" font-size="12">FRONT</text><text x="{tx}" y="{ty-12}" font-size="12">TOP</text>'
-             f'<text x="{sx}" y="{oy-45}" font-size="12">RIGHT</text>')
-    notes = [f"Qty {qty}: {note}"[:78], f"Overall {X:.1f} x {Y:.1f} x {Z:.1f} mm, {shape.val().Volume()/1000:.1f} cm3",
-             "Material: PETG/ASA/nylon-CF, 5 perimeters, 40% infill", "Holes: M5 clearance 5.5, M3 3.2-3.4; ream after print",
-             "Tol +-0.2 mm. DRAFT: verify MEASURE dims vs purchased parts", "Dashed = hidden edges. Views: front/top/right."]
-    return sheet(name.upper().replace("_", " "), name, body, notes, f"1:{n:g}"), shape
+    man = {}
+    pm = pipeline.HERE / "print" / "manifest.json"
+    if pm.exists():
+        man = json.loads(pm.read_text(encoding="utf-8"))["parts"].get(name, {})
+    notes = [f"Function: {note}."]
+    if man:
+        notes.append(f"Print: {man.get('why', '')}"[:110])
+        notes.append(f"Supports {'yes' if man.get('supports') else 'none'}, brim {'yes' if man.get('brim') else 'no'}; plate "
+                     + ", ".join(str(x) for x in man.get("plates", [])) + " (print/REPORT.md).")
+    notes.append("PETG 250/70 °C, 0.20 layers, 5 perimeters, 40 % gyroid (print/profiles). MEASURE items: arm/hardware.py HW.")
+    info = dict(title=name.upper().replace("_", " "), partno=f"{PART_NO.get(name, '')} {name}".strip(),
+                material="PETG (or ASA / nylon-CF), 1.75 mm filament", process="FDM 3D print, Bambu 256 mm bed",
+                qty=qty, tol="printed", density=1.27, fill=0.75, notes=notes)
+    svg, feats = S.sheet(shape, info, FA.for_part(name))
+    return svg, shape
+
 
 # ---------- assembly drawing ----------
 def assembly_svg(d):
@@ -209,6 +208,8 @@ def main():
     for sub in ("cad/step", "cad/stl", "cad/obj", "drawings", "schematics"):
         (OUT / sub).mkdir(parents=True, exist_ok=True)
     ratios = {j: round(BY_KEY[v["drive"]].ratio / 20) if BY_KEY[v["drive"]].ratio >= 20 else 1 for j, v in d["joints"].items() if j != "wrist"}
+    for i, name in enumerate(H.parts(ratios), 1):
+        PART_NO[name] = f"P-{i:02d}"
     for name, (code, qty, note) in H.parts(ratios).items():
         svg, shape = part_drawing(name, code, qty, note)
         (OUT / "drawings" / f"{name}.svg").write_text(svg, encoding="utf-8")

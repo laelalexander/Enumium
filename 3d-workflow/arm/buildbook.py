@@ -64,7 +64,7 @@ def main():
     sheets = ["ELE-001_wiring", "ASM-001_assembly", "ASM-002_joint_section"] + sorted(
         p.stem for p in png.glob("*.png") if not p.stem.startswith(("ELE", "ASM")))
     rows = "".join(f"<tr><td>{j}</td><td>{v['drive']}</td><td>{v['required_nm']}</td><td>{v['rated_nm']}</td><td>{v['margin']}×</td></tr>" for j, v in d["joints"].items())
-    toc = ["Overview", "Procurement list", "Bill of materials", "Print plan", "Assembly plan", "Wiring", "Blueprints"]
+    toc = ["Overview", "Procurement list", "Bill of materials", "Print plan", "Cut list", "Fastener schedule", "Assembly plan", "Wiring", "Blueprints"]
     cover = f"""<section class="cover"><div class="eyebrow">Build book · DRAFT rev A · {date.today().isoformat()}</div>
       <h1 class="big">Desktop robot arm</h1>
       <p class="lede">4-DOF arm (yaw, shoulder, elbow, wrist pitch) with a lead-screw gripper. {d['payload_lb']} lb payload at
@@ -83,10 +83,15 @@ def main():
     proc = section("Procurement list", md(strip_h1(read("docs/PROCUREMENT.md"))), "small")
     bom = section("Bill of materials", md(strip_h1(read("design/BOM.md"))), "small")
     prt = section("Print plan", md(strip_h1(read("print/REPORT.md"))), "small")
+    cut = section("Cut list", md(strip_h1(read("fab/CUTLIST.md"))), "small")
+    fas = section("Fastener schedule", md(strip_h1(read("fab/FASTENERS.md"))), "small")
     asm = section("Assembly plan", md(strip_h1(read("docs/ASSEMBLY.md"))))
     wir = section("Wiring", md(strip_h1(read("docs/WIRING.md"))) + f'<img src="{img(png / "ELE-001_wiring.png")}" class="sheet">')
     bp = "".join(f'<section class="sheetpage"><div class="cap">{escape(s)}</div><img src="{img(png / (s + ".png"))}" class="sheet"></section>'
                  for s in sheets if (png / f"{s}.png").exists())
+    fpng = HERE / "fab" / "png"
+    bp += "".join(f'<section class="sheetpage"><div class="cap">{escape(p.stem)}</div><img src="{img(p)}" class="sheet"></section>'
+                  for p in sorted(fpng.glob("*.png")))
     css = """@page{size:A4 landscape;margin:12mm}
     :root{--ink:#14181d;--muted:#5d6670;--line:#d5dae0;--accent:#c4561a;--paper:#fff}
     body{font:10.5pt/1.45 "Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--paper);margin:0}
@@ -100,7 +105,7 @@ def main():
     .lede{font-size:12.5pt;max-width:200mm;color:var(--muted)} .hero{width:62%;float:right;margin-left:8mm;border:1px solid var(--line)}
     .toc{font-size:12pt;line-height:1.9} .sheet{width:100%;max-height:178mm;object-fit:contain;border:1px solid var(--line)}
     .sheetpage .cap{font-weight:600;margin:2pt 0 4pt;color:var(--muted)}"""
-    html = f"<!doctype html><meta charset=utf-8><title>Robot arm build book</title><style>{css}</style>{cover}{overview}{proc}{bom}{prt}{asm}{wir}{bp}"
+    html = f"<!doctype html><meta charset=utf-8><title>Robot arm build book</title><style>{css}</style>{cover}{overview}{proc}{bom}{prt}{cut}{fas}{asm}{wir}{bp}"
     OUTDIR.mkdir(parents=True, exist_ok=True)
     out = OUTDIR / "robot-arm-build-book.html"
     out.write_text(html, encoding="utf-8")

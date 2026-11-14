@@ -24,9 +24,10 @@ const HUB_Y0 = 42, HUB_Y1 = 52; // clamp hub flange on the output side
 const SOCKET_Y = HUB_Y1 + 25;   // tube_socket plate at HUB_Y1, tube axis 25 mm out from the plate
 const TUBE_R = M.hw.tube_od / 2;
 const PULLEY_Y = -18;           // belt plane, inside the motor-side cheek
-const TURNTABLE_H = 12, RISER = 150;
-const SHOULDER_Z = TURNTABLE_H + 14 + RISER + 20;  // plate on turntable, riser seated 14 mm deep, top 20 mm inside block
-const BOARD_T = 19, TABLE_Z = -BOARD_T - 200;      // 3/4 in board on 200 mm standoffs
+const TURNTABLE_H = 12, RISER = 150, YAW_T = 6, GSK_T = 1.5;
+const PLATE_Z = GSK_T + TURNTABLE_H + YAW_T;        // gasket, turntable, YAW-01 disc, then base_top_plate
+const SHOULDER_Z = PLATE_Z + 14 + RISER + 20;      // riser seated 14 mm deep, top 20 mm inside the shoulder block
+const BOARD_T = 19, LEG_H = 200, PAD_T = 3, TABLE_Z = -BOARD_T - LEG_H - PAD_T;   // BASE-01 on LEG-01 + GSK-03 pads
 const L1 = M.l1_mm, L2 = M.l2_mm, STUB = 120;
 const LATERAL = 2 * SOCKET_Y;   // wrist axis sits this far beside the yaw plane (side-by-side link layout)
 
@@ -84,6 +85,9 @@ const mat = {
   tpu: new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.95 }),
   payload: new THREE.MeshStandardMaterial({ color: 0x6d7580, metalness: 0.7, roughness: 0.35 }),
   brass: new THREE.MeshStandardMaterial({ color: 0xc8a24a, metalness: 0.8, roughness: 0.3 }),
+  rubber: new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.95 }),
+  encl: new THREE.MeshStandardMaterial({ color: 0xb8c2cc, metalness: 0.5, roughness: 0.4, transparent: true, opacity: 0.22, depthWrite: false, side: THREE.DoubleSide }),
+  alu6: new THREE.MeshStandardMaterial({ color: 0xc9d1d9, metalness: 0.75, roughness: 0.3 }),
 };
 const ledMat = (c) => new THREE.MeshBasicMaterial({ color: c });
 
@@ -92,14 +96,17 @@ const ledMat = (c) => new THREE.MeshBasicMaterial({ color: c });
 const catalog = new Map();   // key -> {key,name,cat,qty,note,search,stl,drawing,objs:[]}
 function cat(key, info) { if (!catalog.has(key)) catalog.set(key, { key, objs: [], ...info }); return catalog.get(key); }
 M.printed.forEach(p => cat(p.id, { name: p.id, cat: 'Printed parts', qty: p.qty, note: p.note, stl: p.stl, drawing: p.drawing, printed: p }));
+(M.fabricated || []).forEach(f => cat(f.pid, { name: `${f.pid} ${f.title.toLowerCase()}`, cat: 'Cut and machined parts', qty: f.qty, note: f.material, fab: f }));
+cat('ANG', { name: 'ANG enclosure corner angle 10 x 10 x 1.5', cat: 'Cut and machined parts', qty: 12, note: 'cut list: 4 x 470, 4 x 294, 4 x 90 mm (fab/CUTLIST.md)' });
 const PURCHASED_KEYS = [
-  ['tube', /round tube/i], ['turntable', /turntable/i], ['shaft', /12 mm hardened/i], ['bearing', /6001/i],
+  ['turntable', /turntable/i], ['bearing', /6001/i],
   ['hub', /clamping hub/i], ['collar', /collars/i], ['pulley_s', /16T/i], ['pulley_l', /pulley, 12 mm bore/i],
   ['belt', /belt, 15 mm/i], ['driver', /DM542/i], ['nema17', /NEMA 17/i], ['rod', /8 mm linear/i], ['psu', /power supply/i],
-  ['mega', /Arduino/i], ['estop', /E-stop/i], ['limit', /limit switch/i], ['fuse', /Fuse/i], ['screws', /M5 screws/i],
-  ['filament', /filament/i], ['board', /Plywood/i],
+  ['mega', /Arduino/i], ['estop', /E-stop/i], ['limit', /limit switch/i], ['fuse', /Fuse/i], ['screws', /Fasteners F01/i],
+  ['filament', /filament/i], ['glands', /glands/i], ['grommet', /grommet/i],
 ];
 M.purchased.forEach(p => {
+  if (p.makes) { cat('stock_' + p.makes[0], { name: p.item, cat: 'Stock materials', qty: null, note: `${p.qty} to buy, cut into ${p.makes.join(', ')}`, search: p.search, makes: p.makes }); return; }
   const k = (PURCHASED_KEYS.find(([, re]) => re.test(p.item)) || [p.item])[0];
   const c = /driver|psu|mega|estop|limit|fuse/.test(k) ? 'Electronics' : 'Purchased mechanical';
   cat(k, { name: p.item, cat: c, qty: p.qty, note: p.use, search: p.search });
@@ -126,6 +133,33 @@ const box = (w, d, h, m, x, y, z) => mesh(new THREE.BoxGeometry(w, d, h), m, x, 
 function cylY(r, len, m, x = 0, y = 0, z = 0, seg = 32) { return mesh(new THREE.CylinderGeometry(r, r, len, seg), m, x, y, z); }
 function cylX(r, len, m, x = 0, y = 0, z = 0) { const o = cylY(r, len, m, x, y, z); o.rotation.z = Math.PI / 2; return o; }
 function cylZ(r, len, m, x = 0, y = 0, z = 0) { const o = cylY(r, len, m, x, y, z); o.rotation.x = Math.PI / 2; return o; }
+// Cut parts are built from the same 2D profile as their DXF (fab/fab.json): outline + every hole, slot and cutout.
+const FABP = Object.fromEntries((M.fabricated || []).map(f => [f.pid, f]));
+function rrPath(P, cx, cy, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  P.moveTo(cx - w / 2 + r, cy - h / 2); P.lineTo(cx + w / 2 - r, cy - h / 2); if (r) P.absarc(cx + w / 2 - r, cy - h / 2 + r, r, -Math.PI / 2, 0);
+  P.lineTo(cx + w / 2, cy + h / 2 - r); if (r) P.absarc(cx + w / 2 - r, cy + h / 2 - r, r, 0, Math.PI / 2);
+  P.lineTo(cx - w / 2 + r, cy + h / 2); if (r) P.absarc(cx - w / 2 + r, cy + h / 2 - r, r, Math.PI / 2, Math.PI);
+  P.lineTo(cx - w / 2, cy - h / 2 + r); if (r) P.absarc(cx - w / 2 + r, cy - h / 2 + r, r, Math.PI, Math.PI * 1.5);
+  return P;
+}
+function plateMesh(pid, m) {
+  const f = FABP[pid]; if (!f) return box(10, 10, 1, m);
+  const o = f.outline, sh = new THREE.Shape();
+  if (o[0] === 'rrect') rrPath(sh, 0, 0, o[1], o[2], o[3]); else sh.absarc(0, 0, o[1] / 2, 0, Math.PI * 2, false);
+  if (o[0] === 'ring') { const hp = new THREE.Path(); hp.absarc(0, 0, o[2] / 2, 0, Math.PI * 2, true); sh.holes.push(hp); }
+  for (const h of f.cut) {
+    const hp = new THREE.Path();
+    if (h[0] === 'c') hp.absarc(h[1], h[2], h[3] / 2, 0, Math.PI * 2, true);
+    else if (h[0] === 'rect') rrPath(hp, h[1], h[2], h[3], h[4], h[5]);
+    else if (h[0] === 'slot') { const a = h[5] * Math.PI / 180, d = (h[3] - h[4]) / 2, r = h[4] / 2, c = Math.cos(a), s = Math.sin(a);
+      hp.absarc(h[1] + d * c, h[2] + d * s, r, a - Math.PI / 2, a + Math.PI / 2, false); hp.absarc(h[1] - d * c, h[2] - d * s, r, a + Math.PI / 2, a + Math.PI * 1.5, false); }
+    sh.holes.push(hp);
+  }
+  return new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: f.t, bevelEnabled: false, curveSegments: 40 }), m);
+}
+function basisMesh(o, ax, ay, az, pos) { o.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(ax, ay, az)); o.position.copy(pos); return o; }
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
 function tubeX(x0, x1, y, z, r = TUBE_R) {
   const g = new THREE.Group();
   const outer = new THREE.CylinderGeometry(r, r, x1 - x0, 40, 1, true);
@@ -219,16 +253,21 @@ const hw = {};   // handles for animation
 // Test table + base board
 const table = box(3200, 2200, 20, mat.table, -200, 0, TABLE_Z - 10); table.receiveShadow = true; world.add(table);
 const grid = new THREE.GridHelper(3000, 30, 0x3a4350, 0x2c333d); grid.rotation.x = Math.PI / 2; grid.position.set(-200, 0, TABLE_Z + 0.5); world.add(grid);
-const board = new THREE.Group();
-board.add(box(457, 457, BOARD_T, mat.wood, 0, 0, -BOARD_T / 2));
-for (const sx of [-1, 1]) for (const sy of [-1, 1]) board.add(cylZ(14, 200, mat.alu, sx * 200, sy * 200, -BOARD_T - 100));
-world.add(tag(board, 'board', 'Base board 18×18 in on standoffs')); layers['Purchased mechanical'].push(board);
+const board = plateMesh('BASE-01', mat.wood); board.position.z = -BOARD_T;
+world.add(tag(board, 'BASE-01', 'BASE-01 base board, 3/4 in plywood')); layers['Purchased mechanical'].push(board);
+for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+  const lg = box(45, 45, LEG_H, mat.wood, sx * 200, sy * 200, -BOARD_T - LEG_H / 2); world.add(tag(lg, 'LEG-01', 'LEG-01 base leg 45 x 45 x 200')); layers['Purchased mechanical'].push(lg);
+  const pd = box(45, 45, PAD_T, mat.rubber, sx * 200, sy * 200, -BOARD_T - LEG_H - PAD_T / 2); world.add(tag(pd, 'GSK-03', 'GSK-03 foot pad')); layers['Purchased mechanical'].push(pd);
+}
+const gsk1 = plateMesh('GSK-01', mat.rubber); world.add(tag(gsk1, 'GSK-01', 'GSK-01 turntable seat gasket')); layers['Purchased mechanical'].push(gsk1);
+const grom = mesh(new THREE.TorusGeometry(16, 3, 8, 24), mat.rubber, -150, 0, 0); world.add(tag(grom, 'grommet', 'Harness grommet in BASE-01')); layers['Purchased mechanical'].push(grom);
 
 // Turntable: lower ring fixed, upper ring turns with yaw
 const ttLow = new THREE.Group();
 ttLow.add(mesh(new THREE.TorusGeometry(140, 6, 10, 64), mat.steel, 0, 0, 3));
 const ring = (r0, r1, h, m, z) => { const s = new THREE.Shape(); s.absarc(0, 0, r1, 0, Math.PI * 2); const hole = new THREE.Path(); hole.absarc(0, 0, r0, 0, Math.PI * 2, true); s.holes.push(hole); const g = new THREE.ExtrudeGeometry(s, { depth: h, bevelEnabled: false, curveSegments: 64 }); return mesh(g, m, 0, 0, z); };
 ttLow.add(ring(120, 152, 4, mat.steel, 0));
+ttLow.position.z = GSK_T;
 world.add(tag(ttLow, 'turntable', '12 in turntable bearing')); layers['Purchased mechanical'].push(ttLow);
 
 // Yaw gearmotor under the board, output up
@@ -238,12 +277,13 @@ world.add(tag(gmYaw.group, 'gm_yaw', 'Yaw gearmotor J1')); layers.Motors.push(gm
 label(gmYaw.group, 'J1 yaw motor', 0, -170, 0);
 
 const yawG = new THREE.Group(); world.add(yawG);
-const ttUp = ring(120, 152, 4, mat.steel, TURNTABLE_H - 4); yawG.add(tag(ttUp, 'turntable', 'Turntable upper race', false)); layers['Purchased mechanical'].push(ttUp);
-const btp = stl('base_top_plate'); btp.position.z = TURNTABLE_H; yawG.add(tag(btp, 'base_top_plate')); layers['Printed parts'].push(btp);
-const yawHub = new THREE.Group(); yawHub.add(cylZ(25, 6, mat.alu, 0, 0, TURNTABLE_H - 3)); yawHub.add(cylZ(12, 12, mat.alu, 0, 0, 2));
+const ttUp = ring(120, 152, 4, mat.steel, GSK_T + TURNTABLE_H - 4); yawG.add(tag(ttUp, 'turntable', 'Turntable upper race', false)); layers['Purchased mechanical'].push(ttUp);
+const yaw1 = plateMesh('YAW-01', mat.alu6); yaw1.position.z = GSK_T + TURNTABLE_H; yawG.add(tag(yaw1, 'YAW-01', 'YAW-01 turntable adapter disc')); layers['Purchased mechanical'].push(yaw1);
+const btp = stl('base_top_plate'); btp.position.z = PLATE_Z; yawG.add(tag(btp, 'base_top_plate')); layers['Printed parts'].push(btp);
+const yawHub = new THREE.Group(); yawHub.add(cylZ(25, 6, mat.alu, 0, 0, PLATE_Z - 3)); yawHub.add(cylZ(12, 12, mat.alu, 0, 0, 2));
 yawG.add(tag(yawHub, 'hub', 'Yaw clamp hub')); layers['Purchased mechanical'].push(yawHub);
-const riser = new THREE.Group(); const rt = tubeX(0, SHOULDER_Z - 20 - (TURNTABLE_H + 14), 0, 0); rt.rotation.y = -Math.PI / 2; rt.position.z = TURNTABLE_H + 14; riser.add(rt);
-yawG.add(tag(riser, 'tube', 'Riser tube ~150 mm')); layers['Purchased mechanical'].push(riser);
+const riser = new THREE.Group(); const rt = tubeX(0, SHOULDER_Z - 20 - (PLATE_Z + 14), 0, 0); rt.rotation.y = -Math.PI / 2; rt.position.z = PLATE_Z + 14; riser.add(rt);
+yawG.add(tag(riser, 'TUBE-03', 'TUBE-03 riser tube 150 mm')); layers['Purchased mechanical'].push(riser);
 const yawLS = limitSwitch(); yawLS.position.set(-60, -175, 3.5); world.add(tag(yawLS, 'limit', 'Yaw limit switch (D22)')); layers.Electronics.push(yawLS);
 hw.yaw = { group: yawG, spinner: gmYaw.spinner, ls: yawLS, motor: gmYaw.group };
 
@@ -262,7 +302,7 @@ function pitchJoint(name) {
   const pl = pulley(j.large_teeth); pl.group.position.y = PULLEY_Y; out.add(tag(pl.group, 'pulley_l', `${name} joint pulley ${j.large_teeth}T`));
   const bt = belt(pl.r, -C, ps.r, PULLEY_Y); H.add(tag(bt, 'belt', `${name} belt HTD 5M ~${j.belt_teeth}T`));
   for (const y of [-CHEEK_Y - 2, CHEEK_Y + 2]) { const b = bearing(); b.position.y = y; H.add(tag(b, 'bearing', `${name} 6001-2RS`)); layers['Purchased mechanical'].push(b); }
-  const sh = cylY(6, 110, mat.steel, 0, 10, 0); out.add(tag(sh, 'shaft', `${name} 12 mm shaft`));
+  const sh = cylY(6, 110, mat.steel, 0, 10, 0); out.add(tag(sh, 'SHAFT-01', `SHAFT-01 ${name} joint shaft`));
   for (const y of [-CHEEK_Y - 13, CHEEK_Y - 10]) { const c = cylY(11, 9, mat.dark, 0, y, 0); out.add(tag(c, 'collar', `${name} shaft collar`)); layers['Purchased mechanical'].push(c); }
   const hub = new THREE.Group(); hub.add(cylY(25, 6, mat.alu, 0, HUB_Y1 - 3, 0)); hub.add(cylY(12, HUB_Y1 - HUB_Y0 - 6, mat.alu, 0, HUB_Y0 + (HUB_Y1 - HUB_Y0 - 6) / 2, 0));
   out.add(tag(hub, 'hub', `${name} clamp hub`));
@@ -280,11 +320,11 @@ yawG.add(S.H);
 function addLink(out, len, key, lbl) {
   const t = tubeX(35, len - 20, SOCKET_Y, 0); out.add(tag(t, key, lbl)); layers['Purchased mechanical'].push(t); return t;
 }
-addLink(S.out, L1, 'tube', `Upper arm tube, cut ${L1 - 55} mm`);
+addLink(S.out, L1, 'TUBE-01', `TUBE-01 upper arm tube, cut ${L1 - 55} mm`);
 E.H.position.set(L1, SOCKET_Y, 0); E.H.rotation.y = Math.PI; S.out.add(E.H);
-addLink(E.out, L2, 'tube', `Forearm tube, cut ${L2 - 55} mm`);
+addLink(E.out, L2, 'TUBE-02', `TUBE-02 forearm tube, cut ${L2 - 55} mm`);
 W.H.position.set(L2, SOCKET_Y, 0); W.H.rotation.y = Math.PI; E.out.add(W.H);
-const stubT = tubeX(35, 35 + STUB, SOCKET_Y, 0); W.out.add(tag(stubT, 'tube', `Wrist stub tube ~${STUB} mm`)); layers['Purchased mechanical'].push(stubT);
+const stubT = tubeX(35, 35 + STUB, SOCKET_Y, 0); W.out.add(tag(stubT, 'TUBE-04', `TUBE-04 wrist stub tube ${STUB} mm`)); layers['Purchased mechanical'].push(stubT);
 hw.shoulder = S; hw.elbow = E; hw.wrist = W;
 
 // Gripper on the wrist output
@@ -297,38 +337,62 @@ const lead = cylX(4, 115, mat.brass, 62, 0, 0); GB.add(tag(lead, 'nema17', 'T8 l
 for (const y of [-20, 20]) { const r = cylX(4, 110, mat.steel, 65, y, 0); GB.add(tag(r, 'rod', '8 mm rod + LM8UU')); layers['Purchased mechanical'].push(r); }
 const jaw = new THREE.Group(); GB.add(jaw);
 const gj = stl('gripper_jaw'); jaw.add(tag(gj, 'gripper_jaw')); layers['Printed parts'].push(gj);
-const padM = box(3, 50, 40, mat.tpu, 31.5, 0, 0); jaw.add(padM);
-const padF = box(3, 50, 40, mat.tpu, 108.5, 0, 0); GB.add(padF);
+const padM = box(3, 56, 50, mat.tpu, 31.5, 0, 0); jaw.add(tag(padM, 'GSK-02', 'GSK-02 jaw pad (moving jaw)'));
+const padF = box(3, 56, 50, mat.tpu, 108.5, 0, 0); GB.add(tag(padF, 'GSK-02', 'GSK-02 jaw pad (fixed jaw)'));
+layers['Printed parts'].push(padM, padF);
 const gls = limitSwitch(); gls.position.set(20, 36, 10); gls.rotation.x = Math.PI / 2; GB.add(tag(gls, 'limit', `Gripper limit switch (D${M.gripper.pins.limit})`)); layers.Electronics.push(gls);
 const payloadObj = box(1, 1, 1, mat.payload); GB.add(tag(payloadObj, 'payload')); layers['Test fixtures'].push(payloadObj);
 const tcp = new THREE.Object3D(); GB.add(tcp);
 label(GB, 'J5 gripper', 60, 0, 60);
 hw.grip = { jaw, spinner: n17.spinner, ls: gls, motor: n17.group };
 
-// ---------------------------------------------------------------- electronics bench + wiring
+// ---------------------------------------------------------------- electronics enclosure (ENC-01..06) + wiring
+// Same layout as the ENC-01 drawing: origin at the enclosure centre, front wall toward -Y, arm side (ENC-06) toward +X.
+const EW = 480, ED = 320, EH = 110, ET = 3;
 const bench = new THREE.Group(); bench.position.set(-880, 0, TABLE_Z); world.add(bench);
+const encIn = new THREE.Group(); encIn.position.z = ET; bench.add(encIn);       // electronics stand on the base plate
+const encP = (pid, m, ax, ay, az, pos) => { const o = basisMesh(plateMesh(pid, m), ax, ay, az, pos); bench.add(tag(o, pid, `${pid} ${FABP[pid]?.title.toLowerCase() || ''}`)); layers.Electronics.push(o); return o; };
+encP('ENC-01', mat.alu6, V3(1, 0, 0), V3(0, 1, 0), V3(0, 0, 1), V3(0, 0, 0));
+encP('ENC-02', mat.encl, V3(1, 0, 0), V3(0, 1, 0), V3(0, 0, 1), V3(0, 0, ET + EH));
+encP('ENC-03', mat.encl, V3(1, 0, 0), V3(0, 0, 1), V3(0, -1, 0), V3(0, -ED / 2 + ET, ET + EH / 2));
+encP('ENC-04', mat.encl, V3(-1, 0, 0), V3(0, 0, 1), V3(0, 1, 0), V3(0, ED / 2 - ET, ET + EH / 2));
+encP('ENC-05', mat.encl, V3(0, -1, 0), V3(0, 0, 1), V3(-1, 0, 0), V3(-EW / 2 + ET, 0, ET + EH / 2));
+encP('ENC-06', mat.encl, V3(0, 1, 0), V3(0, 0, 1), V3(1, 0, 0), V3(EW / 2 - ET, 0, ET + EH / 2));
+function angleGeo(len) { const s = new THREE.Shape(); s.moveTo(0, 0); s.lineTo(10, 0); s.lineTo(10, 1.5); s.lineTo(1.5, 1.5); s.lineTo(1.5, 10); s.lineTo(0, 10); s.closePath(); return new THREE.ExtrudeGeometry(s, { depth: len, bevelEnabled: false }); }
+function addAngle(corner, run, a, b, len) {
+  if (new THREE.Vector3().crossVectors(a, b).dot(run) < 0) [a, b] = [b, a];
+  const o = basisMesh(new THREE.Mesh(angleGeo(len), mat.alu), a, b, run, corner); bench.add(tag(o, 'ANG', 'ANG enclosure corner angle')); layers.Electronics.push(o);
+}
+for (const [z, up] of [[ET, 1], [ET + EH, -1]]) {
+  for (const sy of [-1, 1]) addAngle(V3(-235, sy * (ED / 2 - ET), z), V3(1, 0, 0), V3(0, -sy, 0), V3(0, 0, up), 470);
+  for (const sx of [-1, 1]) addAngle(V3(sx * (EW / 2 - ET), -147, z), V3(0, 1, 0), V3(-sx, 0, 0), V3(0, 0, up), 294);
+}
+for (const sx of [-1, 1]) for (const sy of [-1, 1]) addAngle(V3(sx * (EW / 2 - ET), sy * (ED / 2 - ET), ET + 10), V3(0, 0, 1), V3(-sx, 0, 0), V3(0, -sy, 0), 90);
+for (const [i, u] of [35, 80, 125, 170, 215].entries()) for (const [v, r] of [[45, 9], [82, 7.5]]) {
+  const g = cylX(r, 14, mat.dark, EW / 2 + 5, u - (ED - 2 * ET) / 2, ET + v); bench.add(tag(g, 'glands', 'PG9 / PG7 cable gland', i === 0 && v === 45)); layers.Electronics.push(g);
+}
 const psu = new THREE.Group(); psu.add(box(215, 115, 50, mat.psu, 0, 0, 25)); psu.add(box(30, 100, 14, mat.term, 115, 0, 12));
-psu.position.set(0, -380, 0); bench.add(tag(psu, 'psu', '24 V 15 A PSU')); label(psu, '24 V PSU', 0, 0, 70); layers.Electronics.push(psu);
-const fuse = cylX(9, 50, mat.dark, 190, -380, 12); bench.add(tag(fuse, 'fuse', '20 A inline fuse')); layers.Electronics.push(fuse);
-const estopBox = new THREE.Group(); estopBox.add(box(70, 70, 70, mat.yellow, 0, 0, 35)); estopBox.add(cylZ(20, 18, mat.red, 0, 0, 79)); estopBox.add(cylZ(10, 8, mat.dark, 0, 0, 74));
-estopBox.position.set(260, -300, 0); bench.add(tag(estopBox, "estop", "E-stop (NC, cuts 24 V)")); label(estopBox, "E-STOP", 0, 0, 110); layers.Electronics.push(estopBox);
+psu.position.set(-104.5, 82.5, 0); encIn.add(tag(psu, 'psu', '24 V 15 A PSU')); label(psu, '24 V PSU', 0, 0, 70); layers.Electronics.push(psu);
+const fuse = cylX(9, 50, mat.dark, 60, 42, 12); encIn.add(tag(fuse, 'fuse', '20 A inline fuse')); layers.Electronics.push(fuse);
+const estopBox = new THREE.Group(); estopBox.add(cylZ(14, 8, mat.yellow, 0, 0, 4)); estopBox.add(cylZ(20, 18, mat.red, 0, 0, 17)); estopBox.add(cylZ(10, 30, mat.dark, 0, 0, -15));
+estopBox.position.set(160, -70, ET + EH + ET); bench.add(tag(estopBox, "estop", "E-stop (NC, cuts 24 V) on the ENC-02 lid")); label(estopBox, "E-STOP", 0, 0, 50); layers.Electronics.push(estopBox);
 const mega = new THREE.Group(); mega.add(box(101.6, 53.3, 1.6, mat.pcb, 0, 0, 12)); mega.add(box(14, 12, 11, mat.steel, -46, 14, 19)); mega.add(box(60, 5, 9, mat.dark, 10, 23, 17)); mega.add(box(60, 5, 9, mat.dark, 10, -23, 17)); mega.add(box(5, 40, 9, mat.dark, 46, 0, 17));
 for (const sx of [-1, 1]) for (const sy of [-1, 1]) mega.add(cylZ(2, 11, mat.brass, sx * 45, sy * 22, 5.5));
-mega.position.set(0, -200, 0); bench.add(tag(mega, 'mega', 'Arduino Mega 2560')); label(mega, 'Arduino Mega', 0, 0, 40); layers.Electronics.push(mega);
+mega.position.set(171.2, 103.3, 0); mega.rotation.z = Math.PI; encIn.add(tag(mega, 'mega', 'Arduino Mega 2560 (USB toward ENC-06)')); label(mega, 'Arduino Mega', 0, 0, 40); layers.Electronics.push(mega);
 const megaLed = mesh(new THREE.SphereGeometry(2.5, 10, 8), ledMat(0x333333), 30, 0, 15); mega.add(megaLed);
 const drivers = [];
 for (let ch = 0; ch < 5; ch++) {
   const d = new THREE.Group(); d.add(box(118, 75, 34, mat.drv, 0, 0, 17)); d.add(box(14, 70, 14, mat.term, 66, 0, 9)); d.add(box(14, 70, 14, mat.term, -66, 0, 9));
   const led = mesh(new THREE.SphereGeometry(3, 10, 8), ledMat(0x333333), 30, 25, 35); d.add(led);
-  d.position.set(0, -60 + ch * 95, 0);
+  d.position.set(-177.25 + ch * 87.5, -71, 0); d.rotation.z = Math.PI / 2;
   const nm = ch < 4 ? JOINTS[ch] : 'gripper';
-  bench.add(tag(d, 'driver', `Driver ${ch} (${ch === 4 ? 'gripper' : nm}) DM542`)); label(d, `DRV${ch} ${nm}`, 0, 0, 48); layers.Electronics.push(d);
+  encIn.add(tag(d, 'driver', `Driver ${ch} (${ch === 4 ? 'gripper' : nm}) DM542`)); label(d, `DRV${ch} ${nm}`, 0, 0, 48); layers.Electronics.push(d);
   drivers.push({ g: d, led });
 }
-const tray = new THREE.Group(); tray.position.set(240, 260, 0); bench.add(tray);
+const tray = new THREE.Group(); tray.position.set(420, -120, 0); bench.add(tray);
 tray.add(box(220, 160, 8, mat.dark, 0, 0, 4));
 for (const x of [-60, -25]) { const b = bearing(); b.rotation.x = Math.PI / 2; b.position.set(x, -45, 12); tray.add(tag(b, 'bearing', 'Spare 6001-2RS')); }
-const screws = box(70, 50, 30, new THREE.MeshStandardMaterial({ color: 0x7a2e2e }), 50, -40, 23); tray.add(tag(screws, 'screws', 'Fastener kit: M5, M3, M4 heat-set inserts'));
+const screws = box(70, 50, 30, new THREE.MeshStandardMaterial({ color: 0x7a2e2e }), 50, -40, 23); tray.add(tag(screws, 'screws', 'Fasteners F01-F18 (fab/FASTENERS.md)'));
 const spool = new THREE.Group(); spool.add(cylZ(55, 60, mat.printed, 0, 0, 38)); spool.add(cylZ(100, 4, mat.dark, 0, 0, 10)); spool.add(cylZ(100, 4, mat.dark, 0, 0, 66));
 spool.scale.setScalar(0.55); spool.position.set(-40, 40, 0); tray.add(tag(spool, 'filament', 'PETG filament'));
 label(tray, 'Spares + consumables', 0, 0, 60);
@@ -653,12 +717,12 @@ const inspector = (() => {
     const a = el('a', { href: URL.createObjectURL(new Blob([data])), download: `${c.key}.${kind}` }); a.click();
   }
   function render() {
-    const c = cur, p = c.printed;
+    const c = cur, p = c.printed, fb = c.fab, FB = M.fab_base + (M.fab_dir || '');
     document.querySelectorAll('#insTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
     running = tab === '3d';
     if (tab === 'drawing') {
-      const sheet = p ? M.drawing_base + p.drawing : M.sheet_base + sheetFor(c) + '.svg';
-      body.innerHTML = `${p ? '' : `<p class="muted small">Purchased part: no part drawing. Shown on assembly sheet ${sheetFor(c).replace('_', ' ')}.</p>`}
+      const sheet = p ? M.drawing_base + p.drawing : fb ? `${M.fab_base}drawings/${fb.pid}.svg` : M.sheet_base + sheetFor(c) + '.svg';
+      body.innerHTML = `${p || fb ? '' : `<p class="muted small">Purchased part: no part drawing. Shown on assembly sheet ${sheetFor(c).replace('_', ' ')}.</p>`}
         <div class="dwg" id="dwg"><img src="${sheet}" alt="Drawing of ${c.key}" draggable="false"></div>
         <div class="small muted">Scroll to zoom, drag to pan, double-click to reset.</div>`;
       const box = body.querySelector('#dwg'), im = box.querySelector('img'); let z = 1, x = 0, y = 0, drag = null;
@@ -676,12 +740,17 @@ const inspector = (() => {
       body.querySelector('#insDims').textContent = `Bounding box ${size.x.toFixed(1)} × ${size.y.toFixed(1)} × ${size.z.toFixed(1)} mm (design orientation). Drag to orbit.`;
       loop();
     } else if (tab === 'cad') {
-      body.innerHTML = p ? `<p class="small muted">CadQuery source from <code>arm/hardware.py</code> (rev A). Edit <code>HW</code> there and run <code>python run.py build</code>; this part, its drawing and its STEP/STL/OBJ regenerate.</p><pre class="code">${escapeHtml(p.code)}</pre>`
+      body.innerHTML = fb ? `<p class="small muted">Generated by <code>arm/fab.py</code> from one 2D profile that also writes the DXF, the 1:1 template and this 3D model. Edit <code>HW</code> in <code>arm/hardware.py</code> (items marked MEASURE) and run <code>python run.py cut</code>.</p>
+           <table><tr><th>Part</th><td>${fb.pid} ${fb.title}</td></tr><tr><th>Material</th><td>${fb.material}</td></tr><tr><th>Process</th><td>${fb.process}</td></tr>
+           <tr><th>Size</th><td>${fb.w} × ${fb.h}${fb.t ? ' × ' + fb.t : ''} mm [${(fb.w / 25.4).toFixed(3)} × ${(fb.h / 25.4).toFixed(3)}${fb.t ? ' × ' + (fb.t / 25.4).toFixed(3) : ''} in]</td></tr>
+           <tr><th>Qty</th><td>${fb.qty}</td></tr><tr><th>Features</th><td>${fb.holes} holes, slots and cutouts, each with its fastener in the drawing's hole table</td></tr></table>`
+        : p ? `<p class="small muted">CadQuery source from <code>arm/hardware.py</code> (rev A). Edit <code>HW</code> there and run <code>python run.py build</code>; this part, its drawing and its STEP/STL/OBJ regenerate.</p><pre class="code">${escapeHtml(p.code)}</pre>`
         : `<p class="small">Purchased part, not modelled in CAD. The 3D tab shows the stand-in model used for fit and clearance in the test table.</p>
            <table><tr><th>BOM item</th><td>${c.name}</td></tr><tr><th>Search / spec</th><td>${c.search || '-'}</td></tr><tr><th>Used for</th><td>${c.note || '-'}</td></tr><tr><th>Qty</th><td>${c.qty ?? '-'}</td></tr></table>`;
     } else if (tab === 'print') {
       const pr = p?.print;
-      body.innerHTML = !p ? '<p class="small">Not printed: this is a purchased part. See the procurement list.</p>' : !pr ? '<p class="small">No print data yet: run <code>python run.py print</code>.</p>' :
+      body.innerHTML = fb ? '<p class="small">Not printed: cut or machined. See <code>fab/CUTLIST.md</code> for stock, cut sizes and process, and the Files tab for the DXF and the 1:1 template.</p>'
+        : !p ? '<p class="small">Not printed: this is a purchased part. See the procurement list.</p>' : !pr ? '<p class="small">No print data yet: run <code>python run.py print</code>.</p>' :
         `<table><tr><th>Plate</th><td>${pr.plates.map(n => `plate_${n}.3mf (${pr.plate_check?.[n] || ''})`).join(', ')}</td></tr>
           <tr><th>Copies</th><td>${pr.qty}</td></tr><tr><th>Size on bed</th><td>${pr.size.join(' × ')} mm</td></tr>
           <tr><th>Orientation</th><td>${pr.why}</td></tr><tr><th>Supports</th><td>${pr.supports ? 'yes, build plate only' : 'no'}</td></tr>
@@ -693,10 +762,16 @@ const inspector = (() => {
         ['STL (mesh, design orientation)', M.stl_base + p.stl + (M.stl_encoding === 'base64' ? '.txt' : ''), p.stl, M.stl_encoding === 'base64'],
         ['OBJ (mesh)', M.obj_base + p.obj + (M.text_suffix || ''), p.obj], ...(p.print && M.print_base ? [['STL, print orientation', M.print_base + p.print.print_stl, p.id + '_print.stl', HOSTED]] : []),
         ...(p.print && M.print_base && !HOSTED ? p.print.plates.map(n => [`Bambu plate ${n} (3MF)`, `${M.print_base}plates/plate_${n}.3mf`, `plate_${n}.3mf`, true]) : []),
+      ] : fb ? [
+        ['Drawing (SVG, A3, mm [in])', `${M.fab_base}drawings/${fb.pid}.svg`, `${fb.pid}.svg`],
+        ...(fb.kind === 'plate' ? [['DXF cut file, mm', `${M.fab_base}dxf/mm/${fb.pid}.dxf${M.text_suffix || ''}`, `${fb.pid}_mm.dxf`],
+          ['DXF cut file, inch', `${M.fab_base}dxf/inch/${fb.pid}.dxf${M.text_suffix || ''}`, `${fb.pid}_inch.dxf`],
+          ['1:1 drill template (SVG, print at 100 %)', `${M.fab_base}templates/${fb.pid}.svg`, `${fb.pid}_template.svg`]] : []),
+        ['STEP (CAD solid)', `${M.fab_base}step/${fb.pid}.step${M.text_suffix || ''}`, `${fb.pid}.step`],
       ] : [];
-      body.innerHTML = `<p class="small muted">${HOSTED ? 'This preview can show files but not download them. Run <code>python run.py ui</code> on your PC to download, or use the build package.' : 'Files come from <code>3d-workflow/design/</code> and <code>print/</code>.'}</p>
+      body.innerHTML = `<p class="small muted">${HOSTED ? 'This preview can show files but not download them. Run <code>python run.py ui</code> on your PC to download, or use the build package.' : (fb ? 'Files come from <code>3d-workflow/fab/</code>.' : 'Files come from <code>3d-workflow/design/</code> and <code>print/</code>.')}</p>
         <table>${rows.map(([lbl, url, name, binary], i) => `<tr><td>${lbl}</td><td class="mono">${name}</td><td>${HOSTED ? '' : `<button class="btn small" data-i="${i}" data-a="download">Download</button>`} ${binary ? '' : `<button class="btn small ghost" data-i="${i}" data-a="view">View</button>`}</td></tr>`).join('')}
-        ${p ? '' : `<tr><td>Stand-in model</td><td class="mono">${c.key}.obj / .stl</td><td><button class="btn small" data-x="obj">OBJ</button> <button class="btn small" data-x="stl">STL</button></td></tr>`}</table>
+        ${p || fb ? '' : `<tr><td>Stand-in model</td><td class="mono">${c.key}.obj / .stl</td><td><button class="btn small" data-x="obj">OBJ</button> <button class="btn small" data-x="stl">STL</button></td></tr>`}</table>
         <div id="insView"></div>`;
       body.querySelectorAll('[data-i]').forEach(b => b.onclick = () => { const [, url, name] = rows[+b.dataset.i]; fileAction(url, name, b.dataset.a); });
       body.querySelectorAll('[data-x]').forEach(b => b.onclick = () => exportModel(c, b.dataset.x));
