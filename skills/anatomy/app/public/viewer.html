@@ -12,15 +12,15 @@ html, body { margin: 0; height: 100%; background: radial-gradient(ellipse at 50%
   font: 13px/1.5 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
 canvas { display: block; } .hidden { display: none !important; }
 .hud { position: fixed; pointer-events: none; text-shadow: 0 0 8px #5ff3ff88; }
-.tl { top: 14px; left: 16px; } .tr { top: 14px; right: 16px; text-align: right; } .bl { bottom: 14px; left: 16px; } .br { bottom: 14px; right: 16px; }
+.tl { top: 14px; left: 16px; } .tr { top: 14px; right: 16px; text-align: right; max-width: min(300px, 40vw); } .bl { bottom: 14px; left: 16px; } .br { bottom: 14px; right: 16px; }
 .title { font-size: 15px; font-weight: 600; letter-spacing: .04em; max-width: 60vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .live { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: .2em; color: var(--holo); }
 .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--holo); box-shadow: 0 0 10px var(--holo); animation: p 1.2s infinite; }
 .live.idle { color: var(--muted); } .live.idle i { background: var(--muted); box-shadow: none; animation: none; }
 @keyframes p { 50% { opacity: .25; } }
 .sub { color: var(--muted); font-size: 11px; letter-spacing: .08em; }
-.parts { margin-top: 8px; max-height: 40vh; overflow: auto; pointer-events: auto; font-size: 11px; color: var(--muted); }
-.parts div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; transition: color 2s; }
+.parts { margin-top: 8px; max-height: 40vh; overflow-y: auto; overflow-x: hidden; pointer-events: auto; font-size: 11px; color: var(--muted); }
+.parts div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; transition: color 2s; }
 .parts div.new { color: var(--holo); }
 .ctl { pointer-events: auto; display: flex; gap: 6px; }
 .ctl button { background: #06303a99; border: 1px solid #1f6b78; color: var(--text); border-radius: 8px; padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer; }
@@ -48,7 +48,7 @@ canvas { display: block; } .hidden { display: none !important; }
   <div class="style"><label>Color <input type="color" id="col" value="#5ff3ff"></label><label>Tint <input type="color" id="tint" value="#8a7dff"></label>
   <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
 <div class="info hidden" id="info"></div>
-<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="fit">Fit</button></div></div>
+<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="lay" title="Lay parts out side by side, or show them where their files place them">Spread</button><button id="fit">Fit</button></div></div>
 <div class="empty" id="empty">NO 3D GEOMETRY YET<br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
 
 <script type="module">
@@ -169,7 +169,7 @@ async function poll() {
     let meshes = list.filter(f => MESH.includes(ext(f.path)) && !SKIP.test(f.path));
     // Prefer an assembled export when the project has one.
     const asm = meshes.filter(f => /assembl/i.test(f.path));
-    if (asm.length) meshes = asm;
+    isAsm = asm.length > 0; if (isAsm) meshes = asm;
     meshes = meshes.sort((a, b) => b.mtime - a.mtime).slice(0, 80);
     const keep = new Set(meshes.map(f => f.path));
     for (const [p, v] of parts) if (!keep.has(p)) { root.remove(v.group); parts.delete(p); }
@@ -185,7 +185,7 @@ async function poll() {
         changed = true; lastChange = Date.now();
       } catch {}
     }
-    if (changed) { files = list; applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3) frame(); renderParts(); }
+    if (changed) { files = list; layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3 || isSpread()) frame(); renderParts(); }
     $('#empty').style.display = parts.size ? 'none' : '';
     const ago = lastChange ? Math.round((Date.now() - lastChange) / 1000) : null;
     $('#sub').textContent = `${parts.size} part${parts.size === 1 ? '' : 's'}${ago !== null ? ` · updated ${ago < 60 ? ago + 's' : Math.round(ago / 60) + 'm'} ago` : ''}`;
@@ -221,6 +221,35 @@ const clock = new THREE.Clock();
 $('#mode').onclick = e => { const m = e.target.dataset.m; if (!m) return; mode = m; $('#mode').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); applyMode(); };
 $('#spin').onclick = () => { ctl.autoRotate = !ctl.autoRotate; $('#spin').classList.toggle('on', ctl.autoRotate); };
 $('#fit').onclick = frame;
+// Parts exported for printing all sit at the origin and pile up. Unless the project has an assembled export,
+// detect that and lay the parts out on a grid; the Spread button switches by hand.
+let spread = null, isAsm = false;
+$('#lay').onclick = () => { spread = !isSpread(); layout(); frame(); };
+function isSpread() { return spread ?? (!isAsm && stacked()); }
+function partBox(g) { const p = g.position.clone(); g.position.set(0, 0, 0); g.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(g); g.position.copy(p); g.updateMatrixWorld(true); return b; }
+function stacked() {
+  const bs = [...parts.values()].map(v => partBox(v.group)); if (bs.length < 3) return false;
+  let hit = 0, n = 0;
+  for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) { n++; if (bs[i].intersectsBox(bs[j])) hit++; }
+  return hit / n > 0.3;
+}
+function layout() {
+  const on = isSpread(); $('#lay').classList.toggle('on', on); 
+  const items = [...parts.entries()].map(([p, v]) => ({ p, g: v.group, b: partBox(v.group) }));
+  if (!on) { for (const it of items) it.g.position.set(0, 0, 0); return; }
+  items.sort((a, b) => a.p.localeCompare(b.p, undefined, { numeric: true }));
+  const sz = it => it.b.getSize(new THREE.Vector3());
+  const area = items.reduce((a, it) => { const s = sz(it); return a + s.x * s.y; }, 0);
+  const maxW = Math.max(...items.map(it => sz(it).x)), gap = Math.max(4, Math.sqrt(area / items.length) * 0.15);
+  const rowW = Math.max(maxW, Math.sqrt(area) * 1.6);
+  let x = 0, y = 0, rowH = 0;
+  for (const it of items) {
+    const s = sz(it);
+    if (x > 0 && x + s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
+    it.g.position.set(x - it.b.min.x, y - s.y - it.b.min.y, -it.b.min.z);
+    x += s.x + gap; rowH = Math.max(rowH, s.y);
+  }
+}
 renderer.domElement.addEventListener('pointerdown', () => { /* user takes over; keep spinning only if they re-enable */ });
 // ---------------------------------------------------------------- style controls (saved per viewer)
 const STYLE_KEY = 'anatomy.holo.style';
