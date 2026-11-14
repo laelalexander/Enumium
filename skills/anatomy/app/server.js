@@ -112,10 +112,10 @@ const DEFAULT_SETTINGS = `# Anatomy settings
 Claude reads this file at the start of every project. Edit it from the Settings button in the app.
 
 ## 3D printer
-- Printer model:
-- Bed size (mm):
+- Printer model: Bambu Lab (model?)
+- Bed size (mm): 256 x 256 x 256
 - Nozzle (mm): 0.4
-- Firmware / slicer: (e.g. Prusa, Klipper, Marlin, Bambu)
+- Firmware / slicer: Bambu Studio (deliver Bambu Studio .3mf projects)
 - Materials on hand: PLA, PETG
 - Slicer profile files: (paths to .ini/.3mf/.json, if any)
 

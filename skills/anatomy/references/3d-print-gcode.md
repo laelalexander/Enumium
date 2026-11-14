@@ -3,7 +3,7 @@
 Printed parts are often most of a prototype, so this is a major part of the prototype phase with a high bar. The deliverable for every printed part is **ready-to-print G-code for the user's printer**, plus the project file and settings that produced it, and evidence that the part will print and fit.
 
 ## 0. Know the printer and material
-Read the user's printer and material settings from `C:\Anatomy\anatomy-settings.md` (or the project's `CLAUDE.md` / `inputs/`). You need: printer model, bed size, nozzle diameter, firmware flavor (Marlin, Klipper, Prusa, Bambu), available materials, and any slicer profile files the user supplied (`.ini`, `.3mf`, `.json`). If none is given, use the default **Prusa MK4S, 0.4 mm nozzle, PETG** (PrusaSlicer's bundled profile), mark it `[assumed]`, and say clearly that the G-code must be re-sliced for their printer. Never silently assume.
+Read the user's printer and material settings from `C:\Anatomy\anatomy-settings.md` (or the project's `CLAUDE.md` / `inputs/`). You need: printer model, bed size, nozzle diameter, firmware flavor (Marlin, Klipper, Prusa, Bambu), available materials, and any slicer profile files the user supplied (`.ini`, `.3mf`, `.json`). If none is given, use the default **Bambu Lab, 256 x 256 x 256 mm plate, 0.4 mm nozzle, PLA/PETG** (the user's printer family; model not yet confirmed), mark the exact model `[assumed]`, and say clearly that the G-code must be re-sliced for their printer. Never silently assume.
 
 ## 1. Design for printing (in the parametric model)
 - Wall thickness ≥ 3 perimeters of the nozzle width (≥ 1.2 mm at 0.4 mm), ribs and bosses sized for strength.
@@ -18,7 +18,11 @@ Read the user's printer and material settings from `C:\Anatomy\anatomy-settings.
 - Check each mesh by script (trimesh or similar): watertight/manifold, no inverted normals, correct units and bounding box, fits the bed in the chosen orientation, minimum wall thickness, volume and estimated mass.
 
 ## 3. Slice to G-code (headless)
-G-code comes only from a real slicer, never written by hand. If no slicer can run, stop at checked STL/3MF files plus the ready profile `.ini` files, label the parts "not sliced", and tell the user what to install. Use a slicer CLI so the result is reproducible. Preferred: **PrusaSlicer** (`prusa-slicer-console.exe` on Windows, `prusa-slicer` elsewhere; install `winget install Prusa3D.PrusaSlicer` if missing, telling the user). OrcaSlicer or the user's own slicer is fine if they supply a profile.
+G-code comes only from a real slicer, never written by hand. If no slicer can run, stop at checked STL/3MF files plus the ready profile `.ini` files, label the parts "not sliced", and tell the user what to install. Use a slicer CLI so the result is reproducible.
+
+**Bambu Lab printers (the default here):** deliver **Bambu Studio-ready project files**: one `.3mf` per plate with the parts placed, oriented, and the process/filament settings applied, so the user opens it in Bambu Studio and presses Print. Slice them with the Bambu Studio CLI when it is installed (`bambu-studio.exe`, typically `C:\Program Files\Bambu Studio\`; run `bambu-studio.exe --help` to confirm flags, e.g. `--slice 0 --export-3mf plate1.gcode.3mf --load-settings "machine.json;process.json" --load-filaments filament.json part.stl`), producing `.gcode.3mf` files the printer accepts. If Bambu Studio is not installed, use OrcaSlicer (which ships Bambu profiles) or PrusaSlicer with a Bambu-equivalent printer profile to check sliceability, time and weight, label that G-code "reference only, re-slice in Bambu Studio", and still deliver the Bambu `.3mf` projects.
+
+Other printers: **PrusaSlicer** (`prusa-slicer-console.exe` on Windows, `prusa-slicer` elsewhere; install `winget install Prusa3D.PrusaSlicer` if missing, telling the user). OrcaSlicer or the user's own slicer is fine if they supply a profile.
 ```
 prusa-slicer-console --export-gcode --load printer.ini --load print.ini --load filament.ini \
   --center X,Y --ensure-on-bed -o print/gcode/<part>.gcode print/stl/<part>.stl
