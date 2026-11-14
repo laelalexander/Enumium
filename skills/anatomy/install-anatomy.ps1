@@ -14,6 +14,12 @@
 .PARAMETER SkipKiCad
   Do not check for or install KiCad.
 
+.PARAMETER NoShortcut
+  Do not install the Anatomy launcher app or its desktop and Start menu icons.
+
+.PARAMETER ProjectsRoot
+  Folder the launcher keeps projects in. Default C:\Anatomy.
+
 .PARAMETER Package
   Also build anatomy.skill (a zip with an anatomy\ root folder) next to this script.
 
@@ -25,7 +31,9 @@
 [CmdletBinding()]
 param(
   [switch]$SkipKiCad,
-  [switch]$Package
+  [switch]$Package,
+  [switch]$NoShortcut,
+  [string]$ProjectsRoot = "C:\Anatomy"
 )
 
 $ErrorActionPreference = "Stop"
@@ -152,6 +160,37 @@ else {
   }
 }
 
+# --- 3. Anatomy launcher app and desktop icon ---------------------------------
+if (-not $NoShortcut) {
+  $appSrc = Join-Path $here "app\Anatomy.ps1"
+  if (Test-Path -LiteralPath $appSrc) {
+    $appDir = Join-Path $env:LOCALAPPDATA "Anatomy"
+    New-Item -ItemType Directory -Force -Path $appDir | Out-Null
+    Copy-Item -LiteralPath $appSrc -Destination $appDir -Force
+    $appPs1 = Join-Path $appDir "Anatomy.ps1"
+    New-Item -ItemType Directory -Force -Path $ProjectsRoot | Out-Null
+
+    $shell = New-Object -ComObject WScript.Shell
+    $places = @(
+      [Environment]::GetFolderPath("Desktop"),
+      [Environment]::GetFolderPath("Programs")
+    )
+    foreach ($place in $places) {
+      $lnk = $shell.CreateShortcut((Join-Path $place "Anatomy.lnk"))
+      $lnk.TargetPath = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+      $lnk.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$appPs1`" -Root `"$ProjectsRoot`""
+      $lnk.WorkingDirectory = $ProjectsRoot
+      $lnk.IconLocation = "$env:SystemRoot\System32\shell32.dll,22"
+      $lnk.Description = "Anatomy: build projects with Claude"
+      $lnk.Save()
+    }
+    Write-Host "Anatomy app installed. Open it from the Anatomy icon on your desktop or Start menu." -ForegroundColor Green
+  }
+  if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
+    Write-Warning "Claude Code (claude) is not on PATH. The Anatomy app needs it: https://claude.com/claude-code"
+  }
+}
+
 Write-Host ""
-Write-Host "Done. Start Claude Code and ask it to run anatomy on a product."
+Write-Host "Done. Double-click the Anatomy icon on your desktop to start a project."
 Write-Host "The KiCad PCB step is experimental and untested; see README.md."

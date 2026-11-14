@@ -11,11 +11,12 @@ The first target is a 7.5 inch e-ink desk display (calendar and weather over wif
 | `SKILL.md` | The skill itself: principles and the six-step workflow |
 | `references/` | Detail the skill loads on demand (recon playbook, blueprint template, stack signals, prototype phase, hardware engineering, KiCad PCB) |
 | `evals/` | Five test prompts with graders: e-ink display, HVAC system, fd, jq, Hacker News |
-| `install-anatomy.ps1` | Windows installer for the skill, plus KiCad |
+| `app/Anatomy.ps1` | The Anatomy desktop launcher (project list, new project, opens Claude Code) |
+| `install-anatomy.ps1` | Windows installer for the skill, the launcher icon, and KiCad |
 | `HANDOFF.md` | Notes and lessons from the first cloud test run |
 | `test-results-summary.md` | Benchmark from that run (self-graded, so treat the delta as optimistic) |
 
-Only `SKILL.md` and `references/` are installed. The rest stays in the repo.
+The installer copies `SKILL.md` and `references/` into Claude's skills folder and `app/Anatomy.ps1` into `%LOCALAPPDATA%\Anatomy`. The rest stays in the repo.
 
 ## Install on Windows
 
@@ -29,13 +30,23 @@ powershell -ExecutionPolicy Bypass -File .\install-anatomy.ps1
 
 1. Copies `SKILL.md` and `references\` to `%USERPROFILE%\.claude\skills\anatomy`, replacing any earlier install.
 2. Looks for KiCad (`kicad-cli` on PATH, or `C:\Program Files\KiCad\<version>\bin`). If it is missing it installs KiCad with `winget`. It then prints the path to KiCad's bundled `python.exe` (which has `pcbnew`) and warns if Java is missing (Freerouting needs it).
+3. Installs the Anatomy launcher to `%LOCALAPPDATA%\Anatomy` and puts an **Anatomy** icon on the desktop and in the Start menu.
 
 Options:
 
+- `-NoShortcut` skips the launcher and icons. `-ProjectsRoot D:\Somewhere` keeps projects somewhere other than `C:\Anatomy`.
 - `-SkipKiCad` installs only the skill.
 - `-Package` also builds `anatomy.skill` (a zip with an `anatomy\` root) next to the script. If you only have an `anatomy.skill` file and no `SKILL.md`, put it next to the script and it installs from that instead. `anatomy.skill` is git-ignored; rebuild it from source rather than committing it.
 
-Then start Claude Code and ask it to run anatomy on a product.
+## Using the Anatomy app
+
+Double-click the **Anatomy** icon. The window lists your projects in `C:\Anatomy`.
+
+- **New project**: give it a name, a type and a short brief, then click **Create and start**. It makes `C:\Anatomy\<name>\` with a `CLAUDE.md` (which points Claude at the skill) and an `inputs\` folder, then opens Claude Code there and starts the anatomy run on your brief.
+- **Open in Claude** (or double-click a project) reopens a project where you left off. **Show folder** opens it in Explorer.
+- Put datasheets and reference files in the project's `inputs\` folder before or during a run.
+
+The app needs Claude Code (`claude`) installed. It opens in Windows Terminal if you have it, otherwise in a PowerShell window.
 
 ## KiCad PCB step: experimental
 
