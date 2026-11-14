@@ -15,10 +15,10 @@
   Do not check for or install KiCad.
 
 .PARAMETER NoShortcut
-  Do not install the Anatomy launcher app or its desktop and Start menu icons.
+  Do not install the Anatomy app (and Node.js) or its desktop and Start menu icons.
 
 .PARAMETER ProjectsRoot
-  Folder the launcher keeps projects in. Default C:\Anatomy.
+  Folder the Anatomy app keeps projects in. Default C:\Anatomy.
 
 .PARAMETER Package
   Also build anatomy.skill (a zip with an anatomy\ root folder) next to this script.
@@ -160,34 +160,49 @@ else {
   }
 }
 
-# --- 3. Anatomy launcher app and desktop icon ---------------------------------
+# --- 3. Anatomy app, Node.js, and desktop icon --------------------------------
 if (-not $NoShortcut) {
-  $appSrc = Join-Path $here "app\Anatomy.ps1"
-  if (Test-Path -LiteralPath $appSrc) {
+  $appSrc = Join-Path $here "app"
+  if (Test-Path -LiteralPath (Join-Path $appSrc "server.js")) {
+    # Node.js runs the app's local server.
+    $nodeOk = (Get-Command node -ErrorAction SilentlyContinue) -or (Test-Path -LiteralPath "$env:ProgramFiles\nodejs\node.exe")
+    if (-not $nodeOk) {
+      if (Get-Command winget -ErrorAction SilentlyContinue) {
+        Write-Host "Installing Node.js (needed by the Anatomy app) via winget..."
+        winget install --id OpenJS.NodeJS.LTS -e --accept-package-agreements --accept-source-agreements
+      } else {
+        Write-Warning "Node.js is missing and winget is not available. Install Node.js LTS from https://nodejs.org"
+      }
+    }
+
     $appDir = Join-Path $env:LOCALAPPDATA "Anatomy"
     New-Item -ItemType Directory -Force -Path $appDir | Out-Null
-    Copy-Item -LiteralPath $appSrc -Destination $appDir -Force
-    $appPs1 = Join-Path $appDir "Anatomy.ps1"
+    # Stop a running Anatomy server so its files can be replaced.
+    try { Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:4377/api/quit" -TimeoutSec 2 | Out-Null; Start-Sleep -Milliseconds 600 } catch { }
+    $old = Join-Path $appDir "Anatomy.ps1"   # first-version launcher, no longer used
+    if (Test-Path -LiteralPath $old) { Remove-Item -LiteralPath $old -Force }
+    foreach ($f in @("server.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
+      Copy-Item -LiteralPath (Join-Path $appSrc $f) -Destination $appDir -Force
+    }
+    $pub = Join-Path $appDir "public"
+    if (Test-Path -LiteralPath $pub) { Remove-Item -LiteralPath $pub -Recurse -Force }
+    Copy-Item -LiteralPath (Join-Path $appSrc "public") -Destination $appDir -Recurse -Force
     New-Item -ItemType Directory -Force -Path $ProjectsRoot | Out-Null
 
     $shell = New-Object -ComObject WScript.Shell
-    $places = @(
-      [Environment]::GetFolderPath("Desktop"),
-      [Environment]::GetFolderPath("Programs")
-    )
-    foreach ($place in $places) {
+    foreach ($place in @([Environment]::GetFolderPath("Desktop"), [Environment]::GetFolderPath("Programs"))) {
       $lnk = $shell.CreateShortcut((Join-Path $place "Anatomy.lnk"))
-      $lnk.TargetPath = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
-      $lnk.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$appPs1`" -Root `"$ProjectsRoot`""
-      $lnk.WorkingDirectory = $ProjectsRoot
-      $lnk.IconLocation = "$env:SystemRoot\System32\shell32.dll,22"
-      $lnk.Description = "Anatomy: build projects with Claude"
+      $lnk.TargetPath = Join-Path $env:SystemRoot "System32\wscript.exe"
+      $lnk.Arguments = "`"$(Join-Path $appDir 'Anatomy.vbs')`" `"$ProjectsRoot`""
+      $lnk.WorkingDirectory = $appDir
+      $lnk.IconLocation = (Join-Path $appDir "anatomy.ico") + ",0"
+      $lnk.Description = "Anatomy: dissect and rebuild a product"
       $lnk.Save()
     }
     Write-Host "Anatomy app installed. Open it from the Anatomy icon on your desktop or Start menu." -ForegroundColor Green
   }
-  if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
-    Write-Warning "Claude Code (claude) is not on PATH. The Anatomy app needs it: https://claude.com/claude-code"
+  if (-not (Get-Command claude -ErrorAction SilentlyContinue) -and -not (Test-Path -LiteralPath (Join-Path $home_ ".local\bin\claude.exe"))) {
+    Write-Warning "Claude Code (claude) was not found. The Anatomy app needs it: https://claude.com/claude-code"
   }
 }
 
