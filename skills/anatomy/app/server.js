@@ -14,7 +14,7 @@ const PORT = Number(process.env.ANATOMY_PORT || 4377);
 const ROOT = process.env.ANATOMY_ROOT || (process.platform === 'win32' ? 'C:\\Anatomy' : path.join(os.homedir(), 'Anatomy'));
 const PUBLIC = path.join(__dirname, 'public');
 const META_DIR = '.anatomy';
-const HIDDEN = new Set([META_DIR, 'CLAUDE.md', '.git', 'node_modules', '.claude', '__pycache__', '.venv']);
+const HIDDEN = new Set([META_DIR, 'CLAUDE.md', '.tools', 'venv', 'env', '.pio', '.mypy_cache', '.pytest_cache', 'dist-info', '.git', 'node_modules', '.claude', '__pycache__', '.venv']);
 
 fs.mkdirSync(ROOT, { recursive: true });
 
@@ -58,7 +58,9 @@ const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.md': 'text/plain; charset=utf-8', '.txt': 'text/plain; charset=utf-8',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.svg': 'image/svg+xml',
-  '.webp': 'image/webp', '.pdf': 'application/pdf', '.stl': 'model/stl',
+  '.webp': 'image/webp', '.pdf': 'application/pdf', '.stl': 'model/stl', '.wasm': 'application/wasm',
+  '.mjs': 'text/javascript; charset=utf-8', '.glb': 'model/gltf-binary', '.gltf': 'model/gltf+json', '.obj': 'text/plain; charset=utf-8',
+  '.csv': 'text/plain; charset=utf-8', '.py': 'text/plain; charset=utf-8', '.gcode': 'text/plain; charset=utf-8', '.svgz': 'image/svg+xml',
 };
 
 function emit(id, ev) {
@@ -265,6 +267,63 @@ function listProjects() {
   }).filter(Boolean).sort((a, b) => (b.updated || '').localeCompare(a.updated || ''));
 }
 
+// ---------------------------------------------------------------- project apps (the "experience" of a finished project)
+// A project declares runnable apps in anatomy.json: { apps: [{ name, description, cwd, run: [cmd, ...], url }] }.
+const apps = new Map(); // `${id}/${n}` -> { procs, log }
+function findManifest(dir) {
+  const hits = [];
+  (function walk(rel, depth) {
+    if (depth > 4) return;
+    let ents = []; try { ents = fs.readdirSync(path.join(dir, rel), { withFileTypes: true }); } catch { return; }
+    for (const e of ents) {
+      if (HIDDEN.has(e.name) || e.name === 'node_modules' || e.name.startsWith('.')) continue;
+      const r = rel ? rel + '/' + e.name : e.name;
+      if (e.isFile() && e.name === 'anatomy.json') hits.push(r);
+      else if (e.isDirectory()) walk(r, depth + 1);
+    }
+  })('', 0);
+  hits.sort((a, b) => a.split('/').length - b.split('/').length);
+  if (!hits.length) return null;
+  try { const m = JSON.parse(fs.readFileSync(path.join(dir, hits[0]), 'utf8')); m._base = path.posix.dirname(hits[0]) === '.' ? '' : path.posix.dirname(hits[0]); return m; } catch (e) { return { error: 'anatomy.json is not valid JSON: ' + e.message, _base: '' }; }
+}
+function projectPython(dir) {
+  for (const p of [path.join(dir, '.venv', 'Scripts', 'python.exe'), path.join(dir, '.venv', 'bin', 'python')]) if (fs.existsSync(p)) return p;
+  return null;
+}
+function startApp(id, n) {
+  const dir = projectDir(id);
+  const m = findManifest(dir); const app = m && m.apps && m.apps[n];
+  if (!app) throw new Error('no such app');
+  const key = `${id}/${n}`;
+  stopApp(key);
+  const cwd = safeJoin(dir, path.posix.join(m._base || '', app.cwd || '.'));
+  const env = cleanEnv();
+  const py = projectPython(dir);
+  if (py) env.PATH = path.dirname(py) + path.delimiter + env.PATH;   // use the project's own venv first
+  const st = { procs: [], log: '' };
+  for (const cmd of app.run || []) {
+    const p = spawn(cmd, { cwd, env, shell: true, windowsHide: true });
+    const add = d => { st.log = (st.log + d.toString('utf8')).slice(-20000); };
+    p.stdout.on('data', add); p.stderr.on('data', add);
+    p.on('close', c => add(`\n[${cmd}] exited with code ${c}\n`));
+    st.procs.push(p);
+  }
+  apps.set(key, st);
+}
+function stopApp(key) {
+  const st = apps.get(key); if (!st) return;
+  for (const p of st.procs) {
+    if (p.exitCode !== null) continue;
+    if (process.platform === 'win32') execFile('taskkill', ['/pid', String(p.pid), '/T', '/F'], () => {});
+    else p.kill('SIGTERM');
+  }
+  apps.delete(key);
+}
+function openWithDefault(p) {
+  if (process.platform === 'win32') spawn('cmd.exe', ['/c', 'start', '""', p], { detached: true, windowsHide: true });
+  else spawn('xdg-open', [p], { detached: true });
+}
+
 // ---------------------------------------------------------------- routes
 const server = http.createServer(async (req, res) => {
   try {
@@ -277,6 +336,22 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);
+    }
+    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js')) {
+      const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
+      if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
+      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'max-age=3600' });
+      return fs.createReadStream(p).pipe(res);
+    }
+    // Raw project files at a stable URL, so HTML outputs (assembly guide, viewers) load their relative assets.
+    if (req.method === 'GET' && parts[0] === 'p' && parts[1]) {
+      const dir = projectDir(parts[1]);
+      const rel = decodeURIComponent(parts.slice(2).join('/'));
+      let p = safeJoin(dir, rel);
+      if (fs.existsSync(p) && fs.statSync(p).isDirectory()) p = path.join(p, 'index.html');
+      if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
+      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+      return fs.createReadStream(p).pipe(res);
     }
     if (parts[0] !== 'api') return send(res, 404, { error: 'not found' });
 
@@ -344,6 +419,21 @@ const server = http.createServer(async (req, res) => {
         if (st.size > 50 * 1024 * 1024) return send(res, 413, { error: 'file too large to preview' });
         return send(res, 200, fs.readFileSync(p), MIME[ext] || 'text/plain; charset=utf-8');
       }
+      if (action === 'manifest' && req.method === 'GET') {
+        const m = findManifest(dir);
+        if (m && m.apps) m.apps = m.apps.map((a, n) => ({ ...a, running: !!apps.get(`${id}/${n}`) }));
+        return send(res, 200, m || {});
+      }
+      if (action === 'apps' && parts[4] !== undefined) {
+        const n = Number(parts[4]); const key = `${id}/${n}`;
+        if (parts[5] === 'start' && req.method === 'POST') { try { startApp(id, n); } catch (e) { return send(res, 400, { error: e.message }); } return send(res, 200, { ok: true }); }
+        if (parts[5] === 'stop' && req.method === 'POST') { stopApp(key); return send(res, 200, { ok: true }); }
+        if (parts[5] === 'log' && req.method === 'GET') { const st = apps.get(key); return send(res, 200, { running: !!st, log: st ? st.log : '' }); }
+      }
+      if (action === 'open' && req.method === 'POST') {
+        openWithDefault(safeJoin(dir, url.searchParams.get('path') || '.'));
+        return send(res, 200, { ok: true });
+      }
       if (action === 'reveal' && req.method === 'POST') {
         const rel = url.searchParams.get('path');
         const p = rel ? safeJoin(dir, rel) : dir;
@@ -373,6 +463,7 @@ const server = http.createServer(async (req, res) => {
     if (parts[1] === 'quit' && req.method === 'POST') {
       send(res, 200, { ok: true });
       for (const id of runs.keys()) stopRun(id);
+      for (const k of [...apps.keys()]) stopApp(k);
       setTimeout(() => process.exit(0), 300);
       return;
     }
