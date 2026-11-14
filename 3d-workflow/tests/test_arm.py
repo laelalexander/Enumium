@@ -175,3 +175,20 @@ def test_assembly_steps_cover_every_twin_part_and_known_fasteners():
         if (Path(__file__).resolve().parent.parent / "fab" / "fab.json").exists() else set()
     sels = {sel.split("~")[0] for s in A.STEPS for sel in s["show"]}
     assert fab <= sels | {"ENC-01"}, fab - sels
+
+
+def test_library_indexes_existing_files_and_package_has_launcher(tmp_path, monkeypatch):
+    from arm import library, package
+    root = Path(__file__).resolve().parent.parent
+    secs = library.build()
+    titles = [s["title"] for s in secs]
+    assert "Start here" in titles and any("Cut files" in t for t in titles)
+    for s in secs:
+        for it in s["items"]:
+            assert (root / it["href"]).exists(), it["href"]
+            for f in it.get("files", []):
+                assert (root / f).exists(), f
+    for f in ("server.js", "Start-RobotArm.ps1", "RobotArm.vbs", "Install-RobotArm.ps1", "Install Robot Arm.vbs"):
+        assert (package.DESKTOP / f).exists(), f
+    idx = (root / "control" / "index.html").read_text(encoding="utf-8")
+    assert "cdn.jsdelivr" not in idx and (root / "control" / "vendor" / "three" / "build" / "three.module.js").exists()

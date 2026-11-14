@@ -1214,4 +1214,62 @@ const twinBuild = (() => {
   }
   return { steps, show, owned, get current() { return cur; } };
 })();
-window.twin = { twinBuild, M, CH, catalog, send, ik, moveTo, sim, scene, camera, orbit, wp, W, E, S, tcp };
+
+// ---------------------------------------------------------------- Library (arm/library.py -> lib/library.json)
+// Paths in the index are relative to the app root (one level above control/). In the installed desktop app the
+// local server also answers /api/open and /api/reveal, which open a file with its Windows app or show it in Explorer.
+const library = (() => {
+  const ROOT = '../', list = $('#libList'), V = $('#libViewer'), body = $('#lvBody');
+  let desktop = false, cur = null, sections = [];
+  fetch('/api/health').then(r => r.ok ? r.json() : null).then(j => { desktop = !!(j && j.app === 'robot-arm'); document.body.classList.toggle('desktop', desktop); }).catch(() => {});
+  const api = (what, file) => fetch(`/api/${what}?path=${encodeURIComponent(file)}`).then(r => { if (!r.ok) $('#lvMeta').textContent = 'Could not ' + what + ' ' + file; });
+  const kindLabel = { pdf: 'PDF', page: 'page', svg: 'drawing', folder: 'files', file: 'file', image: 'image' };
+  function open(it) {
+    cur = it; V.hidden = false; $('#lvTitle').textContent = it.title;
+    $('#lvMeta').textContent = [it.note, it.file].filter(Boolean).join(' · ');
+    $('#lvWindow').href = ROOT + it.href; $('#lvWindow').style.display = it.kind === 'folder' ? 'none' : '';
+    $('#lvOpen').style.display = it.kind === 'folder' ? 'none' : '';
+    body.innerHTML = '';
+    if (it.kind === 'svg' || it.kind === 'image') { const d = el('div', { className: 'dwg' }); d.style.flex = '1'; const im = el('img'); im.src = ROOT + it.href; d.append(im); body.append(d); panZoom(d, im); }
+    else if (it.kind === 'folder') {
+      const t = el('table', { className: 'lib-files' });
+      for (const f of it.files) {
+        const tr = el('tr', {}, `<td>${f.split('/').pop()}</td><td></td>`), td = tr.lastChild;
+        const a = el('a', { className: 'btn small ghost', href: ROOT + f, download: f.split('/').pop() }, 'Save copy'); td.append(a);
+        if (desktop) { const o = el('button', { className: 'btn small ghost' }, 'Open'); o.onclick = () => api('open', f); const r = el('button', { className: 'btn small ghost' }, 'Show in folder'); r.onclick = () => api('reveal', f); td.append(' ', o, ' ', r); }
+        t.append(tr);
+      }
+      body.append(el('p', { className: 'small muted' }, `${it.files.length} files in ${it.file}`), t);
+    } else { const f = el('iframe'); f.src = ROOT + it.href; body.append(f); }
+  }
+  // drag to pan, wheel to zoom (same feel as the part inspector's drawing tab)
+  function panZoom(box, im) {
+    let s = 1, x = 0, y = 0, drag = null; const ap = () => im.style.transform = `translate(${x}px,${y}px) scale(${s})`;
+    box.onwheel = e => { e.preventDefault(); const r = box.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, k = e.deltaY < 0 ? 1.2 : 1 / 1.2;
+      x = mx - (mx - x) * k; y = my - (my - y) * k; s *= k; ap(); };
+    box.onpointerdown = e => { drag = [e.clientX - x, e.clientY - y]; box.setPointerCapture(e.pointerId); };
+    box.onpointermove = e => { if (drag) { x = e.clientX - drag[0]; y = e.clientY - drag[1]; ap(); } };
+    box.onpointerup = () => drag = null; box.ondblclick = () => { s = 1; x = y = 0; ap(); };
+  }
+  function render(q = '') {
+    list.innerHTML = ''; q = q.toLowerCase();
+    if (!sections.length) { list.append(el('p', { className: 'small muted' }, 'The library is built by python run.py ui or the desktop app; it is not part of this preview.')); return; }
+    for (const s of sections) {
+      const items = s.items.filter(i => !q || (i.title + ' ' + (i.note || '') + ' ' + i.file).toLowerCase().includes(q));
+      if (!items.length) continue;
+      list.append(el('div', { className: 'lib-sec' }, s.title));
+      for (const it of items) {
+        const b = el('button', { className: 'lib-item' }, `<span class="k">${kindLabel[it.kind] || it.kind}${it.files ? ' · ' + it.files.length : ''}</span>${it.title}${it.note ? `<span class="n">${it.note}</span>` : ''}`);
+        b.onclick = () => open(it); list.append(b);
+      }
+    }
+  }
+  fetch('lib/library.json').then(r => r.ok ? r.json() : { sections: [] }).then(j => { sections = j.sections || []; render(); }).catch(() => render());
+  $('#libSearch').oninput = e => render(e.target.value);
+  $('#lvClose').onclick = () => { V.hidden = true; body.innerHTML = ''; };
+  $('#lvOpen').onclick = () => cur && api('open', cur.file);
+  $('#lvReveal').onclick = () => cur && api('reveal', cur.file);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !V.hidden) $('#lvClose').onclick(); });
+  return { open, get sections() { return sections; } };
+})();
+window.twin = { library, twinBuild, M, CH, catalog, send, ik, moveTo, sim, scene, camera, orbit, wp, W, E, S, tcp };

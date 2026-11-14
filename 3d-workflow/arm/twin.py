@@ -90,6 +90,8 @@ def model(d=None):
 
 def write(dest=CONTROL / "arm_model.json"):
     dest.write_text(json.dumps(model(), indent=1), encoding="utf-8")
+    from . import library
+    library.build()
     return dest
 
 

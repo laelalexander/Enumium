@@ -141,3 +141,13 @@ kinematics without hardware, `python run.py console` to drive the real arm over 
 - Gearbox ratings come from vendor listings; printed parts and firmware are unverified on real hardware.
 - CI (`.github/workflows/design.yml`) runs the tests, regenerates the package and renders the PNGs on every push
   that touches `3d-workflow/`, and uploads them as a build artifact.
+
+## Desktop app (Windows)
+
+`python run.py package` builds `3d-workflow/dist/RobotArm-<date>.zip`: the 3D test table with every note, drawing,
+guide and file bundled, offline (three.js is vendored in `control/vendor`). Unzip it and double-click
+**Install Robot Arm.vbs**. It installs per user to `%LOCALAPPDATA%\Programs\RobotArm` (Node.js LTS via winget if
+missing) and adds a **Robot Arm** icon to the desktop and Start menu. The icon opens the app in its own Edge
+window, with no terminal; Edge keeps Web Serial, so the Link tab still drives the Arduino. The **Library** tab
+indexes everything (built by `arm/library.py`); in the desktop app "Open with default app" sends a 3MF to Bambu
+Studio, and "Show in folder" opens Explorer. Launcher sources are in `3d-workflow/desktop/`.

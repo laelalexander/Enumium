@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One entry point.  python run.py [check|build|png|cut|print|procure|book|guide|ui|sim|console]
+"""One entry point.  python run.py [check|build|png|cut|print|procure|book|guide|package|ui|sim|console]
   check    verify Python + dependencies (default first step)
   build    size drives, generate parts, BOM, CAD, drawings, design/index.html, then PNGs if a renderer exists
   png      re-render design/png/*.png from the SVG drawings only (no CAD rebuild)
@@ -8,6 +8,7 @@
   procure  procurement list with quantities and planning prices -> docs/PROCUREMENT.md, docs/procurement.csv
   book     build book PDF (blueprints, assembly plan, BOM, procurement, print plan) -> ../docs/design/
   guide    illustrated assembly guide: step pictures from the 3D twin (needs Node + Playwright) -> ../docs/design/
+  package  installable Windows desktop app (offline, Library of every doc and file) -> dist/RobotArm-<date>.zip
   ui       3D control surface / virtual test table in the browser (http://127.0.0.1:8765)
   sim      demo motion with the simulated driver
   console  interactive control (auto-detects serial port; add --sim for none)"""
@@ -46,6 +47,8 @@ def main():
         from arm import buildbook; buildbook.main()
     elif cmd == "guide":
         from arm import assembly; sys.exit(assembly.guide(sys.argv[2:]))
+    elif cmd == "package":
+        from arm import package; sys.exit(package.main(sys.argv[2:]))
     elif cmd == "ui":
         from arm import twin; twin.main(sys.argv[2:])
     elif cmd == "sim":

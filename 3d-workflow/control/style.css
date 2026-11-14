@@ -99,3 +99,21 @@ details{margin-top:6px}
 #ins3d canvas{display:block;width:100%;height:100%}
 pre.code{background:#0b0d10;border:1px solid var(--line);border-radius:6px;padding:8px;font:11px/1.45 ui-monospace,Consolas,monospace;overflow:auto;white-space:pre;margin:0;max-height:60vh}
 .mono{font:11px ui-monospace,Consolas,monospace}
+
+/* Library */
+#libViewer[hidden]{display:none}
+#libViewer{position:absolute;inset:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;z-index:6;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#libViewer .row{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+#lvBody{flex:1;min-height:0;padding:0 14px 14px;display:flex;flex-direction:column;overflow:auto}
+#lvBody iframe{flex:1;width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+#lvBody .dwg{min-height:0}
+.lib-sec{margin:12px 0 4px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lib-item{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:6px;color:var(--text);padding:6px 8px;cursor:pointer;font:inherit}
+.lib-item:hover{background:rgba(255,255,255,.05);border-color:var(--line)}
+.lib-item .k{float:right;font-size:11px;color:var(--muted);text-transform:uppercase}
+.lib-item .n{display:block;font-size:12px;color:var(--muted)}
+.lib-files{width:100%;border-collapse:collapse;font-size:13px}
+.lib-files td{border-bottom:1px solid var(--line);padding:5px 6px}
+.lib-files td:last-child{text-align:right;white-space:nowrap}
+body:not(.desktop) .desktop-only{display:none}
+a.btn{text-decoration:none;display:inline-block}

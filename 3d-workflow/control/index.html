@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Robot Arm Test Table</title>
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.ico">
 <script type="importmap">
 { "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  "three": "./vendor/three/build/three.module.js",
+  "three/addons/": "./vendor/three/examples/jsm/"
 } }
 </script>
 </head>
@@ -39,6 +40,18 @@
       <label class="chip"><input type="checkbox" id="chkFollow"> Follow tool</label>
     </div>
     <div id="pickCard" hidden></div>
+    <div id="libViewer" hidden>
+      <div class="ins-head">
+        <div><div id="lvTitle" class="ins-title"></div><div id="lvMeta" class="small muted"></div></div>
+        <div class="row">
+          <a id="lvWindow" class="btn small ghost" target="_blank" rel="noopener">Open in new window</a>
+          <button id="lvOpen" class="btn small ghost desktop-only">Open with default app</button>
+          <button id="lvReveal" class="btn small ghost desktop-only">Show in folder</button>
+          <button id="lvClose" class="btn small ghost" title="Esc">Close</button>
+        </div>
+      </div>
+      <div id="lvBody"></div>
+    </div>
     <div id="inspector" hidden>
       <div class="ins-head">
         <div><div id="insTitle" class="ins-title"></div><div id="insMeta" class="small muted"></div></div>
@@ -56,6 +69,7 @@
       <button data-tab="motors">Motors</button>
       <button data-tab="test">Test</button>
       <button data-tab="parts">Parts</button>
+      <button data-tab="library">Library</button>
       <button data-tab="link">Link</button>
     </nav>
 
@@ -145,6 +159,12 @@
       <div id="buildText" class="small"></div>
       <div id="partCount" class="small"></div>
       <div id="partList"></div>
+    </section>
+
+    <section id="tab-library" class="tab">
+      <p class="muted small">Every note, instruction, drawing and file for the build. Click to open it here.</p>
+      <div class="row"><input id="libSearch" placeholder="Filter the library"></div>
+      <div id="libList"></div>
     </section>
 
     <section id="tab-link" class="tab">
