@@ -539,10 +539,11 @@ function handle(ev) {
   if (ev.type === 'result') {
     lastResult = ev.result || lastResult;
     for (const el of pending.values()) el.classList.remove('pending'); pending.clear();
-    const ok = !ev.is_error && ev.subtype === 'success';
+    const limited = /spend limit|usage limit|session limit|rate.?limit/i.test(ev.result || '');
+    const ok = !ev.is_error && ev.subtype === 'success' && !limited;
     if (ok && phase >= 4) setPhase(6, false);
     const mins = ev.duration_ms ? Math.round(ev.duration_ms / 60000) : null;
-    add(div('summary', `<div class="h"><span class="pill ${ok ? 'done' : 'failed'}">${ok ? 'finished' : 'stopped'}</span>${mins != null ? `<span style="color:var(--muted);font-size:12px">${mins} min</span>` : ''}</div><div class="say">${md(ev.result || '')}</div>`));
+    add(div('summary', `<div class="h"><span class="pill ${ok ? 'done' : 'failed'}">${ok ? 'finished' : 'stopped'}</span>${mins != null ? `<span style="color:var(--muted);font-size:12px">${mins} min</span>` : ''}</div><div class="say">${md(ev.result || '')}</div>${limited ? '<div class="say" style="color:var(--muted)">Your Claude usage limit stopped this run. Raise it at claude.ai/settings/usage (or wait for the reset), then send "continue".</div>' : ''}`));
     $('#stats').innerHTML = [mins != null && `Last run: ${mins} min`, ev.num_turns && `${ev.num_turns} steps`].filter(Boolean).join('<br>');
   }
 }
