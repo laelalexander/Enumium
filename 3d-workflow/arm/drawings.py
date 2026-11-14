@@ -169,6 +169,21 @@ def wiring_svg():
     notes = ["DRAFT schematic. Verify driver terminal names on your exact boards.", "Never connect/disconnect motors with power on", "Fuse + E-stop on the 24 V feed"]
     return sheet("WIRING SCHEMATIC", "ELE-001", b, notes, "NTS")
 
+def write_index(d):
+    parts = sorted(p.stem for p in (OUT / "drawings").glob("*.svg"))
+    sch = sorted(p.stem for p in (OUT / "schematics").glob("*.svg"))
+    cards = "".join(
+        f'<figure><a href="drawings/{n}.svg"><img src="drawings/{n}.svg" loading="lazy"></a><figcaption>{n}'
+        + (f' &middot; <a href="cad/step/{n}.step">STEP</a> <a href="cad/stl/{n}.stl">STL</a>' if (OUT / "cad/step" / f"{n}.step").exists() else "")
+        + "</figcaption></figure>" for n in parts)
+    cards += "".join(f'<figure><a href="schematics/{n}.svg"><img src="schematics/{n}.svg"></a><figcaption>{n}</figcaption></figure>' for n in sch)
+    rows = "".join(f"<tr><td>{j}</td><td>{v['drive']}</td><td>{v['required_nm']}</td><td>{v['rated_nm']}</td></tr>" for j, v in d["joints"].items())
+    (OUT / "index.html").write_text(f"""<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Desktop robot arm - design package</title><style>body{{font-family:system-ui,sans-serif;margin:24px;max-width:1300px}}
+figure{{display:inline-block;width:380px;margin:8px;vertical-align:top}}img{{width:100%;border:1px solid #ccc}}table{{border-collapse:collapse}}td,th{{border:1px solid #bbb;padding:4px 10px}}</style>
+<h1>Desktop robot arm - DRAFT rev A</h1><p>{d['payload_lb']} lb payload, {d['extension_in']} in reach (limit 48 in). Measure purchased parts and update <code>arm/hardware.py</code> before printing. See <a href="BOM.md">BOM.md</a>, <a href="../docs/ASSEMBLY.md">ASSEMBLY.md</a>, <a href="../docs/WIRING.md">WIRING.md</a>.</p>
+<table><tr><th>Joint<th>Drive<th>Required N&middot;m<th>Rated N&middot;m</tr>{rows}</table><h2>Drawings and CAD</h2>{cards}""")
+
 def main():
     d = json.loads((pipeline.HERE / "out" / "arm" / "design.json").read_text()) if (pipeline.HERE / "out/arm/design.json").exists() else B.build()
     for sub in ("cad/step", "cad/stl", "drawings", "schematics"):
@@ -184,6 +199,7 @@ def main():
     (OUT / "schematics" / "ELE-001_wiring.svg").write_text(wiring_svg())
     shutil.copy(pipeline.HERE / "out/arm/BOM.md", OUT / "BOM.md")
     shutil.copy(pipeline.HERE / "out/arm/design.json", OUT / "design.json")
+    write_index(d)
     print("wrote", OUT)
 
 if __name__ == "__main__":

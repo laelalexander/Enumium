@@ -59,3 +59,26 @@ def test_design_package_generates(tmp_path, monkeypatch):
     import xml.dom.minidom as m
     for f in list((tmp_path / "drawings").glob("*.svg")) + list((tmp_path / "schematics").glob("*.svg")):
         m.parse(str(f))      # well-formed XML
+
+def test_cli_commands_and_port_detection(capsys):
+    from arm import cli
+    import json
+    d = pipeline_design = None
+    sent = []
+    class Rec:
+        def move(self, ch, s): sent.append((ch, s))
+        def home(self, ch, dr): sent.append(("home", ch))
+        def wait(self): pass
+        def stop(self): sent.append("stop")
+    arm = control.Arm(Rec(), 375, 375, {"yaw": 20, "shoulder": 100, "elbow": 60, "wrist": 20})
+    cli.run_line(arm, "go 500 0 100"); cli.run_line(arm, "grip 40"); cli.run_line(arm, "home"); cli.run_line(arm, "stop")
+    assert sent[-1] == "stop" and ("home", 0) in sent and any(c == 4 for c, *_ in [x for x in sent if isinstance(x, tuple)])
+    with pytest.raises(ValueError):
+        cli.run_line(arm, "grip 999")
+    assert hasattr(cli, "find_port")
+
+def test_run_check_and_sim(tmp_path):
+    import subprocess
+    r = subprocess.run([sys.executable, str(Path(__file__).parent.parent / "run.py"), "sim"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    assert "go (500, 0, 100)" in r.stdout

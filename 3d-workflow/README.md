@@ -13,6 +13,17 @@ request (+ optional sketch) ─► SPEC (LLM, JSON) ─► GENERATE (LLM, CadQue
 Validation checks: valid B-rep, exactly one solid, positive volume, bounding box
 matches the spec, minimum feature size (warning).
 
+## Quickstart (Windows / macOS / Linux, Python 3.10+)
+```bash
+pip install -r requirements.txt
+python run.py check        # verify Python + dependencies
+python run.py build        # sizing, parts, BOM, CAD, drawings -> design/index.html (open in a browser)
+python run.py sim          # demo motion, no hardware
+python run.py console      # interactive control; auto-detects the Arduino (COMx, /dev/ttyACM0, /dev/tty.usbmodem*)
+python run.py console --sim
+```
+Console commands: `home`, `go X Y Z [pitch]`, `joints YAW SH EL WR`, `grip MM`, `stop`, `ports`.
+
 ## Setup
 ```bash
 pip install cadquery anthropic pytest

@@ -10,7 +10,7 @@ def ik(x, y, z, l1, l2, tool_pitch_deg=0.0, elbow_up=True):
     c = (d2 - l1 * l1 - l2 * l2) / (2 * l1 * l2)
     if abs(c) > 1:
         raise ValueError(f"Target unreachable (|cos|={abs(c):.2f}>1)")
-    elbow = math.acos(c) * (1 if elbow_up else -1)
+    elbow = math.acos(c) * (-1 if elbow_up else 1)   # elbow_up: elbow joint above the shoulder-wrist line
     shoulder = math.atan2(z, r) - math.atan2(l2 * math.sin(elbow), l1 + l2 * math.cos(elbow))
     wrist = math.radians(tool_pitch_deg) - shoulder - elbow
     return tuple(round(math.degrees(a), 2) for a in (yaw, shoulder, elbow, wrist))

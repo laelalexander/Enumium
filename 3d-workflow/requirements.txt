@@ -1,0 +1,4 @@
+cadquery>=2.4
+pyserial>=3.5
+pytest>=8
+anthropic>=0.40   # only for pipeline.py (LLM part generation); the arm tools do not need an API key
