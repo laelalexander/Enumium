@@ -57,4 +57,5 @@ All paths are relative to the project root. Every `purchase` line comes from a B
 - The purchase list is orderable as written: exact SKUs, quantities rounded to pack sizes plus spares, links that go to the exact product.
 - Every print entry has G-code that exists, was sliced for the user's printer (see Settings), and has its time and weight from the slicer.
 - Every assembly step has a picture rendered from the CAD assembly, with the parts added in that step highlighted.
+- An `assembly.json` (see SKILL.md step 6) whose `steps` match these assembly steps one-to-one, so the 3D viewer's Assemble button plays the same build the guide describes.
 - Nothing in the package says "TBD", "generic" or "see above".

@@ -66,11 +66,14 @@ If the product runs code anywhere (firmware, BIOS/bootloader, embedded OS, compa
 **Make the result something the user can experience, not just a folder.** The Anatomy app shows every project in a Results view (3D model and part inspector, drawings, BOM, G-code toolpaths, electronics, software, assembly guide). Help it:
 - Write `anatomy.json` at the project root: `{"title": "...", "summary": "one paragraph", "apps": [{"name": "...", "description": "what the user can do with it", "cwd": "path relative to anatomy.json", "run": ["command 1", "command 2"], "url": "http://127.0.0.1:PORT/", "needs": ["e.g. webcam, Ollama"], "startup_ms": 4000}]}`. Every runnable thing the project built (a console, simulator, web app, digital twin, demo) gets an entry. Commands run in background processes, so use servers that stay up, prefer the project's own `.venv`, and start simulators for any hardware so it works with no device attached. Start each app yourself and open its URL to prove the entry works.
 - If the product has a physical form, build an interactive viewer or digital twin (three.js page loading the exported STL/GLB in assembled positions, with each part clickable to its drawing and BOM line) and list it in `apps`.
-- Give the 3D view the assembly. Next to the part meshes, write a `parts.json` keyed by file name: `{name, part_no, category, qty, material, note, drawing, step, pose}`.
-  - `pose` places that part file in the finished product: `{"position": [x, y, z] mm, "rotation": [rx, ry, rz] degrees XYZ}`, or `{"matrix": [16 numbers, row-major 4x4, mm]}`.
-  - `step` is its assembly order.
-  - The viewer's **Assemble** button uses these to move every part from the table into place, in step order. Check that the poses reproduce the real assembly: no interference, and fasteners where the holes are.
-  - Also keep each part's STL, STEP, drawing, CAD source and G-code under the same base name, so they link to each other.
+- Give the 3D view the assembly. **Always write an `assembly.json`** in a folder of in-place part meshes, for example `prototype/mechanical/assembled/`:
+  - Format: `{"units": "mm", "in_place": true, "parts": [{"file", "name", "matrix"?}], "steps": [{"n", "title", "add": [file, ...]}]}`. Files are relative to assembly.json.
+  - Export every part in world coordinates, bought parts (motors, boards, PSU) included, so `in_place` is true. Otherwise give each part a 16-number column-major `matrix` in mm.
+  - Take `steps` from the assembly guide, so the viewer's **Assemble** button builds the product step by step.
+  - Export from the CAD assembly with a script saved in that folder (for example `export_assembly.py`), so it can be re-run.
+  - Check it: no interference, fasteners where the holes are, nothing left at the origin.
+- Next to the part meshes, write a `parts.json` keyed by file name: `{name, part_no, category, qty, material, note, drawing, step}`. The viewer shows it when a part is clicked. Parts without an assembly.json can instead carry a `pose` there: `{"position": [x, y, z] mm, "rotation": [rx, ry, rz] deg XYZ}`.
+- Also keep each part's STL, STEP, drawing, CAD source and G-code under the same base name, so they link to each other.
 Reread the blueprint as a builder who has never seen the product: are there steps with no data source, features with no acceptance criteria, claims with no tag? Fix those. Then summarize for the user in chat: what the product is, the three most important architectural findings, biggest unknowns, the folder path, and the prototype (how to view it and what it does not cover). Offer next steps (start the build from the spec, go deeper on a subsystem, compare against a second product).
 
 ## Depth calibration

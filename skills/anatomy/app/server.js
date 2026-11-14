@@ -267,7 +267,7 @@ function listFiles(base, rel = '', out = [], depth = 0) {
 }
 
 // Every 3D file in the project, without listFiles' 2000-file cap (large build kits and G-code sets go past it).
-const MESH_RE = /\.(stl|3mf|obj|glb)$/i;
+const MESH_RE = /\.(stl|3mf|obj|glb)$|(^|[\\/])assembly\.json$/i; // plus assembly.json, the viewer's assembly description
 function listMeshes(base, rel = '', out = [], depth = 0) {
   if (depth > 12 || out.length > 5000) return out;
   let ents = [];
