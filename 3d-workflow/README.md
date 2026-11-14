@@ -17,7 +17,8 @@ matches the spec, minimum feature size (warning).
 ```bash
 pip install -r requirements.txt
 python run.py check        # verify Python + dependencies
-python run.py build        # sizing, parts, BOM, CAD, drawings -> design/index.html (open in a browser)
+python run.py build        # sizing, parts, BOM, CAD, drawings, PNGs -> design/index.html (open in a browser)
+python run.py png          # re-render design/png/*.png from the SVGs only
 python run.py sim          # demo motion, no hardware
 python run.py console      # interactive control; auto-detects the Arduino (COMx, /dev/ttyACM0, /dev/tty.usbmodem*)
 python run.py console --sim
@@ -58,7 +59,7 @@ python -m arm.build                       # size drives, generate + validate par
 python -m arm.build --extension-m 1.219   # full 4 ft (margin drops to ~2.15x at the shoulder)
 ```
 - `docs/ASSEMBLY.md`: step-by-step build, wiring, firmware, load-test procedure; `docs/WIRING.md` pin table.
-- `design/`: STEP + STL files, dimensioned drawings, assembly and joint-section sheets, wiring schematic (`python -m arm.drawings`).
+- `design/` (index: `../docs/design/README.md`, Windows steps included): STEP + STL files, PNG previews, dimensioned drawings, assembly and joint-section sheets, wiring schematic (`python -m arm.drawings`).
 - `docs/BOM.md`: generated bill of materials with Amazon search terms (verify specs; no ASINs).
 - `arm/design.py`: static torque sizing with 2x margin; finds that 5 lb needs belt reduction
   (5:1 shoulder, 3:1 elbow) on top of NEMA 23 20:1 planetary gearmotors.

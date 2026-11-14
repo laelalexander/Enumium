@@ -64,8 +64,8 @@ def build(payload_lb=5.0, extension_m=1.0, out_root=None):
         spec = {"name": name, "units": "mm", "min_feature_mm": 2.0, "process": "fdm"}
         r = pipeline.run(spec, "import math\n" + code, None, 1, root)
         d["parts"][name] = {"qty": qty, "note": note, "ok": r["ok"], "bbox_mm": r["metrics"].get("bbox_mm"), "errors": r["errors"]}
-    (root / "design.json").write_text(json.dumps(d, indent=2))
-    (root / "BOM.md").write_text(make_bom(d))
+    (root / "design.json").write_text(json.dumps(d, indent=2), encoding="utf-8")
+    (root / "BOM.md").write_text(make_bom(d), encoding="utf-8")
     return d
 
 def main():

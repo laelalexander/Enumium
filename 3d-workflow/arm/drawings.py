@@ -182,21 +182,21 @@ def write_index(d):
 <title>Desktop robot arm - design package</title><style>body{{font-family:system-ui,sans-serif;margin:24px;max-width:1300px}}
 figure{{display:inline-block;width:380px;margin:8px;vertical-align:top}}img{{width:100%;border:1px solid #ccc}}table{{border-collapse:collapse}}td,th{{border:1px solid #bbb;padding:4px 10px}}</style>
 <h1>Desktop robot arm - DRAFT rev A</h1><p>{d['payload_lb']} lb payload, {d['extension_in']} in reach (limit 48 in). Measure purchased parts and update <code>arm/hardware.py</code> before printing. See <a href="BOM.md">BOM.md</a>, <a href="../docs/ASSEMBLY.md">ASSEMBLY.md</a>, <a href="../docs/WIRING.md">WIRING.md</a>.</p>
-<table><tr><th>Joint<th>Drive<th>Required N&middot;m<th>Rated N&middot;m</tr>{rows}</table><h2>Drawings and CAD</h2>{cards}""")
+<table><tr><th>Joint<th>Drive<th>Required N&middot;m<th>Rated N&middot;m</tr>{rows}</table><h2>Drawings and CAD</h2>{cards}""", encoding="utf-8")
 
 def main():
-    d = json.loads((pipeline.HERE / "out" / "arm" / "design.json").read_text()) if (pipeline.HERE / "out/arm/design.json").exists() else B.build()
+    d = json.loads((pipeline.HERE / "out" / "arm" / "design.json").read_text(encoding="utf-8")) if (pipeline.HERE / "out/arm/design.json").exists() else B.build()
     for sub in ("cad/step", "cad/stl", "drawings", "schematics"):
         (OUT / sub).mkdir(parents=True, exist_ok=True)
     ratios = {j: round(BY_KEY[v["drive"]].ratio / 20) if BY_KEY[v["drive"]].ratio >= 20 else 1 for j, v in d["joints"].items() if j != "wrist"}
     for name, (code, qty, note) in H.parts(ratios).items():
         svg, shape = part_drawing(name, code, qty, note)
-        (OUT / "drawings" / f"{name}.svg").write_text(svg)
+        (OUT / "drawings" / f"{name}.svg").write_text(svg, encoding="utf-8")
         cq.exporters.export(shape, str(OUT / "cad/step" / f"{name}.step"))
         cq.exporters.export(shape, str(OUT / "cad/stl" / f"{name}.stl"), tolerance=0.02, angularTolerance=0.1)
-    (OUT / "drawings" / "ASM-001_assembly.svg").write_text(assembly_svg(d))
-    (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(joint_section_svg())
-    (OUT / "schematics" / "ELE-001_wiring.svg").write_text(wiring_svg())
+    (OUT / "drawings" / "ASM-001_assembly.svg").write_text(assembly_svg(d), encoding="utf-8")
+    (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(joint_section_svg(), encoding="utf-8")
+    (OUT / "schematics" / "ELE-001_wiring.svg").write_text(wiring_svg(), encoding="utf-8")
     shutil.copy(pipeline.HERE / "out/arm/BOM.md", OUT / "BOM.md")
     shutil.copy(pipeline.HERE / "out/arm/design.json", OUT / "design.json")
     write_index(d)

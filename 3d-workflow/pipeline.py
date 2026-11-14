@@ -65,7 +65,7 @@ def generate(client, spec, history):
 def execute(code, spec, outdir, timeout=120):
     with tempfile.TemporaryDirectory() as scratch:
         cp, sp = Path(scratch) / "code.py", Path(scratch) / "spec.json"
-        cp.write_text(code); sp.write_text(json.dumps(spec))
+        cp.write_text(code, encoding="utf-8"); sp.write_text(json.dumps(spec), encoding="utf-8")
         try:
             p = subprocess.run([sys.executable, "-I", str(HERE / "runner.py"), str(cp), str(outdir), str(sp)],
                                capture_output=True, text=True, timeout=timeout, cwd=scratch)
@@ -93,9 +93,9 @@ def run(spec, code=None, client=None, max_iters=4, out_root=HERE / "out"):
         feedback = "The code failed validation:\n- " + "\n- ".join(report["errors"]) + \
                    "\nFix it and return the full corrected code."
         history.append({"role": "user", "content": feedback})
-    (outdir / "part.py").write_text(code)
+    (outdir / "part.py").write_text(code, encoding="utf-8")
     final = {"spec": spec, "attempts": attempts, **report}
-    (outdir / "report.json").write_text(json.dumps(final, indent=2))
+    (outdir / "report.json").write_text(json.dumps(final, indent=2), encoding="utf-8")
     return final
 
 def main():
@@ -107,8 +107,8 @@ def main():
     ap.add_argument("--iters", type=int, default=4)
     a = ap.parse_args()
     client = None if (a.code and a.spec) else _client()
-    spec = json.loads(Path(a.spec).read_text()) if a.spec else make_spec(client, a.request, a.image)
-    code = Path(a.code).read_text() if a.code else None
+    spec = json.loads(Path(a.spec).read_text(encoding="utf-8")) if a.spec else make_spec(client, a.request, a.image)
+    code = Path(a.code).read_text(encoding="utf-8") if a.code else None
     final = run(spec, code, client, a.iters)
     print(json.dumps({k: final.get(k) for k in ("ok", "metrics", "warnings", "errors", "files")}, indent=2))
     sys.exit(0 if final["ok"] else 1)

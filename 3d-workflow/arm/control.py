@@ -41,7 +41,7 @@ class Arm:
             if hasattr(driver, "set_speed"): driver.set_speed(ch, sps, sps)   # 1 s to full speed
     @classmethod
     def from_design(cls, driver, path):
-        d = json.load(open(path))
+        d = json.load(open(path, encoding="utf-8"))
         ratio = {"yaw": 20.0}
         from .actuators import BY_KEY
         for j, v in d["joints"].items():

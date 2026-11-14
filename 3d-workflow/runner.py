@@ -50,12 +50,12 @@ def main(code_path, outdir, spec_path):
     resource.setrlimit(resource.RLIMIT_CPU, (110, 110))
     out = Path(outdir)
     out.mkdir(parents=True, exist_ok=True)
-    spec = json.loads(Path(spec_path).read_text())
+    spec = json.loads(Path(spec_path).read_text(encoding="utf-8"))
     report = {"ok": False, "errors": [], "warnings": [], "metrics": {}, "files": {}}
     try:
         import cadquery as cq
         ns = {"cq": cq, "__name__": "generated"}
-        exec(compile(Path(code_path).read_text(), "generated.py", "exec"), ns)
+        exec(compile(Path(code_path).read_text(encoding="utf-8"), "generated.py", "exec"), ns)
         if "result" not in ns:
             raise ValueError("Code must assign the final cq.Workplane to a variable named `result`.")
         result = ns["result"]
