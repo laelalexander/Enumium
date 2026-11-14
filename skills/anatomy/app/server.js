@@ -452,7 +452,8 @@ const server = http.createServer(async (req, res) => {
       }
       if (action === 'build' && req.method === 'GET') {
         // build/build.json anywhere in the project (shallowest wins)
-        const hits = listFiles(dir).filter(f => /(^|\/)build\/build\.json$/.test(f.path)).sort((a, b) => a.path.length - b.path.length);
+        const hits = fs.existsSync(path.join(dir, 'build', 'build.json')) ? [{ path: 'build/build.json' }]
+          : listFiles(dir).filter(f => /(^|\/)build\/build\.json$/.test(f.path)).sort((a, b) => a.path.length - b.path.length);
         if (!hits.length) return send(res, 200, {});
         try { const j = readJson(path.join(dir, hits[0].path)); j._file = hits[0].path; return send(res, 200, j); }
         catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }

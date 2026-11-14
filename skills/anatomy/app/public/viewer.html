@@ -37,6 +37,15 @@ canvas { display: block; } .hidden { display: none !important; }
 .info .x { position: absolute; top: 8px; right: 10px; cursor: pointer; color: var(--muted); }
 .parts div { pointer-events: auto; cursor: pointer; } .parts div.sel { color: #ffd36b; }
 .toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); max-width: 520px; background: #04161cee; border: 1px solid #1f6b78; border-radius: 10px; padding: 8px 14px; font-size: 12px; color: var(--text); box-shadow: 0 0 20px #5ff3ff22; }
+.card { position: fixed; left: 16px; top: 92px; width: 340px; max-height: calc(100vh - 230px); overflow: auto; pointer-events: auto;
+  background: #04161cdd; border: 1px solid #1f6b78; border-radius: 14px; padding: 12px 14px; box-shadow: 0 0 30px #5ff3ff22; backdrop-filter: blur(4px); font-size: 12px; }
+.card .k { color: var(--muted); font-size: 10px; letter-spacing: .15em; margin: 10px 0 4px; } .card h3 { margin: 2px 0 6px; font-size: 15px; }
+.card img { width: 100%; border-radius: 8px; border: 1px solid #0f3a42; cursor: zoom-in; background: #fff; }
+.card label { display: flex; gap: 8px; align-items: flex-start; padding: 3px 0; border-bottom: 1px solid #0f3a42; cursor: pointer; } .card label input { accent-color: #ffd36b; margin-top: 2px; }
+.card label.got { color: var(--muted); text-decoration: line-through; } .card .src { color: var(--muted); font-size: 10px; }
+.card .ctlrow { display: flex; gap: 6px; margin-top: 10px; } .card .ctlrow button { flex: 1; background: #06303a99; border: 1px solid #1f6b78; color: var(--text); border-radius: 8px; padding: 6px 4px; font: inherit; cursor: pointer; }
+.card .ctlrow button.on { border-color: var(--holo); box-shadow: 0 0 10px #5ff3ff55 inset; } .card .ctlrow button:disabled { opacity: .35; cursor: default; }
+.zoom { position: fixed; inset: 0; background: #000c; display: grid; place-items: center; z-index: 10; cursor: zoom-out; } .zoom img { max-width: 94vw; max-height: 94vh; background: #fff; border-radius: 8px; }
 .empty { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); letter-spacing: .1em; pointer-events: none; text-align: center; }
 .scan { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
 </style>
@@ -49,6 +58,7 @@ canvas { display: block; } .hidden { display: none !important; }
   <div class="style"><label>Color <input type="color" id="col" value="#5ff3ff"></label><label>Tint <input type="color" id="tint" value="#8a7dff"></label>
   <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
 <div class="info hidden" id="info"></div>
+<div class="card hidden" id="card"></div>
 <div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="tbl" title="Lay every part out side by side on the table">Table</button><button id="asm" title="Move every part into its place in the finished product">Assemble</button><button id="fit">Fit</button></div></div>
 <div class="toast hidden" id="toast"></div>
 <div class="empty" id="empty"><span id="emptyT">NO 3D GEOMETRY YET</span><br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
@@ -277,7 +287,7 @@ async function loadAsm() {
 // Disassemble: the reverse, last step first, back to the table. Clicking a step builds up to exactly that step.
 let asmState = 'table', asmGen = 0; // 'table' | 'assembled' (where the parts are heading)
 async function enterAsm() {
-  if (inAsm) return asmState === 'assembled' ? goToStep(0) : goToStep(asmData.steps.length);
+  if (inAsm) { pause(); return asmState === 'assembled' ? goToStep(0) : play(); }
   toast('Loading the assembly…');
   try { await loadAsm(); } catch (e) { return toast('Could not read assembly.json: ' + e.message); }
   $('#toast').classList.add('hidden');
@@ -285,14 +295,14 @@ async function enterAsm() {
   $('#tbl').classList.remove('on'); $('#partsHdr').textContent = 'ASSEMBLY STEPS';
   if (!asmTable) tableSlots();
   for (const [, v] of asmParts) { v.group.visible = true; v.group.position.copy(v.slot.pos); v.group.quaternion.identity(); }
-  asmShown = 0; renderSteps(); updateZ(); frameUnion(); goToStep(asmData.steps.length);
+  await loadBuild(); asmShown = 0; playing = false; asmState = 'table'; asmBtn(); renderSteps(); updateZ(); frameUnion();
 }
 function exitAsm() {
-  clearTimeout(asmTimer); asmGen++; anim = null; inAsm = false; asmRoot.visible = false; root.visible = true; select(null);
+  clearTimeout(asmTimer); asmGen++; playing = false; clearTimeout(playTimer); $('#card').classList.add('hidden'); anim = null; inAsm = false; asmRoot.visible = false; root.visible = true; select(null);
   $('#partsHdr').textContent = 'PARTS'; asmBtn(); updateZ(); renderParts();
 }
 // Table slots for every assembly part, laid out in build order beside the assembled product.
-let asmTable = false;
+let asmTable = false, asmArc = 0;
 function tableSlots() {
   const items = [...asmParts.values()].sort((a, b) => a.step - b.step || a.group.userData.path.localeCompare(b.group.userData.path));
   const home = new THREE.Box3(); for (const v of items) { v.home = { pos: v.group.position.clone(), q: v.group.quaternion.clone() }; home.expandByObject(v.group); }
@@ -307,7 +317,7 @@ function tableSlots() {
     v.slot = { pos: new THREE.Vector3(x0 + x - b.min.x, y0 + y - s.y - b.min.y, -b.min.z) };
     x += s.x + gap; rowH = Math.max(rowH, s.y);
   });
-  asmTable = true;
+  asmArc = home.isEmpty() ? 0 : (home.max.z - home.min.z) * 0.3; asmTable = true;
 }
 function frameUnion() { // frame both the table and the assembled product so nothing flies off screen
   const saved = [...asmParts.values()].map(v => [v, v.group.position.clone(), v.group.quaternion.clone()]);
@@ -317,19 +327,21 @@ function frameUnion() { // frame both the table and the assembled product so not
   frame(b); framed = true;
 }
 // Move to step k: parts of steps 1..k (and step 0) in place, the rest on the table. Steps play one after another.
-const STEP_MS = 1100;
+const STEP_MS = 1100, PLAY_DWELL = 2600; let playing = false, playTimer = null;
 function goToStep(k) {
   clearTimeout(asmTimer);
   const total = asmData.steps.length, from = asmShown, dir = k >= from ? 1 : -1;
   const order = []; // steps to play, in order
   if (dir > 0) for (let s = from === 0 ? 0 : from + 1; s <= k; s++) order.push(s); else for (let s = from; s > k; s--) order.push(s);
   if (dir < 0 && k === 0) order.push(0);
+  const used = new Set([...asmParts.values()].map(v => v.step));
+  for (let i = order.length - 1; i >= 0; i--) if (!used.has(order[i])) order.splice(i, 1); // skip steps with no parts
   const gen = ++asmGen;
   const list = [];
   order.forEach((st, i) => {
     for (const [, v] of asmParts) if (v.step === st) {
       const t = dir > 0 ? { pos: v.home.pos, q: v.home.q } : { pos: v.slot.pos, q: new THREE.Quaternion() };
-      list.push({ g: v.group, t, p0: v.group.position.clone(), q0: v.group.quaternion.clone(), d: i * STEP_MS });
+      list.push({ g: v.group, t, p0: v.group.position.clone(), q0: v.group.quaternion.clone(), d: i * STEP_MS, arc: asmArc });
     }
   });
   asmState = k >= total ? 'assembled' : k === 0 ? 'table' : 'partial'; asmBtn();
@@ -340,19 +352,74 @@ function goToStep(k) {
   order.forEach((st, i) => setTimeout(() => { if (!inAsm || gen !== asmGen) return; asmShown = Math.max(0, dir > 0 ? st : st - 1); renderSteps(); }, i * STEP_MS + dur));
   asmTimer = setTimeout(() => { if (gen !== asmGen) return; asmShown = k; renderSteps(); }, (order.length - 1) * STEP_MS + dur + 20);
 }
+// ---------------------------------------------------------------- build-along: step card + play / pause / next / back
+let buildJson = null;
+async function loadBuild() {
+  if (buildJson) return buildJson;
+  buildJson = await fetch(`/api/projects/${id}/build`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
+  const lines = new Map();
+  for (const x of buildJson.purchase || []) lines.set(x.line, { name: x.desc, src: `Buy · ${x.supplier || ''}${x.mpn ? ' · ' + x.mpn : ''}` });
+  for (const x of buildJson.print || []) lines.set(x.line || x.part, { name: x.part, src: `Print · plate ${x.plate ?? '?'} · ${x.material || ''}` });
+  for (const x of buildJson.fabricate || []) lines.set(x.line || x.part, { name: x.part, src: `Fabricate · ${x.process || ''}` });
+  buildJson._lines = lines; return buildJson;
+}
+function guideStepFor(k) { // the build.json assembly step that goes with assembly.json step k
+  const st = asmData.steps[k - 1], g = buildJson?.assembly || []; if (!st || !g.length) return null;
+  if (st.build_step != null) return g.find(b => b.step == st.build_step) || null;
+  if (g.length === asmData.steps.length) return g[k - 1];
+  return g.find(b => b.step == st.n) || null;
+}
+const gotKey = `anatomy.buildalong.${id}`;
+const gotLoad = () => { try { return JSON.parse(localStorage.getItem(gotKey) || '{}'); } catch { return {}; } };
+const gotSave = o => { try { localStorage.setItem(gotKey, JSON.stringify(o)); } catch {} };
+function renderCard() {
+  const card = $('#card'); if (!inAsm || !asmData) return card.classList.add('hidden');
+  const total = asmData.steps.length, k = Math.min(total, asmShown + (playing ? 0 : 1)) || 1, st = asmData.steps[k - 1], g = guideStepFor(k) || {};
+  const done = asmShown >= total, got = gotLoad();
+  const src = (k2, fallback) => st[k2] ?? g[k2] ?? fallback;
+  let items = [];
+  if (Array.isArray(st.parts) || Array.isArray(g.parts)) items = (st.parts || g.parts).map(x => { const l = buildJson?._lines?.get(x.line) || {}; return { key: x.line || x.name, name: x.name || l.name || x.line, qty: x.qty || 1, src: [x.line, l.src].filter(Boolean).join(' · ') }; });
+  else { const c = new Map(); for (const [, v] of asmParts) if (v.step === k) { const n = v.group.userData.name || v.group.userData.path.split('/').pop().replace(/\.[^.]+$/, ''); c.set(n, (c.get(n) || 0) + 1); } items = [...c].map(([n, q]) => ({ key: n, name: n, qty: q, src: '' })); }
+  const tools = src('tools', []), image = src('image', ''), text = src('text', ''), torque = src('torque', ''), check = src('check', '');
+  card.innerHTML = done ? `<div class="k">BUILD COMPLETE</div><h3>All ${total} steps done</h3><div style="color:var(--muted)">Press Back to step through again, or Disassemble to take it apart.</div>` : `
+    <div class="k">${playing ? 'NOW' : asmShown === 0 ? 'FIRST STEP' : 'NEXT STEP'} · ${k} OF ${total}</div><h3>${esc(st.title)}</h3>
+    ${image ? `<img src="/p/${id}/${image.split('/').map(encodeURIComponent).join('/')}" alt="" id="cardImg">` : ''}
+    <div class="k">GET READY</div>${items.map(it => `<label class="${got[k + '|' + it.key] ? 'got' : ''}"><input type="checkbox" data-got="${esc(k + '|' + it.key)}" ${got[k + '|' + it.key] ? 'checked' : ''}><span><b>${esc(it.qty)}×</b> ${esc(it.name)}${it.src ? `<div class="src">${esc(it.src)}</div>` : ''}</span></label>`).join('') || '<div style="color:var(--muted)">No parts listed for this step.</div>'}
+    ${tools.length ? `<div class="k">TOOLS</div><div>${tools.map(esc).join(' · ')}</div>` : ''}
+    ${text ? `<div class="k">DO</div><div>${esc(text)}</div>` : ''}${torque ? `<div class="k">TORQUE</div><div>${esc(torque)}</div>` : ''}${check ? `<div class="k">CHECK</div><div>${esc(check)}</div>` : ''}`;
+  card.innerHTML += `<div class="ctlrow"><button id="bkBtn" ${asmShown <= 0 ? 'disabled' : ''}>⏮ Back</button><button id="plBtn" class="${playing ? 'on' : ''}">${playing ? '⏸ Pause' : '▶ Play'}</button><button id="nxBtn" ${done ? 'disabled' : ''}>Next ⏭</button></div>`;
+  card.classList.remove('hidden');
+  card.querySelectorAll('[data-got]').forEach(c => c.onchange = () => { const o = gotLoad(); if (c.checked) o[c.dataset.got] = 1; else delete o[c.dataset.got]; gotSave(o); c.closest('label').classList.toggle('got', c.checked); });
+  const im = $('#cardImg'); if (im) { im.onerror = () => im.remove(); im.onclick = () => { const z = document.createElement('div'); z.className = 'zoom'; z.innerHTML = `<img src="${im.src}">`; z.onclick = () => z.remove(); document.body.append(z); }; }
+  $('#bkBtn').onclick = () => { pause(); goToStep(Math.max(0, asmShown - 1)); };
+  $('#nxBtn').onclick = () => { pause(); goToStep(Math.min(total, asmShown + 1)); };
+  $('#plBtn').onclick = () => playing ? pause() : play();
+  markNext();
+}
+function markNext() { // the parts to get ready glow amber on the table
+  const next = playing ? -1 : asmShown + 1;
+  for (const [, v] of asmParts) v.group.traverse(o => { if (o.material && o.material.uniforms) o.material.uniforms.uSel.value = v.step === next ? 1 : 0; });
+}
+function play() {
+  const total = asmData.steps.length; if (asmShown >= total) goToStep(0);
+  playing = true; clearTimeout(playTimer);
+  const tick = () => { if (!playing || !inAsm) return; if (asmShown >= total) return pause(); goToStep(asmShown + 1); playTimer = setTimeout(tick, PLAY_DWELL); };
+  playTimer = setTimeout(tick, asmShown >= total ? STEP_MS * total + 300 : 0); renderCard();
+}
+function pause() { playing = false; clearTimeout(playTimer); renderCard(); }
 function asmBtn() {
   const assembled = inAsm ? asmState === 'assembled' : !isSpread();
   $('#asm').textContent = assembled ? 'Disassemble' : 'Assemble'; $('#asm').classList.toggle('on', inAsm || !isSpread());
 }
 function renderSteps() {
-  if (!asmData) return;
+  if (!asmData) return; renderCard();
   const counts = new Map(); for (const [, v] of asmParts) counts.set(v.step, (counts.get(v.step) || 0) + 1);
   $('#parts').innerHTML = asmData.steps.map((st, i) => `<div data-step="${i + 1}" class="${i + 1 <= asmShown ? 'done' : ''} ${i + 1 === asmShown ? 'sel' : ''}">${i + 1 <= asmShown ? '✓' : '○'} ${esc(st.n)}. ${esc(st.title)} <span style="opacity:.6">(${counts.get(i + 1) || 0})</span></div>`).join('')
     + `<div data-step="0" style="color:var(--muted);margin-top:6px">${asmShown === 0 ? '✓' : '○'} All parts on the table</div>`;
 }
 $('#parts').addEventListener('click', e => {
   if (!inAsm) return; e.stopImmediatePropagation();
-  const d = e.target.closest('[data-step]'); if (d) goToStep(Number(d.dataset.step));
+  const d = e.target.closest('[data-step]'); if (d) { pause(); goToStep(Number(d.dataset.step)); }
 }, true);
 function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 7000); }
 function isSpread() { return view ? view === 'table' : atOrigin() && !posesKnown.size; }
@@ -421,6 +488,7 @@ function stepAnim(now) {
   for (const a of anim.list) {
     let k = Math.min(1, Math.max(0, (now - anim.t0 - a.d) / anim.dur)); k = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
     a.g.position.lerpVectors(a.p0, a.t.pos, k); a.g.quaternion.slerpQuaternions(a.q0, a.t.q, k);
+    if (a.arc) a.g.position.z += Math.sin(Math.PI * k) * a.arc; // lift up and over
   }
   if (now >= anim.end) { const nf = anim.noFrame; anim = null; if (!nf) { updateZ(); frame(); } }
 }
