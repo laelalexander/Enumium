@@ -63,11 +63,15 @@ def model(d=None):
     gripper = dict(name="gripper", channel=Arm.GRIP, motor="NEMA17", lead_mm_per_rev=8, open_mm=[0, 70],
                    motor_amps=1.5, steps_per_mm_default=STEPS_PER_MM_GRIP, max_mm_s=10, pins=WIRING[Arm.GRIP])
     ratios = {j: belt_ratio(v, j) for j, v in drives.items() if j in ("shoulder", "elbow")}
-    printed = [dict(id=n, qty=q, note=note, stl=f"{n}.stl", drawing=f"{n}.svg")
+    pm = HERE / "print" / "manifest.json"
+    manifest = json.loads(pm.read_text(encoding="utf-8"))["parts"] if pm.exists() else {}
+    printed = [dict(id=n, qty=q, note=note, stl=f"{n}.stl", drawing=f"{n}.svg", step=f"{n}.step", obj=f"{n}.obj",
+                    code=code.strip(), bbox_mm=d.get("parts", {}).get(n, {}).get("bbox_mm"), print=manifest.get(n))
                for n, (code, q, note) in H.parts(ratios).items()]
     purchased = [dict(item=a, qty=q, search=s, use=u) for a, q, s, u in B.AMAZON_ITEMS]
     return dict(
         generated_by="python -m arm.twin", stl_base="../design/cad/stl/", drawing_base="../design/drawings/",
+        step_base="../design/cad/step/", obj_base="../design/cad/obj/", print_base="../print/", sheet_base="../design/drawings/",
         payload_lb=d["payload_lb"], extension_in=d["extension_in"], l1_mm=d["l1_mm"], l2_mm=d["l2_mm"],
         max_extension_mm=round(D.MAX_EXTENSION * 1000), safety=D.SAFETY,
         mass=dict(tube_kg_per_m=D.TUBE_KG_PER_M, joint_hw_kg=D.JOINT_HW_KG, gripper_kg=D.GRIPPER_KG,

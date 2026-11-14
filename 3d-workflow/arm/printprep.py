@@ -198,6 +198,12 @@ def main(argv=None):
         for _, f in names:
             f.unlink()   # per-plate STLs are only slicer input; the 3MF holds the layout
     write_report(info, report, (bw, bd, bh), slicer)
+    manifest = {n: dict(i, plates=sorted({e["plate"] for e in report if n in e["parts"]}), print_stl=f"stl/{n}.stl")
+                for n, i in info.items()}
+    for e in report:
+        for n in set(e["parts"]):
+            manifest[n].setdefault("plate_check", {})[e["plate"]] = "pass" if not e.get("errors") else "; ".join(e["errors"])
+    (OUT / "manifest.json").write_text(json.dumps(dict(bed=[bw, bd, bh], parts=manifest, settings=SETTINGS), indent=1), encoding="utf-8")
     bad = [e for e in report if e.get("errors")]
     print(f"{len(info)} parts, {sum(i['qty'] for i in info.values())} prints, {len(report)} plates -> {OUT}")
     for e in report:

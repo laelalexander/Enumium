@@ -39,6 +39,14 @@
       <label class="chip"><input type="checkbox" id="chkFollow"> Follow tool</label>
     </div>
     <div id="pickCard" hidden></div>
+    <div id="inspector" hidden>
+      <div class="ins-head">
+        <div><div id="insTitle" class="ins-title"></div><div id="insMeta" class="small muted"></div></div>
+        <button id="insClose" class="btn small ghost" title="Esc">Close</button>
+      </div>
+      <nav id="insTabs"><button data-t="drawing" class="on">Drawing</button><button data-t="3d">3D</button><button data-t="cad">CAD source</button><button data-t="print">Print</button><button data-t="files">Files</button></nav>
+      <div id="insBody"></div>
+    </div>
     <div id="loading">Loading parts…</div>
   </main>
 

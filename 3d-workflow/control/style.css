@@ -21,7 +21,7 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--text)}
 .btn.estop{background:#b3161b;border-color:#e0353b;color:#fff;font-weight:800;padding:6px 18px}
 .btn.estop:hover{background:#d11d23}
 #stage{position:relative;overflow:hidden}
-#viewport{position:absolute;inset:0}
+#viewport{position:absolute;inset:0;isolation:isolate}
 #viewport canvas{display:block}
 #hud{position:absolute;left:10px;top:10px;pointer-events:none;max-width:60%}
 #readout{background:rgba(15,18,22,.82);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font:12px/1.5 ui-monospace,Consolas,monospace;white-space:pre}
@@ -84,3 +84,18 @@ details{margin-top:6px}
   #panel{border-left:0;border-top:1px solid var(--line)}
   #pickCard{width:auto;left:10px}
 }
+
+#inspector[hidden]{display:none}
+#inspector{position:absolute;inset:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;z-index:5;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.ins-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:10px 14px 6px}
+.ins-title{font-size:16px;font-weight:600}
+#insTabs{display:flex;gap:2px;padding:0 10px;border-bottom:1px solid var(--line)}
+#insTabs button{background:none;border:0;color:var(--muted);padding:8px 12px;cursor:pointer;font:inherit;border-bottom:2px solid transparent}
+#insTabs button.on{color:var(--text);border-bottom-color:var(--accent)}
+#insBody{flex:1;overflow:auto;padding:10px 14px;min-height:0;display:flex;flex-direction:column;gap:8px}
+.dwg{flex:1;min-height:300px;background:#fff;border-radius:6px;overflow:hidden;position:relative;cursor:grab;touch-action:none}
+.dwg img{width:100%;height:100%;object-fit:contain;transform-origin:0 0;user-select:none;pointer-events:none}
+#ins3d{flex:1;min-height:300px;border-radius:6px;overflow:hidden}
+#ins3d canvas{display:block;width:100%;height:100%}
+pre.code{background:#0b0d10;border:1px solid var(--line);border-radius:6px;padding:8px;font:11px/1.45 ui-monospace,Consolas,monospace;overflow:auto;white-space:pre;margin:0;max-height:60vh}
+.mono{font:11px ui-monospace,Consolas,monospace}

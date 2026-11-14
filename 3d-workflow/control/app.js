@@ -5,6 +5,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+import { STLExporter } from 'three/addons/exporters/STLExporter.js';
 
 THREE.Object3D.DEFAULT_UP.set(0, 0, 1);
 const $ = (s) => document.querySelector(s);
@@ -89,7 +91,7 @@ const ledMat = (c) => new THREE.MeshBasicMaterial({ color: c });
 // Every BOM line (printed and purchased) gets a catalog entry; every mesh in the scene is tagged with one.
 const catalog = new Map();   // key -> {key,name,cat,qty,note,search,stl,drawing,objs:[]}
 function cat(key, info) { if (!catalog.has(key)) catalog.set(key, { key, objs: [], ...info }); return catalog.get(key); }
-M.printed.forEach(p => cat(p.id, { name: p.id, cat: 'Printed parts', qty: p.qty, note: p.note, stl: p.stl, drawing: p.drawing }));
+M.printed.forEach(p => cat(p.id, { name: p.id, cat: 'Printed parts', qty: p.qty, note: p.note, stl: p.stl, drawing: p.drawing, printed: p }));
 const PURCHASED_KEYS = [
   ['tube', /round tube/i], ['turntable', /turntable/i], ['shaft', /12 mm hardened/i], ['bearing', /6001/i],
   ['hub', /clamping hub/i], ['collar', /collars/i], ['pulley_s', /16T/i], ['pulley_l', /pulley, 12 mm bore/i],
@@ -596,14 +598,123 @@ function select(key) {
   if (!key) { card.hidden = true; return; }
   const c = catalog.get(key);
   for (const o of c.objs) o.traverse(m => { if (m.isMesh) { selMat.set(m, m.material); m.material = m.material.clone(); m.material.emissive = new THREE.Color(0x4aa3ff); m.material.emissiveIntensity = 0.55; } });
-  const files = c.stl ? `<br><a href="${M.stl_base}${c.stl}" download>STL</a> · <a href="${M.drawing_base}${c.drawing}" target="_blank">Drawing</a>` : '';
   card.innerHTML = `<h4>${c.name}</h4><div class="muted">${c.cat}${c.qty != null ? ` · BOM qty ${c.qty} · in model ${c.n || 0}` : ''}</div>
-    <p>${c.note || ''}</p>${c.search ? `<div class="muted small">Search: ${c.search}</div>` : ''}${files}
-    <div class="row"><button class="btn small" id="pcFocus">Focus</button><button class="btn small ghost" id="pcClose">Close</button></div>`;
+    <p>${c.note || ''}</p>${c.search ? `<div class="muted small">Search: ${c.search}</div>` : ''}
+    <div class="row"><button class="btn small" id="pcOpen">Open drawing and files</button><button class="btn small ghost" id="pcFocus">Focus</button><button class="btn small ghost" id="pcClose">Close</button></div>`;
   card.hidden = false;
+  $('#pcOpen').onclick = () => inspector.open(key);
   $('#pcClose').onclick = () => select(null);
   $('#pcFocus').onclick = () => { const b = new THREE.Box3(); c.objs.forEach(o => b.expandByObject(o)); const ctr = b.getCenter(new THREE.Vector3()); orbit.target.copy(ctr); camera.position.copy(ctr).add(new THREE.Vector3(500, -600, 400)); };
 }
+renderer.domElement.addEventListener('dblclick', () => { if (selected) inspector.open(selected); });
+
+// ---------------------------------------------------------------- part inspector: drawing, 3D, CAD source, print, files
+const HOSTED = !!M.hosted;   // published preview: the viewer blocks downloads, so files open as text instead
+function cloneBare(src) {  // Object3D.clone JSON-copies userData, which holds back-references here
+  const saved = []; src.traverse(n => { saved.push([n, n.userData]); n.userData = {}; });
+  try { return src.clone(true); } finally { for (const [n, u] of saved) n.userData = u; }
+}
+const inspector = (() => {
+  const root = $('#inspector'), body = $('#insBody');
+  const r2 = new THREE.WebGLRenderer({ antialias: true }); r2.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const sc2 = new THREE.Scene(); sc2.background = new THREE.Color(0x1a1f26);
+  sc2.add(new THREE.HemisphereLight(0xffffff, 0x333333, 1.1)); const dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(300, -400, 600); sc2.add(dl);
+  const cam2 = new THREE.PerspectiveCamera(35, 1, 1, 20000), orb2 = new OrbitControls(cam2, r2.domElement); orb2.enableDamping = true;
+  let holder = null, running = false, cur = null, tab = 'drawing';
+  const sheetFor = (c) => c.cat === 'Electronics' || c.cat === 'Wiring' ? 'ELE-001_wiring' : /pulley|belt|bearing|shaft|collar|hub/.test(c.key) || /^gm_(shoulder|elbow|wrist)/.test(c.key) ? 'ASM-002_joint_section' : 'ASM-001_assembly';
+  function partObject(c) {
+    if (c.printed) return new THREE.Mesh(stlGeo[c.key], mat.printed);
+    const o = cloneBare(c.objs[0]); o.position.set(0, 0, 0); o.rotation.set(0, 0, 0); o.scale.setScalar(1);
+    o.traverse(m => { if (m.isMesh && selMat.has(c.objs[0]) === false && m.material.emissive) { m.material = m.material.clone(); m.material.emissive.setHex(0); } });
+    return o;
+  }
+  function show3d(c) {
+    if (holder) sc2.remove(holder);
+    holder = new THREE.Group(); const o = partObject(c); holder.add(o); sc2.add(holder);
+    const b = new THREE.Box3().setFromObject(holder), size = b.getSize(new THREE.Vector3()), ctr = b.getCenter(new THREE.Vector3());
+    holder.position.sub(ctr);
+    const g = new THREE.GridHelper(Math.max(size.x, size.y) * 2, 10, 0x3a4350, 0x2c333d); g.rotation.x = Math.PI / 2; g.position.z = -size.z / 2; holder.add(new THREE.BoxHelper(o, 0x4aa3ff)); sc2.add(g); holder.userData.grid = g;
+    const r = size.length(); cam2.position.set(r * 0.9, -r * 1.1, r * 0.8); orb2.target.set(0, 0, 0);
+    return size;
+  }
+  function loop() { if (!running) return; orb2.update(); r2.render(sc2, cam2); requestAnimationFrame(loop); }
+  async function fileAction(url, name, act) {
+    try {
+      if (act === 'download' && !HOSTED) { const b = await (await fetch(url)).blob(); const a = el('a', { href: URL.createObjectURL(b), download: name }); a.click(); return; }
+      const t = await (await fetch(url)).text();
+      const lines = t.split('\n'); body.querySelector('#insView').innerHTML = `<div class="small muted">${name} · ${lines.length.toLocaleString()} lines${lines.length > 400 ? ' (first 400 shown)' : ''} <button class="btn small" id="insCopy">Copy all</button></div><pre class="code">${escapeHtml(lines.slice(0, 400).join('\n'))}</pre>`;
+      body.querySelector('#insCopy').onclick = async (e) => { try { await navigator.clipboard.writeText(t); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Copy blocked here'; } };
+    } catch (e) { ui.flash('Could not load ' + name); }
+  }
+  function exportModel(c, kind) {
+    const o = partObject(c); const ex = kind === 'obj' ? new OBJExporter() : new STLExporter();
+    const data = kind === 'obj' ? ex.parse(o) : ex.parse(o, { binary: false });
+    if (HOSTED) { body.querySelector('#insView').innerHTML = `<div class="small muted">${c.key}.${kind} (generated from the model) <button class="btn small" id="insCopy">Copy all</button></div><pre class="code">${escapeHtml(data.split('\n').slice(0, 300).join('\n'))}</pre>`; body.querySelector('#insCopy').onclick = () => navigator.clipboard.writeText(data).catch(() => {}); return; }
+    const a = el('a', { href: URL.createObjectURL(new Blob([data])), download: `${c.key}.${kind}` }); a.click();
+  }
+  function render() {
+    const c = cur, p = c.printed;
+    document.querySelectorAll('#insTabs button').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
+    running = tab === '3d';
+    if (tab === 'drawing') {
+      const sheet = p ? M.drawing_base + p.drawing : M.sheet_base + sheetFor(c) + '.svg';
+      body.innerHTML = `${p ? '' : `<p class="muted small">Purchased part: no part drawing. Shown on assembly sheet ${sheetFor(c).replace('_', ' ')}.</p>`}
+        <div class="dwg" id="dwg"><img src="${sheet}" alt="Drawing of ${c.key}" draggable="false"></div>
+        <div class="small muted">Scroll to zoom, drag to pan, double-click to reset.</div>`;
+      const box = body.querySelector('#dwg'), im = box.querySelector('img'); let z = 1, x = 0, y = 0, drag = null;
+      const ap = () => im.style.transform = `translate(${x}px,${y}px) scale(${z})`;
+      box.onwheel = (e) => { e.preventDefault(); const r = box.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, k = e.deltaY < 0 ? 1.2 : 1 / 1.2, nz = clamp(z * k, 1, 12); x = mx - (mx - x) * nz / z; y = my - (my - y) * nz / z; z = nz; ap(); };
+      box.onpointerdown = (e) => { drag = [e.clientX - x, e.clientY - y]; box.setPointerCapture(e.pointerId); };
+      box.onpointermove = (e) => { if (drag) { x = e.clientX - drag[0]; y = e.clientY - drag[1]; ap(); } };
+      box.onpointerup = () => drag = null; box.ondblclick = () => { z = 1; x = y = 0; ap(); };
+    } else if (tab === '3d') {
+      body.innerHTML = '<div id="ins3d"></div><div id="insDims" class="small"></div>';
+      const host = body.querySelector('#ins3d'); host.append(r2.domElement);
+      const w = host.clientWidth, h = host.clientHeight; r2.setSize(w, h); cam2.aspect = w / h; cam2.updateProjectionMatrix();
+      if (holder?.userData.grid) sc2.remove(holder.userData.grid);
+      const size = show3d(c);
+      body.querySelector('#insDims').textContent = `Bounding box ${size.x.toFixed(1)} × ${size.y.toFixed(1)} × ${size.z.toFixed(1)} mm (design orientation). Drag to orbit.`;
+      loop();
+    } else if (tab === 'cad') {
+      body.innerHTML = p ? `<p class="small muted">CadQuery source from <code>arm/hardware.py</code> (rev A). Edit <code>HW</code> there and run <code>python run.py build</code>; this part, its drawing and its STEP/STL/OBJ regenerate.</p><pre class="code">${escapeHtml(p.code)}</pre>`
+        : `<p class="small">Purchased part, not modelled in CAD. The 3D tab shows the stand-in model used for fit and clearance in the test table.</p>
+           <table><tr><th>BOM item</th><td>${c.name}</td></tr><tr><th>Search / spec</th><td>${c.search || '-'}</td></tr><tr><th>Used for</th><td>${c.note || '-'}</td></tr><tr><th>Qty</th><td>${c.qty ?? '-'}</td></tr></table>`;
+    } else if (tab === 'print') {
+      const pr = p?.print;
+      body.innerHTML = !p ? '<p class="small">Not printed: this is a purchased part. See the procurement list.</p>' : !pr ? '<p class="small">No print data yet: run <code>python run.py print</code>.</p>' :
+        `<table><tr><th>Plate</th><td>${pr.plates.map(n => `plate_${n}.3mf (${pr.plate_check?.[n] || ''})`).join(', ')}</td></tr>
+          <tr><th>Copies</th><td>${pr.qty}</td></tr><tr><th>Size on bed</th><td>${pr.size.join(' × ')} mm</td></tr>
+          <tr><th>Orientation</th><td>${pr.why}</td></tr><tr><th>Supports</th><td>${pr.supports ? 'yes, build plate only' : 'no'}</td></tr>
+          <tr><th>Brim</th><td>${pr.brim ? '5 mm' : 'no'}</td></tr><tr><th>Solid volume</th><td>${pr.volume_cm3} cm³ (≤ ${(pr.volume_cm3 * 1.27).toFixed(0)} g PETG if printed solid)</td></tr>
+          <tr><th>Settings</th><td>PETG, 0.4 mm nozzle, 0.2 mm layers, 5 perimeters, 40 % gyroid</td></tr></table>`;
+    } else if (tab === 'files') {
+      const rows = p ? [
+        ['Drawing (SVG, A3)', M.drawing_base + p.drawing, p.drawing], ['STEP (CAD solid)', M.step_base + p.step + (M.text_suffix || ''), p.step],
+        ['STL (mesh, design orientation)', M.stl_base + p.stl + (M.stl_encoding === 'base64' ? '.txt' : ''), p.stl, M.stl_encoding === 'base64'],
+        ['OBJ (mesh)', M.obj_base + p.obj + (M.text_suffix || ''), p.obj], ...(p.print && M.print_base ? [['STL, print orientation', M.print_base + p.print.print_stl, p.id + '_print.stl', HOSTED]] : []),
+        ...(p.print && M.print_base && !HOSTED ? p.print.plates.map(n => [`Bambu plate ${n} (3MF)`, `${M.print_base}plates/plate_${n}.3mf`, `plate_${n}.3mf`, true]) : []),
+      ] : [];
+      body.innerHTML = `<p class="small muted">${HOSTED ? 'This preview can show files but not download them. Run <code>python run.py ui</code> on your PC to download, or use the build package.' : 'Files come from <code>3d-workflow/design/</code> and <code>print/</code>.'}</p>
+        <table>${rows.map(([lbl, url, name, binary], i) => `<tr><td>${lbl}</td><td class="mono">${name}</td><td>${HOSTED ? '' : `<button class="btn small" data-i="${i}" data-a="download">Download</button>`} ${binary ? '' : `<button class="btn small ghost" data-i="${i}" data-a="view">View</button>`}</td></tr>`).join('')}
+        ${p ? '' : `<tr><td>Stand-in model</td><td class="mono">${c.key}.obj / .stl</td><td><button class="btn small" data-x="obj">OBJ</button> <button class="btn small" data-x="stl">STL</button></td></tr>`}</table>
+        <div id="insView"></div>`;
+      body.querySelectorAll('[data-i]').forEach(b => b.onclick = () => { const [, url, name] = rows[+b.dataset.i]; fileAction(url, name, b.dataset.a); });
+      body.querySelectorAll('[data-x]').forEach(b => b.onclick = () => exportModel(c, b.dataset.x));
+    }
+  }
+  $('#insClose').onclick = () => { root.hidden = true; running = false; };
+  document.querySelectorAll('#insTabs button').forEach(b => b.onclick = () => { tab = b.dataset.t; render(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !root.hidden) $('#insClose').click(); });
+  return {
+    open(key) {
+      cur = catalog.get(key); if (!cur) return;
+      $('#insTitle').textContent = cur.name;
+      $('#insMeta').textContent = `${cur.cat}${cur.qty != null ? ` · qty ${cur.qty}` : ''}${cur.note ? ' · ' + cur.note : ''}`;
+      root.hidden = false; render();
+    },
+  };
+})();
+function escapeHtml(t) { return t.replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch])); }
 let downAt = null;
 renderer.domElement.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
 renderer.domElement.addEventListener('pointerup', e => {
@@ -863,7 +974,7 @@ function renderParts() {
     const st = c.qty == null ? `<span class="cnt">${placed}</span>` : `<span class="cnt ${placed === c.qty ? 'ok' : 'bad'}">${placed}/${c.qty}</span>`;
     return `<div class="pi" data-key="${c.key}"><span>${c.stl ? '▣' : '◇'}</span><span>${c.name}</span>${st}</div>`;
   }).join('')).join('');
-  document.querySelectorAll('#partList .pi').forEach(e => e.onclick = () => select(e.dataset.key));
+  document.querySelectorAll('#partList .pi').forEach(e => { e.onclick = () => select(e.dataset.key); e.ondblclick = () => inspector.open(e.dataset.key); });
 }
 
 // Link tab
