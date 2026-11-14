@@ -24,6 +24,8 @@ prusa-slicer-console --export-gcode --load printer.ini --load print.ini --load f
   --center X,Y --ensure-on-bed -o print/gcode/<part>.gcode print/stl/<part>.stl
 prusa-slicer-console --export-3mf -o print/project/<part>.3mf ...   # project with settings, for the user to open and adjust
 ```
+- build123d/CadQuery models are centred on the origin: always pass `--ensure-on-bed` and `--center X,Y` (bed centre), or PrusaSlicer rejects the part as outside the print volume.
+- Pass `--filament-density` (PLA ≈ 1.24, PETG ≈ 1.27, ABS/ASA ≈ 1.05, TPU ≈ 1.21 g/cm³) or the G-code reports 0 g and the BOM filament weight is wrong.
 - Store the exact `.ini` profiles used in `print/profiles/` and record the settings per part in `print/print-settings.csv`: material, layer height, perimeters, top/bottom layers, infill % and pattern, supports (type, where), brim, orientation, nozzle and bed temperature.
 - Choose settings per part by function: structural parts (more perimeters, higher infill, PETG/ASA/PA where heat or load matters), cosmetic parts (finer layers, ironing), flexible parts (TPU).
 - Plate multiple small parts together where sensible and produce plate G-code as well as per-part G-code.

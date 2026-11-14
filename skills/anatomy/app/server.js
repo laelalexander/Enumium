@@ -159,6 +159,10 @@ function cleanEnv() {
       for (const n of ds) { const bin = path.join(b, n, 'bin'); if (fs.existsSync(bin)) extra.push(bin); }
     }
   }
+    if (process.env.APPDATA) {
+      let pys = []; try { pys = fs.readdirSync(path.join(process.env.APPDATA, 'Python')); } catch {}
+      for (const v of pys) { const sc = path.join(process.env.APPDATA, 'Python', v, 'Scripts'); if (fs.existsSync(path.join(sc, 'pio.exe'))) extra.push(sc); }
+    }
   if (extra.length) env.PATH = extra.join(path.delimiter) + path.delimiter + (env.PATH || '');
   const kicad = findKiCadBin();
   if (kicad) env.PATH = kicad + path.delimiter + (env.PATH || '');
