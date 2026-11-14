@@ -124,7 +124,8 @@ function systemAppend() {
 function cleanEnv() {
   const env = { ...process.env };
   for (const k of Object.keys(env)) {
-    if (k === 'CLAUDECODE' || k.startsWith('CLAUDE_CODE_CHILD') || k === 'CLAUDE_CODE_ENTRYPOINT') delete env[k];
+    // Markers inherited when the server was started from inside another Claude session.
+    if (k === 'CLAUDECODE' || k.startsWith('CLAUDE_CODE_') || k === 'ANTHROPIC_BASE_URL') delete env[k];
   }
   const kicad = findKiCadBin();
   if (kicad) env.PATH = kicad + path.delimiter + (env.PATH || '');

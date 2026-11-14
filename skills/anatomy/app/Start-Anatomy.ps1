@@ -27,7 +27,7 @@ if (-not (Test-Up)) {
     exit 1
   }
   # Clear markers inherited if this was started from inside a Claude Code session.
-  Get-ChildItem Env: | Where-Object { $_.Name -eq 'CLAUDECODE' -or $_.Name -like 'CLAUDE_CODE_CHILD*' } |
+  Get-ChildItem Env: | Where-Object { $_.Name -eq 'CLAUDECODE' -or $_.Name -like 'CLAUDE_CODE_*' -or $_.Name -eq 'ANTHROPIC_BASE_URL' } |
     ForEach-Object { Remove-Item -LiteralPath ("Env:" + $_.Name) }
   $env:ANATOMY_ROOT = $Root
   $env:ANATOMY_PORT = "$Port"
@@ -46,7 +46,10 @@ $edge = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe", "$en
   Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
 if ($edge) {
   # A separate profile folder makes Anatomy its own window and taskbar entry.
-  Start-Process -FilePath $edge -ArgumentList @("--app=$url", "--user-data-dir=`"$(Join-Path $here 'window')`"", "--window-size=1400,900", "--no-first-run")
+  # Edge signs new profiles into the Windows account and syncs extensions, which then open
+  # their own browser windows; keep this profile bare (no sync, no extensions).
+  Start-Process -FilePath $edge -ArgumentList @("--app=$url", "--user-data-dir=`"$(Join-Path $here 'window')`"", "--window-size=1400,900",
+    "--no-first-run", "--no-default-browser-check", "--disable-sync", "--disable-extensions", "--disable-features=msImplicitSignin,msEdgeSyncConsent")
 } else {
   Start-Process $url
 }
