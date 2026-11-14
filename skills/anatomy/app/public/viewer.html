@@ -10,7 +10,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: radial-gradient(ellipse at 50% 60%, #06222b 0%, #020a0e 70%); color: var(--text);
   font: 13px/1.5 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
-canvas { display: block; }
+canvas { display: block; } .hidden { display: none !important; }
 .hud { position: fixed; pointer-events: none; text-shadow: 0 0 8px #5ff3ff88; }
 .tl { top: 14px; left: 16px; } .tr { top: 14px; right: 16px; text-align: right; } .bl { bottom: 14px; left: 16px; } .br { bottom: 14px; right: 16px; }
 .title { font-size: 15px; font-weight: 600; letter-spacing: .04em; max-width: 60vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -19,12 +19,23 @@ canvas { display: block; }
 .live.idle { color: var(--muted); } .live.idle i { background: var(--muted); box-shadow: none; animation: none; }
 @keyframes p { 50% { opacity: .25; } }
 .sub { color: var(--muted); font-size: 11px; letter-spacing: .08em; }
-.parts { margin-top: 8px; max-height: 50vh; overflow: hidden; font-size: 11px; color: var(--muted); }
+.parts { margin-top: 8px; max-height: 40vh; overflow: auto; pointer-events: auto; font-size: 11px; color: var(--muted); }
 .parts div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; transition: color 2s; }
 .parts div.new { color: var(--holo); }
 .ctl { pointer-events: auto; display: flex; gap: 6px; }
 .ctl button { background: #06303a99; border: 1px solid #1f6b78; color: var(--text); border-radius: 8px; padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer; }
 .ctl button.on { border-color: var(--holo); box-shadow: 0 0 10px #5ff3ff55 inset; }
+.style { pointer-events: auto; display: flex; gap: 10px; align-items: center; margin-top: 8px; background: #06303a99; border: 1px solid #1f6b78; border-radius: 10px; padding: 6px 10px; font-size: 11px; color: var(--muted); }
+.style input[type=color] { width: 26px; height: 22px; border: 0; padding: 0; background: none; cursor: pointer; }
+.style input[type=range] { width: 80px; accent-color: var(--holo); }
+.info { position: fixed; right: 16px; top: 50%; transform: translateY(-50%); width: 300px; max-height: 80vh; overflow: auto; pointer-events: auto;
+  background: #04161cdd; border: 1px solid #1f6b78; border-radius: 14px; padding: 14px; box-shadow: 0 0 30px #5ff3ff22; backdrop-filter: blur(4px); }
+.info h3 { margin: 0 0 2px; font-size: 14px; word-break: break-all; } .info .p { color: var(--muted); font-size: 11px; word-break: break-all; margin-bottom: 8px; }
+.info table { width: 100%; border-collapse: collapse; font-size: 12px; } .info td { padding: 3px 0; border-bottom: 1px solid #0f3a42; } .info td:first-child { color: var(--muted); width: 74px; }
+.info .k { color: var(--muted); font-size: 10px; letter-spacing: .15em; margin: 10px 0 4px; }
+.info a { color: var(--holo); cursor: pointer; display: block; font-size: 12px; word-break: break-all; }
+.info .x { position: absolute; top: 8px; right: 10px; cursor: pointer; color: var(--muted); }
+.parts div { pointer-events: auto; cursor: pointer; } .parts div.sel { color: #ffd36b; }
 .empty { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); letter-spacing: .1em; pointer-events: none; text-align: center; }
 .scan { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
 </style>
@@ -33,7 +44,10 @@ canvas { display: block; }
 <div class="scan"></div>
 <div class="hud tl"><div class="live" id="live"><i></i>LIVE</div><div class="title" id="title">Anatomy</div><div class="sub" id="sub">waiting for geometry…</div></div>
 <div class="hud tr"><div class="sub">PARTS</div><div class="parts" id="parts"></div></div>
-<div class="hud bl"><div class="ctl" id="mode"><button data-m="holo" class="on">Hologram</button><button data-m="outline">Outline</button><button data-m="solid">Solid</button></div></div>
+<div class="hud bl"><div class="ctl" id="mode"><button data-m="holo" class="on">Hologram</button><button data-m="outline">Outline</button><button data-m="solid">Solid</button></div>
+  <div class="style"><label>Color <input type="color" id="col" value="#5ff3ff"></label><label>Tint <input type="color" id="tint" value="#8a7dff"></label>
+  <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
+<div class="info hidden" id="info"></div>
 <div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="fit">Fit</button></div></div>
 <div class="empty" id="empty">NO 3D GEOMETRY YET<br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
 
@@ -71,15 +85,15 @@ polar.material.transparent = true; polar.material.opacity = 0.5; floor.add(polar
 const ring = new THREE.Mesh(new THREE.RingGeometry(1.0, 1.015, 128), new THREE.MeshBasicMaterial({ color: 0x5ff3ff, transparent: true, opacity: 0.7, side: THREE.DoubleSide, blending: THREE.AdditiveBlending }));
 floor.add(ring);
 
-const uniforms = { uTime: { value: 0 } };
+const uniforms = { uTime: { value: 0 }, uColor: { value: new THREE.Color(0x5ff3ff) }, uTint: { value: new THREE.Color(0x8a7dff) }, uGlow: { value: 1 }, uShade: { value: 0.35 } };
 function holoMaterial() {
   return new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
-    uniforms: { uTime: uniforms.uTime, uReveal: { value: 0 }, uMinZ: { value: 0 }, uMaxZ: { value: 1 }, uColor: { value: new THREE.Color(0x5ff3ff) } },
+    uniforms: { uTime: uniforms.uTime, uReveal: { value: 0 }, uMinZ: { value: 0 }, uMaxZ: { value: 1 }, uColor: uniforms.uColor, uTint: uniforms.uTint, uGlow: uniforms.uGlow, uShade: uniforms.uShade, uDim: { value: 1 }, uSel: { value: 0 } },
     vertexShader: `varying vec3 vN; varying vec3 vV; varying vec3 vW;
       void main() { vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; vec4 mv = viewMatrix * w;
         vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `uniform float uTime; uniform float uReveal; uniform float uMinZ; uniform float uMaxZ; uniform vec3 uColor;
+    fragmentShader: `uniform float uTime; uniform float uReveal; uniform float uMinZ; uniform float uMaxZ; uniform vec3 uColor; uniform vec3 uTint; uniform float uGlow; uniform float uShade; uniform float uDim; uniform float uSel;
       varying vec3 vN; varying vec3 vV; varying vec3 vW;
       void main() {
         float h = (vW.z - uMinZ) / max(uMaxZ - uMinZ, 1e-3);
@@ -87,8 +101,9 @@ function holoMaterial() {
         float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2);
         float scan = 0.55 + 0.45 * sin(vW.z * 0.9 - uTime * 3.0);
         float edge = smoothstep(uReveal - 0.04, uReveal, h) * step(uReveal, 0.999);
-        vec3 c = uColor * (0.06 + 0.85 * f) * scan + vec3(0.7, 1.0, 1.0) * edge * 1.5;
-        gl_FragColor = vec4(c, 0.10 + 0.7 * f + edge);
+        vec3 base = mix(uColor, vec3(1.0, 0.78, 0.3), uSel);
+        vec3 c = mix(base, uTint, f * 0.6) * (uShade * 0.3 + 0.85 * f * uGlow) * scan + vec3(0.7, 1.0, 1.0) * edge * 1.5;
+        gl_FragColor = vec4(c * uDim, (0.05 + uShade * 0.25 + 0.7 * f) * uDim + edge);
       }`,
   });
 }
@@ -109,7 +124,7 @@ async function load(p) {
   return [];
 }
 function build(geos) {
-  const g = new THREE.Group();
+  const g = new THREE.Group(); g.userData.geos = geos;
   for (const geo of geos) {
     geo.computeVertexNormals(); // STL facet normals are often zero or missing
     const holo = new THREE.Mesh(geo, holoMaterial()); holo.userData.kind = 'holo';
@@ -124,7 +139,7 @@ function applyMode() {
     if (o.userData.kind === 'holo') o.visible = mode === 'holo';
     if (o.userData.kind === 'solid') o.visible = mode === 'solid';
     if (o.userData.kind === 'edges') o.visible = mode !== 'solid' || true;
-    if (o.userData.kind === 'edges') o.material.color.set(mode === 'solid' ? 0x0b3b44 : 0x5ff3ff);
+    if (o.userData.kind === 'edges') o.material.color.copy(mode === 'solid' ? new THREE.Color(0x0b3b44) : uniforms.uColor.value);
   });
 }
 function bounds() { return new THREE.Box3().setFromObject(root); }
@@ -147,11 +162,11 @@ function updateZ() {
 let lastChange = 0, running = false;
 async function poll() {
   try {
-    const [files, meta] = await Promise.all([api(`/api/projects/${id}/files`), api(`/api/projects/${id}`)]);
+    const [list, meta] = await Promise.all([api(`/api/projects/${id}/files`), api(`/api/projects/${id}`)]);
     $('#title').textContent = meta.title || 'Anatomy';
     running = !!meta.running;
     $('#live').classList.toggle('idle', !running); $('#live').lastChild.textContent = running ? 'LIVE' : 'IDLE';
-    let meshes = files.filter(f => MESH.includes(ext(f.path)) && !SKIP.test(f.path));
+    let meshes = list.filter(f => MESH.includes(ext(f.path)) && !SKIP.test(f.path));
     // Prefer an assembled export when the project has one.
     const asm = meshes.filter(f => /assembl/i.test(f.path));
     if (asm.length) meshes = asm;
@@ -166,20 +181,21 @@ async function poll() {
       try {
         const g = build(await load(f.path));
         if (have) root.remove(have.group);
-        root.add(g); parts.set(f.path, { group: g, mtime: f.mtime, born: performance.now() });
+        g.userData.path = f.path; root.add(g); parts.set(f.path, { group: g, mtime: f.mtime, born: performance.now() });
         changed = true; lastChange = Date.now();
       } catch {}
     }
-    if (changed) { applyMode(); updateZ(); if (!framed || parts.size <= 3) frame(); renderParts(); }
+    if (changed) { files = list; applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3) frame(); renderParts(); }
     $('#empty').style.display = parts.size ? 'none' : '';
     const ago = lastChange ? Math.round((Date.now() - lastChange) / 1000) : null;
     $('#sub').textContent = `${parts.size} part${parts.size === 1 ? '' : 's'}${ago !== null ? ` · updated ${ago < 60 ? ago + 's' : Math.round(ago / 60) + 'm'} ago` : ''}`;
   } catch {}
   setTimeout(poll, 2500);
 }
+let selected = null, files = [], bom = null; const partsMeta = new Map();
 function renderParts() {
   const list = [...parts.entries()].sort((a, b) => b[1].born - a[1].born);
-  $('#parts').innerHTML = list.slice(0, 24).map(([p, v]) => `<div class="${performance.now() - v.born < 8000 ? 'new' : ''}">${p.split('/').pop()}</div>`).join('');
+  $('#parts').innerHTML = list.map(([p, v]) => `<div data-p="${p.replace(/"/g, '&quot;')}" class="${performance.now() - v.born < 8000 ? 'new' : ''} ${p === selected ? 'sel' : ''}">${p.split('/').pop()}</div>`).join('');
   setTimeout(() => $('#parts').querySelectorAll('.new').forEach(d => d.classList.remove('new')), 8000);
 }
 
@@ -206,6 +222,105 @@ $('#mode').onclick = e => { const m = e.target.dataset.m; if (!m) return; mode =
 $('#spin').onclick = () => { ctl.autoRotate = !ctl.autoRotate; $('#spin').classList.toggle('on', ctl.autoRotate); };
 $('#fit').onclick = frame;
 renderer.domElement.addEventListener('pointerdown', () => { /* user takes over; keep spinning only if they re-enable */ });
+// ---------------------------------------------------------------- style controls (saved per viewer)
+const STYLE_KEY = 'anatomy.holo.style';
+function setStyle(st, save = true) {
+  uniforms.uColor.value.set(st.col); uniforms.uTint.value.set(st.tint); uniforms.uGlow.value = +st.glow; uniforms.uShade.value = +st.shade;
+  ring.material.color.set(st.col); applyMode(); if (selected) highlight(selected);
+  $('#col').value = st.col; $('#tint').value = st.tint; $('#glow').value = st.glow; $('#shade').value = st.shade;
+  if (save) try { localStorage.setItem(STYLE_KEY, JSON.stringify(st)); } catch {}
+}
+const DEFAULT_STYLE = { col: '#5ff3ff', tint: '#8a7dff', glow: 1, shade: 0.35 };
+let style = DEFAULT_STYLE; try { style = { ...DEFAULT_STYLE, ...JSON.parse(localStorage.getItem(STYLE_KEY) || '{}') }; } catch {}
+setStyle(style, false);
+for (const k of ['col', 'tint', 'glow', 'shade']) $('#' + k).oninput = e => { style = { ...style, [k]: e.target.value }; setStyle(style); };
+$('#reset').onclick = () => { style = { ...DEFAULT_STYLE }; setStyle(style); };
+
+// ---------------------------------------------------------------- select a part
+const ray = new THREE.Raycaster(); const ptr = new THREE.Vector2(); let downAt = null;
+renderer.domElement.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 4) return; // a drag, not a click
+  ptr.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ptr, cam);
+  const targets = []; root.traverse(o => { if (o.isMesh && o.userData.kind === 'solid') targets.push(o); });
+  const hit = ray.intersectObjects(targets, false)[0];
+  if (!hit) return select(null);
+  let g = hit.object; while (g && !g.userData.path) g = g.parent; select(g ? g.userData.path : null);
+});
+$('#parts').onclick = e => { const d = e.target.closest('[data-p]'); if (d) select(d.dataset.p === selected ? null : d.dataset.p, true); };
+function highlight(p) {
+  for (const [path, { group }] of parts) group.traverse(o => {
+    if (o.material && o.material.uniforms) { o.material.uniforms.uSel.value = path === p ? 1 : 0; o.material.uniforms.uDim.value = !p || path === p ? 1 : 0.25; }
+    if (o.userData.kind === 'edges') { o.material.color.copy(path === p ? new THREE.Color(0xffd36b) : (mode === 'solid' ? new THREE.Color(0x0b3b44) : uniforms.uColor.value)); }
+    if (o.userData.kind === 'solid') { o.material.color.set(path === p ? 0xffd36b : 0x9fd8e6); o.material.transparent = !!p && path !== p; o.material.opacity = !p || path === p ? 1 : 0.2; }
+  });
+}
+function partStats(group) {
+  const box = new THREE.Box3().setFromObject(group), s = box.getSize(new THREE.Vector3());
+  let vol = 0, tris = 0; const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+  for (const g of group.userData.geos || []) {
+    const pos = g.attributes.position, idx = g.index, n = idx ? idx.count / 3 : pos.count / 3; tris += n;
+    for (let i = 0; i < n; i++) {
+      a.fromBufferAttribute(pos, idx ? idx.getX(3 * i) : 3 * i); b.fromBufferAttribute(pos, idx ? idx.getX(3 * i + 1) : 3 * i + 1); c.fromBufferAttribute(pos, idx ? idx.getX(3 * i + 2) : 3 * i + 2);
+      vol += a.dot(b.clone().cross(c)) / 6;
+    }
+  }
+  return { s, vol: Math.abs(vol), tris };
+}
+const mmin = v => `${v.toFixed(1)} mm <span style="color:var(--muted)">[${(v / 25.4).toFixed(3)} in]</span>`;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+async function select(p, focus = false) {
+  selected = p; highlight(p); renderParts();
+  const info = $('#info');
+  if (!p) { info.classList.add('hidden'); return; }
+  const { group } = parts.get(p); const st = partStats(group);
+  if (focus) { const bx = new THREE.Box3().setFromObject(group), c = bx.getCenter(new THREE.Vector3()); ctl.target.copy(c); }
+  const stem = p.split('/').pop().replace(/\.[^.]+$/, '').toLowerCase();
+  if (!files.length) files = await api(`/api/projects/${id}/files`).catch(() => []);
+  const rel = files.filter(f => f.path !== p && f.path.split('/').pop().toLowerCase().replace(/\.gcode\.3mf$/, '').replace(/\.[^.]+$/, '').includes(stem));
+  if (bom === null) bom = await loadBom();
+  const meta = await loadPartsMeta(p);
+  const row = bom && bom.find(r => r.join(' ').toLowerCase().includes(stem) || r.join(' ').toLowerCase().includes(stem.replace(/[-_]/g, ' ')));
+  const kind = f => { const e = f.toLowerCase(); return /\.(pdf|svg|dxf)$/.test(e) ? 'Drawing' : /gcode/.test(e) ? 'G-code' : /\.(py|scad)$/.test(e) ? 'CAD source' : /\.(step|stp)$/.test(e) ? 'STEP' : 'File'; };
+  info.innerHTML = `<span class="x" id="ix">✕</span><h3>${esc(meta?.name || p.split('/').pop())}</h3><div class="p">${esc(p)}</div>
+    ${meta ? `<table>${[['Part no.', meta.part_no], ['Category', meta.category], ['Qty', meta.qty], ['Material', meta.material], ['Note', meta.note]].filter(r => r[1] != null && r[1] !== '').map(r => `<tr><td>${r[0]}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>${meta.drawing ? `<a data-open="${esc(meta.drawingPath)}">Drawing: ${esc(String(meta.drawing).split('/').pop())}</a>` : ''}` : ''}
+    <table><tr><td>X</td><td>${mmin(st.s.x)}</td></tr><tr><td>Y</td><td>${mmin(st.s.y)}</td></tr><tr><td>Z</td><td>${mmin(st.s.z)}</td></tr>
+    <tr><td>Volume</td><td>${(st.vol / 1000).toFixed(1)} cm³ <span style="color:var(--muted)">[${(st.vol / 16387.064).toFixed(2)} in³]</span></td></tr>
+    <tr><td>Filament</td><td>≈ ${(st.vol / 1000 * 1.24).toFixed(0)} g PLA · ${(st.vol / 1000 * 1.27).toFixed(0)} g PETG (solid)</td></tr><tr><td>Triangles</td><td>${st.tris.toLocaleString()}</td></tr></table>
+    ${row ? `<div class="k">BOM LINE</div><div style="font-size:12px">${esc(row.filter(Boolean).slice(0, 5).join(' · '))}</div>` : ''}
+    ${rel.length ? `<div class="k">RELATED FILES</div>` + rel.slice(0, 12).map(f => `<a data-open="${esc(f.path)}">${kind(f.path)}: ${esc(f.path.split('/').pop())}</a>`).join('') : ''}
+    <div class="k">ACTIONS</div><a data-open="${esc(p)}">Open in program</a><a data-reveal="${esc(p)}">Show in folder</a><a id="iso">Isolate / show all</a>`;
+  $('#ix').onclick = () => select(null);
+  info.querySelectorAll('[data-open]').forEach(a => a.onclick = () => fetch(`/api/projects/${id}/open?path=${encodeURIComponent(a.dataset.open)}`, { method: 'POST' }));
+  info.querySelectorAll('[data-reveal]').forEach(a => a.onclick = () => fetch(`/api/projects/${id}/reveal?path=${encodeURIComponent(a.dataset.reveal)}`, { method: 'POST' }));
+  let iso = false; $('#iso').onclick = () => { iso = !iso; for (const [path, { group }] of parts) group.visible = !iso || path === p; };
+  info.classList.remove('hidden');
+}
+// parts.json next to the part files, keyed by file name: {name, part_no, category, qty, material, note, drawing}
+async function loadPartsMeta(p) {
+  const dir = p.includes('/') ? p.slice(0, p.lastIndexOf('/')) : '';
+  if (!partsMeta.has(dir)) {
+    const url = `/api/projects/${id}/file?path=${encodeURIComponent((dir ? dir + '/' : '') + 'parts.json')}`;
+    partsMeta.set(dir, fetch(url).then(r => r.ok ? r.json() : null).catch(() => null));
+  }
+  const all = await partsMeta.get(dir); if (!all || typeof all !== 'object') return null;
+  const file = p.split('/').pop(), stem = file.replace(/\.[^.]+$/, '');
+  const m = all[file] || all[stem] || Object.entries(all).find(([k]) => k.toLowerCase() === file.toLowerCase() || k.replace(/\.[^.]+$/, '').toLowerCase() === stem.toLowerCase())?.[1];
+  if (!m) return null;
+  let drawingPath = m.drawing;
+  if (m.drawing && !files.some(f => f.path === m.drawing)) {
+    const hit = files.find(f => f.path.endsWith('/' + String(m.drawing).replace(/^\.?\//, '')) || f.path.split('/').pop() === String(m.drawing).split('/').pop());
+    if (hit) drawingPath = hit.path;
+  }
+  return { ...m, drawingPath };
+}
+async function loadBom() {
+  const f = files.find(f => /(^|\/)bom\.csv$/i.test(f.path)) || files.find(f => /bom.*\.csv$/i.test(f.path));
+  if (!f) return false;
+  const t = await fetch(`/api/projects/${id}/file?path=${encodeURIComponent(f.path)}`).then(r => r.text()).catch(() => '');
+  return t.split(/\r?\n/).slice(1).map(l => l.split(',').map(x => x.replace(/^"|"$/g, '').trim()));
+}
+
 poll();
 </script>
 </body>

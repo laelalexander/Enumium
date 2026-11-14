@@ -20,6 +20,9 @@
 .PARAMETER ProjectsRoot
   Folder the Anatomy app keeps projects in. Default C:\Anatomy.
 
+.PARAMETER Force
+  Update even if a project run is in progress (the run is stopped).
+
 .PARAMETER Package
   Also build anatomy.skill (a zip with an anatomy\ root folder) next to this script.
 
@@ -33,6 +36,7 @@ param(
   [switch]$SkipKiCad,
   [switch]$Package,
   [switch]$NoShortcut,
+  [switch]$Force,
   [string]$ProjectsRoot = "C:\Anatomy"
 )
 
@@ -50,6 +54,16 @@ $target     = Join-Path $skillsRoot "anatomy"
 
 # Files that make up the installed skill. evals\, README, HANDOFF and this script stay in the repo.
 $skillItems = @("SKILL.md", "references")
+
+# Never cut off a project run: refuse to update while one is in progress (unless -Force).
+$busy = @()
+try {
+  $all = Invoke-RestMethod -Uri "http://127.0.0.1:4377/api/projects" -TimeoutSec 2   # PS 5.1 returns a JSON array as one object
+  $busy = @($all | ForEach-Object { $_ } | Where-Object { $_.status -eq 'running' })
+} catch { }
+if ($busy.Count -gt 0 -and -not $Force) {
+  throw "Anatomy is running a project ($($busy[0].title)). Wait for it to finish, then run the installer again (or use -Force to stop it)."
+}
 
 function Copy-SkillFrom([string]$src, [string]$dest) {
   New-Item -ItemType Directory -Force -Path $dest | Out-Null
