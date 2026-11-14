@@ -36,6 +36,7 @@ canvas { display: block; } .hidden { display: none !important; }
 .info a { color: var(--holo); cursor: pointer; display: block; font-size: 12px; word-break: break-all; }
 .info .x { position: absolute; top: 8px; right: 10px; cursor: pointer; color: var(--muted); }
 .parts div { pointer-events: auto; cursor: pointer; } .parts div.sel { color: #ffd36b; }
+.toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); max-width: 520px; background: #04161cee; border: 1px solid #1f6b78; border-radius: 10px; padding: 8px 14px; font-size: 12px; color: var(--text); box-shadow: 0 0 20px #5ff3ff22; }
 .empty { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); letter-spacing: .1em; pointer-events: none; text-align: center; }
 .scan { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
 </style>
@@ -48,7 +49,8 @@ canvas { display: block; } .hidden { display: none !important; }
   <div class="style"><label>Color <input type="color" id="col" value="#5ff3ff"></label><label>Tint <input type="color" id="tint" value="#8a7dff"></label>
   <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
 <div class="info hidden" id="info"></div>
-<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="lay" title="Lay parts out side by side, or show them where their files place them">Spread parts</button><button id="fit">Fit</button></div></div>
+<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="tbl" title="Lay every part out side by side on the table">Table</button><button id="asm" title="Move every part into its place in the finished product">Assemble</button><button id="fit">Fit</button></div></div>
+<div class="toast hidden" id="toast"></div>
 <div class="empty" id="empty"><span id="emptyT">NO 3D GEOMETRY YET</span><br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
 
 <script type="module">
@@ -188,7 +190,7 @@ async function poll() {
         changed = true; lastChange = Date.now(); failed.delete(f.path);
       } catch (e) { failed.set(f.path, e.message || String(e)); }
     }
-    if (changed) { files = []; layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3 || isSpread()) frame(); renderParts(); }
+    if (changed) { files = []; await loadPoses().catch(() => {}); layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3 || isSpread()) frame(); renderParts(); }
     $('#empty').style.display = parts.size ? 'none' : '';
     if (!parts.size && failed.size) $("#emptyT").textContent = `${failed.size} 3D file${failed.size === 1 ? '' : 's'} found but could not be read`;
     const ago = lastChange ? Math.round((Date.now() - lastChange) / 1000) : null;
@@ -196,7 +198,7 @@ async function poll() {
   } catch {}
   setTimeout(poll, 2500);
 }
-let selected = null, files = [], bom = null; const partsMeta = new Map();
+let selected = null, files = [], bom = null, anim = null; const partsMeta = new Map(), posesKnown = new Map();
 function renderParts() {
   const list = [...parts.entries()].sort((a, b) => b[1].born - a[1].born);
   $('#parts').innerHTML = list.map(([p, v]) => `<div data-p="${p.replace(/"/g, '&quot;')}" class="${performance.now() - v.born < 8000 ? 'new' : ''} ${p === selected ? 'sel' : ''}">${p.split('/').pop()}</div>`).join('');
@@ -208,7 +210,7 @@ function resize() { renderer.setSize(innerWidth, innerHeight); cam.aspect = inne
 addEventListener('resize', resize); resize();
 const clock = new THREE.Clock();
 (function loop() {
-  requestAnimationFrame(loop);
+  requestAnimationFrame(loop); stepAnim(performance.now());
   const t = clock.getElapsedTime(); uniforms.uTime.value = t;
   const now = performance.now();
   for (const { group, born } of parts.values()) {
@@ -225,34 +227,87 @@ const clock = new THREE.Clock();
 $('#mode').onclick = e => { const m = e.target.dataset.m; if (!m) return; mode = m; $('#mode').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); applyMode(); };
 $('#spin').onclick = () => { ctl.autoRotate = !ctl.autoRotate; $('#spin').classList.toggle('on', ctl.autoRotate); };
 $('#fit').onclick = frame;
-// Parts exported for printing all sit at the origin and pile up. Unless the project has an assembled export,
-// detect that and lay the parts out on a grid; the Spread button switches by hand.
-let spread = null, isAsm = false; // isAsm: an assembly folder was found (preferred, but still checked for origin piling)
-$('#lay').onclick = () => { spread = !isSpread(); layout(); frame(); };
-function isSpread() { return spread ?? atOrigin(); }
-function partBox(g) { const p = g.position.clone(); g.position.set(0, 0, 0); g.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(g); g.position.copy(p); g.updateMatrixWorld(true); return b; }
-// Parts saved one by one (for printing or as separate CAD files) each contain the origin; an assembly mostly does not.
-// The folder name can't be trusted: some "assembly" exports are still one part per origin.
+// Two views. Table: every part side by side. Assembled: every part moved to its place in the product.
+// Parts saved one at a time (for printing, or as separate CAD files) all sit at the origin, so the default is
+// Table for those and Assembled for files already saved in place. Assembly positions come from "pose" in
+// parts.json (see references/build-package.md); without poses, Assembled shows the parts where their files put them.
+let view = null, isAsm = false; // view: null = automatic, 'table' or 'assembled' once a button is pressed
+$('#tbl').onclick = () => { view = 'table'; layout(true); };
+$('#asm').onclick = async () => {
+  const poses = await loadPoses();
+  if (!poses.size && atOrigin()) return toast('This project has no assembly positions yet, so the parts stay on the table. Ask Anatomy to "add assembly poses to parts.json" and the Assemble button will put them together.');
+  if (poses.size && poses.size < parts.size) toast(`${parts.size - poses.size} of ${parts.size} parts have no assembly position and stay where their files put them.`);
+  view = 'assembled'; layout(true);
+};
+function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 7000); }
+function isSpread() { return view ? view === 'table' : atOrigin() && !posesKnown.size; }
+function partBox(g) {
+  const p = g.position.clone(), q = g.quaternion.clone(); g.position.set(0, 0, 0); g.quaternion.identity(); g.updateMatrixWorld(true);
+  const b = new THREE.Box3().setFromObject(g); g.position.copy(p); g.quaternion.copy(q); g.updateMatrixWorld(true); return b;
+}
 function atOrigin() {
   const bs = [...parts.values()].map(v => partBox(v.group)); if (bs.length < 3) return false;
   const o = new THREE.Vector3(); return bs.filter(b => b.clone().expandByScalar(1).containsPoint(o)).length / bs.length >= 0.5;
 }
-function layout() {
-  const on = isSpread(); $('#lay').classList.toggle('on', on); 
-  const items = [...parts.entries()].map(([p, v]) => ({ p, g: v.group, b: partBox(v.group) }));
-  if (!on) { for (const it of items) it.g.position.set(0, 0, 0); return; }
-  items.sort((a, b) => a.p.localeCompare(b.p, undefined, { numeric: true }));
-  const sz = it => it.b.getSize(new THREE.Vector3());
-  const area = items.reduce((a, it) => { const s = sz(it); return a + s.x * s.y; }, 0);
-  const maxW = Math.max(...items.map(it => sz(it).x)), gap = Math.max(4, Math.sqrt(area / items.length) * 0.15);
-  const rowW = Math.max(maxW, Math.sqrt(area) * 1.6);
-  let x = 0, y = 0, rowH = 0;
-  for (const it of items) {
-    const s = sz(it);
-    if (x > 0 && x + s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
-    it.g.position.set(x - it.b.min.x, y - s.y - it.b.min.y, -it.b.min.z);
-    x += s.x + gap; rowH = Math.max(rowH, s.y);
+// pose: {"matrix": [16 numbers, row-major 4x4, mm]} or {"position": [x, y, z] mm, "rotation": [rx, ry, rz] degrees, XYZ order}
+// posesKnown: path -> {m: Matrix4, step}
+function poseOf(meta) {
+  const q = meta && (meta.pose || meta);
+  if (!q) return null;
+  if (Array.isArray(q.matrix) && q.matrix.length === 16) return new THREE.Matrix4().set(...q.matrix.map(Number));
+  if (Array.isArray(q.position) || Array.isArray(q.rotation)) {
+    const r = (q.rotation || [0, 0, 0]).map(d => Number(d) * Math.PI / 180), pos = (q.position || [0, 0, 0]).map(Number);
+    return new THREE.Matrix4().compose(new THREE.Vector3(...pos), new THREE.Quaternion().setFromEuler(new THREE.Euler(r[0], r[1], r[2], 'XYZ')), new THREE.Vector3(1, 1, 1));
   }
+  return null;
+}
+async function loadPoses() {
+  for (const p of parts.keys()) {
+    if (posesKnown.has(p)) continue;
+    const m = await loadPartsMeta(p).catch(() => null), mat = poseOf(m);
+    if (mat) posesKnown.set(p, { m: mat, step: Number(m.step ?? m.pose?.step ?? 999) });
+  }
+  return posesKnown;
+}
+
+function layout(animate = false) {
+  const on = isSpread(); $('#tbl').classList.toggle('on', on); $('#asm').classList.toggle('on', !on);
+  const items = [...parts.entries()].map(([p, v]) => ({ p, g: v.group, b: partBox(v.group) }));
+  const target = new Map();
+  if (!on) {
+    for (const it of items) {
+      const k = posesKnown.get(it.p), pos = new THREE.Vector3(), q = new THREE.Quaternion(), sc = new THREE.Vector3();
+      if (k) k.m.decompose(pos, q, sc);
+      target.set(it.g, { pos, q, order: k ? k.step : 999 });
+    }
+  } else {
+    items.sort((a, b) => a.p.localeCompare(b.p, undefined, { numeric: true }));
+    const sz = it => it.b.getSize(new THREE.Vector3());
+    const area = items.reduce((a, it) => { const s = sz(it); return a + s.x * s.y; }, 0);
+    const maxW = Math.max(...items.map(it => sz(it).x)), gap = Math.max(4, Math.sqrt(area / items.length) * 0.15);
+    const rowW = Math.max(maxW, Math.sqrt(area) * 1.6);
+    let x = 0, y = 0, rowH = 0, i = 0;
+    for (const it of items) {
+      const s = sz(it);
+      if (x > 0 && x + s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
+      target.set(it.g, { pos: new THREE.Vector3(x - it.b.min.x, y - s.y - it.b.min.y, -it.b.min.z), q: new THREE.Quaternion(), order: i++ });
+      x += s.x + gap; rowH = Math.max(rowH, s.y);
+    }
+  }
+  if (!animate) { for (const [g, t] of target) { g.position.copy(t.pos); g.quaternion.copy(t.q); } return; }
+  // Animate: parts move one after another (in assembly step order when parts.json gives one), then reframe.
+  const list = [...target.entries()].sort((a, b) => a[1].order - b[1].order);
+  const stagger = Math.min(60, 1600 / Math.max(1, list.length)), dur = 900, t0 = performance.now();
+  anim = { t0, list: list.map(([g, t], i) => ({ g, t, p0: g.position.clone(), q0: g.quaternion.clone(), d: i * stagger })), end: t0 + list.length * stagger + dur, dur };
+  framed = false;
+}
+function stepAnim(now) {
+  if (!anim) return;
+  for (const a of anim.list) {
+    let k = Math.min(1, Math.max(0, (now - anim.t0 - a.d) / anim.dur)); k = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+    a.g.position.lerpVectors(a.p0, a.t.pos, k); a.g.quaternion.slerpQuaternions(a.q0, a.t.q, k);
+  }
+  if (now >= anim.end) { anim = null; updateZ(); frame(); }
 }
 renderer.domElement.addEventListener('pointerdown', () => { /* user takes over; keep spinning only if they re-enable */ });
 // ---------------------------------------------------------------- style controls (saved per viewer)
