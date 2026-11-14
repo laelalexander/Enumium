@@ -157,3 +157,21 @@ def test_fab_package_dual_units_and_fasteners(tmp_path, monkeypatch):
     import json
     d = json.loads((fab.HERE / "design" / "design.json").read_text(encoding="utf-8"))
     assert sum(t["length"] + 3 for t in fab.tubes(d)) < 1219
+
+
+def test_assembly_steps_cover_every_twin_part_and_known_fasteners():
+    from arm import assembly as A
+    from arm.fasteners import FASTENERS
+    from arm.twin import model
+    ids = [s["id"] for s in A.STEPS]
+    assert len(ids) == len(set(ids)) >= 12
+    for s in A.STEPS:
+        assert s["do"] and s["check"] and len(s["view"]) == 3
+        for f, q in s["fasteners"]:
+            assert f in FASTENERS and q > 0, (s["id"], f)
+    assert [s["id"] for s in model()["assembly"]] == ids
+    # every fab part the twin draws is introduced by some step
+    fab = {p["pid"] for p in json.loads((Path(__file__).resolve().parent.parent / "fab" / "fab.json").read_text())} \
+        if (Path(__file__).resolve().parent.parent / "fab" / "fab.json").exists() else set()
+    sels = {sel.split("~")[0] for s in A.STEPS for sel in s["show"]}
+    assert fab <= sels | {"ENC-01"}, fab - sels

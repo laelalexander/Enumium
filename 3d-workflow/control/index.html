@@ -138,6 +138,11 @@
       <div class="row">
         <label>Explode <input id="explode" type="range" min="0" max="1" step="0.01" value="0"></label>
       </div>
+      <div class="row">
+        <label>Assembly steps <select id="buildStep"><option value="-1">Show all (finished arm)</option></select></label>
+        <button id="buildPrev">Prev</button><button id="buildNext">Next</button>
+      </div>
+      <div id="buildText" class="small"></div>
       <div id="partCount" class="small"></div>
       <div id="partList"></div>
     </section>

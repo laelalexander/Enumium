@@ -13,7 +13,7 @@ keeps the twin in step with the design."""
 import argparse, functools, http.server, json, math, socketserver, sys, threading, webbrowser
 from pathlib import Path
 
-from . import design as D, hardware as H, build as B
+from . import design as D, hardware as H, build as B, assembly as A
 from .actuators import BY_KEY
 from .control import Arm, MICROSTEP, STEPS_PER_MM_GRIP
 
@@ -78,7 +78,7 @@ def model(d=None):
     return dict(
         generated_by="python -m arm.twin", stl_base="../design/cad/stl/", drawing_base="../design/drawings/",
         step_base="../design/cad/step/", obj_base="../design/cad/obj/", print_base="../print/", sheet_base="../design/drawings/",
-        fab_base="../fab/", fabricated=fabricated,
+        fab_base="../fab/", fabricated=fabricated, assembly=A.twin_steps(),
         payload_lb=d["payload_lb"], extension_in=d["extension_in"], l1_mm=d["l1_mm"], l2_mm=d["l2_mm"],
         max_extension_mm=round(D.MAX_EXTENSION * 1000), safety=D.SAFETY,
         mass=dict(tube_kg_per_m=D.TUBE_KG_PER_M, joint_hw_kg=D.JOINT_HW_KG, gripper_kg=D.GRIPPER_KG,

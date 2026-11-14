@@ -19,6 +19,7 @@ Related: [assembly guide](../../3d-workflow/docs/ASSEMBLY.md), [wiring pin table
 | Document | What's in it | Regenerate |
 |---|---|---|
 | [Build book (PDF)](robot-arm-build-book.pdf) | Everything below in one 50-page document, plus every blueprint | `python run.py book` |
+| [Assembly guide (PDF)](robot-arm-assembly-guide.pdf) | 14 illustrated build steps, one page each: picture from the 3D twin (new parts in colour, fitted parts grey), parts, fastener numbers with torque, tools, checks | `python run.py guide` |
 | [Procurement list](../../3d-workflow/docs/PROCUREMENT.md) · [CSV tracker](../../3d-workflow/docs/procurement.csv) | 45 lines to buy, quantities, planning prices (est. ~$1,140), order-first list | `python run.py procure` |
 | [Bill of materials](../../3d-workflow/design/BOM.md) | Drives, belt stages, tube cuts, purchased and printed parts | `python run.py build` |
 | [Print plan](../../3d-workflow/print/REPORT.md) | 16 prints on 5 Bambu plates (3MF), orientation, settings, verified slices (774 g PETG) | `python run.py print` |

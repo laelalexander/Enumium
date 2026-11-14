@@ -1298,6 +1298,256 @@
    "holes": 2
   }
  ],
+ "assembly": [
+  {
+   "id": "base",
+   "title": "Prepare the base board",
+   "show": [
+    "BASE-01",
+    "LEG-01",
+    "GSK-03",
+    "grommet"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "yaw_motor",
+   "title": "Mount the yaw gearmotor",
+   "show": [
+    "gm_yaw",
+    "limit~yaw"
+   ],
+   "view": [
+    0.12,
+    -1,
+    0.04
+   ],
+   "zoom": 0.7
+  },
+  {
+   "id": "turntable",
+   "title": "Seat the gasket and turntable",
+   "show": [
+    "GSK-01",
+    "turntable~12 in"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "yaw_rotor",
+   "title": "Yaw adapter disc, hub and base plate",
+   "show": [
+    "YAW-01",
+    "turntable~upper",
+    "hub~yaw",
+    "base_top_plate"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "riser",
+   "title": "Bond the riser tube",
+   "show": [
+    "TUBE-03"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "shoulder",
+   "title": "Build and fit the shoulder joint",
+   "show": [
+    "shoulder_cheek_motor",
+    "shoulder_cheek_plain",
+    "shoulder_tube_block",
+    "gm_shoulder",
+    "pulley_s~shoulder",
+    "pulley_l~shoulder",
+    "belt~shoulder",
+    "bearing~shoulder",
+    "SHAFT-01~shoulder",
+    "collar~shoulder",
+    "hub~shoulder",
+    "tube_socket~shoulder",
+    "limit~shoulder"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "upper_arm",
+   "title": "Fit the upper arm tube",
+   "show": [
+    "TUBE-01"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "elbow",
+   "title": "Build and fit the elbow joint",
+   "show": [
+    "elbow_cheek_motor",
+    "elbow_cheek_plain",
+    "elbow_tube_block",
+    "gm_elbow",
+    "pulley_s~elbow",
+    "pulley_l~elbow",
+    "belt~elbow",
+    "bearing~elbow",
+    "SHAFT-01~elbow",
+    "collar~elbow",
+    "hub~elbow",
+    "tube_socket~elbow",
+    "limit~elbow"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "forearm",
+   "title": "Fit the forearm tube",
+   "show": [
+    "TUBE-02"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "wrist",
+   "title": "Build and fit the wrist joint",
+   "show": [
+    "wrist_cheek_motor",
+    "wrist_cheek_plain",
+    "wrist_tube_block",
+    "gm_wrist",
+    "pulley_s~wrist",
+    "pulley_l~wrist",
+    "belt~wrist",
+    "bearing~wrist",
+    "SHAFT-01~wrist",
+    "collar~wrist",
+    "hub~wrist",
+    "tube_socket~wrist",
+    "limit~wrist"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "gripper",
+   "title": "Assemble and fit the gripper",
+   "show": [
+    "TUBE-04",
+    "gripper_adapter",
+    "gripper_body",
+    "nema17",
+    "rod",
+    "gripper_jaw",
+    "GSK-02",
+    "limit~gripper"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 0.6
+  },
+  {
+   "id": "enclosure",
+   "title": "Build the electronics enclosure",
+   "show": [
+    "ENC-01",
+    "ENC-02",
+    "ENC-03",
+    "ENC-04",
+    "ENC-05",
+    "ENC-06",
+    "ANG",
+    "glands",
+    "psu",
+    "fuse",
+    "mega",
+    "driver",
+    "estop"
+   ],
+   "view": [
+    0.9,
+    -1.2,
+    1.1
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "wiring",
+   "title": "Wire the arm",
+   "show": [
+    "@Wiring"
+   ],
+   "view": [
+    0.6,
+    -1.3,
+    1.0
+   ],
+   "zoom": 1.0
+  },
+  {
+   "id": "commission",
+   "title": "Power up, home and load-test",
+   "show": [
+    "payload",
+    "screws",
+    "filament",
+    "bearing~spare"
+   ],
+   "view": [
+    1,
+    -1.25,
+    0.9
+   ],
+   "zoom": 1.0
+  }
+ ],
  "payload_lb": 5.0,
  "extension_in": 39.4,
  "l1_mm": 375,

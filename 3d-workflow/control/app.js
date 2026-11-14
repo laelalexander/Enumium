@@ -625,7 +625,7 @@ function applyPose() {
   jaw.position.x = 80 - w;
   hw.grip.spinner.rotation.y = w / CH[4].lead * 2 * Math.PI;
   const kg = payloadKg();
-  payloadObj.visible = kg > 0 && layerOn['Test fixtures'];
+  payloadObj.visible = kg > 0 && layerOn['Test fixtures'] && !window.__buildHide;
   if (kg > 0) { const side = Math.cbrt(kg / 7.85e-6); const wdt = Math.min(side, Math.max(w - 2, 10)); payloadObj.scale.set(wdt, side * Math.sqrt(side / wdt), side * Math.sqrt(side / wdt)); payloadObj.position.set(108 - w / 2 - 1, 0, 0); }
   tcp.position.set(108 - w / 2, 0, 0);
   CH.forEach((c, i) => {
@@ -1167,4 +1167,51 @@ function tick(now) {
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
-window.twin = { M, CH, catalog, send, ik, moveTo, sim, scene, camera, orbit, wp, W, E, S, tcp };
+
+// ---------------------------------------------------------------- assembly steps (arm/assembly.py STEPS)
+// Each tagged object belongs to the first step whose selector matches it ("key", "key~label-regex", "@Layer").
+// show(i): everything up to step i visible, step i's parts highlighted orange, camera framed on them.
+const twinBuild = (() => {
+  const steps = M.assembly || [], hiMat = new Map(), owned = new Map();
+  const all = [...catalog.values()].flatMap(c => c.objs);
+  const hit = (sel, o) => {
+    if (sel.startsWith('@')) return (layers[sel.slice(1)] || []).includes(o);
+    const [k, rx] = sel.split('~'); return o.userData.part === k && (!rx || new RegExp(rx, 'i').test(o.userData.label || ''));
+  };
+  for (const o of all) { const i = steps.findIndex(s => s.show.some(sel => hit(sel, o))); owned.set(o, i < 0 ? steps.length - 1 : i); }
+  const meshes = o => { const r = []; o.traverse(m => { if (m.isMesh) r.push(m); }); return r; };
+  // Earlier parts go neutral grey, the step's new parts keep their real colours: reads like a printed assembly manual.
+  const grey = new THREE.MeshStandardMaterial({ color: 0x9aa1aa, roughness: 0.8, metalness: 0.05 });
+  const paint = (o, mode) => meshes(o).forEach(m => {
+    if (!m.userData.mat0) m.userData.mat0 = m.material;
+    const b = m.userData.mat0;
+    if (mode === 'new' && b.isMeshStandardMaterial) {
+      if (!hiMat.has(b)) { const h = b.clone(); h.emissive = new THREE.Color(0xff7a1a); h.emissiveIntensity = 0.28; hiMat.set(b, h); }
+      m.material = hiMat.get(b);
+    } else m.material = mode === 'old' && b.isMeshStandardMaterial ? grey : b;
+  });
+  let cur = -1;
+  function show(i) {
+    cur = i; window.__buildHide = i >= 0 && i < steps.length - 1;
+    if (i < 0) { all.forEach(o => paint(o, 'none')); Object.keys(layers).forEach(k => setLayer(k, layerOn[k])); labelRenderer.domElement.style.display = ''; return null; }
+    labelRenderer.domElement.style.display = 'none';
+    const box = new THREE.Box3();
+    for (const o of all) { const s = owned.get(o); o.visible = s <= i; paint(o, s === i ? 'new' : 'old'); if (s === i) box.expandByObject(o); }
+    const st = steps[i];
+    if (!box.isEmpty()) {
+      const ctr = box.getCenter(new THREE.Vector3()), r = Math.max(60, box.getSize(new THREE.Vector3()).length() / 2);
+      const dir = new THREE.Vector3(...st.view).normalize(), dist = r / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) / (st.zoom || 1) * 1.15;
+      orbit.target.copy(ctr); camera.position.copy(ctr).addScaledVector(dir, Math.max(dist, 450)); camera.lookAt(ctr); orbit.update();
+    }
+    return st;
+  }
+  const sel = $('#buildStep');
+  if (sel) {
+    steps.forEach((s, i) => sel.append(el('option', { value: i }, `${i + 1}. ${s.title}`)));
+    const go = (i) => { i = Math.max(-1, Math.min(steps.length - 1, i)); sel.value = i; const st = show(i);
+      $('#buildText').textContent = st ? `Step ${i + 1} of ${steps.length}: new parts in colour, earlier parts in grey. Full instructions in docs/design/robot-arm-assembly-guide.pdf.` : ''; };
+    sel.onchange = () => go(+sel.value); $('#buildPrev').onclick = () => go(cur - 1); $('#buildNext').onclick = () => go(cur + 1);
+  }
+  return { steps, show, owned, get current() { return cur; } };
+})();
+window.twin = { twinBuild, M, CH, catalog, send, ik, moveTo, sim, scene, camera, orbit, wp, W, E, S, tcp };

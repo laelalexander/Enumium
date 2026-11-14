@@ -1,5 +1,9 @@
 # Assembly guide: 4-DOF desktop arm, 5 lb payload, 39 in reach
 
+**Illustrated version:** `../docs/design/robot-arm-assembly-guide.pdf` (14 steps, one page each, with a
+picture from the 3D twin, parts, fastener numbers F01-F18 with torque, tools and checks). Rebuild it
+with `python run.py guide`. The same steps are in the twin: Parts tab, Assembly steps.
+
 **Read first**
 - This is a first-revision design. The torque numbers are static estimates from vendor
   listings; the printed geometry is draft and has not been printed or loaded by us.
@@ -41,17 +45,22 @@ wherever possible. Print one `tube_block` first and test-fit the tube before the
 gripper jaw pads from TPU. Ream 12 mm and 8 mm bores after printing.
 
 ## 2. Prepare tubes
-Cut (see BOM.md): upper arm, forearm, riser (~150 mm), wrist stub (~120 mm). Deburr. Mark the
-cross-pin holes: 5.5 mm, 20 mm from each tube end that goes into a printed block/socket, drilled
-through both tube walls, matching the printed cross holes.
+Cut per `fab/CUTLIST.md`: TUBE-01 upper arm, TUBE-02 forearm, TUBE-03 riser (150 mm), TUBE-04 wrist
+stub. Deburr. Cross-pin holes are Ø5.5 mm through both walls, drilled on a V-block: 27 mm from the
+end that goes into a tube_socket, 30 mm from the end that goes into a tube block (drill this one
+through the printed block's hole as a guide). The riser has one hole, 30 mm from its top end; its
+bottom end is bonded into base_top_plate with structural epoxy.
 
 ## 3. Yaw base
-1. Drill a hole in the base board for the yaw gearbox body; bolt the gearbox to the underside of
-   the board, shaft up.
-2. Bolt the turntable bearing's fixed ring to the board, concentric with the gearbox shaft.
-3. Fit a clamping hub on the gearbox shaft. Bolt `base_top_plate` to the hub (4 bolts) and to
-   the turntable's rotating ring (8 bolts, threadlocker).
-4. Insert the riser tube into the plate's socket; fit a cross pin.
+1. BASE-01: cut, rout the 61.5 mm gearbox pocket on the underside, drill per the hole table, press
+   in four F07T tee nuts from below, fit four LEG-01 legs (F14) with GSK-03 pads.
+2. Bolt the yaw gearbox into the pocket from below, shaft up through the Ø39.1 hole (F05 + F05W,
+   4.0 N·m).
+3. Lay GSK-01 on the board, then the turntable's fixed ring; four F07 into the tee nuts (3.0 N·m).
+4. Bolt YAW-01 to the turntable's rotating ring (F08, 4.0 N·m). Fit the clamp hub on the gearbox
+   shaft, bolt base_top_plate to YAW-01 (eight F06, 3.5 N·m) and to the hub (four F03, 2.5 N·m),
+   then clamp the hub.
+5. Bond the riser (TUBE-03) into the plate's socket, square in both directions.
 
 ## 4. Pitch joints (repeat for shoulder, elbow, wrist)
 Each joint = two cheek plates + one tube block, a 12 mm shaft, two 6001 bearings, a belt stage.
