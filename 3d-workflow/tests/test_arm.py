@@ -96,3 +96,18 @@ def test_twin_model_covers_every_part():
     app = (Path(__file__).parent.parent / "control" / "app.js").read_text(encoding="utf-8")
     for cmd in ("'V'", "'G'", "'H'", "'W'", "'X'", "'Z'", "'E'", "'?'"):   # same grammar as the firmware
         assert cmd in app
+
+def test_print_plates_fit_bambu_bed():
+    from arm import printprep
+    items = [("a#1", 222.9, 100), ("b#1", 210, 210), ("c#1", 60, 56)] + [(f"s#{i}", 140, 50) for i in range(3)]
+    plates = printprep.pack(items, 256, 256)
+    assert sum(len(p) for p in plates) == len(items)
+    for p in plates:
+        for key, cx, cy, rot in p:
+            assert 0 < cx < 256 and 0 < cy < 256
+
+def test_procurement_covers_bom():
+    from arm import procure
+    rows = procure.rows()
+    assert sum(1 for r in rows if r["cat"] == "Motors") == 4
+    assert all(r["qty"] > 0 for r in rows)

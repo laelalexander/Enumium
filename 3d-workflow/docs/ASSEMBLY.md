@@ -11,20 +11,34 @@
 - Do not exceed 1.219 m (4 ft) extension; default build is 1.0 m (39.4 in).
 - Full-reach rating assumes a 5 lb load held static with the arm horizontal. Move slowly.
 
-Run `python -m arm.build` first. It writes `out/arm/*.stl|step`, `design.json`, and `BOM.md`
-(copy in `docs/BOM.md`). Order everything in the BOM, then **measure** the arrived parts and update
+## Build plan at a glance
+
+| Stage | What | Where it's defined | Time |
+|---|---|---|---|
+| A. Order | Long-lead parts first: gearmotors, turntable, clamp hubs | `docs/PROCUREMENT.md`, `procurement.csv` | 1-3 weeks |
+| B. Measure | Calipers on the arrived parts, set `HW` in `arm/hardware.py`, `python run.py build` | drawings in `design/` | 1 h |
+| C. Print | `python run.py print`, then the 5 plates in `print/plates/` | `print/REPORT.md` | ~50 h printer time |
+| D. Prepare | Cut and drill tubes, ream bores, fit inserts and bearings | sections 2, 4, 5 | 3 h |
+| E. Assemble | Base, three pitch joints, gripper | sections 3-5 | 5 h |
+| F. Wire | Bench electronics per ELE-001 | section 6, `docs/WIRING.md` | 3 h |
+| G. Commission | Firmware, rehearse in the twin, home, calibrate, load test | sections 7-8, `python run.py ui` | 2 h + |
+
+Order everything in `docs/PROCUREMENT.md`, then **measure** the arrived parts and update
 `HW` in `arm/hardware.py` (gearbox flange/pilot, shaft sizes, hub bolt circle, turntable bolt
 circle) and rebuild before printing.
 
 ## 0. Tools
 Hex keys, calipers, drill press or hand drill (5 mm, 12 mm), hacksaw/chop saw, soldering iron or
-crimp tool, multimeter, M4 heat-set insert tip, blue threadlocker, 3D printer with >=225 mm bed
-(shoulder motor cheek is ~223 mm long; rotate on the bed diagonally if needed).
+crimp tool, multimeter, M4 heat-set insert tip, blue threadlocker, 3D printer with >=230 mm bed
+(shoulder motor cheek is ~223 mm long; the print plates are laid out for a 256 mm Bambu bed).
 
 ## 1. Print
-PETG/ASA (nylon-CF preferred), 0.2 mm layers, 5 perimeters, 40% gyroid, no supports needed if
-oriented as modelled. Print cheek plates **flat** so layers run parallel to the plate. Print the
-gripper jaw pads from TPU. Check holes with a drill bit and ream if tight.
+`python run.py print` orients every part, lays the 16 prints out on 5 plates, slices each plate and
+checks it. Open `print/plates/plate_N.3mf` in Bambu Studio, choose PETG, apply the settings table in
+`print/REPORT.md` (0.2 mm layers, 5 perimeters, 40% gyroid, supports only on plates 3 and 4), slice
+and send. Cheek plates print **flat** so layers run parallel to the plate; bores print vertical
+wherever possible. Print one `tube_block` first and test-fit the tube before the rest. Print the
+gripper jaw pads from TPU. Ream 12 mm and 8 mm bores after printing.
 
 ## 2. Prepare tubes
 Cut (see BOM.md): upper arm, forearm, riser (~150 mm), wrist stub (~120 mm). Deburr. Mark the
@@ -77,6 +91,8 @@ provides >100 N at 0.45 N·m motor torque, and it self-locks when unpowered.
 
 ## 7. Firmware and first run
 1. Open `firmware/arm_controller/arm_controller.ino` in the Arduino IDE, install AccelStepper, upload.
+   Rehearse every move first in the control surface (`python run.py ui`, simulation mode), then
+   connect it to the Mega (Link tab, Chrome or Edge) with the motors unpowered to check the protocol.
 2. `pip install pyserial`. In Python:
    ```python
    from arm.control import Arm, SerialDriver
@@ -86,9 +102,10 @@ provides >100 N at 0.45 N·m motor torque, and it self-locks when unpowered.
    resting on a support and no payload.
 4. Test each joint alone with `driver.move(ch, small_steps)`. If a joint turns the wrong way, flip
    its DIR wiring pair or negate its sign in `control.py`.
-5. Home: `arm.home()` moves each joint at low speed toward its limit switch and sets zero. Mount
-   the switches so zero corresponds to the pose in `Arm.LIMITS`; then set `LIMITS` and `HOME_DIR`
-   for your build.
+5. Home: `arm.home()` moves each joint at low speed toward its limit switch and sets the step
+   counter to zero there. Measure the real joint angle at each switch and set it in
+   `Arm.HOME_DEG` (and in the control surface's Motors tab, "Limit switch at"); adjust `LIMITS` and
+   `HOME_DIR` for your build.
 
 ## 8. Load test
 0 lb across the full range -> 1 lb -> 2.5 lb -> 5 lb, first with the arm at 50% extension, then increasing.

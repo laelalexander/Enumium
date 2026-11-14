@@ -14,6 +14,17 @@ Blueprints, dimensioned part drawings and the wiring schematic for the 4-DOF des
 Related: [assembly guide](../../3d-workflow/docs/ASSEMBLY.md), [wiring pin table](../../3d-workflow/docs/WIRING.md),
 [firmware](../../3d-workflow/firmware/arm_controller/arm_controller.ino). Click any preview for the full-resolution SVG.
 
+## Build package
+
+| Document | What's in it | Regenerate |
+|---|---|---|
+| [Build book (PDF)](robot-arm-build-book.pdf) | Everything below in one 50-page document, plus every blueprint | `python run.py book` |
+| [Procurement list](../../3d-workflow/docs/PROCUREMENT.md) · [CSV tracker](../../3d-workflow/docs/procurement.csv) | 45 lines to buy, quantities, planning prices (est. ~$1,140), order-first list | `python run.py procure` |
+| [Bill of materials](../../3d-workflow/design/BOM.md) | Drives, belt stages, tube cuts, purchased and printed parts | `python run.py build` |
+| [Print plan](../../3d-workflow/print/REPORT.md) | 16 prints on 5 Bambu plates (3MF), orientation, settings, verified slices (774 g PETG) | `python run.py print` |
+| [Assembly plan](../../3d-workflow/docs/ASSEMBLY.md) | Stage plan A-G, step-by-step build, commissioning, load test | hand-written |
+| [Wiring](../../3d-workflow/docs/WIRING.md) | Pin table; schematic ELE-001 below | hand-written |
+
 ## System sheets
 
 | Sheet | Preview |
@@ -72,6 +83,7 @@ the only Windows-specific parts are installing Python and a PNG renderer.
 ```powershell
 winget install -e --id Python.Python.3.12      # skip if `py -3.12 --version` already works
 winget install -e --id Inkscape.Inkscape       # optional: PNG export (see step 3)
+winget install -e --id Prusa3D.PrusaSlicer     # optional: lets `python run.py print` slice and verify the plates
 cd C:\path\to\Enumium\3d-workflow              # wherever you cloned the repo
 py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1                    # if blocked: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
