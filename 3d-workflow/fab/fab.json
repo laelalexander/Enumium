@@ -1223,7 +1223,7 @@
   "material": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
   "process": "Chop saw / hacksaw, square + deburr; cross-drill on a V-block",
   "t": null,
-  "w": 320.0,
+  "w": 295.0,
   "h": 38.1,
   "kind": "round",
   "holes": 3
@@ -1268,10 +1268,10 @@
   "pid": "SHAFT-01",
   "title": "JOINT SHAFT",
   "qty": 3,
-  "material": "12 mm h6 hardened or 303 stainless rod, 150 mm",
-  "process": "Grind or file one flat 0.5 [.020] deep x 25 [.98] long; chamfer ends 0.5 x 45\u00b0",
+  "material": "12 mm h6 hardened or 303 stainless rod, cut to 120 mm",
+  "process": "Grind or file one flat 0.5 [.020] deep x 40 [1.57] long, 6 [.24] from the motor end; chamfer ends 0.5 x 45\u00b0",
   "t": null,
-  "w": 150.0,
+  "w": 120.0,
   "h": 12.0,
   "kind": "round",
   "holes": 0

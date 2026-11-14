@@ -77,7 +77,7 @@ def _near(a, b, tol=0.06):
 
 # per printed part: list of (kind, diameter, axis or None, text)
 RULES = {
-    "cheek": [("hole", 5.5, "Y", label("F01")), ("slot", 5.5, None, label("F04") + "; slots give ±6 [.24] belt tension"),
+    "cheek": [("hole", 5.5, "Y", label("F01")), ("slot", 5.5, None, label("F04") + "; slots give ±4 [.17] belt tension"),
               ("hole", 20.0, None, "6001-2RS (12x28x8) bearing, light press into the CBORE; 12 mm shaft passes through"),
               ("hole", 38.6, None, "Gearbox pilot Ø38.10 [1.500] clearance (MEASURE pilot)")],
     "tube_block": [("hole", 38.4, None, "1.5 in OD tube, slip fit 0.30 [.012] clearance"),

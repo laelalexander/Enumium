@@ -56,6 +56,7 @@ def test_design_package_generates(tmp_path, monkeypatch):
     drawings.main()
     assert len(list((tmp_path / "cad/step").glob("*.step"))) == 14
     assert (tmp_path / "schematics/ELE-001_wiring.svg").exists()
+    assert (tmp_path / "schematics/ELE-002_wire_list.svg").exists()
     import xml.dom.minidom as m
     for f in list((tmp_path / "drawings").glob("*.svg")) + list((tmp_path / "schematics").glob("*.svg")):
         m.parse(str(f))      # well-formed XML

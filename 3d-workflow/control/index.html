@@ -20,6 +20,7 @@
     <div id="linkBadge" class="badge sim">SIMULATION</div>
     <div id="homedBadge" class="badge warn">NOT HOMED</div>
     <div class="spacer"></div>
+    <button id="btnBuild" class="btn primary" title="Turn the design into a build kit: what to buy, print, cut and assemble">Build it</button>
     <button id="btnEnable" class="btn">Enable drivers</button>
     <button id="btnHome" class="btn">Home all</button>
     <button id="btnStop" class="btn estop" title="Space">STOP</button>
@@ -40,6 +41,45 @@
       <label class="chip"><input type="checkbox" id="chkFollow"> Follow tool</label>
     </div>
     <div id="pickCard" hidden></div>
+    <div id="wizard" hidden>
+      <div class="ins-head">
+        <div><div class="ins-title">Build wizard</div><div class="small muted">Turn this design into everything a person needs to build it: what to buy, what to print, what to cut, how to assemble, wire and test.</div></div>
+        <button id="wzClose" class="btn small ghost" title="Esc">Close</button>
+      </div>
+      <div id="wzSteps"><span data-s="1" class="on">1 Specs</span><span data-s="2">2 Generate</span><span data-s="3">3 Build kit</span></div>
+      <div id="wzBody">
+        <section data-p="1">
+          <div class="wz-grid">
+            <label>Payload, lb <input id="wzPayload" type="number" min="0.5" max="10" step="0.5"></label>
+            <label>Reach, in <input id="wzReach" type="number" min="12" max="48" step="0.1"></label>
+            <label>3D printer <select id="wzBed">
+              <option value="256x256x256">Bambu Lab X1 / P1 / A1 (256 mm)</option>
+              <option value="180x180x180">Bambu Lab A1 mini (180 mm)</option>
+              <option value="250x210x220">Prusa MK4 / MK3 (250 x 210)</option>
+              <option value="360x360x360">Prusa XL (360 mm)</option>
+              <option value="220x220x250">Ender 3 class (220 mm)</option>
+            </select></label>
+            <label>How many arms <input id="wzArms" type="number" min="1" max="50" step="1" value="1"></label>
+          </div>
+          <label class="chk"><input type="checkbox" id="wzRegen"> Regenerate the design from these specs (CAD, drawings, cut files, print plates, prices, guide). Leave off to package the current design.</label>
+          <div id="wzEngine" class="small muted"></div>
+          <div class="row"><button id="wzSetup" class="btn ghost" hidden>Set up the design engine</button><div class="spacer"></div><button id="wzGo" class="btn primary">Generate the build kit</button></div>
+        </section>
+        <section data-p="2" hidden>
+          <div id="wzProg"></div>
+          <details><summary class="small muted">Details</summary><pre id="wzLog" class="code"></pre></details>
+          <div class="row"><button id="wzBack" class="btn ghost">Back</button><div class="spacer"></div><button id="wzToKit" class="btn primary" disabled>See the build kit</button></div>
+        </section>
+        <section data-p="3" hidden>
+          <div id="wzTiles" class="wz-tiles"></div>
+          <div id="wzPhases"></div>
+          <div class="row"><button id="wzAgain" class="btn ghost">Change specs</button><div class="spacer"></div>
+            <a id="wzZip" class="btn ghost" download>Download the kit (zip)</a>
+            <button id="wzSave" class="btn primary desktop-only">Save the kit to Documents</button></div>
+          <div id="wzSaved" class="small muted"></div>
+        </section>
+      </div>
+    </div>
     <div id="libViewer" hidden>
       <div class="ins-head">
         <div><div id="lvTitle" class="ins-title"></div><div id="lvMeta" class="small muted"></div></div>

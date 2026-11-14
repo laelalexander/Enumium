@@ -12,15 +12,16 @@ HERE = Path(__file__).resolve().parent.parent
 DIST = HERE / "dist"
 DESKTOP = HERE / "desktop"
 
-# What goes into app/ (paths relative to 3d-workflow, mirrored so the twin's relative links keep working)
-INCLUDE = ["control", "design/cad", "design/drawings", "design/schematics", "design/png", "design/BOM.md", "design/design.json",
-           "fab", "print/plates", "print/stl", "print/profiles", "print/REPORT.md", "print/manifest.json", "docs"]
-SKIP = {"__pycache__", ".pytest_cache", "window", "server.log", "server.err.log"}
+# app/ is the whole 3d-workflow tree (sources + outputs), so the Build wizard can regenerate in place on the PC.
+# docs/design (guide, build book, assembly pictures) sits next to it, where the generators write it.
+EXCLUDE_TOP = {"dist", "out", "window", ".venv", "venv", ".pytest_cache", "__pycache__", "examples"}
+SKIP = {"__pycache__", ".pytest_cache", "window", "server.log", "server.err.log", "gcode"}
 
 README = """Robot Arm desktop app
 =====================
 
-Install:   double-click "Install Robot Arm.vbs". It copies the app to %LOCALAPPDATA%\\Programs\\RobotArm,
+Install:   double-click "Install Robot Arm.vbs". It copies the app to C:\\Anatomy\\robot-arm when the Anatomy app is
+           on this PC (it then shows up as an Anatomy project with the live 3D viewer), else to %LOCALAPPDATA%\\Programs\\RobotArm,
            installs Node.js LTS with winget if it is missing, and adds a "Robot Arm" icon to the
            desktop and the Start menu. Run it again to update; it keeps your Arduino port permission.
 Open:      the Robot Arm icon. It opens in its own window (Microsoft Edge app mode), works offline.
@@ -69,6 +70,45 @@ def _copy(src, dst):
         shutil.copy2(src, dst)
 
 
+ANATOMY = {
+    "title": "Robot arm test table",
+    "summary": "4-DOF desktop robot arm (yaw, shoulder, elbow, wrist pitch) with a lead-screw gripper, on a test table with its "
+               "electronics enclosure. 5 lb payload at 39.4 in reach. NEMA 23 planetary gearmotors with HTD 5M belt stages, "
+               "PETG printed joints, aluminium tubes, Arduino Mega + DM542 drivers. Complete build package: drawings in mm [in], "
+               "DXF cut files, Bambu plates and G-code, purchase list, illustrated assembly guide, wiring and firmware.",
+    "apps": [{"name": "Robot arm test table", "cwd": ".", "run": ["node server.js"], "url": "http://127.0.0.1:8766/", "needs": ["Node.js"],
+              "startup_ms": 3000,
+              "description": "3D twin you can drive (simulated until an Arduino is connected), part inspector, Library of every "
+                             "drawing and file, and the Build wizard that regenerates the design and the build kit."}],
+}
+CLAUDE = """# Robot arm test table (Anatomy project)
+
+Prototype standard for Anatomy hardware projects: a design is finished when this folder lets someone build it.
+
+- `app/` is the whole design workflow (Python generators + outputs). Regenerate everything with
+  `cd app && python run.py wizard` (or the Build it button in the app). Tests: `python -m pytest -q tests`.
+- `app/design/drawings` part and assembly drawings (ASM-001 general arrangement, ASM-002 joint section),
+  `app/design/schematics` ELE-001 schematic and ELE-002 wire list, `app/fab` cut files, `app/print` Bambu plates and G-code.
+- `app/design/cad/stl/assembly` every part in its assembled position with parts.json (for the live 3D viewer).
+- `build/build.json` the build plan (purchase, print, fabricate, assembly, firmware, tests) for the Build wizard;
+  the human-readable kit is `app/dist/kit/RobotArm-Build-Kit/START-HERE.html`.
+- `docs/design` illustrated assembly guide and build book (PDF).
+- Standards: dual units mm [in], full hole callouts, every part BUY (real spec) or BUILD (design file), G-code for every print.
+"""
+
+
+def anatomy(out):
+    """Make the package an Anatomy project: anatomy.json (runnable app), build/build.json (Build wizard) and CLAUDE.md."""
+    import json
+    from . import kit
+    (out / "anatomy.json").write_text(json.dumps(ANATOMY, indent=1), encoding="utf-8")
+    (out / "CLAUDE.md").write_text(CLAUDE, encoding="utf-8")
+    src = out / "app" / "dist" / "kit" / kit.NAME / "build.json"
+    if src.exists():
+        (out / "build").mkdir(exist_ok=True)
+        shutil.copy2(src, out / "build" / "build.json")
+
+
 def main(argv=None):
     from . import twin
     twin.write()                                   # arm_model.json + Library (control/lib)
@@ -77,12 +117,18 @@ def main(argv=None):
         shutil.rmtree(out)
     app = out / "app"
     missing = []
-    for rel in INCLUDE:
-        (_copy(HERE / rel, app / rel) if (HERE / rel).exists() else missing.append(rel))
+    from . import kit
+    kit.build(1)                                   # a ready kit ships inside the app (dist/kit)
+    for f in HERE.iterdir():
+        if f.name not in EXCLUDE_TOP and not f.name.startswith("."):
+            _copy(f, app / f.name)
+    shutil.copytree(HERE / "dist" / "kit" / kit.NAME, app / "dist" / "kit" / kit.NAME)   # with its gcode (SKIP would drop it)
+    _copy(HERE.parent / "docs" / "design", out / "docs" / "design")
     for f in DESKTOP.iterdir():
         if f.is_file():
             shutil.copy2(f, out / f.name)
     (out / "README.txt").write_text(README.format(date=date.today().isoformat()), encoding="utf-8")
+    anatomy(out)
     if not icon(out / "robot-arm.ico"):
         missing.append("robot-arm.ico (pip install pillow)")
     shutil.copy2(out / "robot-arm.ico", app / "control" / "favicon.ico") if (out / "robot-arm.ico").exists() else None

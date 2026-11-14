@@ -61,7 +61,7 @@ def main():
     read = lambda p: (HERE / p).read_text(encoding="utf-8") if (HERE / p).exists() else f"_{p} not generated yet_"
     strip_h1 = lambda t: re.sub(r"^# .*\n", "", t, count=1)
     png = HERE / "design" / "png"
-    sheets = ["ELE-001_wiring", "ASM-001_assembly", "ASM-002_joint_section"] + sorted(
+    sheets = ["ELE-001_wiring", "ELE-002_wire_list", "ASM-001_assembly", "ASM-002_joint_section"] + sorted(
         p.stem for p in png.glob("*.png") if not p.stem.startswith(("ELE", "ASM")))
     rows = "".join(f"<tr><td>{j}</td><td>{v['drive']}</td><td>{v['required_nm']}</td><td>{v['rated_nm']}</td><td>{v['margin']}×</td></tr>" for j, v in d["joints"].items())
     toc = ["Overview", "Procurement list", "Bill of materials", "Print plan", "Cut list", "Fastener schedule", "Assembly plan", "Wiring", "Blueprints"]
@@ -110,15 +110,9 @@ def main():
     out = OUTDIR / "robot-arm-build-book.html"
     out.write_text(html, encoding="utf-8")
     print("wrote", out)
-    try:
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as p:
-            b = p.chromium.launch(); pg = b.new_page(); pg.goto(out.resolve().as_uri())
-            pg.pdf(path=str(out.with_suffix(".pdf")), format="A4", landscape=True, print_background=True,
-                   margin={"top": "12mm", "bottom": "12mm", "left": "10mm", "right": "10mm"}); b.close()
-        print("wrote", out.with_suffix(".pdf"))
-    except Exception as e:
-        print(f"PDF skipped ({e.__class__.__name__}): open the HTML in a browser and print to PDF, or pip install playwright")
+    from .pdfout import html_to_pdf
+    how = html_to_pdf(out, out.with_suffix(".pdf"), landscape=True)
+    print(f"wrote {out.with_suffix('.pdf')} ({how})" if how else "PDF skipped: no Playwright or Edge/Chrome found; open the HTML and print to PDF")
 
 
 if __name__ == "__main__":

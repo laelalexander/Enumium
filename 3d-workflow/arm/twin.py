@@ -56,7 +56,7 @@ def model(d=None):
             motor="NEMA23", motor_hold_nm=dr.motor_hold_nm, motor_amps=dr.amps,
             gearbox_ratio=20, belt_ratio=br, total_ratio=dr.ratio, eff=dr.eff,
             rated_nm=round(dr.rated_nm, 2), required_nm=jd.get("required_nm"), backlash_arcmin=dr.backlash_arcmin,
-            mass_kg=dr.mass_kg, belt_center_mm=center, small_teeth=16, large_teeth=16 * br,
+            mass_kg=dr.mass_kg, belt_center_mm=center, block_x0=None if name == "yaw" else H.block_x0(br), small_teeth=16, large_teeth=16 * br,
             belt_teeth=None if center is None else B.belt_teeth(16, br, center),
             limits_deg=[lo, hi], home_dir=Arm.HOME_DIR[name], home_deg=Arm.HOME_DEG[name],
             max_dps={"yaw": 30, "shoulder": 10, "elbow": 15, "wrist": 30}[name], pins=WIRING[Arm.CH[name]]))

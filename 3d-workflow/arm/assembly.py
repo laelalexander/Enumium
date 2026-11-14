@@ -57,7 +57,7 @@ STEPS = [
          check=["Rotate by hand through ±150°: smooth, no tight spot, dog trips the switch with an audible click."]),
     dict(id="riser", title="Bond the riser tube", show=["TUBE-03"], view=ISO, zoom=1.0,
          parts=[("TUBE-03", "riser tube 150 mm", 1)], fasteners=[], tools="structural epoxy, square, isopropyl alcohol", time="10 min + cure",
-         do=["Cut TUBE-03 at 150 mm, deburr, and drill the Ø5.5 cross-pin hole 30 mm from the TOP end (V-block).",
+         do=["Cut TUBE-03 at 150 mm, deburr, and drill the Ø5.5 cross-pin hole 25 mm from the TOP end (V-block).",
              "Scuff and degrease the bottom 70 mm, butter with structural epoxy and push it fully into base_top_plate's socket.",
              "Hold it square while the epoxy cures (check two directions with a square)."],
          check=["Riser vertical within 0.5° in both directions."]),
@@ -80,9 +80,9 @@ STEPS = [
          check=["Shaft turns smoothly by hand through the belt, no axial play.", "Limit switch trips at the home end of travel."]),
     dict(id="upper_arm", title="Fit the upper arm tube", show=["TUBE-01"], view=ISO, zoom=1.0,
          parts=[("TUBE-01", "upper arm tube", 1)], fasteners=[("F02", 1)], tools="drill + 5.5 mm bit, V-block", time="20 min",
-         do=["Cut TUBE-01 to length (fab/CUTLIST.md), deburr, drill the 27 mm pin hole on a V-block.",
+         do=["Cut TUBE-01 to length (fab/CUTLIST.md), deburr, drill the pin hole 27 mm from the socket end on a V-block.",
              "Push it fully into the shoulder tube_socket and fit F02 as the cross pin, 2.5 N·m.",
-             "With the tube in the elbow_tube_block (next step), drill the 30 mm hole through the block's hole as a guide."],
+             "With the tube in the elbow_tube_block (next step), drill the second hole (25 mm from that end) through the block's hole as a guide."],
          check=["Tube fully seated (no gap at the socket mouth)."]),
     dict(id="elbow", title="Build and fit the elbow joint", show=["elbow_cheek_motor", "elbow_cheek_plain", "elbow_tube_block", "gm_elbow",
                                                                   "pulley_s~elbow", "pulley_l~elbow", "belt~elbow", "bearing~elbow",
@@ -96,7 +96,7 @@ STEPS = [
          check=["Elbow axis parallel to the shoulder axis (sight along both shafts)."]),
     dict(id="forearm", title="Fit the forearm tube", show=["TUBE-02"], view=ISO, zoom=1.0,
          parts=[("TUBE-02", "forearm tube", 1)], fasteners=[("F02", 1)], tools="drill + 5.5 mm bit, V-block", time="20 min",
-         do=["As the upper arm: 27 mm pin into the elbow tube_socket with F02, 30 mm hole drilled through the wrist_tube_block."],
+         do=["As the upper arm: pin 27 mm from the end in the elbow tube_socket (F02), second hole 25 mm from the other end, drilled through the wrist_tube_block."],
          check=["Tube fully seated."]),
     dict(id="wrist", title="Build and fit the wrist joint", show=["wrist_cheek_motor", "wrist_cheek_plain", "wrist_tube_block", "gm_wrist",
                                                                   "pulley_s~wrist", "pulley_l~wrist", "belt~wrist", "bearing~wrist",
@@ -207,22 +207,9 @@ def main(argv=None):
     out = OUT / "robot-arm-assembly-guide.html"
     out.write_text(html, encoding="utf-8")
     print("wrote", out, f"({len(STEPS)} steps, {sum(1 for i, s in enumerate(STEPS, 1) if (PICS / f'step-{i:02d}-{s[chr(105)+chr(100)]}.png').exists())} pictures)")
-    pdf_js = HERE / "tools" / "html2pdf.js"
-    try:
-        import subprocess
-        if pdf_js.exists() and subprocess.run(["node", str(pdf_js), str(out), str(out.with_suffix(".pdf")), "portrait"], check=False).returncode == 0:
-            print("wrote", out.with_suffix(".pdf")); return 0
-    except FileNotFoundError:
-        pass
-    try:
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as p:
-            b = p.chromium.launch(); pg = b.new_page(); pg.goto(out.resolve().as_uri())
-            pg.pdf(path=str(out.with_suffix(".pdf")), format="A4", print_background=True,
-                   margin={"top": "12mm", "bottom": "12mm", "left": "12mm", "right": "12mm"}); b.close()
-        print("wrote", out.with_suffix(".pdf"))
-    except Exception as e:
-        print(f"PDF skipped ({e.__class__.__name__}): open the HTML and print to PDF")
+    from .pdfout import html_to_pdf
+    how = html_to_pdf(out, out.with_suffix(".pdf"))
+    print(f"wrote {out.with_suffix('.pdf')} ({how})" if how else "PDF skipped: no Playwright or Edge/Chrome found; open the HTML and print to PDF")
     return 0
 
 

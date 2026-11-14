@@ -6,13 +6,13 @@ DXF layers: `CUT_OUTSIDE` profile, `CUT_INSIDE` holes and cutouts, `POCKET_<dept
 
 ## Tube (1.5 in OD x 0.065 in wall 6061-T6)
 
-All four pieces come out of **one 48 in (1219 mm) length**: 922 mm including 3 mm saw kerf per cut, 297 mm left over. A 36 in length is too short for all four.
+All four pieces come out of **one 48 in (1219 mm) length**: 897 mm including 3 mm saw kerf per cut, 322 mm left over. A 36 in length is too short for all four.
 
 | Part | Description | Cut length mm [in] | Cross-pin holes from left end | Mates with |
 |---|---|---|---|---|
-| TUBE-01 | Upper Arm Tube | 320 [12.598] | 27 [1.063], 290 [11.417] | Shoulder end in tube_socket (pin 27 from end), elbow end in elbow_tube_block (pin 30) |
-| TUBE-02 | Forearm Tube | 320 [12.598] | 27 [1.063], 290 [11.417] | Elbow end in tube_socket (pin 27 from end), wrist end in wrist_tube_block (pin 30) |
-| TUBE-03 | Riser Tube | 150 [5.906] | 120 [4.724] | Bottom bonded in base_top_plate (70 deep, epoxy); top in shoulder_tube_block (pin 30) |
+| TUBE-01 | Upper Arm Tube | 295 [11.614] | 27 [1.063], 270 [10.630] | Shoulder end in tube_socket (pin 27 from end), elbow end in elbow_tube_block (pin 25) |
+| TUBE-02 | Forearm Tube | 320 [12.598] | 27 [1.063], 295 [11.614] | Elbow end in tube_socket (pin 27 from end), wrist end in wrist_tube_block (pin 25) |
+| TUBE-03 | Riser Tube | 150 [5.906] | 125 [4.921] | Bottom bonded in base_top_plate (66 deep, epoxy); top end in shoulder_tube_block (pin 25) |
 | TUBE-04 | Wrist Stub Tube | 120 [4.724] | 27 [1.063] | Wrist tube_socket end (pin 27); gripper_adapter end bonded 55 deep |
 
 Cut square (within 0.5°), deburr inside and out. Drill one pin hole Ø5.5 [.217] on a V-block, assemble into the printed part, then drill the printed part's hole through the tube as a guide for any second hole so both line up.

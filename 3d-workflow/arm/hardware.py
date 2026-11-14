@@ -23,42 +23,52 @@ HW = dict(
 )
 
 def belt_center_mm(ratio, small_teeth=16):
-    """Approx center distance for HTD 5M pulleys (pitch 5 mm). Pick the nearest stock belt;
-    cheek slots give +-6 mm tensioning."""
+    """Center distance for the HTD 5M stage (pitch 5 mm): pulley flanges 5 mm apart, never under 45 mm so the
+    gearbox flange clears the shaft collar. Kept short so the shoulder cheek still fits a 256 mm bed.
+    Cheek slots give +-4 mm tensioning; pick the nearest stock belt (BOM)."""
     dp_s = small_teeth * 5 / math.pi
     dp_l = dp_s * ratio
-    return round((dp_s + dp_l) / 2 * 1.15 + 20, 1)
+    return round(max((dp_s + dp_l) / 2 + 12, 45.0), 1)
 
-def tube_block():
+
+def block_x0(ratio, small_teeth=16):
+    """Distance from the joint axis to the tube block's inner face. The joint pulley (flange radius = pitch radius
+    + 2.5) turns inside the cheeks, so the block and the incoming tube start 4 mm beyond it (never under 20)."""
+    r_flange = small_teeth * ratio * 5 / math.pi / 2 + 2.5
+    return float(max(20, math.ceil(r_flange + 4)))
+
+def tube_block(x0=20.0):
+    """Spacer block between the cheeks, x0 .. x0+50 from the joint axis; clamps the incoming tube (50 mm engagement)."""
     h = HW
     return f'''bore = {h["tube_od"] + h["tube_clear"]}
-blk = cq.Workplane("XY").box(60, 56, 80)           # x 60, y 56, z 80, centred
-blk = blk.translate((50, 0, 0))                    # x in [20, 80]
-blk = blk.cut(cq.Workplane("YZ").workplane(offset=20).circle(bore / 2).extrude(60))
-blk = blk.cut(cq.Workplane("XY").workplane(offset=-40).center(50, 0).circle(2.75).extrude(80))   # cross pin M5
-result = blk.cut(cq.Workplane("XZ").workplane(offset=-30).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(60))
+blk = cq.Workplane("XY").box(50, 56, 80)           # x 50, y 56, z 80, centred
+blk = blk.translate(({x0 + 25}, 0, 0))             # x in [{x0:g}, {x0 + 50:g}]
+blk = blk.cut(cq.Workplane("YZ").workplane(offset={x0}).circle(bore / 2).extrude(50))
+blk = blk.cut(cq.Workplane("XY").workplane(offset=-40).center({x0 + 25}, 0).circle(2.75).extrude(80))   # cross pin M5
+result = blk.cut(cq.Workplane("XZ").workplane(offset=-30).pushPoints([({x0 + 8}, 30), ({x0 + 8}, -30), ({x0 + 42}, 30), ({x0 + 42}, -30)]).circle(2.75).extrude(60))
 '''
 
-def cheek(motor_side: bool, center_mm: float):
+def cheek(motor_side: bool, center_mm: float, x0=20.0):
     h = HW
     C = center_mm
-    x0, x1 = (-C - 35, 80) if motor_side else (-30, 80)
-    L = x1 - x0
-    code = f'''t, x0, L = 12.0, {x0}, {L}
+    x1 = x0 + 50
+    x0c, x1c = (-C - 36, x1) if motor_side else (-30, x1)   # 36: slot end + 5 mm wall behind the gearbox bolts
+    L = x1c - x0c
+    code = f'''t, x0, L = 12.0, {x0c}, {L}
 plate = cq.Workplane("XY").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges("|Y").fillet(8)
 # bearing recess on outer face (y=+t/2 side) + shaft clearance
 plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).circle({h["bearing_od"] + 0.15}/2).extrude({h["bearing_w"] + 0.2}))   # XZ normal is -Y: +extrude cuts into the plate
 plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).circle(10.0).extrude(t))
 # block bolt holes (M5)
-plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))
+plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).pushPoints([({x0 + 8}, 30), ({x0 + 8}, -30), ({x0 + 42}, 30), ({x0 + 42}, -30)]).circle(2.75).extrude(t))
 '''
     if motor_side:
         s = h["motor_pcd_sq"] / 2
-        code += f'''# gearbox pilot + 4 slotted bolt holes (slots along X for belt tension)
+        code += f'''# gearbox pilot + 4 slotted bolt holes (slots along X: +-4.25 mm belt tension travel)
 plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).center({-C}, 0).circle({h["motor_pilot"] + 0.5}/2).extrude(t))
 for sx in (-{s}, {s}):
     for sz in (-{s}, {s}):
-        plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).center({-C} + sx, sz).slot2D(17, {h["motor_hole"]}, 0).extrude(t))
+        plate = plate.cut(cq.Workplane("XZ").workplane(offset=-t/2).center({-C} + sx, sz).slot2D(14, {h["motor_hole"]}, 0).extrude(t))
 '''
     code += "result = plate\n"
     return code
@@ -128,10 +138,10 @@ def parts(ratios):
     ratios = dict(ratios, wrist=1)
     out = {}
     for j, r in (("shoulder", sh), ("elbow", el), ("wrist", 1)):
-        c = belt_center_mm(r)
-        out[f"{j}_cheek_motor"] = (cheek(True, c), 1, "Motor-side cheek plate")
-        out[f"{j}_cheek_plain"] = (cheek(False, c), 1, "Plain cheek plate")
-        out[f"{j}_tube_block"] = (tube_block(), 1, "Spacer block that clamps the incoming tube")
+        c, x0 = belt_center_mm(r), block_x0(r)
+        out[f"{j}_cheek_motor"] = (cheek(True, c, x0), 1, "Motor-side cheek plate")
+        out[f"{j}_cheek_plain"] = (cheek(False, c, x0), 1, "Plain cheek plate")
+        out[f"{j}_tube_block"] = (tube_block(x0), 1, "Spacer block that clamps the incoming tube")
     out["tube_socket"] = (tube_socket(), 3, "Distal link end: hub flange + tube socket (shoulder, elbow, wrist)")
     out["base_top_plate"] = (base_top_plate(), 1, "Rotating plate: yaw hub + turntable + riser socket")
     out["gripper_body"] = (gripper_body(), 1, "NEMA17 lead-screw gripper body + fixed jaw")

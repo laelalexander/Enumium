@@ -87,6 +87,8 @@ def build():
             _render(HERE / "docs" / "ASSEMBLY.md", "assembly-notes", "Assembly notes and safety"),
             _render(HERE / "docs" / "WIRING.md", "wiring", "Wiring and electronics"),
             _file("design/schematics/ELE-001_wiring.svg", "ELE-001 wiring schematic"),
+            _file("design/schematics/ELE-002_wire_list.svg", "ELE-002 wire list (every wire numbered)"),
+            _file("fab/WIRELIST.csv", "Wire list spreadsheet (CSV)"),
         ]),
         ("Buying", [
             _render(HERE / "design" / "BOM.md", "bom", "Bill of materials"),

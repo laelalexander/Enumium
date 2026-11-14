@@ -1,7 +1,7 @@
 Type,Part,Description,Length / size mm,Length / size in,Qty,Stock / material,Notes
-Tube,TUBE-01,UPPER ARM TUBE,320,12.598,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],"pins at 27, 290 mm from the left end"
-Tube,TUBE-02,FOREARM TUBE,320,12.598,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],"pins at 27, 290 mm from the left end"
-Tube,TUBE-03,RISER TUBE,150,5.906,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],pins at 120 mm from the left end
+Tube,TUBE-01,UPPER ARM TUBE,295,11.614,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],"pins at 27, 270 mm from the left end"
+Tube,TUBE-02,FOREARM TUBE,320,12.598,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],"pins at 27, 295 mm from the left end"
+Tube,TUBE-03,RISER TUBE,150,5.906,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],pins at 125 mm from the left end
 Tube,TUBE-04,WRIST STUB TUBE,120,4.724,1,6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm],pins at 27 mm from the left end
 Angle,ANG,"enclosure corner angle, front/back walls, top and bottom",470,18.504,4,10 x 10 x 1.5 aluminium angle,"deburr, transfer-drill from panels"
 Angle,ANG,"enclosure corner angle, side walls, top and bottom",294,11.575,4,10 x 10 x 1.5 aluminium angle,"deburr, transfer-drill from panels"

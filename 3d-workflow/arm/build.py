@@ -9,7 +9,7 @@ import pipeline
 AMAZON_ITEMS = [  # (item, qty, search terms / spec to check, used for)
     ("1.5 in OD aluminium round tube, 0.065 in wall, 6061, 48 in length", 1, "1.5 inch OD aluminum tube 0.065 wall 48 inch", "all four tubes (TUBE-01..04) cut from one length; see fab/CUTLIST.md"),
     ("Heavy-duty turntable bearing 12 in (rated >= 500 lb)", 1, "12 inch heavy duty lazy susan turntable bearing 1000 lb", "yaw bearing; check bolt circle then set HW.turntable_pcd"),
-    ("12 mm hardened/stainless shaft rod, 150 mm", 3, "12mm linear shaft rod 150mm (6 mm too small)", "shoulder/elbow/wrist joint shafts"),
+    ("12 mm hardened/stainless shaft rod, 150 mm", 3, "12mm linear shaft rod 150mm (6 mm too small)", "shoulder/elbow/wrist joint shafts: cut each to 120 mm, grind a 40 mm flat (SHAFT-01)"),
     ("6001-2RS ball bearing 12x28x8", 8, "6001-2RS bearing 12x28x8", "2 per pitch joint + spares"),
     ("12 mm shaft clamping hub with 4-hole flange (aluminium)", 4, "12mm clamping shaft hub flange coupling aluminum (yaw one: bore = gearbox output)", "3 lock distal links to joint shafts, 1 locks base_top_plate to the yaw gearbox; check bolt circle -> HW.hub_pcd"),
     ("Shaft collars 12 mm", 6, "12mm shaft collar clamp type", "axial retention"),
@@ -55,12 +55,16 @@ def make_bom(d):
         if j == "wrist": r = 1
         c = H.belt_center_mm(r)
         lines.append(f"| {j} | {r}:1 | 16 / {16 * r} | {c} | {belt_teeth(16, r, c)}T |")
-    lines += ["", "## Tube lengths (cut)", "", f"- upper arm: {d['l1_mm'] - 55} mm, forearm: {d['l2_mm'] - 55} mm, riser: ~150 mm, wrist stub: ~120 mm", "",
+    lines += ["", "## Tube lengths (cut)", "", f"- upper arm: {d['l1_mm'] - 35 - H.block_x0(_ratio(d, 'elbow')):.0f} mm, forearm: {d['l2_mm'] - 35 - H.block_x0(1):.0f} mm, riser: 150 mm, wrist stub: 120 mm (TUBE-01..04, fab/CUTLIST.md)", "",
               "## Other purchased parts", "", "| Item | Qty | Amazon search / check | Used for |", "|---|---|---|---|"]
     lines += [f"| {a} | {q} | {s} | {u} |" for a, q, s, u in AMAZON_ITEMS]
     lines += ["", "## Printed parts", "", "| Part | Qty | Note |", "|---|---|---|"]
     lines += [f"| {n} | {p['qty']} | {p['note']} |" for n, p in d["parts"].items()]
     return "\n".join(lines) + "\n"
+
+def _ratio(d, j):
+    dr = BY_KEY[d['joints'][j]['drive']]
+    return round(dr.ratio / 20) if dr.ratio >= 20 else 1
 
 def build(payload_lb=5.0, extension_m=1.0, out_root=None):
     d = D.design(payload_lb, extension_m)

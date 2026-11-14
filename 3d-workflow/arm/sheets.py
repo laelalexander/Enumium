@@ -585,3 +585,19 @@ def _compress(rows):
         out += run
         i = j + 1
     return out
+
+
+HALO_STYLE = '<style>text{paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}</style>'
+
+
+def halo(svg, width=3.0):
+    """White halo behind every label, so lines crossing text break around it like on a hand-drawn sheet. Done as an
+    explicit white copy under each <text> (every SVG renderer draws that), not with CSS paint-order (some don't)."""
+    import re as _re
+    svg = _re.sub(r"<style>text\{paint-order[^<]*</style>", "", svg)
+
+    def dup(m):
+        attrs, body = m.group(1), m.group(2)
+        a = _re.sub(r'\s(fill|stroke|stroke-width)="[^"]*"', "", attrs)
+        return f'<text{a} fill="#fff" stroke="#fff" stroke-width="{width}" stroke-linejoin="round">{body}</text>{m.group(0)}'
+    return _re.sub(r"<text([^>]*)>(.*?)</text>", dup, svg, flags=_re.S)

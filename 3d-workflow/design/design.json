@@ -1,19 +1,19 @@
 {
   "payload_lb": 5.0,
-  "extension_m": 1.0,
+  "extension_m": 1.0008,
   "extension_in": 39.4,
   "l1_mm": 375,
   "l2_mm": 375,
   "joints": {
     "shoulder": {
       "drive": "n23_20_b5",
-      "required_nm": 45.3,
+      "required_nm": 45.34,
       "rated_nm": 125.0,
       "margin": 2.76
     },
     "elbow": {
       "drive": "n23_20_b3",
-      "required_nm": 19.57,
+      "required_nm": 19.59,
       "rated_nm": 75.0,
       "margin": 3.83
     },
@@ -30,7 +30,7 @@
       "note": "Motor-side cheek plate",
       "ok": true,
       "bbox_mm": [
-        222.9,
+        245.4,
         12.0,
         100.0
       ],
@@ -41,7 +41,7 @@
       "note": "Plain cheek plate",
       "ok": true,
       "bbox_mm": [
-        110.0,
+        151.0,
         12.0,
         100.0
       ],
@@ -52,7 +52,7 @@
       "note": "Spacer block that clamps the incoming tube",
       "ok": true,
       "bbox_mm": [
-        60.0,
+        50.0,
         56.0,
         80.0
       ],
@@ -63,7 +63,7 @@
       "note": "Motor-side cheek plate",
       "ok": true,
       "bbox_mm": [
-        193.6,
+        193.9,
         12.0,
         100.0
       ],
@@ -74,7 +74,7 @@
       "note": "Plain cheek plate",
       "ok": true,
       "bbox_mm": [
-        110.0,
+        125.0,
         12.0,
         100.0
       ],
@@ -85,7 +85,7 @@
       "note": "Spacer block that clamps the incoming tube",
       "ok": true,
       "bbox_mm": [
-        60.0,
+        50.0,
         56.0,
         80.0
       ],
@@ -96,7 +96,7 @@
       "note": "Motor-side cheek plate",
       "ok": true,
       "bbox_mm": [
-        164.3,
+        151.0,
         12.0,
         100.0
       ],
@@ -107,7 +107,7 @@
       "note": "Plain cheek plate",
       "ok": true,
       "bbox_mm": [
-        110.0,
+        100.0,
         12.0,
         100.0
       ],
@@ -118,7 +118,7 @@
       "note": "Spacer block that clamps the incoming tube",
       "ok": true,
       "bbox_mm": [
-        60.0,
+        50.0,
         56.0,
         80.0
       ],

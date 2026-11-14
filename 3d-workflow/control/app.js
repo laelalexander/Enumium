@@ -23,10 +23,11 @@ const CHEEK_Y = 34;            // block is 56 wide, cheeks 12 thick
 const HUB_Y0 = 42, HUB_Y1 = 52; // clamp hub flange on the output side
 const SOCKET_Y = HUB_Y1 + 25;   // tube_socket plate at HUB_Y1, tube axis 25 mm out from the plate
 const TUBE_R = M.hw.tube_od / 2;
-const PULLEY_Y = -18;           // belt plane, inside the motor-side cheek
+const PULLEY_Y = -16.5;         // belt plane, inside the motor-side cheek (pulley flanges clear the cheek face by 0.75)
 const TURNTABLE_H = 12, RISER = 150, YAW_T = 6, GSK_T = 1.5;
 const PLATE_Z = GSK_T + TURNTABLE_H + YAW_T;        // gasket, turntable, YAW-01 disc, then base_top_plate
-const SHOULDER_Z = PLATE_Z + 14 + RISER + 20;      // riser seated 14 mm deep, top 20 mm inside the shoulder block
+const X0 = n => M.joints.find(j => j.name === n).block_x0;   // joint axis -> tube block inner face (clear of the belt pulley)
+const SHOULDER_Z = PLATE_Z + 14 + RISER + X0('shoulder');     // riser seated 14 mm deep, its top at the shoulder block's inner face
 const BOARD_T = 19, LEG_H = 200, PAD_T = 3, TABLE_Z = -BOARD_T - LEG_H - PAD_T;   // BASE-01 on LEG-01 + GSK-03 pads
 const L1 = M.l1_mm, L2 = M.l2_mm, STUB = 120;
 const LATERAL = 2 * SOCKET_Y;   // wrist axis sits this far beside the yaw plane (side-by-side link layout)
@@ -282,7 +283,7 @@ const yaw1 = plateMesh('YAW-01', mat.alu6); yaw1.position.z = GSK_T + TURNTABLE_
 const btp = stl('base_top_plate'); btp.position.z = PLATE_Z; yawG.add(tag(btp, 'base_top_plate')); layers['Printed parts'].push(btp);
 const yawHub = new THREE.Group(); yawHub.add(cylZ(25, 6, mat.alu, 0, 0, PLATE_Z - 3)); yawHub.add(cylZ(12, 12, mat.alu, 0, 0, 2));
 yawG.add(tag(yawHub, 'hub', 'Yaw clamp hub')); layers['Purchased mechanical'].push(yawHub);
-const riser = new THREE.Group(); const rt = tubeX(0, SHOULDER_Z - 20 - (PLATE_Z + 14), 0, 0); rt.rotation.y = -Math.PI / 2; rt.position.z = PLATE_Z + 14; riser.add(rt);
+const riser = new THREE.Group(); const rt = tubeX(0, SHOULDER_Z - X0('shoulder') - (PLATE_Z + 14), 0, 0); rt.rotation.y = -Math.PI / 2; rt.position.z = PLATE_Z + 14; riser.add(rt);
 yawG.add(tag(riser, 'TUBE-03', 'TUBE-03 riser tube 150 mm')); layers['Purchased mechanical'].push(riser);
 const yawLS = limitSwitch(); yawLS.position.set(-60, -175, 3.5); world.add(tag(yawLS, 'limit', 'Yaw limit switch (D22)')); layers.Electronics.push(yawLS);
 hw.yaw = { group: yawG, spinner: gmYaw.spinner, ls: yawLS, motor: gmYaw.group };
@@ -302,8 +303,9 @@ function pitchJoint(name) {
   const pl = pulley(j.large_teeth); pl.group.position.y = PULLEY_Y; out.add(tag(pl.group, 'pulley_l', `${name} joint pulley ${j.large_teeth}T`));
   const bt = belt(pl.r, -C, ps.r, PULLEY_Y); H.add(tag(bt, 'belt', `${name} belt HTD 5M ~${j.belt_teeth}T`));
   for (const y of [-CHEEK_Y - 2, CHEEK_Y + 2]) { const b = bearing(); b.position.y = y; H.add(tag(b, 'bearing', `${name} 6001-2RS`)); layers['Purchased mechanical'].push(b); }
-  const sh = cylY(6, 110, mat.steel, 0, 10, 0); out.add(tag(sh, 'SHAFT-01', `SHAFT-01 ${name} joint shaft`));
-  for (const y of [-CHEEK_Y - 13, CHEEK_Y - 10]) { const c = cylY(11, 9, mat.dark, 0, y, 0); out.add(tag(c, 'collar', `${name} shaft collar`)); layers['Purchased mechanical'].push(c); }
+  const sh = cylY(6, 120, mat.steel, 0, 5, 0);   // SHAFT-01: -55 .. 65
+  out.add(tag(sh, 'SHAFT-01', `SHAFT-01 ${name} joint shaft`));
+  for (const y of [-CHEEK_Y - 11, CHEEK_Y - 10]) { const c = cylY(11, 9, mat.dark, 0, y, 0); out.add(tag(c, 'collar', `${name} shaft collar`)); layers['Purchased mechanical'].push(c); }
   const hub = new THREE.Group(); hub.add(cylY(25, 6, mat.alu, 0, HUB_Y1 - 3, 0)); hub.add(cylY(12, HUB_Y1 - HUB_Y0 - 6, mat.alu, 0, HUB_Y0 + (HUB_Y1 - HUB_Y0 - 6) / 2, 0));
   out.add(tag(hub, 'hub', `${name} clamp hub`));
   const so = stl('tube_socket'); so.position.y = HUB_Y1; out.add(tag(so, 'tube_socket', `${name} tube socket`)); layers['Printed parts'].push(so);
@@ -317,12 +319,12 @@ const S = pitchJoint('shoulder'), E = pitchJoint('elbow'), W = pitchJoint('wrist
 S.H.position.set(0, 0, SHOULDER_Z);
 S.H.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3(0, 0, -1), new THREE.Vector3(0, 1, 0), new THREE.Vector3(1, 0, 0)));
 yawG.add(S.H);
-function addLink(out, len, key, lbl) {
-  const t = tubeX(35, len - 20, SOCKET_Y, 0); out.add(tag(t, key, lbl)); layers['Purchased mechanical'].push(t); return t;
+function addLink(out, len, key, lbl, x0next) {
+  const t = tubeX(35, len - x0next, SOCKET_Y, 0); out.add(tag(t, key, lbl)); layers['Purchased mechanical'].push(t); return t;
 }
-addLink(S.out, L1, 'TUBE-01', `TUBE-01 upper arm tube, cut ${L1 - 55} mm`);
+addLink(S.out, L1, 'TUBE-01', `TUBE-01 upper arm tube, cut ${L1 - 35 - X0('elbow')} mm`, X0('elbow'));
 E.H.position.set(L1, SOCKET_Y, 0); E.H.rotation.y = Math.PI; S.out.add(E.H);
-addLink(E.out, L2, 'TUBE-02', `TUBE-02 forearm tube, cut ${L2 - 55} mm`);
+addLink(E.out, L2, 'TUBE-02', `TUBE-02 forearm tube, cut ${L2 - 35 - X0('wrist')} mm`, X0('wrist'));
 W.H.position.set(L2, SOCKET_Y, 0); W.H.rotation.y = Math.PI; E.out.add(W.H);
 const stubT = tubeX(35, 35 + STUB, SOCKET_Y, 0); W.out.add(tag(stubT, 'TUBE-04', `TUBE-04 wrist stub tube ${STUB} mm`)); layers['Purchased mechanical'].push(stubT);
 hw.shoulder = S; hw.elbow = E; hw.wrist = W;
@@ -1272,4 +1274,96 @@ const library = (() => {
   addEventListener('keydown', e => { if (e.key === 'Escape' && !V.hidden) $('#lvClose').onclick(); });
   return { open, get sections() { return sections; } };
 })();
-window.twin = { library, twinBuild, M, CH, catalog, send, ik, moveTo, sim, scene, camera, orbit, wp, W, E, S, tcp };
+
+// ---------------------------------------------------------------- Build wizard (arm/wizard.py, arm/kit.py)
+// Specs -> python run.py wizard (run by the desktop app's server, /api/job) -> dist/kit/RobotArm-Build-Kit.
+// Without the desktop server (python run.py ui, or a hosted preview) it shows the kit already built.
+const wizard = (() => {
+  const W = $('#wizard'), KIT = 'dist/kit/RobotArm-Build-Kit/';
+  let eng = null, timer = null, startSpecs = null;
+  const page = (n) => { W.querySelectorAll('#wzBody section').forEach(x => x.hidden = x.dataset.p !== String(n)); W.querySelectorAll('#wzSteps span').forEach(x => x.classList.toggle('on', x.dataset.s === String(n))); };
+  const specs = () => ({ payload_lb: +$('#wzPayload').value, reach_in: +$('#wzReach').value, bed: $('#wzBed').value, arms: +$('#wzArms').value });
+  const changed = () => { const a = specs(), b = startSpecs; return a.payload_lb !== b.payload_lb || a.reach_in !== b.reach_in || a.bed !== b.bed; };
+  async function checkEngine() {
+    const e = $('#wzEngine'), su = $('#wzSetup');
+    try { const r = await fetch('/api/engine'); eng = r.ok ? await r.json() : null; } catch { eng = null; }
+    if (!eng) { e.textContent = 'This window cannot run the generators. Open the Robot Arm desktop app, or run python run.py wizard. The kit built last time is shown on step 3.'; su.hidden = true; $('#wzGo').textContent = 'Show the build kit'; return; }
+    $('#wzGo').textContent = 'Generate the build kit';
+    if (eng.ready) { e.textContent = 'Design engine ready.'; su.hidden = true; }
+    else if (!eng.python) { e.textContent = 'Regenerating needs Python 3.10+ (python.org, tick "Add to PATH"). Packaging the current design works without it.'; su.hidden = true; }
+    else { e.textContent = 'Regenerating the design needs its CAD libraries (one-time setup, about 5 minutes, needs internet). Packaging the current design works without it.'; su.hidden = false; }
+  }
+  function progress(log) {
+    const lines = log.split(/\r?\n/), steps = []; let plan = 0;
+    for (const l of lines) {
+      let m;
+      if ((m = l.match(/^== PLAN (\d+)/))) plan = +m[1];
+      else if ((m = l.match(/^== STEP (\d+)\/(\d+) (.*)/))) steps.push({ t: m[3], st: 'run', note: '' });
+      else if ((m = l.match(/^== (OK|WARN|FAIL) [^(:]*(?:\((.*)\))?(?::\s*(.*))?/)) && steps.length) { const s = steps[steps.length - 1]; s.st = m[1].toLowerCase(); s.note = m[2] || m[3] || ''; }
+    }
+    const icon = { run: '◌', ok: '✓', warn: '!', fail: '✕' };
+    $('#wzProg').innerHTML = steps.map(s => `<div class="wz-step ${s.st}"><i>${icon[s.st]}</i>${s.t}<span class="t">${s.st === 'warn' ? 'skipped: ' : ''}${s.note}</span></div>`).join('') +
+      (plan > steps.length ? `<div class="small muted">${plan - steps.length} more step${plan - steps.length > 1 ? 's' : ''} to go</div>` : '');
+    const pre = $('#wzLog'); pre.textContent = log.slice(-20000); pre.scrollTop = pre.scrollHeight;
+  }
+  async function poll() {
+    let j; try { j = await (await fetch('/api/job')).json(); } catch { return; }
+    if (j.kind === 'setup') {
+      const st = j.state === 'running' ? ['run', '◌'] : j.state === 'done' ? ['ok', '✓'] : ['fail', '✕'];
+      $('#wzProg').innerHTML = `<div class="wz-step ${st[0]}"><i>${st[1]}</i>Installing the design engine (Python CAD libraries)</div>`; $('#wzLog').textContent = (j.log || '').slice(-20000);
+    } else progress(j.log || '');
+    if (j.state !== 'running') {
+      clearInterval(timer); timer = null;
+      if (j.kind === 'setup') { await checkEngine(); $('#wzBack').disabled = false; return; }
+      $('#wzToKit').disabled = j.state !== 'done';
+      if (j.state === 'done') await showKit();
+    }
+  }
+  async function go() {
+    if (!eng) { await showKit(); return; }
+    const o = { ...specs(), kit_only: !$('#wzRegen').checked };
+    const r = await fetch('/api/job', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(o) });
+    if (!r.ok) { $('#wzEngine').textContent = (await r.json()).error || 'Could not start'; return; }
+    page(2); $('#wzToKit').disabled = true; $('#wzProg').innerHTML = ''; timer = setInterval(poll, 1000); poll();
+  }
+  async function showKit() {
+    page(3);
+    let k = null; try { const r = await fetch('../' + KIT + 'kit.json', { cache: 'no-store' }); k = r.ok ? await r.json() : null; } catch {}
+    if (!k) { $('#wzTiles').innerHTML = ''; $('#wzPhases').innerHTML = '<p class="muted">No build kit yet. Go back and generate one.</p>'; return; }
+    $('#wzTiles').innerHTML = `<div><b>$${k.buy_usd.toLocaleString()}</b>to buy, ${k.buy_lines} lines</div><div><b>${Math.round(k.print_hours)} h</b>printing, ${k.filament_kg} kg PETG on ${k.plates} plates</div>` +
+      `<div><b>${k.cut_parts}</b>cut and machined parts</div><div><b>${k.steps}</b>assembly steps, about ${Math.round(k.assembly_hours)} h</div><div><b>${k.arms}</b>arm${k.arms > 1 ? 's' : ''} · ${k.date}</div>`;
+    const ph = [['0', 'Start here', 'START-HERE.html', 'page', 'The plan in six phases with tick boxes that remember your progress'],
+      ['1', 'Buy', '1-Buy/shopping-list.html', 'page', 'Shopping list with search links and an order-tracker spreadsheet'],
+      ['2', 'Print', '2-Print/print-list.html', 'page', 'Plates for Bambu Studio (3MF), reference G-code, settings'],
+      ['3', 'Cut', '3-Cut/shop-request.html', 'page', 'Shop request with DXF (mm and inch), 1:1 templates, drawings'],
+      ['4', 'Assemble', '4-Assemble/robot-arm-assembly-guide.pdf', 'pdf', 'Illustrated step-by-step guide, build book, every drawing'],
+      ['5', 'Wire and flash', '5-Wire-and-Firmware/wiring.html', 'page', 'Wiring, ELE-001 schematic, Arduino sketch'],
+      ['6', 'Test', '6-Test/test-checklist.html', 'page', 'Every check, power-up and the 5 lb load test']];
+    $('#wzPhases').innerHTML = '';
+    for (const [n, t, f, kind, d] of ph) {
+      const row = el('div', { className: 'wz-phase' }, `<span class="n">${n}</span><div><b>${t}</b><div class="d">${d}</div></div><div class="row"></div>`);
+      const b = el('button', { className: 'btn small' }, 'Open'); b.onclick = () => library.open({ title: `Build kit · ${t}`, kind, href: KIT + f, file: KIT + f, note: d });
+      row.querySelector('.row').append(b); $('#wzPhases').append(row);
+    }
+    const zip = `../dist/kit/RobotArm-Build-Kit-${k.date}.zip`;
+    fetch(zip, { method: 'HEAD' }).then(r => { $('#wzZip').style.display = r.ok ? '' : 'none'; $('#wzZip').href = zip; }).catch(() => { $('#wzZip').style.display = 'none'; });
+  }
+  $('#btnBuild').onclick = async () => {
+    W.hidden = false; page(1);
+    $('#wzPayload').value = M.payload_lb; $('#wzReach').value = M.extension_in; startSpecs = specs();
+    $('#wzRegen').checked = false; await checkEngine();
+    try { const j = await (await fetch('/api/job')).json(); if (j.state === 'running') { page(2); timer = timer || setInterval(poll, 1000); } } catch {}
+  };
+  for (const id of ['#wzPayload', '#wzReach', '#wzBed']) $(id).addEventListener('input', () => { if (changed()) $('#wzRegen').checked = true; });
+  $('#wzGo').onclick = go; $('#wzToKit').onclick = showKit; $('#wzBack').onclick = () => page(1); $('#wzAgain').onclick = () => page(1);
+  $('#wzSetup').onclick = async () => {
+    const r = await fetch('/api/engine/setup', { method: 'POST' });
+    if (!r.ok) { $('#wzEngine').textContent = (await r.json()).error; return; }
+    page(2); $('#wzBack').disabled = true; timer = setInterval(poll, 1500); poll();
+  };
+  $('#wzSave').onclick = async () => { const r = await fetch('/api/kit/save', { method: 'POST' }); const j = await r.json(); $('#wzSaved').textContent = r.ok ? `Saved to ${j.path}` : j.error; };
+  $('#wzClose').onclick = () => { W.hidden = true; };
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !W.hidden && $('#libViewer').hidden) W.hidden = true; });
+  return { showKit };
+})();
+window.twin = { wizard, library, twinBuild, M, CH, catalog, send, ik, moveTo, sim, scene, camera, orbit, wp, W, E, S, tcp };

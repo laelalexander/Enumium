@@ -338,21 +338,29 @@ def tube(length, pins, title, pid, note):
 
 
 def tubes(d):
-    l1, l2 = d["l1_mm"] - 55, d["l2_mm"] - 55
+    """Tube lengths follow the joints: each link runs from 35 mm past the previous joint axis (tube_socket) to the next
+    joint's tube block, which starts block_x0 from that axis (clear of its belt pulley). Pins: 27 from the socket end,
+    25 from the block end (the block's cross hole is at its middle)."""
+    from .hardware import block_x0
+    from .actuators import BY_KEY
+    rat = {j: (round(BY_KEY[v["drive"]].ratio / 20) if BY_KEY[v["drive"]].ratio >= 20 else 1) for j, v in d["joints"].items()}
+    x0 = {j: block_x0(rat.get(j, 1)) for j in ("shoulder", "elbow", "wrist")}
+    l1, l2 = d["l1_mm"] - 35 - x0["elbow"], d["l2_mm"] - 35 - x0["wrist"]
+    riser = 150.0
     return [
-        tube(l1, (27.0, l1 - 30.0), "UPPER ARM TUBE", "TUBE-01", "Shoulder end in tube_socket (pin 27 from end), elbow end in elbow_tube_block (pin 30)"),
-        tube(l2, (27.0, l2 - 30.0), "FOREARM TUBE", "TUBE-02", "Elbow end in tube_socket (pin 27 from end), wrist end in wrist_tube_block (pin 30)"),
-        tube(150.0, (150.0 - 30.0,), "RISER TUBE", "TUBE-03", "Bottom bonded in base_top_plate (70 deep, epoxy); top in shoulder_tube_block (pin 30)"),
+        tube(l1, (27.0, l1 - 25.0), "UPPER ARM TUBE", "TUBE-01", "Shoulder end in tube_socket (pin 27 from end), elbow end in elbow_tube_block (pin 25)"),
+        tube(l2, (27.0, l2 - 25.0), "FOREARM TUBE", "TUBE-02", "Elbow end in tube_socket (pin 27 from end), wrist end in wrist_tube_block (pin 25)"),
+        tube(riser, (riser - 25.0,), "RISER TUBE", "TUBE-03", "Bottom bonded in base_top_plate (66 deep, epoxy); top end in shoulder_tube_block (pin 25)"),
         tube(120.0, (27.0,), "WRIST STUB TUBE", "TUBE-04", "Wrist tube_socket end (pin 27); gripper_adapter end bonded 55 deep"),
     ]
 
 
 def shaft():
-    L, dia = 150.0, HW["shaft"]
+    L, dia = 120.0, HW["shaft"]
     s = cq.Workplane("YZ").circle(dia / 2).extrude(L).faces("<X or >X").edges().chamfer(0.5)
-    s = s.cut(cq.Workplane("XY").box(25, dia, dia, centered=(False, True, False)).translate((8, 0, dia / 2 - 0.5)))
-    return dict(pid="SHAFT-01", title="JOINT SHAFT", solid=s, qty=3, material="12 mm h6 hardened or 303 stainless rod, 150 mm",
-                process="Grind or file one flat 0.5 [.020] deep x 25 [.98] long; chamfer ends 0.5 x 45°", tol="metal", density=7.9)
+    s = s.cut(cq.Workplane("XY").box(40, dia, dia, centered=(False, True, False)).translate((6, 0, dia / 2 - 0.5)))
+    return dict(pid="SHAFT-01", title="JOINT SHAFT", solid=s, qty=3, material="12 mm h6 hardened or 303 stainless rod, cut to 120 mm",
+                process="Grind or file one flat 0.5 [.020] deep x 40 [1.57] long, 6 [.24] from the motor end; chamfer ends 0.5 x 45°", tol="metal", density=7.9)
 
 
 def leg():

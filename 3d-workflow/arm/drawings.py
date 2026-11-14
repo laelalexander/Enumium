@@ -203,6 +203,35 @@ figure{{display:inline-block;width:380px;margin:8px;vertical-align:top}}img{{wid
 <h1>Desktop robot arm - DRAFT rev A</h1><p>{d['payload_lb']} lb payload, {d['extension_in']} in reach (limit 48 in). Measure purchased parts and update <code>arm/hardware.py</code> before printing. See <a href="BOM.md">BOM.md</a>, <a href="../docs/ASSEMBLY.md">ASSEMBLY.md</a>, <a href="../docs/WIRING.md">WIRING.md</a>.</p>
 <table><tr><th>Joint<th>Drive<th>Required N&middot;m<th>Rated N&middot;m</tr>{rows}</table><h2>Drawings and CAD</h2>{cards}""", encoding="utf-8")
 
+def asm_sheets(d):
+    """ASM-002 (true-scale joint section from the CAD) and ASM-001 (general arrangement from the assembled 3D twin,
+    which also exports every part in assembled position to cad/stl/assembly for the live 3D viewer). Falls back to the
+    simple schematic sheets if CadQuery sectioning or the headless browser is not available."""
+    from . import twin, asmsheets
+    try:
+        twin.write()                                   # the twin must match this build before it is drawn
+        m = twin.model()
+        (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(asmsheets.joint_section(m, "shoulder"), encoding="utf-8")
+    except Exception as e:
+        print("ASM-002 section fallback:", e.__class__.__name__, e)
+        m = None
+        (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(joint_section_svg(), encoding="utf-8")
+    ga = None
+    if m is not None:
+        try:
+            stl_dir = OUT / "cad" / "stl" / "assembly"
+            ga = asmsheets.run_ga(pipeline.HERE, stl_dir, OUT / "cad" / "ga_views.json")
+            if ga:
+                rows = asmsheets.items_from(ga, m)
+                (stl_dir / "parts.json").write_text(json.dumps(asmsheets.parts_json(rows), indent=1), encoding="utf-8")
+                (OUT / "drawings" / "ASM-001_assembly.svg").write_text(asmsheets.general_arrangement(ga, m), encoding="utf-8")
+        except Exception as e:
+            print("ASM-001 fallback:", e.__class__.__name__, e)
+            ga = None
+    if not ga:
+        (OUT / "drawings" / "ASM-001_assembly.svg").write_text(assembly_svg(d), encoding="utf-8")
+
+
 def main():
     d = json.loads((pipeline.HERE / "out" / "arm" / "design.json").read_text(encoding="utf-8")) if (pipeline.HERE / "out/arm/design.json").exists() else B.build()
     for sub in ("cad/step", "cad/stl", "cad/obj", "drawings", "schematics"):
@@ -216,9 +245,12 @@ def main():
         cq.exporters.export(shape, str(OUT / "cad/step" / f"{name}.step"))
         cq.exporters.export(shape, str(OUT / "cad/stl" / f"{name}.stl"), tolerance=0.02, angularTolerance=0.1)
         stl_to_obj(OUT / "cad/stl" / f"{name}.stl", OUT / "cad/obj" / f"{name}.obj", name)
-    (OUT / "drawings" / "ASM-001_assembly.svg").write_text(assembly_svg(d), encoding="utf-8")
-    (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(joint_section_svg(), encoding="utf-8")
-    (OUT / "schematics" / "ELE-001_wiring.svg").write_text(wiring_svg(), encoding="utf-8")
+    asm_sheets(d)
+    from . import elesheet
+    (OUT / "schematics" / "ELE-001_wiring.svg").write_text(elesheet.ele001(), encoding="utf-8")
+    (OUT / "schematics" / "ELE-002_wire_list.svg").write_text(elesheet.ele002(), encoding="utf-8")
+    (pipeline.HERE / "fab").mkdir(exist_ok=True)
+    elesheet.write_csv(pipeline.HERE / "fab" / "WIRELIST.csv")
     shutil.copy(pipeline.HERE / "out/arm/BOM.md", OUT / "BOM.md")
     shutil.copy(pipeline.HERE / "out/arm/design.json", OUT / "design.json")
     write_index(d)

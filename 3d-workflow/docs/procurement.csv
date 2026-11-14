@@ -5,7 +5,7 @@ Motors,NEMA 23 2.8 A stepper + 20:1 planetary gearbox (elbow),1,each,85.00,85.00
 Motors,NEMA 23 2.8 A stepper + 20:1 planetary gearbox (wrist),1,each,85.00,85.00,NEMA 23 stepper motor 20:1 planetary gearbox 2.8A,J4 wrist,to order,,,
 Mechanical,"1.5 in OD aluminium round tube, 0.065 in wall, 6061, 48 in length",1,48 in length,32.00,32.00,1.5 inch OD aluminum tube 0.065 wall 48 inch,all four tubes (TUBE-01..04) cut from one length; see fab/CUTLIST.md,to order,,,
 Mechanical,Heavy-duty turntable bearing 12 in (rated >= 500 lb),1,each,38.00,38.00,12 inch heavy duty lazy susan turntable bearing 1000 lb,yaw bearing; check bolt circle then set HW.turntable_pcd,to order,,,
-Mechanical,"12 mm hardened/stainless shaft rod, 150 mm",3,each,9.00,27.00,12mm linear shaft rod 150mm (6 mm too small),shoulder/elbow/wrist joint shafts,to order,,,
+Mechanical,"12 mm hardened/stainless shaft rod, 150 mm",3,each,9.00,27.00,12mm linear shaft rod 150mm (6 mm too small),"shoulder/elbow/wrist joint shafts: cut each to 120 mm, grind a 40 mm flat (SHAFT-01)",to order,,,
 Mechanical,6001-2RS ball bearing 12x28x8,8,each (10-pack ~16),1.60,12.80,6001-2RS bearing 12x28x8,2 per pitch joint + spares,to order,,,
 Mechanical,12 mm shaft clamping hub with 4-hole flange (aluminium),4,each,9.00,36.00,12mm clamping shaft hub flange coupling aluminum (yaw one: bore = gearbox output),"3 lock distal links to joint shafts, 1 locks base_top_plate to the yaw gearbox; check bolt circle -> HW.hub_pcd",to order,,,
 Mechanical,Shaft collars 12 mm,6,each,1.50,9.00,12mm shaft collar clamp type,axial retention,to order,,,

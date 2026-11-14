@@ -26,15 +26,15 @@ The `gcode/plate_N.gcode` files are reference slices from PrusaSlicer with a gen
 
 | Part | Qty | Size on bed (mm) | Supports | Orientation |
 |---|---|---|---|---|
-| [shoulder_cheek_motor](stl/shoulder_cheek_motor.stl) | 1 | 222.9 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
-| [shoulder_cheek_plain](stl/shoulder_cheek_plain.stl) | 1 | 110 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
-| [shoulder_tube_block](stl/shoulder_tube_block.stl) | 1 | 80 × 56 × 60 | no | Tube bore vertical: round bore without supports, clamp bolts across layers |
-| [elbow_cheek_motor](stl/elbow_cheek_motor.stl) | 1 | 193.6 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
-| [elbow_cheek_plain](stl/elbow_cheek_plain.stl) | 1 | 110 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
-| [elbow_tube_block](stl/elbow_tube_block.stl) | 1 | 80 × 56 × 60 | no | Tube bore vertical: round bore without supports, clamp bolts across layers |
-| [wrist_cheek_motor](stl/wrist_cheek_motor.stl) | 1 | 164.3 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
-| [wrist_cheek_plain](stl/wrist_cheek_plain.stl) | 1 | 110 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
-| [wrist_tube_block](stl/wrist_tube_block.stl) | 1 | 80 × 56 × 60 | no | Tube bore vertical: round bore without supports, clamp bolts across layers |
+| [shoulder_cheek_motor](stl/shoulder_cheek_motor.stl) | 1 | 245.4 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
+| [shoulder_cheek_plain](stl/shoulder_cheek_plain.stl) | 1 | 151 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
+| [shoulder_tube_block](stl/shoulder_tube_block.stl) | 1 | 80 × 56 × 50 | no | Tube bore vertical: round bore without supports, clamp bolts across layers |
+| [elbow_cheek_motor](stl/elbow_cheek_motor.stl) | 1 | 193.9 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
+| [elbow_cheek_plain](stl/elbow_cheek_plain.stl) | 1 | 125 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
+| [elbow_tube_block](stl/elbow_tube_block.stl) | 1 | 80 × 56 × 50 | no | Tube bore vertical: round bore without supports, clamp bolts across layers |
+| [wrist_cheek_motor](stl/wrist_cheek_motor.stl) | 1 | 151 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
+| [wrist_cheek_plain](stl/wrist_cheek_plain.stl) | 1 | 100 × 100 × 12 | no | Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers |
+| [wrist_tube_block](stl/wrist_tube_block.stl) | 1 | 80 × 56 × 50 | no | Tube bore vertical: round bore without supports, clamp bolts across layers |
 | [tube_socket](stl/tube_socket.stl) | 3 | 140 × 80 × 50 | yes | Hub flange on the bed: flat bolting face, flange bolts vertical; socket needs supports underneath |
 | [base_top_plate](stl/base_top_plate.stl) | 1 | 210 × 210 × 80 | no | As modelled: disc on the bed, riser socket up |
 | [gripper_body](stl/gripper_body.stl) | 1 | 56 × 62 × 120 | no | Fixed jaw on the bed: rod and lead-screw bores vertical, no overhangs |
@@ -45,13 +45,14 @@ The `gcode/plate_N.gcode` files are reference slices from PrusaSlicer with a gen
 
 | Plate | Parts | Height | Filament | Time (est.) | Check |
 |---|---|---|---|---|---|
-| 1 | shoulder_cheek_motor, elbow_cheek_motor | 12 mm | 150 g | 9h 09m | pass |
+| 1 | shoulder_cheek_motor, elbow_cheek_motor | 12 mm | 150 g | 9h 31m | pass |
 | 2 | base_top_plate | 80 mm | 306 g | 18h 32m | pass |
-| 3 (supports) | wrist_cheek_motor, tube_socket, shoulder_tube_block, gripper_body | 120 mm | 178 g | 12h 55m | pass |
-| 4 (supports) | tube_socket, tube_socket, elbow_tube_block, wrist_tube_block, gripper_adapter | 62 mm | 71 g | 4h 26m | pass |
-| 5 | shoulder_cheek_plain, elbow_cheek_plain, wrist_cheek_plain, gripper_jaw | 30 mm | 68 g | 4h 20m | pass |
+| 3 | shoulder_cheek_plain, wrist_cheek_motor, shoulder_tube_block, elbow_tube_block | 50 mm | 125 g | 7h 27m | pass |
+| 4 (supports) | tube_socket, tube_socket, wrist_tube_block, gripper_body | 120 mm | 178 g | 12h 57m | pass |
+| 5 (supports) | tube_socket, elbow_cheek_plain, wrist_cheek_plain, gripper_adapter | 62 mm | 71 g | 4h 25m | pass |
+| 6 | gripper_jaw | 30 mm | 68 g | 4h 21m | pass |
 
-Total: **773 g** PETG (about 0.77 kg), **49h 24m** at PrusaSlicer's estimate. Bambu printers run faster; Bambu Studio's estimate will be lower.
+Total: **898 g** PETG (about 0.90 kg), **57h 15m** at PrusaSlicer's estimate. Bambu printers run faster; Bambu Studio's estimate will be lower.
 
 Each check confirms: all extrusion inside the bed, top layer equals the tallest part, filament weight and time present.
 

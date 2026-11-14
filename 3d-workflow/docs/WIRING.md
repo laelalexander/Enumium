@@ -1,4 +1,4 @@
-# Wiring (see `design/schematics/ELE-001_wiring.svg`)
+# Wiring (schematic `design/schematics/ELE-001_wiring.svg`, numbered wire list `ELE-002_wire_list.svg` and `fab/WIRELIST.csv`)
 
 | Channel | Joint | STEP | DIR | Limit (NC to GND) | Driver | Motor |
 |---|---|---|---|---|---|---|

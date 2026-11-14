@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One entry point.  python run.py [check|build|png|cut|print|procure|book|guide|package|ui|sim|console]
+"""One entry point.  python run.py [check|build|png|cut|print|procure|book|guide|kit|wizard|package|ui|sim|console]
   check    verify Python + dependencies (default first step)
   build    size drives, generate parts, BOM, CAD, drawings, design/index.html, then PNGs if a renderer exists
   png      re-render design/png/*.png from the SVG drawings only (no CAD rebuild)
@@ -8,6 +8,8 @@
   procure  procurement list with quantities and planning prices -> docs/PROCUREMENT.md, docs/procurement.csv
   book     build book PDF (blueprints, assembly plan, BOM, procurement, print plan) -> ../docs/design/
   guide    illustrated assembly guide: step pictures from the 3D twin (needs Node + Playwright) -> ../docs/design/
+  kit      build kit: buy list, print list + 3MF + G-code, shop request, guide, wiring, test checklist (--arms N) -> dist/kit/
+  wizard   regenerate everything from specs, then the kit (--payload-lb --reach-in --bed --arms --kit-only)
   package  installable Windows desktop app (offline, Library of every doc and file) -> dist/RobotArm-<date>.zip
   ui       3D control surface / virtual test table in the browser (http://127.0.0.1:8765)
   sim      demo motion with the simulated driver
@@ -47,6 +49,10 @@ def main():
         from arm import buildbook; buildbook.main()
     elif cmd == "guide":
         from arm import assembly; sys.exit(assembly.guide(sys.argv[2:]))
+    elif cmd == "kit":
+        from arm import kit; sys.exit(kit.main(sys.argv[2:]))
+    elif cmd == "wizard":
+        from arm import wizard; sys.exit(wizard.main(sys.argv[2:]))
     elif cmd == "package":
         from arm import package; sys.exit(package.main(sys.argv[2:]))
     elif cmd == "ui":

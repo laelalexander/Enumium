@@ -6,8 +6,8 @@ Payload 5.0 lb, extension 39.4 in. **Verify every listing's dimensions and shaft
 
 | Joint | Amazon search | Required N·m | Rated N·m | Margin |
 |---|---|---|---|---|
-| shoulder | NEMA 23 20:1 planetary gearbox + 5:1 HTD 5M belt/pulley stage | 45.3 | 125.0 | 2.76x |
-| elbow | NEMA 23 20:1 planetary gearbox + 3:1 HTD 5M belt/pulley stage | 19.57 | 75.0 | 3.83x |
+| shoulder | NEMA 23 20:1 planetary gearbox + 5:1 HTD 5M belt/pulley stage | 45.34 | 125.0 | 2.76x |
+| elbow | NEMA 23 20:1 planetary gearbox + 3:1 HTD 5M belt/pulley stage | 19.59 | 75.0 | 3.83x |
 | wrist | NEMA 23 stepper motor 20:1 planetary gearbox 2.8A | 2.98 | 25.0 | 8.39x |
 | yaw | NEMA 23 stepper motor 20:1 planetary gearbox 2.8A | (inertia only) | 25.0 | n/a |
 
@@ -15,13 +15,13 @@ Payload 5.0 lb, extension 39.4 in. **Verify every listing's dimensions and shaft
 
 | Joint | Ratio | Small / large teeth | Center dist (mm) | Belt teeth (approx) |
 |---|---|---|---|---|
-| shoulder | 5:1 | 16 / 80 | 107.9 | 96T |
-| elbow | 3:1 | 16 / 48 | 78.6 | 65T |
-| wrist | 1:1 | 16 / 16 | 49.3 | 36T |
+| shoulder | 5:1 | 16 / 80 | 88.4 | 89T |
+| elbow | 3:1 | 16 / 48 | 62.9 | 59T |
+| wrist | 1:1 | 16 / 16 | 45.0 | 34T |
 
 ## Tube lengths (cut)
 
-- upper arm: 320 mm, forearm: 320 mm, riser: ~150 mm, wrist stub: ~120 mm
+- upper arm: 295 mm, forearm: 320 mm, riser: 150 mm, wrist stub: 120 mm (TUBE-01..04, fab/CUTLIST.md)
 
 ## Other purchased parts
 
@@ -29,7 +29,7 @@ Payload 5.0 lb, extension 39.4 in. **Verify every listing's dimensions and shaft
 |---|---|---|---|
 | 1.5 in OD aluminium round tube, 0.065 in wall, 6061, 48 in length | 1 | 1.5 inch OD aluminum tube 0.065 wall 48 inch | all four tubes (TUBE-01..04) cut from one length; see fab/CUTLIST.md |
 | Heavy-duty turntable bearing 12 in (rated >= 500 lb) | 1 | 12 inch heavy duty lazy susan turntable bearing 1000 lb | yaw bearing; check bolt circle then set HW.turntable_pcd |
-| 12 mm hardened/stainless shaft rod, 150 mm | 3 | 12mm linear shaft rod 150mm (6 mm too small) | shoulder/elbow/wrist joint shafts |
+| 12 mm hardened/stainless shaft rod, 150 mm | 3 | 12mm linear shaft rod 150mm (6 mm too small) | shoulder/elbow/wrist joint shafts: cut each to 120 mm, grind a 40 mm flat (SHAFT-01) |
 | 6001-2RS ball bearing 12x28x8 | 8 | 6001-2RS bearing 12x28x8 | 2 per pitch joint + spares |
 | 12 mm shaft clamping hub with 4-hole flange (aluminium) | 4 | 12mm clamping shaft hub flange coupling aluminum (yaw one: bore = gearbox output) | 3 lock distal links to joint shafts, 1 locks base_top_plate to the yaw gearbox; check bolt circle -> HW.hub_pcd |
 | Shaft collars 12 mm | 6 | 12mm shaft collar clamp type | axial retention |

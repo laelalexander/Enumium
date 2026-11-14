@@ -22,7 +22,8 @@ HERE = Path(__file__).resolve().parent.parent
 OUT = HERE / "print"
 PROFILE = OUT / "profiles" / "petg_structural_bambu256.ini"
 GAP = 10.0  # mm between parts on a plate
-EDGE = 6.0  # mm clear of the bed edge
+BRIM = 5.0  # mm brim on tube_socket and parts over 90 mm tall
+EDGE = 5.0  # mm clear of the bed edge (Bambu plates print the full 256 mm; the 245 mm shoulder cheek needs <= 5.3)
 
 # name -> (rotations [(axis, deg)], supports, why).  Rotations apply in order about the part's own origin.
 ORIENT = {
@@ -160,7 +161,8 @@ def main(argv=None):
         shapes[name] = s
         info[name] = dict(qty=qty, note=note, size=(round(w, 1), round(d, 1), round(h, 1)), supports=sup, why=why,
                           volume_cm3=round(s.Volume() / 1000, 1), brim=sup or h > 90)
-        items += [(f"{name}#{i + 1}", w, d) for i in range(qty)]
+        m = 2 * BRIM if info[name]["brim"] else 0          # a brim needs its own room: it must stay on the bed
+        items += [(f"{name}#{i + 1}", w + m, d + m) for i in range(qty)]
     plates = pack(items, bw, bd)
     slicer = None if a.no_slice else find_slicer(a.slicer)
     report = []
@@ -180,7 +182,7 @@ def main(argv=None):
             brim = any(info[n]["brim"] for n, _ in names)
             base = [slicer, "--load", str(PROFILE), "--dont-arrange",
                     f"--bed-shape=0x0,{bw:g}x0,{bw:g}x{bd:g},0x{bd:g}", f"--max-print-height={bh:g}",
-                    f"--brim-width={5 if brim else 0}"]
+                    f"--brim-width={BRIM if brim else 0:g}"]
             if sup:
                 base += ["--support-material", "--support-material-auto", "--support-material-buildplate-only"]
             files = [str(f) for _, f in names]

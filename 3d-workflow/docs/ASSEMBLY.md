@@ -47,8 +47,8 @@ gripper jaw pads from TPU. Ream 12 mm and 8 mm bores after printing.
 ## 2. Prepare tubes
 Cut per `fab/CUTLIST.md`: TUBE-01 upper arm, TUBE-02 forearm, TUBE-03 riser (150 mm), TUBE-04 wrist
 stub. Deburr. Cross-pin holes are Ø5.5 mm through both walls, drilled on a V-block: 27 mm from the
-end that goes into a tube_socket, 30 mm from the end that goes into a tube block (drill this one
-through the printed block's hole as a guide). The riser has one hole, 30 mm from its top end; its
+end that goes into a tube_socket, 25 mm from the end that goes into a tube block (drill this one
+through the printed block's hole as a guide). The riser has one hole, 25 mm from its top end; its
 bottom end is bonded into base_top_plate with structural epoxy.
 
 ## 3. Yaw base
@@ -66,7 +66,8 @@ bottom end is bonded into base_top_plate with structural epoxy.
 Each joint = two cheek plates + one tube block, a 12 mm shaft, two 6001 bearings, a belt stage.
 1. Press a 6001 bearing into the recess of each cheek plate (outer faces).
 2. Bolt the tube block between the two cheeks with four M5 bolts. The incoming tube slides into the
-   block and takes a cross pin.
+   block and takes a cross pin. The block sits clear of the joint pulley (shoulder 71 mm, elbow 45 mm,
+   wrist 20 mm from the shaft axis), so the large pulley turns freely inside the joint.
 3. Slide the 12 mm shaft through both bearings. Fit the large HTD pulley and a shaft collar in the
    cavity (pulley key/set screw on the flat of the shaft; use a shaft with a flat or add a
    keyed hub). Fit a collar on the other side to stop axial slide.

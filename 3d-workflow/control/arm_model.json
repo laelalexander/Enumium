@@ -1232,7 +1232,7 @@
    "material": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
    "process": "Chop saw / hacksaw, square + deburr; cross-drill on a V-block",
    "t": null,
-   "w": 320.0,
+   "w": 295.0,
    "h": 38.1,
    "kind": "round",
    "holes": 3
@@ -1277,10 +1277,10 @@
    "pid": "SHAFT-01",
    "title": "JOINT SHAFT",
    "qty": 3,
-   "material": "12 mm h6 hardened or 303 stainless rod, 150 mm",
-   "process": "Grind or file one flat 0.5 [.020] deep x 25 [.98] long; chamfer ends 0.5 x 45\u00b0",
+   "material": "12 mm h6 hardened or 303 stainless rod, cut to 120 mm",
+   "process": "Grind or file one flat 0.5 [.020] deep x 40 [1.57] long, 6 [.24] from the motor end; chamfer ends 0.5 x 45\u00b0",
    "t": null,
-   "w": 150.0,
+   "w": 120.0,
    "h": 12.0,
    "kind": "round",
    "holes": 0
@@ -1637,6 +1637,7 @@
    "backlash_arcmin": 20,
    "mass_kg": 1.6,
    "belt_center_mm": null,
+   "block_x0": null,
    "small_teeth": 16,
    "large_teeth": 16,
    "belt_teeth": null,
@@ -1666,13 +1667,14 @@
    "total_ratio": 100,
    "eff": 0.8,
    "rated_nm": 125.0,
-   "required_nm": 45.3,
+   "required_nm": 45.34,
    "backlash_arcmin": 25,
    "mass_kg": 2.2,
-   "belt_center_mm": 107.9,
+   "belt_center_mm": 88.4,
+   "block_x0": 71.0,
    "small_teeth": 16,
    "large_teeth": 80,
-   "belt_teeth": 96,
+   "belt_teeth": 89,
    "limits_deg": [
     -10,
     100
@@ -1699,13 +1701,14 @@
    "total_ratio": 60,
    "eff": 0.85,
    "rated_nm": 75.0,
-   "required_nm": 19.57,
+   "required_nm": 19.59,
    "backlash_arcmin": 25,
    "mass_kg": 2.1,
-   "belt_center_mm": 78.6,
+   "belt_center_mm": 62.9,
+   "block_x0": 45.0,
    "small_teeth": 16,
    "large_teeth": 48,
-   "belt_teeth": 65,
+   "belt_teeth": 59,
    "limits_deg": [
     -135,
     135
@@ -1735,10 +1738,11 @@
    "required_nm": 2.98,
    "backlash_arcmin": 20,
    "mass_kg": 1.6,
-   "belt_center_mm": 49.3,
+   "belt_center_mm": 45.0,
+   "block_x0": 20.0,
    "small_teeth": 16,
    "large_teeth": 16,
-   "belt_teeth": 36,
+   "belt_teeth": 34,
    "limits_deg": [
     -100,
     100
@@ -1780,9 +1784,9 @@
    "drawing": "shoulder_cheek_motor.svg",
    "step": "shoulder_cheek_motor.step",
    "obj": "shoulder_cheek_motor.obj",
-   "code": "t, x0, L = 12.0, -142.9, 222.9\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))\n# gearbox pilot + 4 slotted bolt holes (slots along X for belt tension)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-107.9, 0).circle(38.6/2).extrude(t))\nfor sx in (-23.57, 23.57):\n    for sz in (-23.57, 23.57):\n        plate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-107.9 + sx, sz).slot2D(17, 5.5, 0).extrude(t))\nresult = plate",
+   "code": "t, x0, L = 12.0, -124.4, 245.4\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(79.0, 30), (79.0, -30), (113.0, 30), (113.0, -30)]).circle(2.75).extrude(t))\n# gearbox pilot + 4 slotted bolt holes (slots along X: +-4.25 mm belt tension travel)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-88.4, 0).circle(38.6/2).extrude(t))\nfor sx in (-23.57, 23.57):\n    for sz in (-23.57, 23.57):\n        plate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-88.4 + sx, sz).slot2D(14, 5.5, 0).extrude(t))\nresult = plate",
    "bbox_mm": [
-    222.9,
+    245.4,
     12.0,
     100.0
    ],
@@ -1790,13 +1794,13 @@
     "qty": 1,
     "note": "Motor-side cheek plate",
     "size": [
-     222.9,
+     245.4,
      100.0,
      12.0
     ],
     "supports": false,
     "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-    "volume_cm3": 241.2,
+    "volume_cm3": 269.0,
     "brim": false,
     "plates": [
      1
@@ -1815,9 +1819,9 @@
    "drawing": "shoulder_cheek_plain.svg",
    "step": "shoulder_cheek_plain.step",
    "obj": "shoulder_cheek_plain.obj",
-   "code": "t, x0, L = 12.0, -30, 110\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))\nresult = plate",
+   "code": "t, x0, L = 12.0, -30, 151.0\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(79.0, 30), (79.0, -30), (113.0, 30), (113.0, -30)]).circle(2.75).extrude(t))\nresult = plate",
    "bbox_mm": [
-    110.0,
+    151.0,
     12.0,
     100.0
    ],
@@ -1825,20 +1829,20 @@
     "qty": 1,
     "note": "Plain cheek plate",
     "size": [
-     110.0,
+     151.0,
      100.0,
      12.0
     ],
     "supports": false,
     "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-    "volume_cm3": 123.9,
+    "volume_cm3": 173.1,
     "brim": false,
     "plates": [
-     5
+     3
     ],
     "print_stl": "stl/shoulder_cheek_plain.stl",
     "plate_check": {
-     "5": "pass"
+     "3": "pass"
     }
    }
   },
@@ -1850,9 +1854,9 @@
    "drawing": "shoulder_tube_block.svg",
    "step": "shoulder_tube_block.step",
    "obj": "shoulder_tube_block.obj",
-   "code": "bore = 38.4\nblk = cq.Workplane(\"XY\").box(60, 56, 80)           # x 60, y 56, z 80, centred\nblk = blk.translate((50, 0, 0))                    # x in [20, 80]\nblk = blk.cut(cq.Workplane(\"YZ\").workplane(offset=20).circle(bore / 2).extrude(60))\nblk = blk.cut(cq.Workplane(\"XY\").workplane(offset=-40).center(50, 0).circle(2.75).extrude(80))   # cross pin M5\nresult = blk.cut(cq.Workplane(\"XZ\").workplane(offset=-30).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(60))",
+   "code": "bore = 38.4\nblk = cq.Workplane(\"XY\").box(50, 56, 80)           # x 50, y 56, z 80, centred\nblk = blk.translate((96.0, 0, 0))             # x in [71, 121]\nblk = blk.cut(cq.Workplane(\"YZ\").workplane(offset=71.0).circle(bore / 2).extrude(50))\nblk = blk.cut(cq.Workplane(\"XY\").workplane(offset=-40).center(96.0, 0).circle(2.75).extrude(80))   # cross pin M5\nresult = blk.cut(cq.Workplane(\"XZ\").workplane(offset=-30).pushPoints([(79.0, 30), (79.0, -30), (113.0, 30), (113.0, -30)]).circle(2.75).extrude(60))",
    "bbox_mm": [
-    60.0,
+    50.0,
     56.0,
     80.0
    ],
@@ -1862,11 +1866,11 @@
     "size": [
      80.0,
      56.0,
-     60.0
+     50.0
     ],
     "supports": false,
     "why": "Tube bore vertical: round bore without supports, clamp bolts across layers",
-    "volume_cm3": 193.0,
+    "volume_cm3": 159.8,
     "brim": false,
     "plates": [
      3
@@ -1885,9 +1889,9 @@
    "drawing": "elbow_cheek_motor.svg",
    "step": "elbow_cheek_motor.step",
    "obj": "elbow_cheek_motor.obj",
-   "code": "t, x0, L = 12.0, -113.6, 193.6\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))\n# gearbox pilot + 4 slotted bolt holes (slots along X for belt tension)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-78.6, 0).circle(38.6/2).extrude(t))\nfor sx in (-23.57, 23.57):\n    for sz in (-23.57, 23.57):\n        plate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-78.6 + sx, sz).slot2D(17, 5.5, 0).extrude(t))\nresult = plate",
+   "code": "t, x0, L = 12.0, -98.9, 193.9\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(53.0, 30), (53.0, -30), (87.0, 30), (87.0, -30)]).circle(2.75).extrude(t))\n# gearbox pilot + 4 slotted bolt holes (slots along X: +-4.25 mm belt tension travel)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-62.9, 0).circle(38.6/2).extrude(t))\nfor sx in (-23.57, 23.57):\n    for sz in (-23.57, 23.57):\n        plate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-62.9 + sx, sz).slot2D(14, 5.5, 0).extrude(t))\nresult = plate",
    "bbox_mm": [
-    193.6,
+    193.9,
     12.0,
     100.0
    ],
@@ -1895,13 +1899,13 @@
     "qty": 1,
     "note": "Motor-side cheek plate",
     "size": [
-     193.6,
+     193.9,
      100.0,
      12.0
     ],
     "supports": false,
     "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-    "volume_cm3": 206.0,
+    "volume_cm3": 207.2,
     "brim": false,
     "plates": [
      1
@@ -1920,9 +1924,9 @@
    "drawing": "elbow_cheek_plain.svg",
    "step": "elbow_cheek_plain.step",
    "obj": "elbow_cheek_plain.obj",
-   "code": "t, x0, L = 12.0, -30, 110\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))\nresult = plate",
+   "code": "t, x0, L = 12.0, -30, 125.0\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(53.0, 30), (53.0, -30), (87.0, 30), (87.0, -30)]).circle(2.75).extrude(t))\nresult = plate",
    "bbox_mm": [
-    110.0,
+    125.0,
     12.0,
     100.0
    ],
@@ -1930,13 +1934,13 @@
     "qty": 1,
     "note": "Plain cheek plate",
     "size": [
-     110.0,
+     125.0,
      100.0,
      12.0
     ],
     "supports": false,
     "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-    "volume_cm3": 123.9,
+    "volume_cm3": 141.9,
     "brim": false,
     "plates": [
      5
@@ -1955,9 +1959,9 @@
    "drawing": "elbow_tube_block.svg",
    "step": "elbow_tube_block.step",
    "obj": "elbow_tube_block.obj",
-   "code": "bore = 38.4\nblk = cq.Workplane(\"XY\").box(60, 56, 80)           # x 60, y 56, z 80, centred\nblk = blk.translate((50, 0, 0))                    # x in [20, 80]\nblk = blk.cut(cq.Workplane(\"YZ\").workplane(offset=20).circle(bore / 2).extrude(60))\nblk = blk.cut(cq.Workplane(\"XY\").workplane(offset=-40).center(50, 0).circle(2.75).extrude(80))   # cross pin M5\nresult = blk.cut(cq.Workplane(\"XZ\").workplane(offset=-30).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(60))",
+   "code": "bore = 38.4\nblk = cq.Workplane(\"XY\").box(50, 56, 80)           # x 50, y 56, z 80, centred\nblk = blk.translate((70.0, 0, 0))             # x in [45, 95]\nblk = blk.cut(cq.Workplane(\"YZ\").workplane(offset=45.0).circle(bore / 2).extrude(50))\nblk = blk.cut(cq.Workplane(\"XY\").workplane(offset=-40).center(70.0, 0).circle(2.75).extrude(80))   # cross pin M5\nresult = blk.cut(cq.Workplane(\"XZ\").workplane(offset=-30).pushPoints([(53.0, 30), (53.0, -30), (87.0, 30), (87.0, -30)]).circle(2.75).extrude(60))",
    "bbox_mm": [
-    60.0,
+    50.0,
     56.0,
     80.0
    ],
@@ -1967,18 +1971,18 @@
     "size": [
      80.0,
      56.0,
-     60.0
+     50.0
     ],
     "supports": false,
     "why": "Tube bore vertical: round bore without supports, clamp bolts across layers",
-    "volume_cm3": 193.0,
+    "volume_cm3": 159.8,
     "brim": false,
     "plates": [
-     4
+     3
     ],
     "print_stl": "stl/elbow_tube_block.stl",
     "plate_check": {
-     "4": "pass"
+     "3": "pass"
     }
    }
   },
@@ -1990,9 +1994,9 @@
    "drawing": "wrist_cheek_motor.svg",
    "step": "wrist_cheek_motor.step",
    "obj": "wrist_cheek_motor.obj",
-   "code": "t, x0, L = 12.0, -84.3, 164.3\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))\n# gearbox pilot + 4 slotted bolt holes (slots along X for belt tension)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-49.3, 0).circle(38.6/2).extrude(t))\nfor sx in (-23.57, 23.57):\n    for sz in (-23.57, 23.57):\n        plate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-49.3 + sx, sz).slot2D(17, 5.5, 0).extrude(t))\nresult = plate",
+   "code": "t, x0, L = 12.0, -81.0, 151.0\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(28.0, 30), (28.0, -30), (62.0, 30), (62.0, -30)]).circle(2.75).extrude(t))\n# gearbox pilot + 4 slotted bolt holes (slots along X: +-4.25 mm belt tension travel)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-45.0, 0).circle(38.6/2).extrude(t))\nfor sx in (-23.57, 23.57):\n    for sz in (-23.57, 23.57):\n        plate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).center(-45.0 + sx, sz).slot2D(14, 5.5, 0).extrude(t))\nresult = plate",
    "bbox_mm": [
-    164.3,
+    151.0,
     12.0,
     100.0
    ],
@@ -2000,13 +2004,13 @@
     "qty": 1,
     "note": "Motor-side cheek plate",
     "size": [
-     164.3,
+     151.0,
      100.0,
      12.0
     ],
     "supports": false,
     "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-    "volume_cm3": 170.8,
+    "volume_cm3": 155.7,
     "brim": false,
     "plates": [
      3
@@ -2025,9 +2029,9 @@
    "drawing": "wrist_cheek_plain.svg",
    "step": "wrist_cheek_plain.step",
    "obj": "wrist_cheek_plain.obj",
-   "code": "t, x0, L = 12.0, -30, 110\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(t))\nresult = plate",
+   "code": "t, x0, L = 12.0, -30, 100.0\nplate = cq.Workplane(\"XY\").box(L, t, 100, centered=(False, True, True)).translate((x0, 0, 0)).edges(\"|Y\").fillet(8)\n# bearing recess on outer face (y=+t/2 side) + shaft clearance\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(28.15/2).extrude(8.2))   # XZ normal is -Y: +extrude cuts into the plate\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).circle(10.0).extrude(t))\n# block bolt holes (M5)\nplate = plate.cut(cq.Workplane(\"XZ\").workplane(offset=-t/2).pushPoints([(28.0, 30), (28.0, -30), (62.0, 30), (62.0, -30)]).circle(2.75).extrude(t))\nresult = plate",
    "bbox_mm": [
-    110.0,
+    100.0,
     12.0,
     100.0
    ],
@@ -2035,13 +2039,13 @@
     "qty": 1,
     "note": "Plain cheek plate",
     "size": [
-     110.0,
+     100.0,
      100.0,
      12.0
     ],
     "supports": false,
     "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
-    "volume_cm3": 123.9,
+    "volume_cm3": 111.9,
     "brim": false,
     "plates": [
      5
@@ -2060,9 +2064,9 @@
    "drawing": "wrist_tube_block.svg",
    "step": "wrist_tube_block.step",
    "obj": "wrist_tube_block.obj",
-   "code": "bore = 38.4\nblk = cq.Workplane(\"XY\").box(60, 56, 80)           # x 60, y 56, z 80, centred\nblk = blk.translate((50, 0, 0))                    # x in [20, 80]\nblk = blk.cut(cq.Workplane(\"YZ\").workplane(offset=20).circle(bore / 2).extrude(60))\nblk = blk.cut(cq.Workplane(\"XY\").workplane(offset=-40).center(50, 0).circle(2.75).extrude(80))   # cross pin M5\nresult = blk.cut(cq.Workplane(\"XZ\").workplane(offset=-30).pushPoints([(30, 30), (30, -30), (70, 30), (70, -30)]).circle(2.75).extrude(60))",
+   "code": "bore = 38.4\nblk = cq.Workplane(\"XY\").box(50, 56, 80)           # x 50, y 56, z 80, centred\nblk = blk.translate((45.0, 0, 0))             # x in [20, 70]\nblk = blk.cut(cq.Workplane(\"YZ\").workplane(offset=20.0).circle(bore / 2).extrude(50))\nblk = blk.cut(cq.Workplane(\"XY\").workplane(offset=-40).center(45.0, 0).circle(2.75).extrude(80))   # cross pin M5\nresult = blk.cut(cq.Workplane(\"XZ\").workplane(offset=-30).pushPoints([(28.0, 30), (28.0, -30), (62.0, 30), (62.0, -30)]).circle(2.75).extrude(60))",
    "bbox_mm": [
-    60.0,
+    50.0,
     56.0,
     80.0
    ],
@@ -2072,11 +2076,11 @@
     "size": [
      80.0,
      56.0,
-     60.0
+     50.0
     ],
     "supports": false,
     "why": "Tube bore vertical: round bore without supports, clamp bolts across layers",
-    "volume_cm3": 193.0,
+    "volume_cm3": 159.8,
     "brim": false,
     "plates": [
      4
@@ -2114,13 +2118,13 @@
     "volume_cm3": 133.3,
     "brim": true,
     "plates": [
-     3,
-     4
+     4,
+     5
     ],
     "print_stl": "stl/tube_socket.stl",
     "plate_check": {
-     "3": "pass",
-     "4": "pass"
+     "4": "pass",
+     "5": "pass"
     }
    }
   },
@@ -2186,11 +2190,11 @@
     "volume_cm3": 221.0,
     "brim": true,
     "plates": [
-     3
+     4
     ],
     "print_stl": "stl/gripper_body.stl",
     "plate_check": {
-     "3": "pass"
+     "4": "pass"
     }
    }
   },
@@ -2221,11 +2225,11 @@
     "volume_cm3": 68.9,
     "brim": false,
     "plates": [
-     4
+     5
     ],
     "print_stl": "stl/gripper_adapter.stl",
     "plate_check": {
-     "4": "pass"
+     "5": "pass"
     }
    }
   },
@@ -2256,11 +2260,11 @@
     "volume_cm3": 89.0,
     "brim": false,
     "plates": [
-     5
+     6
     ],
     "print_stl": "stl/gripper_jaw.stl",
     "plate_check": {
-     "5": "pass"
+     "6": "pass"
     }
    }
   }
@@ -2289,7 +2293,7 @@
    "item": "12 mm hardened/stainless shaft rod, 150 mm",
    "qty": 3,
    "search": "12mm linear shaft rod 150mm (6 mm too small)",
-   "use": "shoulder/elbow/wrist joint shafts",
+   "use": "shoulder/elbow/wrist joint shafts: cut each to 120 mm, grind a 40 mm flat (SHAFT-01)",
    "makes": [
     "SHAFT-01"
    ]
