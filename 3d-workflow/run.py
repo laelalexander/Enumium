@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""One entry point.  python run.py [check|build|png|sim|console]
+"""One entry point.  python run.py [check|build|png|ui|sim|console]
   check    verify Python + dependencies (default first step)
   build    size drives, generate parts, BOM, CAD, drawings, design/index.html, then PNGs if a renderer exists
   png      re-render design/png/*.png from the SVG drawings only (no CAD rebuild)
+  ui       3D control surface / virtual test table in the browser (http://127.0.0.1:8765)
   sim      demo motion with the simulated driver
   console  interactive control (auto-detects serial port; add --sim for none)"""
 import importlib, subprocess, sys
@@ -29,6 +30,8 @@ def main():
         build.build(5.0, 1.0); drawings.main()
         from arm import render; render.main()
         print("\nOpen", HERE / "design" / "index.html", "in a browser. Next: python run.py sim")
+    elif cmd == "ui":
+        from arm import twin; twin.main(sys.argv[2:])
     elif cmd == "sim":
         from arm.control import Arm, SimDriver
         a = Arm.from_design(SimDriver(), HERE / "design" / "design.json")

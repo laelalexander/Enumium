@@ -19,6 +19,7 @@ pip install -r requirements.txt
 python run.py check        # verify Python + dependencies
 python run.py build        # sizing, parts, BOM, CAD, drawings, PNGs -> design/index.html (open in a browser)
 python run.py png          # re-render design/png/*.png from the SVGs only
+python run.py ui           # 3D control surface + virtual test table (browser; Web Serial to the Arduino)
 python run.py sim          # demo motion, no hardware
 python run.py console      # interactive control; auto-detects the Arduino (COMx, /dev/ttyACM0, /dev/tty.usbmodem*)
 python run.py console --sim

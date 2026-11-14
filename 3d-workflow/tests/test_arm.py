@@ -41,7 +41,7 @@ def test_control_steps_and_limits(tmp_path):
         def wait(self): pass
     arm = control.Arm(Rec(), 375, 375, {"yaw": 20, "shoulder": 100, "elbow": 60, "wrist": 20})
     arm.move_joints(0, 90, 0, 0)
-    assert sent[1] == (1, round(90 * 200 * control.MICROSTEP * 100 / 360))
+    assert sent[1] == (1, round((90 - control.Arm.HOME_DEG["shoulder"]) * 200 * control.MICROSTEP * 100 / 360))
     with pytest.raises(ValueError):
         arm.move_joints(0, 170, 0, 0)
     with pytest.raises(ValueError):
@@ -82,3 +82,17 @@ def test_run_check_and_sim(tmp_path):
     r = subprocess.run([sys.executable, str(Path(__file__).parent.parent / "run.py"), "sim"], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     assert "go (500, 0, 100)" in r.stdout
+
+def test_twin_model_covers_every_part():
+    from arm import twin
+    m = twin.model()
+    stl_dir = Path(__file__).parent.parent / "design" / "cad" / "stl"
+    assert {p["id"] for p in m["printed"]} == {p.stem for p in stl_dir.glob("*.stl")}
+    assert [j["channel"] for j in m["joints"]] == [0, 1, 2, 3] and m["gripper"]["channel"] == 4
+    assert len(m["purchased"]) == len(build.AMAZON_ITEMS)
+    for j in m["joints"]:
+        lo, hi = j["limits_deg"]
+        assert lo <= j["home_deg"] <= hi
+    app = (Path(__file__).parent.parent / "control" / "app.js").read_text(encoding="utf-8")
+    for cmd in ("'V'", "'G'", "'H'", "'W'", "'X'", "'Z'", "'E'", "'?'"):   # same grammar as the firmware
+        assert cmd in app

@@ -1,0 +1,440 @@
+{
+ "generated_by": "python -m arm.twin",
+ "stl_base": "../design/cad/stl/",
+ "drawing_base": "../design/drawings/",
+ "payload_lb": 5.0,
+ "extension_in": 39.4,
+ "l1_mm": 375,
+ "l2_mm": 375,
+ "max_extension_mm": 1219,
+ "safety": 2.0,
+ "mass": {
+  "tube_kg_per_m": 0.49,
+  "joint_hw_kg": 0.2,
+  "gripper_kg": 0.45,
+  "payload_arm_m": 0.12,
+  "tool_len_m": 0.2
+ },
+ "hw": {
+  "tube_od": 38.1,
+  "tube_clear": 0.3,
+  "shaft": 12.0,
+  "bearing_od": 28.0,
+  "bearing_w": 8.0,
+  "motor_pilot": 38.1,
+  "motor_pcd_sq": 47.14,
+  "motor_hole": 5.5,
+  "hub_pcd": 40.0,
+  "hub_hole": 5.5,
+  "hub_bore": 14.0,
+  "nema17_sq": 31.0,
+  "nema17_pilot": 22.5,
+  "turntable_pcd": 170.0,
+  "turntable_hole": 6.5
+ },
+ "microstep_default": 4,
+ "pulses_per_rev_options": [
+  400,
+  800,
+  1600,
+  3200,
+  6400,
+  12800,
+  25600,
+  1000,
+  2000,
+  4000,
+  5000,
+  8000,
+  10000,
+  20000,
+  25000
+ ],
+ "current_options_a": [
+  1.0,
+  1.46,
+  1.91,
+  2.37,
+  2.84,
+  3.31,
+  3.76,
+  4.2
+ ],
+ "enable_pin": 12,
+ "mega_combined_sps": 4000,
+ "baud": 115200,
+ "joints": [
+  {
+   "name": "yaw",
+   "channel": 0,
+   "drive": "n23_20",
+   "search_terms": "NEMA 23 stepper motor 20:1 planetary gearbox 2.8A",
+   "motor": "NEMA23",
+   "motor_hold_nm": 1.89,
+   "motor_amps": 2.8,
+   "gearbox_ratio": 20,
+   "belt_ratio": 1,
+   "total_ratio": 20,
+   "eff": 0.9,
+   "rated_nm": 25.0,
+   "required_nm": null,
+   "backlash_arcmin": 20,
+   "mass_kg": 1.6,
+   "belt_center_mm": null,
+   "small_teeth": 16,
+   "large_teeth": 16,
+   "belt_teeth": null,
+   "limits_deg": [
+    -150,
+    150
+   ],
+   "home_dir": -1,
+   "home_deg": -150,
+   "max_dps": 30,
+   "pins": {
+    "step": 2,
+    "dir": 7,
+    "limit": 22
+   }
+  },
+  {
+   "name": "shoulder",
+   "channel": 1,
+   "drive": "n23_20_b5",
+   "search_terms": "NEMA 23 20:1 planetary gearbox + 5:1 HTD 5M belt/pulley stage",
+   "motor": "NEMA23",
+   "motor_hold_nm": 1.89,
+   "motor_amps": 2.8,
+   "gearbox_ratio": 20,
+   "belt_ratio": 5,
+   "total_ratio": 100,
+   "eff": 0.8,
+   "rated_nm": 125.0,
+   "required_nm": 45.3,
+   "backlash_arcmin": 25,
+   "mass_kg": 2.2,
+   "belt_center_mm": 107.9,
+   "small_teeth": 16,
+   "large_teeth": 80,
+   "belt_teeth": 96,
+   "limits_deg": [
+    -10,
+    100
+   ],
+   "home_dir": -1,
+   "home_deg": -10,
+   "max_dps": 10,
+   "pins": {
+    "step": 3,
+    "dir": 8,
+    "limit": 23
+   }
+  },
+  {
+   "name": "elbow",
+   "channel": 2,
+   "drive": "n23_20_b3",
+   "search_terms": "NEMA 23 20:1 planetary gearbox + 3:1 HTD 5M belt/pulley stage",
+   "motor": "NEMA23",
+   "motor_hold_nm": 1.89,
+   "motor_amps": 2.8,
+   "gearbox_ratio": 20,
+   "belt_ratio": 3,
+   "total_ratio": 60,
+   "eff": 0.85,
+   "rated_nm": 75.0,
+   "required_nm": 19.57,
+   "backlash_arcmin": 25,
+   "mass_kg": 2.1,
+   "belt_center_mm": 78.6,
+   "small_teeth": 16,
+   "large_teeth": 48,
+   "belt_teeth": 65,
+   "limits_deg": [
+    -135,
+    135
+   ],
+   "home_dir": -1,
+   "home_deg": -135,
+   "max_dps": 15,
+   "pins": {
+    "step": 4,
+    "dir": 9,
+    "limit": 24
+   }
+  },
+  {
+   "name": "wrist",
+   "channel": 3,
+   "drive": "n23_20",
+   "search_terms": "NEMA 23 stepper motor 20:1 planetary gearbox 2.8A",
+   "motor": "NEMA23",
+   "motor_hold_nm": 1.89,
+   "motor_amps": 2.8,
+   "gearbox_ratio": 20,
+   "belt_ratio": 1,
+   "total_ratio": 20,
+   "eff": 0.9,
+   "rated_nm": 25.0,
+   "required_nm": 2.98,
+   "backlash_arcmin": 20,
+   "mass_kg": 1.6,
+   "belt_center_mm": 49.3,
+   "small_teeth": 16,
+   "large_teeth": 16,
+   "belt_teeth": 36,
+   "limits_deg": [
+    -100,
+    100
+   ],
+   "home_dir": -1,
+   "home_deg": -100,
+   "max_dps": 30,
+   "pins": {
+    "step": 5,
+    "dir": 10,
+    "limit": 25
+   }
+  }
+ ],
+ "gripper": {
+  "name": "gripper",
+  "channel": 4,
+  "motor": "NEMA17",
+  "lead_mm_per_rev": 8,
+  "open_mm": [
+   0,
+   70
+  ],
+  "motor_amps": 1.5,
+  "steps_per_mm_default": 100.0,
+  "max_mm_s": 10,
+  "pins": {
+   "step": 6,
+   "dir": 11,
+   "limit": 26
+  }
+ },
+ "printed": [
+  {
+   "id": "shoulder_cheek_motor",
+   "qty": 1,
+   "note": "Motor-side cheek plate",
+   "stl": "shoulder_cheek_motor.stl",
+   "drawing": "shoulder_cheek_motor.svg"
+  },
+  {
+   "id": "shoulder_cheek_plain",
+   "qty": 1,
+   "note": "Plain cheek plate",
+   "stl": "shoulder_cheek_plain.stl",
+   "drawing": "shoulder_cheek_plain.svg"
+  },
+  {
+   "id": "shoulder_tube_block",
+   "qty": 1,
+   "note": "Spacer block that clamps the incoming tube",
+   "stl": "shoulder_tube_block.stl",
+   "drawing": "shoulder_tube_block.svg"
+  },
+  {
+   "id": "elbow_cheek_motor",
+   "qty": 1,
+   "note": "Motor-side cheek plate",
+   "stl": "elbow_cheek_motor.stl",
+   "drawing": "elbow_cheek_motor.svg"
+  },
+  {
+   "id": "elbow_cheek_plain",
+   "qty": 1,
+   "note": "Plain cheek plate",
+   "stl": "elbow_cheek_plain.stl",
+   "drawing": "elbow_cheek_plain.svg"
+  },
+  {
+   "id": "elbow_tube_block",
+   "qty": 1,
+   "note": "Spacer block that clamps the incoming tube",
+   "stl": "elbow_tube_block.stl",
+   "drawing": "elbow_tube_block.svg"
+  },
+  {
+   "id": "wrist_cheek_motor",
+   "qty": 1,
+   "note": "Motor-side cheek plate",
+   "stl": "wrist_cheek_motor.stl",
+   "drawing": "wrist_cheek_motor.svg"
+  },
+  {
+   "id": "wrist_cheek_plain",
+   "qty": 1,
+   "note": "Plain cheek plate",
+   "stl": "wrist_cheek_plain.stl",
+   "drawing": "wrist_cheek_plain.svg"
+  },
+  {
+   "id": "wrist_tube_block",
+   "qty": 1,
+   "note": "Spacer block that clamps the incoming tube",
+   "stl": "wrist_tube_block.stl",
+   "drawing": "wrist_tube_block.svg"
+  },
+  {
+   "id": "tube_socket",
+   "qty": 3,
+   "note": "Distal link end: hub flange + tube socket (shoulder, elbow, wrist)",
+   "stl": "tube_socket.stl",
+   "drawing": "tube_socket.svg"
+  },
+  {
+   "id": "base_top_plate",
+   "qty": 1,
+   "note": "Rotating plate: yaw hub + turntable + riser socket",
+   "stl": "base_top_plate.stl",
+   "drawing": "base_top_plate.svg"
+  },
+  {
+   "id": "gripper_body",
+   "qty": 1,
+   "note": "NEMA17 lead-screw gripper body + fixed jaw",
+   "stl": "gripper_body.stl",
+   "drawing": "gripper_body.svg"
+  },
+  {
+   "id": "gripper_adapter",
+   "qty": 1,
+   "note": "Tube-stub socket + plate bolting to gripper body (M4 heat-set inserts)",
+   "stl": "gripper_adapter.stl",
+   "drawing": "gripper_adapter.svg"
+  },
+  {
+   "id": "gripper_jaw",
+   "qty": 1,
+   "note": "Sliding jaw on 2x8 mm rods",
+   "stl": "gripper_jaw.stl",
+   "drawing": "gripper_jaw.svg"
+  }
+ ],
+ "purchased": [
+  {
+   "item": "1.5 in OD aluminium round tube, 0.065 in wall, 6061 (36 in or 48 in length)",
+   "qty": 4,
+   "search": "1.5 inch OD aluminum tube 0.065 wall 48 inch",
+   "use": "2 links + riser + wrist stub (cut to length)"
+  },
+  {
+   "item": "Heavy-duty turntable bearing 12 in (rated >= 500 lb)",
+   "qty": 1,
+   "search": "12 inch heavy duty lazy susan turntable bearing 1000 lb",
+   "use": "yaw bearing; check bolt circle then set HW.turntable_pcd"
+  },
+  {
+   "item": "12 mm hardened/stainless shaft rod, 150 mm",
+   "qty": 3,
+   "search": "12mm linear shaft rod 150mm (6 mm too small)",
+   "use": "shoulder/elbow/wrist joint shafts"
+  },
+  {
+   "item": "6001-2RS ball bearing 12x28x8",
+   "qty": 8,
+   "search": "6001-2RS bearing 12x28x8",
+   "use": "2 per pitch joint + spares"
+  },
+  {
+   "item": "12 mm shaft clamping hub with 4-hole flange (aluminium)",
+   "qty": 4,
+   "search": "12mm clamping shaft hub flange coupling aluminum (yaw one: bore = gearbox output)",
+   "use": "3 lock distal links to joint shafts, 1 locks base_top_plate to the yaw gearbox; check bolt circle -> HW.hub_pcd"
+  },
+  {
+   "item": "Shaft collars 12 mm",
+   "qty": 6,
+   "search": "12mm shaft collar clamp type",
+   "use": "axial retention"
+  },
+  {
+   "item": "HTD 5M timing pulley, 15 mm belt, 16T (bore = gearbox output shaft)",
+   "qty": 3,
+   "search": "HTD 5M 16 tooth pulley 15mm belt bore 14mm (check bore)",
+   "use": "motor pulleys, one per pitch joint"
+  },
+  {
+   "item": "HTD 5M pulley, 12 mm bore, large (see BOM table for teeth)",
+   "qty": 3,
+   "search": "HTD 5M pulley 12mm bore 15mm belt",
+   "use": "joint-shaft pulleys: teeth listed below"
+  },
+  {
+   "item": "HTD 5M belt, 15 mm wide (lengths listed below)",
+   "qty": 3,
+   "search": "HTD 5M timing belt 15mm closed loop",
+   "use": "one per pitch joint, pick closest stock length"
+  },
+  {
+   "item": "Stepper driver DM542 (or DM556), 24-48 V",
+   "qty": 5,
+   "search": "DM542 stepper driver 4.2A",
+   "use": "4 joints + gripper (gripper may use TB6600)"
+  },
+  {
+   "item": "NEMA 17 stepper w/ T8 lead screw 150 mm + nut + 5->8 mm coupler",
+   "qty": 1,
+   "search": "NEMA 17 stepper motor T8 lead screw 150mm with nut",
+   "use": "gripper drive"
+  },
+  {
+   "item": "8 mm linear rod 150 mm + LM8UU bearings",
+   "qty": 2,
+   "search": "8mm linear rod 150mm LM8UU",
+   "use": "gripper slides: 2 rods, 2 bearings"
+  },
+  {
+   "item": "24 V 15 A (360 W) power supply",
+   "qty": 1,
+   "search": "24V 15A power supply 360W",
+   "use": "motors"
+  },
+  {
+   "item": "Arduino Mega 2560 R3",
+   "qty": 1,
+   "search": "Arduino Mega 2560 R3",
+   "use": "controller (firmware/arm_controller)"
+  },
+  {
+   "item": "E-stop mushroom button, latching, NC",
+   "qty": 1,
+   "search": "emergency stop switch latching NC 22mm",
+   "use": "cuts 24 V to all drivers"
+  },
+  {
+   "item": "Mechanical limit switches (NC)",
+   "qty": 5,
+   "search": "micro limit switch lever 5 pack NC",
+   "use": "homing, one per joint"
+  },
+  {
+   "item": "Fuse holder + 20 A fuse, 14 AWG wire, ferrules",
+   "qty": 1,
+   "search": "inline fuse holder 20A 14awg",
+   "use": "power distribution"
+  },
+  {
+   "item": "M5 screws 16/25/40/60 mm + nuts + washers, M3, M4 heat-set inserts",
+   "qty": 1,
+   "search": "M5 socket head screw assortment; M4 heat set inserts",
+   "use": "assembly"
+  },
+  {
+   "item": "PETG or nylon-CF filament, 2 kg; TPU for gripper pads",
+   "qty": 1,
+   "search": "PETG 1.75mm 1kg x2; TPU 95A",
+   "use": "printed parts"
+  },
+  {
+   "item": "Plywood or MDF board 18 x 18 in, 3/4 in",
+   "qty": 1,
+   "search": "3/4 inch plywood 18x18",
+   "use": "base; drill hole for yaw gearbox"
+  }
+ ]
+}

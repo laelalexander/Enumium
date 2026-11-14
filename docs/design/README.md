@@ -43,6 +43,25 @@ Each sheet is A3, third-angle, front/top/right views with overall dimensions. ST
 | **wrist_cheek_plain**<br>Plain cheek plate | x1<br>[SVG](../../3d-workflow/design/drawings/wrist_cheek_plain.svg) · [PNG](../../3d-workflow/design/png/wrist_cheek_plain.png) · [STEP](../../3d-workflow/design/cad/step/wrist_cheek_plain.step) · [STL](../../3d-workflow/design/cad/stl/wrist_cheek_plain.stl) | [<img src="../../3d-workflow/design/png/wrist_cheek_plain.png" width="360">](../../3d-workflow/design/drawings/wrist_cheek_plain.svg) |
 | **wrist_tube_block**<br>Spacer block that clamps the incoming tube | x1<br>[SVG](../../3d-workflow/design/drawings/wrist_tube_block.svg) · [PNG](../../3d-workflow/design/png/wrist_tube_block.png) · [STEP](../../3d-workflow/design/cad/step/wrist_tube_block.step) · [STL](../../3d-workflow/design/cad/stl/wrist_tube_block.stl) | [<img src="../../3d-workflow/design/png/wrist_tube_block.png" width="360">](../../3d-workflow/design/drawings/wrist_tube_block.svg) |
 
+## 3D control surface and virtual test table
+
+`python run.py ui` opens a browser app ([`3d-workflow/control/`](../../3d-workflow/control)) that assembles every
+printed STL with the purchased parts (gearmotors, pulleys, belts, bearings, shafts, hubs, tubes, turntable, gripper
+NEMA17, rods) and the electronics bench (PSU, fuse, E-stop, Arduino Mega, five drivers, limit switches, live wiring).
+
+- **Control:** joint sliders, IK target (typed or dragged in 3D), presets, teach-and-play, keyboard and gamepad jog.
+- **Motors:** per channel pulses/rev and current (driver DIP), max speed, acceleration, limit-switch angle, direction;
+  live step position, rate, rpm and the combined step-rate budget of the Mega.
+- **Test:** payload slider, live gravity torque vs available torque per joint, automated sweep / worst-case /
+  gripper / reach tests, pin and signal table.
+- **Parts:** every BOM line with "in model / in BOM" counts, layer toggles, exploded view, click any part for its
+  drawing and STL.
+- **Link:** Web Serial to `firmware/arm_controller` (Chrome or Edge). Without hardware the same commands run against a
+  simulated copy of the firmware, so you can rehearse a sequence before powering the arm.
+
+Windows: after the setup above, `python run.py ui`, then open http://127.0.0.1:8765/control/index.html in Chrome or
+Edge if it doesn't open by itself. Needs internet once for three.js (loaded from jsDelivr).
+
 ## Regenerating on Windows (your own terminal)
 
 Tested in the cloud on Linux with Python 3.13 and CadQuery 2.8. The Windows steps below use the same commands;
@@ -81,7 +100,7 @@ If none is present, `build` still writes every SVG and prints how to enable PNGs
 
 **Changing the design:** measure your purchased gearboxes, hubs and turntable, set the `HW` values in
 `3d-workflow/arm/hardware.py`, rerun `python run.py build`, then commit the changed files under `3d-workflow/design/`.
-Other options: `python -m arm.build --extension-m 1.219` for the full 4 ft reach, `python run.py sim` to check
+Other options: `python run.py ui` for the 3D control surface, `python -m arm.build --extension-m 1.219` for the full 4 ft reach, `python run.py sim` to check
 kinematics without hardware, `python run.py console` to drive the real arm over USB.
 
 ## Status and limits

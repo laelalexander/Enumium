@@ -31,7 +31,7 @@ Payload 5.0 lb, extension 39.4 in. **Verify every listing's dimensions and shaft
 | Heavy-duty turntable bearing 12 in (rated >= 500 lb) | 1 | 12 inch heavy duty lazy susan turntable bearing 1000 lb | yaw bearing; check bolt circle then set HW.turntable_pcd |
 | 12 mm hardened/stainless shaft rod, 150 mm | 3 | 12mm linear shaft rod 150mm (6 mm too small) | shoulder/elbow/wrist joint shafts |
 | 6001-2RS ball bearing 12x28x8 | 8 | 6001-2RS bearing 12x28x8 | 2 per pitch joint + spares |
-| 12 mm shaft clamping hub with 4-hole flange (aluminium) | 3 | 12mm clamping shaft hub flange coupling aluminum | locks distal link to joint shaft; check bolt circle -> HW.hub_pcd |
+| 12 mm shaft clamping hub with 4-hole flange (aluminium) | 4 | 12mm clamping shaft hub flange coupling aluminum (yaw one: bore = gearbox output) | 3 lock distal links to joint shafts, 1 locks base_top_plate to the yaw gearbox; check bolt circle -> HW.hub_pcd |
 | Shaft collars 12 mm | 6 | 12mm shaft collar clamp type | axial retention |
 | HTD 5M timing pulley, 15 mm belt, 16T (bore = gearbox output shaft) | 3 | HTD 5M 16 tooth pulley 15mm belt bore 14mm (check bore) | motor pulleys, one per pitch joint |
 | HTD 5M pulley, 12 mm bore, large (see BOM table for teeth) | 3 | HTD 5M pulley 12mm bore 15mm belt | joint-shaft pulleys: teeth listed below |

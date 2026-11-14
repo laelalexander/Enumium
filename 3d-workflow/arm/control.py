@@ -33,6 +33,10 @@ class Arm:
     GRIP = 4
     LIMITS = {"yaw": (-150, 150), "shoulder": (-10, 100), "elbow": (-135, 135), "wrist": (-100, 100)}  # CALIBRATE
     HOME_DIR = {"yaw": -1, "shoulder": -1, "elbow": -1, "wrist": -1}
+    # Joint angle at which each limit switch trips.  Homing (H) sets the step counter to 0 there,
+    # so a target angle a is sent as (a - HOME_DEG) * steps_per_deg.  Default: the limit the joint
+    # homes toward.  CALIBRATE: jog to the switch, read the real angle, put it here.
+    HOME_DEG = {"yaw": -150, "shoulder": -10, "elbow": -135, "wrist": -100}
     def __init__(self, driver, l1, l2, total_ratio, max_dps=None):
         self.d, self.l1, self.l2, self.ratio = driver, l1, l2, total_ratio
         self.max_dps = max_dps or {"yaw": 30, "shoulder": 10, "elbow": 15, "wrist": 30}
@@ -55,7 +59,7 @@ class Arm:
             lo, hi = self.LIMITS[j]
             if not lo <= a <= hi: raise ValueError(f"{j} {a} deg outside [{lo},{hi}]")
         for (j, ch), a in zip(self.CH.items(), (yaw, shoulder, elbow, wrist)):
-            self.d.move(ch, round(a * self.steps_per_deg(j)))
+            self.d.move(ch, round((a - self.HOME_DEG[j]) * self.steps_per_deg(j)))
         self.d.wait()
     def move_to(self, x, y, z, pitch=0.0):
         a = ik(x, y, z, self.l1, self.l2, pitch)
