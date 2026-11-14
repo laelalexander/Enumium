@@ -195,9 +195,16 @@ function bearing() { const g = new THREE.Group(); g.add(mesh(new THREE.TorusGeom
 // ---------------------------------------------------------------- STL loading
 const loader = new STLLoader();
 const stlGeo = {};
-await Promise.all(M.printed.map(p => new Promise((res) => {
-  loader.load(M.stl_base + p.stl, g => { g.computeVertexNormals(); stlGeo[p.id] = g; res(); }, undefined, () => { console.warn('missing STL', p.stl); res(); });
-})));
+// stl_encoding "base64" serves each STL as <name>.stl.txt (for hosts that won't serve .stl files).
+async function fetchStl(p) {
+  try {
+    let buf;
+    if (M.stl_encoding === 'base64') { const t = await (await fetch(M.stl_base + p.stl + '.txt')).text(); const b = atob(t.trim()); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); buf = u.buffer; }
+    else { const r = await fetch(M.stl_base + p.stl); if (!r.ok) throw new Error(r.status); buf = await r.arrayBuffer(); }
+    const g = loader.parse(buf); g.computeVertexNormals(); stlGeo[p.id] = g;
+  } catch (e) { console.warn('missing STL', p.stl, e); }
+}
+await Promise.all(M.printed.map(fetchStl));
 function stl(id, m = mat.printed) {
   const g = stlGeo[id] || new THREE.BoxGeometry(10, 10, 10);
   return new THREE.Mesh(g, m);
@@ -442,7 +449,7 @@ const link = {
   port: null, writer: null, buf: '', waiters: [], queue: Promise.resolve(), busy: 0, lines: [],
   get on() { return !!this.port; },
   async connect() {
-    if (!('serial' in navigator)) { log('Web Serial is not available. Use Chrome or Edge, opened from python run.py ui.'); alert('Web Serial needs Chrome or Edge, served from localhost (python run.py ui).'); return; }
+    if (!('serial' in navigator)) { log('Web Serial is not available here. Run python run.py ui on the PC the Arduino is plugged into and open it in Chrome or Edge.'); ui.flash('Hardware link needs Chrome or Edge via python run.py ui'); return; }
     try {
       this.port = await navigator.serial.requestPort({ filters: [] });
       await this.port.open({ baudRate: M.baud });
