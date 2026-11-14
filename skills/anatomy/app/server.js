@@ -422,6 +422,18 @@ const server = http.createServer(async (req, res) => {
         if (st.size > 50 * 1024 * 1024) return send(res, 413, { error: 'file too large to preview' });
         return send(res, 200, fs.readFileSync(p), MIME[ext] || 'text/plain; charset=utf-8');
       }
+      if (action === 'build-state') {
+        const f = path.join(dir, META_DIR, 'build-state.json');
+        if (req.method === 'GET') { try { return send(res, 200, JSON.parse(fs.readFileSync(f, 'utf8'))); } catch { return send(res, 200, {}); } }
+        if (req.method === 'PUT') { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, (await readBody(req, 1024 * 1024)).toString('utf8')); return send(res, 200, { ok: true }); }
+      }
+      if (action === 'build' && req.method === 'GET') {
+        // build/build.json anywhere in the project (shallowest wins)
+        const hits = listFiles(dir).filter(f => /(^|\/)build\/build\.json$/.test(f.path)).sort((a, b) => a.path.length - b.path.length);
+        if (!hits.length) return send(res, 200, {});
+        try { const j = JSON.parse(fs.readFileSync(path.join(dir, hits[0].path), 'utf8')); j._file = hits[0].path; return send(res, 200, j); }
+        catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }
+      }
       if (action === 'manifest' && req.method === 'GET') {
         const m = findManifest(dir);
         if (m && m.apps) m.apps = m.apps.map((a, n) => ({ ...a, running: !!apps.get(`${id}/${n}`) }));

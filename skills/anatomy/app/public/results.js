@@ -28,6 +28,7 @@ export async function renderResults(host, ctx) {
   const has = pred => F.some(pred);
   const tabs = [
     ['overview', 'Overview', true],
+    ['build', 'Build', true],
     ['run', 'Try it', (manifest.apps || []).length > 0 || has(f => /(^|\/)(index\.html)$/i.test(f.path) && !/assembly/i.test(f.path))],
     ['model', '3D model', has(f => MODEL.includes(ext(f.path)))],
     ['drawings', 'Drawings', has(f => (['pdf', 'svg', 'dxf'].includes(ext(f.path)) && /draw|blueprint|sheet|cut/i.test(f.path)) || (ext(f.path) === 'pdf'))],
@@ -45,7 +46,7 @@ export async function renderResults(host, ctx) {
     host.querySelectorAll('.rtabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     disposeViewer();
     body.innerHTML = '';
-    ({ overview, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
+    ({ overview, build, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
     try { localStorage.setItem('anatomy.tab.' + S.id, t); } catch {}
   };
   host.querySelectorAll('.rtabs button').forEach(b => b.onclick = () => show(b.dataset.t));
@@ -466,4 +467,103 @@ async function docs(el) {
   const open = async p => { dl.querySelectorAll('.pi').forEach(x => x.classList.toggle('on', x.dataset.p === p)); el.querySelector('#doc').innerHTML = S.md(await fetchText(p)); };
   dl.onclick = e => { const it = e.target.closest('.pi'); if (it) open(it.dataset.p); };
   const first = mds.find(f => /00-overview|readme/i.test(f.path)) || mds[0]; if (first) open(first.path);
+}
+
+// ---------------------------------------------------------------- Build wizard
+const BUILD_PROMPT = `Prepare the build package for this project, following references/build-package.md of the anatomy skill exactly.
+Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, PCB order files), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
+First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard. Run the BOM and build.json checks and report what is still open.`;
+const STAGES = [['purchase', 'Order parts'], ['print', 'Print parts'], ['fabricate', 'Fabricate'], ['assembly', 'Assemble'], ['firmware', 'Firmware & test']];
+async function build(el) {
+  const B = await S.api(`/api/projects/${S.id}/build`).catch(() => ({}));
+  if (!B || (!B.purchase && !B.print && !B.assembly)) {
+    el.innerHTML = `<div class="buildintro"><h2>Turn this design into a build</h2>
+      <p class="lead">Anatomy prepares everything a person needs to build this for real: a purchase list with supplier carts, the 3D print list with G-code for your printer, cut and fabrication files, illustrated assembly steps, and firmware and test steps. Then this tab walks you through ordering, printing, assembling and testing, and keeps track of your progress.</p>
+      ${B && B.error ? `<div class="alert">${esc(B.error)}</div>` : ''}
+      <ol class="bsteps">${STAGES.map(s => `<li>${s[1]}</li>`).join('')}</ol>
+      <div class="ib"></div><p class="empty">This runs Claude on the project and can take a while. You can watch it in the Live view.</p></div>`;
+    el.querySelector('.ib').append(btn('Prepare build package', () => S.startRun(BUILD_PROMPT), 'primary'));
+    return;
+  }
+  let state = await S.api(`/api/projects/${S.id}/build-state`).catch(() => ({})) || {};
+  const save = () => S.api(`/api/projects/${S.id}/build-state`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state) });
+  const key = (st, id, f) => `${st}:${id}:${f}`;
+  const items = {
+    purchase: (B.purchase || []).map((p, i) => ({ id: p.line || 'p' + i, fields: ['ordered', 'received'] })),
+    print: (B.print || []).map((p, i) => ({ id: p.part || 'r' + i, fields: ['printed'] })),
+    fabricate: (B.fabricate || []).map((p, i) => ({ id: p.part || 'f' + i, fields: ['done'] })),
+    assembly: (B.assembly || []).map((p, i) => ({ id: 's' + (p.step || i + 1), fields: ['done'] })),
+    firmware: [...(B.firmware || []).map((p, i) => ({ id: 'fw' + i, fields: ['done'] })), ...(B.tests || []).map((p, i) => ({ id: 't' + i, fields: ['done'] }))],
+  };
+  const pct = st => { const its = items[st]; if (!its.length) return null; const last = its.map(i => state[key(st, i.id, i.fields[i.fields.length - 1])]); return Math.round(100 * last.filter(Boolean).length / its.length); };
+  const allPct = () => { const ps = STAGES.map(s => pct(s[0])).filter(p => p !== null); return ps.length ? Math.round(ps.reduce((a, b) => a + b, 0) / ps.length) : 0; };
+  const T = B.totals || {};
+  const lineName = l => { const p = (B.purchase || []).find(x => x.line === l) || (B.print || []).find(x => x.line === l || x.part === l) || (B.fabricate || []).find(x => x.part === l); return p ? (p.desc || p.part) : l; };
+  el.innerHTML = `<div class="bhead"><div><h2>${esc(B.title || 'Build')}</h2><p class="lead">${esc(B.summary || '')}</p></div>
+    <div class="kpis">${T.parts_cost ? `<div><b>$${(+T.parts_cost).toFixed(0)}</b><span>parts</span></div>` : ''}${T.print_hours ? `<div><b>${T.print_hours} h</b><span>printing</span></div>` : ''}
+    ${T.filament_g ? `<div><b>${Object.entries(T.filament_g).map(([k, v]) => `${v} g`).join(' + ')}</b><span>${Object.keys(T.filament_g).join(', ')}</span></div>` : ''}${T.build_hours ? `<div><b>${T.build_hours} h</b><span>assembly</span></div>` : ''}
+    <div><b id="allpct">0%</b><span>built</span></div></div></div>
+    ${(B.tools || []).length ? `<p class="tools"><b>Tools:</b> ${esc(B.tools.join(' · '))}</p>` : ''}
+    <nav class="stages" id="stages"></nav><div id="stage"></div>`;
+  const nav = el.querySelector('#stages');
+  const renderNav = () => {
+    nav.innerHTML = STAGES.map(([k, n], i) => { const p = pct(k); return `<button data-s="${k}" class="${cur === k ? 'on' : ''} ${p === 100 ? 'done' : ''}" ${p === null ? 'disabled' : ''}><i>${p === 100 ? '✓' : i + 1}</i>${n}<em>${p === null ? '—' : p + '%'}</em></button>`; }).join('');
+    el.querySelector('#allpct').textContent = allPct() + '%';
+  };
+  let cur = STAGES.find(s => pct(s[0]) !== null && pct(s[0]) < 100)?.[0] || 'purchase';
+  nav.onclick = e => { const b = e.target.closest('button[data-s]'); if (b && !b.disabled) { cur = b.dataset.s; renderNav(); draw(); } };
+  const box = el.querySelector('#stage');
+  const check = (st, id, f, label) => `<label class="chk"><input type="checkbox" data-k="${esc(key(st, id, f))}" ${state[key(st, id, f)] ? 'checked' : ''}> ${label}</label>`;
+  box.addEventListener('change', e => { const k = e.target.dataset.k; if (!k) return; state[k] = e.target.checked; save(); renderNav(); });
+  const fileBtns = p => p ? `<a class="file" data-path="${esc(p)}">${esc(base(p))}</a> <button class="mini" data-open="${esc(p)}">open</button> <button class="mini" data-reveal="${esc(p)}">folder</button>` : '';
+  box.addEventListener('click', e => { const o = e.target.closest('[data-open]'); if (o) openExt(o.dataset.open); const r = e.target.closest('[data-reveal]'); if (r) reveal(r.dataset.reveal);
+    const all = e.target.closest('[data-openall]'); if (all) (B.purchase || []).filter(p => (p.supplier || 'Other') === all.dataset.openall && p.url).forEach(p => window.open(p.url, '_blank')); });
+  let stepIx = 0;
+  function draw() {
+    if (cur === 'purchase') {
+      const groups = new Map(); (B.purchase || []).forEach(p => { const s = p.supplier || 'Other'; if (!groups.has(s)) groups.set(s, []); groups.get(s).push(p); });
+      const carts = S.files.filter(f => /cart.*\.csv$|order.*\.csv$/i.test(f.path));
+      box.innerHTML = (carts.length ? `<p class="lead">Supplier carts ready to upload: ${carts.map(c => fileBtns(c.path)).join(' · ')}</p>` : '') + [...groups].map(([s, list]) => {
+        const sub = list.reduce((a, p) => a + (+p.qty || 0) * (+p.unit_price || 0), 0);
+        return `<div class="sgroup"><div class="sgh"><b>${esc(s)}</b><span>${list.length} items · $${sub.toFixed(2)}</span><button class="mini" data-openall="${esc(s)}">open all links</button></div>
+          <table class="bom"><tr><th>Ordered</th><th>Received</th><th>Part</th><th>MPN</th><th>Qty</th><th>Unit</th><th>Link</th></tr>${list.map(p => `<tr>
+          <td>${check('purchase', p.line, 'ordered', '')}</td><td>${check('purchase', p.line, 'received', '')}</td>
+          <td>${esc(p.desc)}<div class="empty">${esc(p.line || '')} ${esc(p.mfr || '')}${p.alt ? ' · alt: ' + esc(p.alt) : ''}</div></td><td><code>${esc(p.mpn || '')}</code></td><td>${esc(p.qty)}</td>
+          <td>${p.unit_price ? '$' + (+p.unit_price).toFixed(2) : ''}</td><td>${p.url ? `<a href="${esc(p.url)}" target="_blank">buy</a>` : ''}</td></tr>`).join('')}</table></div>`;
+      }).join('');
+    } else if (cur === 'print') {
+      const plates = new Map(); (B.print || []).forEach(p => { const k = p.plate || '—'; if (!plates.has(k)) plates.set(k, []); plates.get(k).push(p); });
+      const tot = (B.print || []).reduce((a, p) => ({ t: a.t + (+p.time_min || 0) * (+p.qty || 1), g: a.g + (+p.grams || 0) * (+p.qty || 1) }), { t: 0, g: 0 });
+      box.innerHTML = `<p class="lead">${(B.print || []).length} parts · ${(tot.t / 60).toFixed(1)} h · ${Math.round(tot.g)} g of filament. Open each G-code in your slicer to send it to the printer.</p>` + [...plates].map(([pl, list]) => `<div class="sgroup"><div class="sgh"><b>Plate ${esc(pl)}</b></div>
+        <table class="bom"><tr><th>Printed</th><th>Part</th><th>Qty</th><th>Material</th><th>Time</th><th>Weight</th><th>G-code</th><th>After printing / check</th></tr>${list.map(p => `<tr>
+        <td>${check('print', p.part, 'printed', '')}</td><td><b>${esc(p.part)}</b><div class="empty">${esc(p.orientation || '')}${p.supports ? ' · supports: ' + esc(p.supports) : ''}</div></td><td>${esc(p.qty || 1)}</td><td>${esc(p.material || '')}</td>
+        <td>${p.time_min ? Math.floor(p.time_min / 60) + 'h ' + (p.time_min % 60) + 'm' : ''}</td><td>${p.grams ? p.grams + ' g' : ''}</td><td>${p.gcode ? fileBtns(p.gcode) : '<span class="gtag">not sliced</span>'}</td>
+        <td>${esc(p.after || '')}${(p.checks || []).length ? '<ul>' + p.checks.map(c => `<li>${esc(c)}</li>`).join('') + '</ul>' : ''}</td></tr>`).join('')}</table></div>`).join('');
+    } else if (cur === 'fabricate') {
+      box.innerHTML = (B.fabricate || []).map(f => `<div class="appcard"><div class="t">${check('fabricate', f.part, 'done', '')} ${esc(f.part)} <span class="empty">· ${esc(f.process || '')}${f.qty ? ' · qty ' + esc(f.qty) : ''}</span></div>
+        <div class="d">${f.vendor ? 'Vendor: ' + esc(f.vendor) + '. ' : ''}${f.material ? 'Material: ' + esc(f.material) + '. ' : ''}${esc(f.settings || '')}</div>
+        <div>${(f.files || []).map(fileBtns).join('<br>')}</div></div>`).join('');
+    } else if (cur === 'assembly') {
+      const steps = B.assembly || []; if (!steps.length) { box.innerHTML = '<p class="empty">No steps.</p>'; return; }
+      stepIx = Math.min(stepIx, steps.length - 1);
+      const s = steps[stepIx], id = 's' + (s.step || stepIx + 1);
+      box.innerHTML = `<div class="astep"><div class="aimg">${s.image ? `<img src="${raw(s.image)}" data-p="${esc(s.image)}">` : '<div class="empty">No picture for this step.</div>'}</div>
+        <div class="atext"><p class="sect">Step ${stepIx + 1} of ${steps.length}</p><h2>${esc(s.title || '')}</h2><div class="say">${S.md(s.text || '')}</div>
+        ${(s.parts || []).length ? `<p class="sect">Parts</p><ul>${s.parts.map(p => `<li>${esc(p.qty || 1)} × ${esc(lineName(p.line || p.part))} <span class="empty">${esc(p.line || '')}</span></li>`).join('')}</ul>` : ''}
+        ${(s.tools || []).length ? `<p class="sect">Tools</p><p>${esc(s.tools.join(', '))}</p>` : ''}${s.torque ? `<p><b>Torque:</b> ${esc(s.torque)}</p>` : ''}
+        ${s.check ? `<div class="checkbox-note"><b>Check:</b> ${esc(s.check)}</div>` : ''}
+        <div class="ib">${check('assembly', id, 'done', 'Step done')}</div><div class="ib" id="anav"></div></div></div>`;
+      const an = box.querySelector('#anav');
+      an.append(btn('← Previous', () => { stepIx = Math.max(0, stepIx - 1); draw(); }), btn('Next step →', () => { if (!state[key('assembly', id, 'done')]) { state[key('assembly', id, 'done')] = true; save(); renderNav(); } stepIx = Math.min(steps.length - 1, stepIx + 1); draw(); }, 'primary'));
+      const img = box.querySelector('.aimg img'); if (img) img.onclick = () => S.preview(img.dataset.p);
+    } else if (cur === 'firmware') {
+      box.innerHTML = (B.firmware || []).map((f, i) => `<div class="appcard"><div class="t">${check('firmware', 'fw' + i, 'done', '')} ${esc(f.name)}</div>
+        ${f.build ? `<p class="d">Build: <code>${esc(f.build)}</code></p>` : ''}${f.flash ? `<p class="d">Flash: <code>${esc(f.flash)}</code></p>` : ''}${f.binary ? `<div>${fileBtns(f.binary)}</div>` : ''}${f.dir ? `<div>${fileBtns(f.dir)}</div>` : ''}${f.check ? `<p class="n">Check: ${esc(f.check)}</p>` : ''}</div>`).join('') +
+        ((B.tests || []).length ? `<p class="sect" style="margin-top:18px">Tests</p>` + B.tests.map((t, i) => `<div class="appcard"><div class="t">${check('firmware', 't' + i, 'done', '')} ${esc(t.name)}</div><ol>${(t.steps || []).map(x => `<li>${esc(x)}</li>`).join('')}</ol>${t.expect ? `<p class="n">Expect: ${esc(t.expect)}</p>` : ''}</div>`).join('') : '');
+    }
+  }
+  renderNav(); draw();
+  const re = document.createElement('div'); re.className = 'ib'; re.style.marginTop = '24px';
+  re.append(btn('Rebuild the package', () => { if (confirm('Run Claude again to regenerate the build package? Your checkmarks are kept.')) S.startRun(BUILD_PROMPT); }));
+  el.append(re);
 }

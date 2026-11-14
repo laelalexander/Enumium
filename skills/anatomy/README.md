@@ -56,7 +56,9 @@ Double-click the **Anatomy** icon. It opens in its own window, with no terminal.
    - **Progress** (left) walks through the six steps of the skill: Scope, Gather evidence, Analyze, Blueprint, Prototype, Verify. Claude's own plan appears under it.
    - **Activity** (center) shows what Claude is doing in plain sentences: files it reads and writes, commands it runs (click a row for the output), and a summary card at the end.
    - **Files produced** (right) updates as files are written. Click one to preview it (Markdown, images, PDFs, code). CAD, KiCad and Gerber files open in their own programs via **Show in folder**.
-3. When a run finishes, use the box at the bottom to follow up ("go deeper on the PCB"). It continues the same session.
+3. When a run finishes, the project opens on **Results**: Overview, **Build**, Try it (run the project's software), 3D model with a part inspector, Drawings, Renders, Parts (BOM), 3D printing (G-code toolpath preview), Electronics, Software, Assembly and Documents.
+4. **Build** turns the design into an actual build. If the project has no build package yet, click **Prepare build package**: Claude produces `build/build.json` with the purchase list and supplier carts, the print list with G-code, fabrication and cut files, illustrated assembly steps, and firmware and test steps (`references/build-package.md`). The wizard then walks you through Order parts, Print parts, Fabricate, Assemble (one illustrated step at a time) and Firmware & test, and remembers what you've checked off.
+5. Use the box at the bottom of Live to follow up ("go deeper on the PCB"). It continues the same session.
 
 Projects live in `C:\Anatomy\<name>\` and show on the start screen.
 

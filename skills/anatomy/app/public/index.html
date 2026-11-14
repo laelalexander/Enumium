@@ -212,6 +212,22 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
 .appcard .t { font-weight: 600; font-size: 16px; } .appcard .d { color: var(--muted); margin: 4px 0; } .appcard .n { color: var(--faint); font-size: 12px; }
 .appcard .b { display: flex; gap: 8px; margin-top: 10px; }
 .applog { font-family: var(--mono); font-size: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; max-height: 300px; overflow: auto; white-space: pre-wrap; margin-top: 14px; }
+.buildintro { max-width: 760px; } .buildintro h2, .bhead h2 { margin: 0 0 6px; }
+.bsteps { color: var(--muted); line-height: 2; }
+.bhead { display: flex; gap: 20px; justify-content: space-between; flex-wrap: wrap; align-items: flex-start; }
+.tools { color: var(--muted); font-size: 13px; }
+.stages { display: flex; gap: 6px; margin: 10px 0 18px; flex-wrap: wrap; }
+.stages button { display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 14px; color: var(--muted); }
+.stages button i { font-style: normal; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--panel2); font-size: 12px; }
+.stages button em { font-style: normal; font-size: 11px; color: var(--faint); }
+.stages button.on { border-color: var(--accent); color: var(--text); } .stages button.done i { background: var(--ok); color: #0b0d12; }
+.stages button:disabled { opacity: .4; cursor: default; }
+.sgroup { margin-bottom: 18px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.sgh { display: flex; gap: 12px; align-items: center; padding: 10px 12px; background: var(--panel); } .sgh span { color: var(--muted); flex: 1; }
+.chk { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; } .chk input { width: 16px; height: 16px; accent-color: var(--ok); }
+.astep { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; }
+.aimg img { width: 100%; border-radius: 12px; background: #fff; border: 1px solid var(--line); cursor: zoom-in; }
+.checkbox-note { background: #132a1e; border: 1px solid #1f4a33; color: #b9f0cf; border-radius: 10px; padding: 8px 12px; margin: 10px 0; }
 .fullframe { width: 100%; height: calc(100vh - 160px); border: 0; border-radius: 10px; background: #fff; }
 
 @media (max-width: 1100px) { .grid { grid-template-columns: 200px 1fr; } aside.right { display: none; } #filesBtn { display: inline-block !important; } }
@@ -421,7 +437,7 @@ function setView(v) {
 }
 async function loadResults() {
   const files = await api(`/api/projects/${cur}/files`).catch(() => []);
-  renderResults($('#results'), { id: cur, files, api, md, preview, lastResult, setTitle: t => { $('#rTitle').textContent = t; document.title = t + ' · Anatomy'; } });
+  renderResults($('#results'), { id: cur, files, api, md, preview, lastResult, startRun: async m => { await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) }).catch(e => alert(e.message)); setView('live'); }, setTitle: t => { $('#rTitle').textContent = t; document.title = t + ' · Anatomy'; } });
 }
 $('#vswitch').onclick = e => { if (e.target.dataset.v) setView(e.target.dataset.v); };
 function setStatus(s) {
