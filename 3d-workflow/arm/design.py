@@ -1,82 +1,72 @@
-"""Sizing: choose actuators from joint torque, then emit CadQuery source for
-each structural part so it can go through pipeline.run (validate + export)."""
-import json
-from .actuators import CATALOG, Actuator
+"""Static sizing for a 4-DOF (yaw, shoulder, elbow, wrist pitch) arm with a
+tube-and-printed-joint structure.  Worst case: arm fully horizontal."""
+from .actuators import DRIVES
 
 G = 9.81
-SAFETY = 2.0          # required torque margin
-WALL, THICK = 3.0, 4.0
-CLEAR = 0.3           # pocket clearance per side
-LINK_KG_PER_MM = 0.00022   # ~PLA/PETG beam of this cross-section, rough
+LB = 0.45359
+SAFETY = 2.0            # rated torque must exceed required by this factor
+TUBE_KG_PER_M = 0.49    # 1.5 in OD x 0.065 in wall 6061 aluminium tube
+JOINT_HW_KG = 0.20      # printed fittings + hardware per link end
+GRIPPER_KG = 0.45       # printed gripper + NEMA17 + lead screw
+TOOL_LEN = 0.20         # wrist axis to fingertip, m
+PAYLOAD_ARM = 0.12      # wrist axis to payload CoM, m
+BASE_OFFSET = 0.05      # base axis to shoulder axis, m
+MAX_EXTENSION = 1.219   # 4 ft
+FOOTPRINT_NOTE = "extension = base axis to fingertip, arm horizontal"
 
-def select(reach_mm, payload_kg, links=(0.5, 0.5)):
-    """Return dict of joint -> (Actuator, required_nm). links = fractions of reach."""
-    L = [reach_mm * f / 1000 for f in links]            # metres
-    chosen = {j: CATALOG[0] for j in ("shoulder", "elbow", "wrist")}
-    for _ in range(6):                                  # actuator mass feeds back into torque
-        m = {j: a.mass_kg for j, a in chosen.items()}
-        wrist_t = G * (payload_kg * 0.06 + m["wrist"] * 0.02)          # gripper ~60 mm out
-        lw = 0.06
-        elbow_t = G * (L[1] * LINK_KG_PER_MM * 1000 * L[1] / 2 + m["wrist"] * L[1]
-                       + (payload_kg + 0.03) * (L[1] + lw))
-        shoulder_t = G * (L[0] * LINK_KG_PER_MM * 1000 * L[0] / 2 + m["elbow"] * L[0]
-                          + L[1] * LINK_KG_PER_MM * 1000 * (L[0] + L[1] / 2)
-                          + m["wrist"] * (L[0] + L[1]) + (payload_kg + 0.03) * (L[0] + L[1] + lw))
-        req = {"shoulder": shoulder_t, "elbow": elbow_t, "wrist": wrist_t}
+def links_for(extension):
+    l = (extension - TOOL_LEN - BASE_OFFSET) / 2
+    return l, l
+
+def torques(extension, payload_kg, drives):
+    """drives: dict joint->Drive.  Returns required torque (N·m) per joint."""
+    l1, l2 = links_for(extension)
+    m1, m2 = TUBE_KG_PER_M * l1 + JOINT_HW_KG, TUBE_KG_PER_M * l2 + JOINT_HW_KG
+    mw, me = drives["wrist"].mass_kg, drives["elbow"].mass_kg
+    wrist = G * (payload_kg * PAYLOAD_ARM + GRIPPER_KG * 0.07)
+    elbow = G * (m2 * l2 / 2 + mw * l2 + GRIPPER_KG * (l2 + 0.07) + payload_kg * (l2 + PAYLOAD_ARM))
+    shoulder = G * (m1 * l1 / 2 + me * l1 + m2 * (l1 + l2 / 2) + mw * (l1 + l2)
+                    + GRIPPER_KG * (l1 + l2 + 0.07) + payload_kg * (l1 + l2 + PAYLOAD_ARM))
+    return {"shoulder": shoulder, "elbow": elbow, "wrist": wrist}
+
+def select(extension, payload_kg):
+    """Smallest-mass drive per joint meeting SAFETY; None if infeasible."""
+    pick = {j: DRIVES[0] for j in ("shoulder", "elbow", "wrist")}
+    for _ in range(8):
+        req = torques(extension, payload_kg, pick)
         new = {}
         for j, t in req.items():
-            ok = [a for a in CATALOG if a.torque_nm >= t * SAFETY]
+            ok = [d for d in DRIVES if d.rated_nm >= SAFETY * t]
             if not ok:
-                raise ValueError(f"No catalog actuator gives {SAFETY}x margin at {j} "
-                                 f"({t:.2f} N·m needed). Reduce reach/payload or add a stronger actuator.")
-            new[j] = min(ok, key=lambda a: (a.torque_nm, a.mass_kg))
-        if new == chosen:
-            break
-        chosen = new
-    return {j: (chosen[j], round(req[j], 3)) for j in chosen}
+                return None, req
+            new[j] = min(ok, key=lambda d: d.mass_kg)
+        if new == pick:
+            return pick, req
+        pick = new
+    return pick, req
 
-def link_code(length_mm: float, act: Actuator) -> str:
-    """Beam between joint axes: actuator pocket at the start, horn hole at the end."""
-    l, w, h = act.body
-    return f"""length, thickness, wall = {length_mm}, {THICK}, {WALL}
-act_l, act_w = {l + 2 * CLEAR}, {w + 2 * CLEAR}
-width = act_w + 2 * wall
-horn_hole_d, screw_d = 6.0, 3.2
-total = length + act_l
-beam = cq.Workplane("XY").box(total, width, thickness, centered=(False, True, False)).edges("|Z").fillet(width / 4)
-pocket = cq.Workplane("XY").box(act_l, act_w, thickness, centered=(False, True, False))
-result = (beam.cut(pocket)
-          .faces(">Z").workplane().center(total - 8, 0).hole(horn_hole_d)
-          .faces(">Z").workplane().pushPoints([(total - 8, 8), (total - 8, -8)]).hole(screw_d))
-"""
+def max_extension(payload_kg, lo=0.5, hi=MAX_EXTENSION, step=0.005):
+    e = hi
+    while e >= lo:
+        pick, req = select(e, payload_kg)
+        if pick:
+            return round(e, 3), pick, req
+        e -= step
+    return None, None, None
 
-def base_code(act: Actuator) -> str:
-    l, w, h = act.body
-    return f"""size, base_t, act_l, act_w, act_h = 100.0, 8.0, {l + 2*CLEAR}, {w + 2*CLEAR}, {h}
-plate = cq.Workplane("XY").box(size, size, base_t, centered=(True, True, False)).edges("|Z").fillet(8)
-plate = plate.faces(">Z").workplane().rect(act_l, act_w).cutBlind(-base_t + 2)  # yaw actuator seat
-result = plate.faces("<Z").workplane().rarray(80, 80, 2, 2).hole(4.5)           # clamp-down holes
-"""
-
-def design(reach_mm=300.0, payload_kg=0.1):
-    sel = select(reach_mm, payload_kg)
-    (sh, _), (el, _), (wr, _) = sel["shoulder"], sel["elbow"], sel["wrist"]
-    l1, l2 = reach_mm * 0.5, reach_mm * 0.5
-    parts = [
-        {"name": "base", "code": base_code(el), "actuator": el.name, "qty": 1},
-        {"name": "upper_arm", "code": link_code(l1, el), "actuator": sh.name, "qty": 1},
-        {"name": "forearm", "code": link_code(l2, wr), "actuator": el.name, "qty": 1},
-    ]
-    for p in parts:
-        p["spec"] = {"name": p["name"], "units": "mm", "min_feature_mm": 2.0, "process": "fdm"}
-    bom = [{"item": a.name, "qty": q, "interface": a.interface, "voltage": a.voltage}
-           for a, q in _count([el, sh, el, wr])]
-    return {"reach_mm": reach_mm, "payload_kg": payload_kg,
-            "joints": {j: {"actuator": a.name, "required_nm": r, "rated_nm": a.torque_nm}
-                       for j, (a, r) in sel.items()},
-            "parts": parts, "bom": bom}
-
-def _count(acts):
-    out = {}
-    for a in acts: out[a] = out.get(a, 0) + 1
-    return list(out.items())
+def design(payload_lb=5.0, extension=None):
+    payload = payload_lb * LB
+    if extension is None:
+        extension, pick, req = max_extension(payload)
+        if extension is None:
+            raise ValueError("No catalog drive meets the payload at any extension >= 0.5 m")
+    else:
+        pick, req = select(extension, payload)
+        if pick is None:
+            raise ValueError(f"Infeasible at {extension} m with {payload_lb} lb: required {req}")
+    l1, l2 = links_for(extension)
+    return {"payload_lb": payload_lb, "extension_m": extension, "extension_in": round(extension / 0.0254, 1),
+            "l1_mm": round(l1 * 1000), "l2_mm": round(l2 * 1000),
+            "joints": {j: {"drive": pick[j].key, "required_nm": round(req[j], 2),
+                           "rated_nm": round(pick[j].rated_nm, 1),
+                           "margin": round(pick[j].rated_nm / req[j], 2)} for j in req}}

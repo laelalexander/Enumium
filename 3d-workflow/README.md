@@ -39,30 +39,20 @@ python -m pytest -q tests
 
 ## Desktop robot arm (primary use case)
 
-Pipeline for a programmable 4-DOF arm (yaw, shoulder, elbow, wrist pitch) built on real actuators.
+4-DOF arm (yaw, shoulder, elbow, wrist pitch + lead-screw gripper): Amazon-orderable parts,
+3D-printed joints, 5 lb payload, never beyond 4 ft (default 39.4 in).
 
 ```bash
-python -m arm.build --reach 300 --payload 0.1    # size actuators, generate + validate parts, BOM
+python -m arm.build                       # size drives, generate + validate parts, write BOM
+python -m arm.build --extension-m 1.219   # full 4 ft (margin drops to ~2.15x at the shoulder)
 ```
-1. `arm/actuators.py`: actuator catalog (dimensions, torque, mass, interface). Values are
-   approximate; check datasheets and edit for the parts you own.
-2. `arm/design.py`: worst-case (arm horizontal) torque per joint, 2× safety margin, picks the
-   smallest actuator that passes, iterating because actuator mass adds load. It raises if
-   nothing in the catalog is strong enough.
-3. Parts (base, upper arm, forearm) are generated with pockets sized to the chosen actuator,
-   then run through the validate/export pipeline above (STEP + STL in `out/arm/`, plus
-   `design.json` with the BOM).
-4. `arm/kinematics.py` (IK/FK) and `arm/control.py` (`Arm`, `SimDriver`, `PCA9685Driver`)
-   are the programming layer:
-   ```python
-   from arm.control import Arm, SimDriver
-   arm = Arm(SimDriver(), l1=150, l2=150)
-   arm.move_to(180, 60, 40)
-   ```
-For freeform parts (gripper, custom brackets) use `pipeline.py` and put the actuator's
-dimensions in the request.
+- `docs/ASSEMBLY.md`: step-by-step build, wiring, firmware, load-test procedure.
+- `docs/BOM.md`: generated bill of materials with Amazon search terms (verify specs; no ASINs).
+- `arm/design.py`: static torque sizing with 2x margin; finds that 5 lb needs belt reduction
+  (5:1 shoulder, 3:1 elbow) on top of NEMA 23 20:1 planetary gearmotors.
+- `arm/hardware.py`: printed-part generators (draft geometry; set the `HW` dimensions from your parts).
+- `firmware/arm_controller/`: Arduino Mega + AccelStepper (uncompiled/untested on hardware).
+- `arm/control.py`: `Arm` (IK, limits, step conversion), `SimDriver`, `SerialDriver`.
 
-Known limits: the example BOM mixes PWM and TTL-serial actuators, so restrict the catalog
-to one interface before building. Joint zero/limits in `control.py` are placeholders for
-your calibration. No Dynamixel driver is included. Torque model ignores dynamics, so it is
-static only. Printed parts are untested physically.
+Limits: gearbox ratings come from vendor listings and were not confirmed on Amazon; the arm drops
+on power loss; printed parts and firmware are unverified on real hardware.

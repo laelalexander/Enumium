@@ -1,22 +1,34 @@
-"""Actuator catalog.  Values are nominal/approximate from vendor listings:
-VERIFY AGAINST THE DATASHEET before ordering parts or cutting material.
-body = (length along long axis, width, height) in mm, torque = rated stall (N·m)."""
+"""Joint drive catalog: NEMA stepper + planetary gearbox, the kind sold on Amazon
+(StepperOnline/OMC and generic).  Numbers are from vendor listings and are
+APPROXIMATE: confirm on the product page before ordering.  rated_nm is the output
+torque we allow = min(motor_hold*ratio*eff, gearbox max permissible)."""
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
-class Actuator:
-    name: str
-    body: tuple          # (l, w, h) mm
-    torque_nm: float     # stall torque
-    mass_kg: float
-    shaft_offset: float  # shaft centre distance from one end of long axis, mm
-    interface: str       # control interface
-    voltage: str
+class Drive:
+    key: str
+    search_terms: str     # what to type into Amazon
+    motor_hold_nm: float
+    ratio: float
+    eff: float
+    gear_max_nm: float    # gearbox max permissible output torque (intermittent)
+    mass_kg: float        # motor + gearbox
+    backlash_arcmin: float
+    amps: float
 
-CATALOG = [
-    Actuator("SG90 micro servo",       (22.2, 11.8, 31.0), 0.18, 0.009, 5.5,  "PWM", "4.8-6V"),
-    Actuator("MG996R servo",           (40.7, 19.7, 42.9), 0.92, 0.055, 10.0, "PWM", "4.8-7.2V"),
-    Actuator("DS3218 servo",           (40.0, 20.0, 40.5), 2.0,  0.060, 10.0, "PWM", "5-6.8V"),
-    Actuator("Dynamixel XL430-W250",   (46.5, 28.5, 34.0), 1.4,  0.057, 14.0, "TTL serial", "10-12V"),
+    @property
+    def rated_nm(self):
+        return min(self.motor_hold_nm * self.ratio * self.eff, self.gear_max_nm)
+
+    @property
+    def deg_per_fullstep(self):
+        return 1.8 / self.ratio
+
+DRIVES = [
+    Drive("n17_14", "NEMA 17 stepper motor 14:1 planetary gearbox", 0.45, 14, 0.9, 10.0, 0.50, 40, 1.7),
+    Drive("n23_20", "NEMA 23 stepper motor 20:1 planetary gearbox 2.8A", 1.89, 20, 0.9, 25.0, 1.60, 20, 2.8),
+    Drive("n23_20_b3", "NEMA 23 20:1 planetary gearbox + 3:1 HTD 5M belt/pulley stage", 1.89, 60, 0.85, 75.0, 2.10, 25, 2.8),
+    Drive("n23_20_b5", "NEMA 23 20:1 planetary gearbox + 5:1 HTD 5M belt/pulley stage", 1.89, 100, 0.80, 125.0, 2.20, 25, 2.8),
+    Drive("n23_50", "NEMA 23 stepper motor 50:1 planetary gearbox 2.8A", 1.89, 50, 0.75, 20.0, 1.70, 16, 2.8),
 ]
-BY_NAME = {a.name: a for a in CATALOG}
+BY_KEY = {d.key: d for d in DRIVES}

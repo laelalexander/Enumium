@@ -1,30 +1,48 @@
-import sys, math, pytest
+import sys, json, pytest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-import pipeline
-from arm import design, kinematics, control
+from arm import design, kinematics, control, build, hardware
 
-def test_selection_scales_with_payload():
-    light = design.select(300, 0.02)["shoulder"][0]
-    heavy = design.select(300, 0.15)["shoulder"][0]
-    assert heavy.torque_nm >= light.torque_nm
+def test_5lb_fits_in_4ft_with_margin():
+    d = design.design(5.0, 1.0)
+    assert d["extension_m"] <= design.MAX_EXTENSION
+    for j, v in d["joints"].items():
+        assert v["margin"] >= design.SAFETY, (j, v)
+
+def test_full_4ft_still_feasible_and_overreach_not_default():
+    assert design.design(5.0, 1.219)["extension_m"] == 1.219
+    assert design.max_extension(5 * design.LB)[0] <= design.MAX_EXTENSION
+
+def test_heavier_payload_infeasible():
     with pytest.raises(ValueError):
-        design.select(600, 5.0)
+        design.design(15.0, 1.0)
 
-def test_parts_validate(tmp_path):
-    d = design.design(300, 0.1)
-    for p in d["parts"]:
-        r = pipeline.run(p["spec"], p["code"], None, 1, tmp_path)
-        assert r["ok"], (p["name"], r["errors"])
+def test_belt_center_grows_with_ratio():
+    assert hardware.belt_center_mm(5) > hardware.belt_center_mm(3) > hardware.belt_center_mm(1)
+
+def test_build_all_parts_valid(tmp_path):
+    d = build.build(5.0, 1.0, tmp_path)
+    bad = {k: v["errors"] for k, v in d["parts"].items() if not v["ok"]}
+    assert not bad, bad
+    assert (tmp_path / "BOM.md").exists()
 
 def test_ik_fk_roundtrip():
-    yaw, sh, el, _ = kinematics.ik(150, 80, 40, 150, 150)
-    x, y, z = kinematics.fk(yaw, sh, el, 150, 150)
-    assert (x, y, z) == pytest.approx((150, 80, 40), abs=0.5)
+    yaw, sh, el, _ = kinematics.ik(300, 160, 80, 375, 375)
+    x, y, z = kinematics.fk(yaw, sh, el, 375, 375)
+    assert (x, y, z) == pytest.approx((300, 160, 80), abs=0.5)
     with pytest.raises(ValueError):
-        kinematics.ik(900, 0, 0, 150, 150)
+        kinematics.ik(1500, 0, 0, 375, 375)
 
-def test_limits_enforced():
-    arm = control.Arm(control.SimDriver(), 150, 150)
+def test_control_steps_and_limits(tmp_path):
+    sent = []
+    class Rec:
+        def move(self, ch, s): sent.append((ch, s))
+        def home(self, ch, d): pass
+        def wait(self): pass
+    arm = control.Arm(Rec(), 375, 375, {"yaw": 20, "shoulder": 100, "elbow": 60, "wrist": 20})
+    arm.move_joints(0, 90, 0, 0)
+    assert sent[1] == (1, round(90 * 200 * control.MICROSTEP * 100 / 360))
     with pytest.raises(ValueError):
-        arm.move_to(-100, -5, 0)   # needs yaw ~177°
+        arm.move_joints(0, 170, 0, 0)
+    with pytest.raises(ValueError):
+        arm.grip(100)
