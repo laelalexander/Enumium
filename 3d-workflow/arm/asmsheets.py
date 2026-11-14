@@ -335,8 +335,22 @@ def items_from(ga, model):
     return rows
 
 
+def _first_step():
+    """catalog key -> assembly step (1-based) where the part first appears (arm/assembly.py STEPS 'show')."""
+    from .assembly import STEPS
+    first = {}
+    for i, st in enumerate(STEPS, 1):
+        for k in st.get("show", []):
+            first.setdefault(k.split("~")[0], i)
+    return first
+
+
 def parts_json(rows):
-    return {f"{r['key'].replace('/', '_')}.stl": {"item": r["item"], "name": r["name"], "part_no": r["part"], "category": r["cat"],
+    """Keyed by STL file name. The STLs are already in assembled position (world mm, Z up, joints at 0°), so the
+    pose is identity; step is the assembly-guide step where the part goes on (for the viewer's Assemble animation)."""
+    first = _first_step()
+    last = max(first.values(), default=0) + 1
+    return {f"{r['key'].replace('/', '_')}.stl": {"pose": {"position": [0, 0, 0], "rotation": [0, 0, 0]}, "step": first.get(r["key"], last), "item": r["item"], "name": r["name"], "part_no": r["part"], "category": r["cat"],
                                                    "qty": r["qty"], "material": r["material"], "note": r.get("note", ""), "drawing": r["drawing"]} for r in rows}
 
 

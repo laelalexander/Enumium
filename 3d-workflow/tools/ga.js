@@ -113,6 +113,7 @@ const srv = http.createServer((q, r) => {
       const byKey = {}; for (const x of draw) (byKey[x.key] = byKey[x.key] || []).push(x.m);
       for (const [key, ms] of Object.entries(byKey)) {
         const g = new THREE.Group(); for (const m of ms) { const c = new THREE.Mesh(m.geometry); m.matrixWorld.decompose(c.position, c.quaternion, c.scale); g.add(c); }
+        g.updateMatrixWorld(true);                       // STLExporter bakes matrixWorld; fresh meshes start at identity
         const dv = ex.parse(g, { binary: true }); const u8 = new Uint8Array(dv.buffer); let bin = ''; for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); stls[key] = btoa(bin);
       }
     }

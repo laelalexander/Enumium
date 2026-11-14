@@ -1,5 +1,18 @@
 {
  "shoulder_cheek_motor.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 1,
   "name": "shoulder_cheek_motor",
   "part_no": "P-01",
@@ -10,6 +23,19 @@
   "drawing": "shoulder_cheek_motor.svg"
  },
  "shoulder_cheek_plain.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 2,
   "name": "shoulder_cheek_plain",
   "part_no": "P-02",
@@ -20,6 +46,19 @@
   "drawing": "shoulder_cheek_plain.svg"
  },
  "shoulder_tube_block.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 3,
   "name": "shoulder_tube_block",
   "part_no": "P-03",
@@ -30,6 +69,19 @@
   "drawing": "shoulder_tube_block.svg"
  },
  "elbow_cheek_motor.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
   "item": 4,
   "name": "elbow_cheek_motor",
   "part_no": "P-04",
@@ -40,6 +92,19 @@
   "drawing": "elbow_cheek_motor.svg"
  },
  "elbow_cheek_plain.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
   "item": 5,
   "name": "elbow_cheek_plain",
   "part_no": "P-05",
@@ -50,6 +115,19 @@
   "drawing": "elbow_cheek_plain.svg"
  },
  "elbow_tube_block.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
   "item": 6,
   "name": "elbow_tube_block",
   "part_no": "P-06",
@@ -60,6 +138,19 @@
   "drawing": "elbow_tube_block.svg"
  },
  "wrist_cheek_motor.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
   "item": 7,
   "name": "wrist_cheek_motor",
   "part_no": "P-07",
@@ -70,6 +161,19 @@
   "drawing": "wrist_cheek_motor.svg"
  },
  "wrist_cheek_plain.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
   "item": 8,
   "name": "wrist_cheek_plain",
   "part_no": "P-08",
@@ -80,6 +184,19 @@
   "drawing": "wrist_cheek_plain.svg"
  },
  "wrist_tube_block.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
   "item": 9,
   "name": "wrist_tube_block",
   "part_no": "P-09",
@@ -90,6 +207,19 @@
   "drawing": "wrist_tube_block.svg"
  },
  "tube_socket.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 10,
   "name": "tube_socket",
   "part_no": "P-10",
@@ -100,6 +230,19 @@
   "drawing": "tube_socket.svg"
  },
  "base_top_plate.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 4,
   "item": 11,
   "name": "base_top_plate",
   "part_no": "P-11",
@@ -110,6 +253,19 @@
   "drawing": "base_top_plate.svg"
  },
  "gripper_body.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 12,
   "name": "gripper_body",
   "part_no": "P-12",
@@ -120,6 +276,19 @@
   "drawing": "gripper_body.svg"
  },
  "gripper_adapter.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 13,
   "name": "gripper_adapter",
   "part_no": "P-13",
@@ -130,6 +299,19 @@
   "drawing": "gripper_adapter.svg"
  },
  "gripper_jaw.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 14,
   "name": "gripper_jaw",
   "part_no": "P-14",
@@ -140,6 +322,19 @@
   "drawing": "gripper_jaw.svg"
  },
  "ANG.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 15,
   "name": "ANG enclosure corner angle 10 x 10 x 1.5",
   "part_no": "ANG",
@@ -150,6 +345,19 @@
   "drawing": null
  },
  "BASE-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
   "item": 16,
   "name": "BASE-01 base board",
   "part_no": "BASE-01",
@@ -160,6 +368,19 @@
   "drawing": null
  },
  "ENC-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 17,
   "name": "ENC-01 enclosure base plate",
   "part_no": "ENC-01",
@@ -170,6 +391,19 @@
   "drawing": null
  },
  "ENC-02.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 18,
   "name": "ENC-02 enclosure lid",
   "part_no": "ENC-02",
@@ -180,6 +414,19 @@
   "drawing": null
  },
  "ENC-03.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 19,
   "name": "ENC-03 enclosure front wall",
   "part_no": "ENC-03",
@@ -190,6 +437,19 @@
   "drawing": null
  },
  "ENC-04.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 20,
   "name": "ENC-04 enclosure back wall",
   "part_no": "ENC-04",
@@ -200,6 +460,19 @@
   "drawing": null
  },
  "ENC-05.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 21,
   "name": "ENC-05 enclosure left wall",
   "part_no": "ENC-05",
@@ -210,6 +483,19 @@
   "drawing": null
  },
  "ENC-06.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 22,
   "name": "ENC-06 enclosure right wall (arm side)",
   "part_no": "ENC-06",
@@ -220,6 +506,19 @@
   "drawing": null
  },
  "GSK-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 3,
   "item": 23,
   "name": "GSK-01 turntable seat gasket",
   "part_no": "GSK-01",
@@ -230,6 +529,19 @@
   "drawing": null
  },
  "GSK-02.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 24,
   "name": "GSK-02 gripper jaw pad",
   "part_no": "GSK-02",
@@ -240,6 +552,19 @@
   "drawing": null
  },
  "GSK-03.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
   "item": 25,
   "name": "GSK-03 leg foot pad",
   "part_no": "GSK-03",
@@ -250,6 +575,19 @@
   "drawing": null
  },
  "LEG-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
   "item": 26,
   "name": "LEG-01 base leg",
   "part_no": "LEG-01",
@@ -260,6 +598,19 @@
   "drawing": null
  },
  "SHAFT-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 27,
   "name": "SHAFT-01 joint shaft",
   "part_no": "SHAFT-01",
@@ -270,6 +621,19 @@
   "drawing": null
  },
  "TUBE-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 7,
   "item": 28,
   "name": "TUBE-01 upper arm tube",
   "part_no": "TUBE-01",
@@ -280,6 +644,19 @@
   "drawing": null
  },
  "TUBE-02.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 9,
   "item": 29,
   "name": "TUBE-02 forearm tube",
   "part_no": "TUBE-02",
@@ -290,6 +667,19 @@
   "drawing": null
  },
  "TUBE-03.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 5,
   "item": 30,
   "name": "TUBE-03 riser tube",
   "part_no": "TUBE-03",
@@ -300,6 +690,19 @@
   "drawing": null
  },
  "TUBE-04.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 31,
   "name": "TUBE-04 wrist stub tube",
   "part_no": "TUBE-04",
@@ -310,6 +713,19 @@
   "drawing": null
  },
  "YAW-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 4,
   "item": 32,
   "name": "YAW-01 turntable adapter disc",
   "part_no": "YAW-01",
@@ -320,6 +736,19 @@
   "drawing": null
  },
  "bearing.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 33,
   "name": "6001-2RS ball bearing 12x28x8",
   "part_no": "-",
@@ -330,6 +759,19 @@
   "drawing": null
  },
  "belt.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 34,
   "name": "HTD 5M belt, 15 mm wide (lengths listed below)",
   "part_no": "-",
@@ -340,6 +782,19 @@
   "drawing": null
  },
  "collar.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 35,
   "name": "Shaft collars 12 mm",
   "part_no": "-",
@@ -350,6 +805,19 @@
   "drawing": null
  },
  "filament.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 14,
   "item": 36,
   "name": "PETG or nylon-CF filament, 2 kg; TPU for gripper pads",
   "part_no": "-",
@@ -360,6 +828,19 @@
   "drawing": null
  },
  "glands.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 37,
   "name": "Cable glands PG9 (5) + PG7 (5), nylon",
   "part_no": "-",
@@ -370,6 +851,19 @@
   "drawing": null
  },
  "grommet.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
   "item": 38,
   "name": "Rubber grommet 32 mm hole",
   "part_no": "-",
@@ -380,6 +874,19 @@
   "drawing": null
  },
  "hub.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 4,
   "item": 39,
   "name": "12 mm shaft clamping hub with 4-hole flange (aluminium)",
   "part_no": "-",
@@ -390,6 +897,19 @@
   "drawing": null
  },
  "nema17.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 40,
   "name": "NEMA 17 stepper w/ T8 lead screw 150 mm + nut + 5->8 mm coupler",
   "part_no": "-",
@@ -400,6 +920,19 @@
   "drawing": null
  },
  "pulley_l.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 41,
   "name": "HTD 5M pulley, 12 mm bore, large (see BOM table for teeth)",
   "part_no": "-",
@@ -410,6 +943,19 @@
   "drawing": null
  },
  "pulley_s.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 42,
   "name": "HTD 5M timing pulley, 15 mm belt, 16T (bore = gearbox output shaft)",
   "part_no": "-",
@@ -420,6 +966,19 @@
   "drawing": null
  },
  "rod.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
   "item": 43,
   "name": "8 mm linear rod 150 mm + LM8UU bearings",
   "part_no": "-",
@@ -430,6 +989,19 @@
   "drawing": null
  },
  "screws.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 14,
   "item": 44,
   "name": "Fasteners F01-F18 (see fab/FASTENERS.md)",
   "part_no": "-",
@@ -440,6 +1012,19 @@
   "drawing": null
  },
  "turntable.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 3,
   "item": 45,
   "name": "Heavy-duty turntable bearing 12 in (rated >= 500 lb)",
   "part_no": "-",
@@ -450,6 +1035,19 @@
   "drawing": null
  },
  "gm_elbow.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
   "item": 46,
   "name": "elbow gearmotor: NEMA 23 20:1 planetary gearbox",
   "part_no": "-",
@@ -460,6 +1058,19 @@
   "drawing": null
  },
  "gm_shoulder.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
   "item": 47,
   "name": "shoulder gearmotor: NEMA 23 20:1 planetary gearbox",
   "part_no": "-",
@@ -470,6 +1081,19 @@
   "drawing": null
  },
  "gm_wrist.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
   "item": 48,
   "name": "wrist gearmotor: NEMA 23 stepper motor 20:1 planetary gearbox 2.8A",
   "part_no": "-",
@@ -480,6 +1104,19 @@
   "drawing": null
  },
  "gm_yaw.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 2,
   "item": 49,
   "name": "yaw gearmotor: NEMA 23 stepper motor 20:1 planetary gearbox 2.8A",
   "part_no": "-",
@@ -490,6 +1127,19 @@
   "drawing": null
  },
  "driver.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 50,
   "name": "Stepper driver DM542 (or DM556), 24-48 V",
   "part_no": "-",
@@ -500,6 +1150,19 @@
   "drawing": null
  },
  "estop.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 51,
   "name": "E-stop mushroom button, latching, NC",
   "part_no": "-",
@@ -510,6 +1173,19 @@
   "drawing": null
  },
  "fuse.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 52,
   "name": "Fuse holder + 20 A fuse, 14 AWG wire, ferrules",
   "part_no": "-",
@@ -520,6 +1196,19 @@
   "drawing": null
  },
  "limit.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 2,
   "item": 53,
   "name": "Mechanical limit switches (NC)",
   "part_no": "-",
@@ -530,6 +1219,19 @@
   "drawing": null
  },
  "mega.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 54,
   "name": "Arduino Mega 2560 R3",
   "part_no": "-",
@@ -540,6 +1242,19 @@
   "drawing": null
  },
  "psu.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
   "item": 55,
   "name": "24 V 15 A (360 W) power supply",
   "part_no": "-",
