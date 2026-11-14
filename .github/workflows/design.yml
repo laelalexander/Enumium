@@ -1,0 +1,47 @@
+name: robot-arm-design
+
+on:
+  push:
+    paths: ["3d-workflow/**", "docs/design/**", ".github/workflows/design.yml"]
+  pull_request:
+    paths: ["3d-workflow/**", "docs/design/**", ".github/workflows/design.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 3d-workflow
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: 3d-workflow/requirements.txt
+      - name: Install
+        run: |
+          sudo apt-get update && sudo apt-get install -y libcairo2 libgl1
+          python -m pip install -r requirements.txt cairosvg
+      - name: Tests
+        run: python -m pytest -q tests
+      - name: Regenerate design package and PNGs
+        run: |
+          python run.py build
+          python run.py png
+      - name: Check every drawing rendered
+        run: |
+          n_svg=$(ls design/drawings/*.svg design/schematics/*.svg | wc -l)
+          n_png=$(ls design/png/*.png | wc -l)
+          echo "SVG: $n_svg  PNG: $n_png"
+          test "$n_svg" -eq "$n_png"
+          for f in design/png/*.png; do test "$(stat -c%s "$f")" -gt 20000 || { echo "too small: $f"; exit 1; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: robot-arm-design
+          path: |
+            3d-workflow/design/drawings
+            3d-workflow/design/schematics
+            3d-workflow/design/png
+            3d-workflow/design/index.html

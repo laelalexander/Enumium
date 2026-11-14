@@ -1,0 +1,1267 @@
+{
+ "shoulder_cheek_motor.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 1,
+  "name": "shoulder_cheek_motor",
+  "part_no": "P-01",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Motor-side cheek plate",
+  "drawing": "shoulder_cheek_motor.svg"
+ },
+ "shoulder_cheek_plain.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 2,
+  "name": "shoulder_cheek_plain",
+  "part_no": "P-02",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Plain cheek plate",
+  "drawing": "shoulder_cheek_plain.svg"
+ },
+ "shoulder_tube_block.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 3,
+  "name": "shoulder_tube_block",
+  "part_no": "P-03",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Spacer block that clamps the incoming tube",
+  "drawing": "shoulder_tube_block.svg"
+ },
+ "elbow_cheek_motor.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
+  "item": 4,
+  "name": "elbow_cheek_motor",
+  "part_no": "P-04",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Motor-side cheek plate",
+  "drawing": "elbow_cheek_motor.svg"
+ },
+ "elbow_cheek_plain.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
+  "item": 5,
+  "name": "elbow_cheek_plain",
+  "part_no": "P-05",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Plain cheek plate",
+  "drawing": "elbow_cheek_plain.svg"
+ },
+ "elbow_tube_block.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
+  "item": 6,
+  "name": "elbow_tube_block",
+  "part_no": "P-06",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Spacer block that clamps the incoming tube",
+  "drawing": "elbow_tube_block.svg"
+ },
+ "wrist_cheek_motor.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
+  "item": 7,
+  "name": "wrist_cheek_motor",
+  "part_no": "P-07",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Motor-side cheek plate",
+  "drawing": "wrist_cheek_motor.svg"
+ },
+ "wrist_cheek_plain.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
+  "item": 8,
+  "name": "wrist_cheek_plain",
+  "part_no": "P-08",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Plain cheek plate",
+  "drawing": "wrist_cheek_plain.svg"
+ },
+ "wrist_tube_block.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
+  "item": 9,
+  "name": "wrist_tube_block",
+  "part_no": "P-09",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Spacer block that clamps the incoming tube",
+  "drawing": "wrist_tube_block.svg"
+ },
+ "tube_socket.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 10,
+  "name": "tube_socket",
+  "part_no": "P-10",
+  "category": "Printed parts",
+  "qty": 3,
+  "material": "PETG, printed",
+  "note": "Distal link end: hub flange + tube socket (shoulder, elbow, wrist)",
+  "drawing": "tube_socket.svg"
+ },
+ "base_top_plate.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 4,
+  "item": 11,
+  "name": "base_top_plate",
+  "part_no": "P-11",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Rotating plate: yaw hub + turntable + riser socket",
+  "drawing": "base_top_plate.svg"
+ },
+ "gripper_body.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 12,
+  "name": "gripper_body",
+  "part_no": "P-12",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "NEMA17 lead-screw gripper body + fixed jaw",
+  "drawing": "gripper_body.svg"
+ },
+ "gripper_adapter.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 13,
+  "name": "gripper_adapter",
+  "part_no": "P-13",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Tube-stub socket + plate bolting to gripper body (M4 heat-set inserts)",
+  "drawing": "gripper_adapter.svg"
+ },
+ "gripper_jaw.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 14,
+  "name": "gripper_jaw",
+  "part_no": "P-14",
+  "category": "Printed parts",
+  "qty": 1,
+  "material": "PETG, printed",
+  "note": "Sliding jaw on 2x8 mm rods",
+  "drawing": "gripper_jaw.svg"
+ },
+ "ANG.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 15,
+  "name": "ANG enclosure corner angle 10 x 10 x 1.5",
+  "part_no": "ANG",
+  "category": "Cut and machined parts",
+  "qty": 12,
+  "material": "",
+  "note": "cut list: 4 x 470, 4 x 294, 4 x 90 mm (fab/CUTLIST.md)",
+  "drawing": null
+ },
+ "BASE-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
+  "item": 16,
+  "name": "BASE-01 base board",
+  "part_no": "BASE-01",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "3/4 in Baltic birch plywood (18-19 mm)",
+  "note": "3/4 in Baltic birch plywood (18-19 mm)",
+  "drawing": null
+ },
+ "ENC-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 17,
+  "name": "ENC-01 enclosure base plate",
+  "part_no": "ENC-01",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "5052 aluminium 3 mm (earth it) or 3 mm acrylic",
+  "note": "5052 aluminium 3 mm (earth it) or 3 mm acrylic",
+  "drawing": null
+ },
+ "ENC-02.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 18,
+  "name": "ENC-02 enclosure lid",
+  "part_no": "ENC-02",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "5052 aluminium 3 mm or 3 mm acrylic",
+  "note": "5052 aluminium 3 mm or 3 mm acrylic",
+  "drawing": null
+ },
+ "ENC-03.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 19,
+  "name": "ENC-03 enclosure front wall",
+  "part_no": "ENC-03",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "5052 aluminium 3 mm or 3 mm acrylic",
+  "note": "5052 aluminium 3 mm or 3 mm acrylic",
+  "drawing": null
+ },
+ "ENC-04.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 20,
+  "name": "ENC-04 enclosure back wall",
+  "part_no": "ENC-04",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "5052 aluminium 3 mm or 3 mm acrylic",
+  "note": "5052 aluminium 3 mm or 3 mm acrylic",
+  "drawing": null
+ },
+ "ENC-05.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 21,
+  "name": "ENC-05 enclosure left wall",
+  "part_no": "ENC-05",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "5052 aluminium 3 mm or 3 mm acrylic",
+  "note": "5052 aluminium 3 mm or 3 mm acrylic",
+  "drawing": null
+ },
+ "ENC-06.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 22,
+  "name": "ENC-06 enclosure right wall (arm side)",
+  "part_no": "ENC-06",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "5052 aluminium 3 mm or 3 mm acrylic",
+  "note": "5052 aluminium 3 mm or 3 mm acrylic",
+  "drawing": null
+ },
+ "GSK-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 3,
+  "item": 23,
+  "name": "GSK-01 turntable seat gasket",
+  "part_no": "GSK-01",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "Neoprene 60A sheet 1.5 mm [1/16 in]",
+  "note": "Neoprene 60A sheet 1.5 mm [1/16 in]",
+  "drawing": null
+ },
+ "GSK-02.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 24,
+  "name": "GSK-02 gripper jaw pad",
+  "part_no": "GSK-02",
+  "category": "Cut and machined parts",
+  "qty": 2,
+  "material": "TPU 95A (print flat) or 3 mm neoprene with adhesive back",
+  "note": "TPU 95A (print flat) or 3 mm neoprene with adhesive back",
+  "drawing": null
+ },
+ "GSK-03.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
+  "item": 25,
+  "name": "GSK-03 leg foot pad",
+  "part_no": "GSK-03",
+  "category": "Cut and machined parts",
+  "qty": 4,
+  "material": "Rubber sheet 3 mm [1/8 in], 60A",
+  "note": "Rubber sheet 3 mm [1/8 in], 60A",
+  "drawing": null
+ },
+ "LEG-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
+  "item": 26,
+  "name": "LEG-01 base leg",
+  "part_no": "LEG-01",
+  "category": "Cut and machined parts",
+  "qty": 4,
+  "material": "Hardwood 45 x 45 [1.75 x 1.75] (2x2 nominal)",
+  "note": "Hardwood 45 x 45 [1.75 x 1.75] (2x2 nominal)",
+  "drawing": null
+ },
+ "SHAFT-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 27,
+  "name": "SHAFT-01 joint shaft",
+  "part_no": "SHAFT-01",
+  "category": "Cut and machined parts",
+  "qty": 3,
+  "material": "12 mm h6 hardened or 303 stainless rod, cut to 120 mm",
+  "note": "12 mm h6 hardened or 303 stainless rod, cut to 120 mm",
+  "drawing": null
+ },
+ "TUBE-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 7,
+  "item": 28,
+  "name": "TUBE-01 upper arm tube",
+  "part_no": "TUBE-01",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "note": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "drawing": null
+ },
+ "TUBE-02.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 9,
+  "item": 29,
+  "name": "TUBE-02 forearm tube",
+  "part_no": "TUBE-02",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "note": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "drawing": null
+ },
+ "TUBE-03.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 5,
+  "item": 30,
+  "name": "TUBE-03 riser tube",
+  "part_no": "TUBE-03",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "note": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "drawing": null
+ },
+ "TUBE-04.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 31,
+  "name": "TUBE-04 wrist stub tube",
+  "part_no": "TUBE-04",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "note": "6061-T6 tube 1.5 in OD x 0.065 in wall [38.1 x 1.65 mm]",
+  "drawing": null
+ },
+ "YAW-01.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 4,
+  "item": 32,
+  "name": "YAW-01 turntable adapter disc",
+  "part_no": "YAW-01",
+  "category": "Cut and machined parts",
+  "qty": 1,
+  "material": "6061-T6 aluminium plate 6 mm [.236] (or 12 mm Baltic birch)",
+  "note": "6061-T6 aluminium plate 6 mm [.236] (or 12 mm Baltic birch)",
+  "drawing": null
+ },
+ "bearing.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 33,
+  "name": "6001-2RS ball bearing 12x28x8",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 8,
+  "material": "bought",
+  "note": "2 per pitch joint + spares",
+  "drawing": null
+ },
+ "belt.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 34,
+  "name": "HTD 5M belt, 15 mm wide (lengths listed below)",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 3,
+  "material": "bought",
+  "note": "one per pitch joint, pick closest stock length",
+  "drawing": null
+ },
+ "collar.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 35,
+  "name": "Shaft collars 12 mm",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 6,
+  "material": "bought",
+  "note": "axial retention",
+  "drawing": null
+ },
+ "filament.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 14,
+  "item": 36,
+  "name": "PETG or nylon-CF filament, 2 kg; TPU for gripper pads",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 1,
+  "material": "bought",
+  "note": "printed parts",
+  "drawing": null
+ },
+ "glands.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 37,
+  "name": "Cable glands PG9 (5) + PG7 (5), nylon",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 1,
+  "material": "bought",
+  "note": "ENC-06 motor and limit cable entries",
+  "drawing": null
+ },
+ "grommet.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 1,
+  "item": 38,
+  "name": "Rubber grommet 32 mm hole",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 1,
+  "material": "bought",
+  "note": "BASE-01 harness pass-through",
+  "drawing": null
+ },
+ "hub.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 4,
+  "item": 39,
+  "name": "12 mm shaft clamping hub with 4-hole flange (aluminium)",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 4,
+  "material": "bought",
+  "note": "3 lock distal links to joint shafts, 1 locks base_top_plate to the yaw gearbox; check bolt circle -> HW.hub_pcd",
+  "drawing": null
+ },
+ "nema17.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 40,
+  "name": "NEMA 17 stepper w/ T8 lead screw 150 mm + nut + 5->8 mm coupler",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 1,
+  "material": "bought",
+  "note": "gripper drive",
+  "drawing": null
+ },
+ "pulley_l.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 41,
+  "name": "HTD 5M pulley, 12 mm bore, large (see BOM table for teeth)",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 3,
+  "material": "bought",
+  "note": "joint-shaft pulleys: teeth listed below",
+  "drawing": null
+ },
+ "pulley_s.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 42,
+  "name": "HTD 5M timing pulley, 15 mm belt, 16T (bore = gearbox output shaft)",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 3,
+  "material": "bought",
+  "note": "motor pulleys, one per pitch joint",
+  "drawing": null
+ },
+ "rod.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 11,
+  "item": 43,
+  "name": "8 mm linear rod 150 mm + LM8UU bearings",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 2,
+  "material": "bought",
+  "note": "gripper slides: 2 rods, 2 bearings",
+  "drawing": null
+ },
+ "screws.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 14,
+  "item": 44,
+  "name": "Fasteners F01-F18 (see fab/FASTENERS.md)",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 1,
+  "material": "bought",
+  "note": "every screw, nut, washer and insert, with length and torque",
+  "drawing": null
+ },
+ "turntable.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 3,
+  "item": 45,
+  "name": "Heavy-duty turntable bearing 12 in (rated >= 500 lb)",
+  "part_no": "-",
+  "category": "Purchased mechanical",
+  "qty": 1,
+  "material": "bought",
+  "note": "yaw bearing; check bolt circle then set HW.turntable_pcd",
+  "drawing": null
+ },
+ "gm_elbow.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 8,
+  "item": 46,
+  "name": "elbow gearmotor: NEMA 23 20:1 planetary gearbox",
+  "part_no": "-",
+  "category": "Motors",
+  "qty": 1,
+  "material": "bought",
+  "note": "NEMA23 1.89 N\u00b7m, 20:1 planetary + 3:1 belt = 60:1, rated 75 N\u00b7m at output",
+  "drawing": null
+ },
+ "gm_shoulder.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 6,
+  "item": 47,
+  "name": "shoulder gearmotor: NEMA 23 20:1 planetary gearbox",
+  "part_no": "-",
+  "category": "Motors",
+  "qty": 1,
+  "material": "bought",
+  "note": "NEMA23 1.89 N\u00b7m, 20:1 planetary + 5:1 belt = 100:1, rated 125 N\u00b7m at output",
+  "drawing": null
+ },
+ "gm_wrist.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 10,
+  "item": 48,
+  "name": "wrist gearmotor: NEMA 23 stepper motor 20:1 planetary gearbox 2.8A",
+  "part_no": "-",
+  "category": "Motors",
+  "qty": 1,
+  "material": "bought",
+  "note": "NEMA23 1.89 N\u00b7m, 20:1 planetary = 20:1, rated 25 N\u00b7m at output",
+  "drawing": null
+ },
+ "gm_yaw.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 2,
+  "item": 49,
+  "name": "yaw gearmotor: NEMA 23 stepper motor 20:1 planetary gearbox 2.8A",
+  "part_no": "-",
+  "category": "Motors",
+  "qty": 1,
+  "material": "bought",
+  "note": "NEMA23 1.89 N\u00b7m, 20:1 planetary = 20:1, rated 25 N\u00b7m at output",
+  "drawing": null
+ },
+ "driver.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 50,
+  "name": "Stepper driver DM542 (or DM556), 24-48 V",
+  "part_no": "-",
+  "category": "Electronics",
+  "qty": 5,
+  "material": "bought",
+  "note": "4 joints + gripper (gripper may use TB6600)",
+  "drawing": null
+ },
+ "estop.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 51,
+  "name": "E-stop mushroom button, latching, NC",
+  "part_no": "-",
+  "category": "Electronics",
+  "qty": 1,
+  "material": "bought",
+  "note": "cuts 24 V to all drivers",
+  "drawing": null
+ },
+ "fuse.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 52,
+  "name": "Fuse holder + 20 A fuse, 14 AWG wire, ferrules",
+  "part_no": "-",
+  "category": "Electronics",
+  "qty": 1,
+  "material": "bought",
+  "note": "power distribution",
+  "drawing": null
+ },
+ "limit.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 2,
+  "item": 53,
+  "name": "Mechanical limit switches (NC)",
+  "part_no": "-",
+  "category": "Electronics",
+  "qty": 5,
+  "material": "bought",
+  "note": "homing, one per joint",
+  "drawing": null
+ },
+ "mega.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 54,
+  "name": "Arduino Mega 2560 R3",
+  "part_no": "-",
+  "category": "Electronics",
+  "qty": 1,
+  "material": "bought",
+  "note": "controller (firmware/arm_controller)",
+  "drawing": null
+ },
+ "psu.stl": {
+  "pose": {
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "rotation": [
+    0,
+    0,
+    0
+   ]
+  },
+  "step": 12,
+  "item": 55,
+  "name": "24 V 15 A (360 W) power supply",
+  "part_no": "-",
+  "category": "Electronics",
+  "qty": 1,
+  "material": "bought",
+  "note": "motors",
+  "drawing": null
+ }
+}

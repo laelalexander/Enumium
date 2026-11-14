@@ -1,0 +1,260 @@
+"""Generates design/: CAD (STEP+STL), dimensioned 3-view part drawings (SVG, third-angle),
+assembly drawing, joint section, and wiring schematics.  python -m arm.drawings"""
+import json, math, shutil, sys
+from html import escape
+from pathlib import Path
+import cadquery as cq
+from cadquery.occ_impl.exporters.svg import getSVG
+from . import hardware as H, build as B, design as D
+from .actuators import BY_KEY
+import pipeline
+
+OUT = pipeline.HERE / "design"
+SHEET_W, SHEET_H, PXMM = 1600, 1131, 1600 / 420.0     # A3 landscape, 1:1 = 3.81 px/mm
+INK, DIM = "#111", "#b00020"
+
+def load_shape(code):
+    ns = {"cq": cq, "math": math}
+    exec("import math\n" + code, ns)
+    return ns["result"]
+
+def view_svg(shape, direction, scale):
+    shape = shape.val() if hasattr(shape, "val") else shape
+    """Render a view at an exact px/mm scale; returns (inner_svg, w_px, h_px)."""
+    probe = getSVG(shape, {"projectionDir": direction, "width": 1000, "height": None, "marginLeft": 0, "marginTop": 0,
+                           "showAxes": False, "showHidden": False})
+    import re
+    us = float(re.search(r"scale\(([\d.eE+-]+),", probe).group(1))
+    w_mm = float(re.search(r'width="([\d.]+)"', probe).group(1)) / us
+    w_px = w_mm * scale
+    svg = getSVG(shape, {"projectionDir": direction, "width": w_px, "height": None, "marginLeft": 0, "marginTop": 0,
+                         "showAxes": False, "showHidden": True, "strokeWidth": 0.9 / scale * 1.0})
+    h_px = float(re.search(r'height="([\d.]+)"', svg).group(1))
+    svg = re.sub(r"<\?xml.*?\?>", "", svg)
+    return svg, w_px, h_px
+
+def hdim(x1, x2, y, label, off=0):
+    return (f'<g stroke="{DIM}" fill="{DIM}" stroke-width="1"><line x1="{x1}" y1="{y}" x2="{x2}" y2="{y}"/>'
+            f'<line x1="{x1}" y1="{y-6}" x2="{x1}" y2="{y+6}"/><line x1="{x2}" y1="{y-6}" x2="{x2}" y2="{y+6}"/>'
+            f'<text x="{(x1+x2)/2}" y="{y-5}" font-size="13" text-anchor="middle" stroke="none">{label}</text></g>')
+
+def vdim(x, y1, y2, label):
+    return (f'<g stroke="{DIM}" fill="{DIM}" stroke-width="1"><line x1="{x}" y1="{y1}" x2="{x}" y2="{y2}"/>'
+            f'<line x1="{x-6}" y1="{y1}" x2="{x+6}" y2="{y1}"/><line x1="{x-6}" y1="{y2}" x2="{x+6}" y2="{y2}"/>'
+            f'<text x="{x-8}" y="{(y1+y2)/2}" font-size="13" text-anchor="end" stroke="none">{label}</text></g>')
+
+def sheet(title, partno, body, notes, scale_txt, rev="A"):
+    nl = "".join(f'<text x="1170" y="{935 + 15*i}" font-size="10.5">{escape(n)}</text>' for i, n in enumerate(notes))
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{SHEET_W}" height="{SHEET_H}" viewBox="0 0 {SHEET_W} {SHEET_H}" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/><rect x="20" y="20" width="{SHEET_W-40}" height="{SHEET_H-40}" fill="none" stroke="{INK}" stroke-width="2"/>
+{body}
+<g stroke="{INK}" fill="none"><rect x="1160" y="900" width="420" height="211"/><line x1="1160" y1="1040" x2="1580" y2="1040"/><line x1="1460" y1="1040" x2="1460" y2="1111"/></g>
+<g fill="{INK}"><text x="1172" y="1064" font-size="16" font-weight="bold">{title}</text><text x="1172" y="1090" font-size="12">PART {partno}</text>
+<text x="1472" y="1064" font-size="12">SCALE {scale_txt}</text><text x="1382" y="1090" font-size="11">REV {rev} DRAFT | mm | A3</text>
+<text x="1172" y="920" font-size="13" font-weight="bold">NOTES</text>{nl}</g></svg>'''
+
+PART_NO = {}   # filled in main(): P-01 ... in BOM order
+
+
+def part_drawing(name, code, qty, note):
+    """Production sheet from arm/sheets.py: third-angle views, section, ordinate dims and hole + fastener table, mm [in]."""
+    from . import sheets as S, fasteners as FA
+    shape = load_shape(code)
+    man = {}
+    pm = pipeline.HERE / "print" / "manifest.json"
+    if pm.exists():
+        man = json.loads(pm.read_text(encoding="utf-8"))["parts"].get(name, {})
+    notes = [f"Function: {note}."]
+    if man:
+        notes.append(f"Print: {man.get('why', '')}"[:110])
+        notes.append(f"Supports {'yes' if man.get('supports') else 'none'}, brim {'yes' if man.get('brim') else 'no'}; plate "
+                     + ", ".join(str(x) for x in man.get("plates", [])) + " (print/REPORT.md).")
+    notes.append("PETG 250/70 °C, 0.20 layers, 5 perimeters, 40 % gyroid (print/profiles). MEASURE items: arm/hardware.py HW.")
+    info = dict(title=name.upper().replace("_", " "), partno=f"{PART_NO.get(name, '')} {name}".strip(),
+                material="PETG (or ASA / nylon-CF), 1.75 mm filament", process="FDM 3D print, Bambu 256 mm bed",
+                qty=qty, tol="printed", density=1.27, fill=0.75, notes=notes)
+    svg, feats = S.sheet(shape, info, FA.for_part(name))
+    return svg, shape
+
+
+# ---------- assembly drawing ----------
+def assembly_svg(d):
+    l1, l2 = d["l1_mm"], d["l2_mm"]
+    s = 0.88   # px per mm
+    x0, y0 = 200, 640                       # base axis at x0, base top at y0
+    sh = (x0, y0 - 150 * s)                 # shoulder axis (riser ~150 above base plate)
+    el = (sh[0] + l1 * s, sh[1]); wr = (el[0] + l2 * s, el[1]); tip = (wr[0] + 200 * s, wr[1])
+    def j(p, lab):
+        return (f'<circle cx="{p[0]}" cy="{p[1]}" r="14" fill="#fff" stroke="{INK}" stroke-width="2"/><circle cx="{p[0]}" cy="{p[1]}" r="3" fill="{INK}"/>'
+                f'<text x="{p[0]}" y="{p[1]-44}" font-size="14" text-anchor="middle" font-weight="bold">{lab}</text>')
+    body = f'''<rect x="{x0-110}" y="{y0}" width="220" height="26" fill="#ddd" stroke="{INK}"/><text x="{x0}" y="{y0+44}" font-size="12" text-anchor="middle">BASE BOARD 18x18 in + TURNTABLE (yaw J1)</text>
+<rect x="{x0-50}" y="{y0-12}" width="100" height="12" fill="#bbb" stroke="{INK}"/>
+<rect x="{x0-19*s}" y="{sh[1]}" width="{38*s}" height="{150*s-12}" fill="#e8e8e8" stroke="{INK}"/><text x="{x0+30}" y="{y0-60}" font-size="12">RISER TUBE ~150</text>
+<rect x="{sh[0]}" y="{sh[1]-19*s}" width="{l1*s}" height="{38*s}" fill="#e8e8e8" stroke="{INK}"/>
+<rect x="{el[0]}" y="{el[1]-19*s}" width="{l2*s}" height="{38*s}" fill="#e8e8e8" stroke="{INK}"/>
+<rect x="{wr[0]}" y="{wr[1]-30}" width="{200*s}" height="60" fill="#cfd8dc" stroke="{INK}"/><text x="{(wr[0]+tip[0])/2}" y="{wr[1]+4}" font-size="12" text-anchor="middle">GRIPPER</text>
+{j(sh,"J2 SHOULDER")}{j(el,"J3 ELBOW")}{j(wr,"J4 WRIST")}
+<line x1="{tip[0]}" y1="{tip[1]-50}" x2="{tip[0]}" y2="{tip[1]+50}" stroke="{INK}" stroke-dasharray="6,4"/>'''
+    body += hdim(x0, tip[0], y0 + 110, f"{(tip[0]-x0)/s:.0f} mm  ({(tip[0]-x0)/s/25.4:.1f} in)  base axis to fingertip  (max 1219 mm / 48 in)")
+    body += hdim(sh[0], el[0], sh[1] - 130, f"{l1} (joint-to-joint)") + hdim(el[0], wr[0], el[1] - 130, f"{l2} (joint-to-joint)")
+    body += hdim(wr[0], tip[0], wr[1] - 130, "200 tool")
+    body += vdim(x0 - 80, sh[1], y0, "150 riser")
+    pay = f'<line x1="{tip[0]}" y1="{tip[1]+50}" x2="{tip[0]}" y2="{tip[1]+110}" stroke="{INK}"/><rect x="{tip[0]-22}" y="{tip[1]+110}" width="44" height="30" fill="#ffd54f" stroke="{INK}"/><text x="{tip[0]}" y="{tip[1]+130}" font-size="12" text-anchor="middle">5 lb</text>'
+    notes = [f"Drives: shoulder {d['joints']['shoulder']['drive']} ({d['joints']['shoulder']['required_nm']} N·m req)",
+             f"elbow {d['joints']['elbow']['drive']} ({d['joints']['elbow']['required_nm']} N·m req), wrist {d['joints']['wrist']['drive']}",
+             "Tube: 1.5 in OD x 0.065 in wall 6061 aluminium", f"Tube cut lengths: {l1-55} mm, {l2-55} mm", "Pose shown: fully extended horizontal (worst-case torque)"]
+    return sheet("ARM ASSEMBLY - ELEVATION", "ASM-001", body + pay, notes, "NTS")
+
+def joint_section_svg():
+    """Schematic section through a pitch joint along the shaft axis (not to scale)."""
+    def box(x, y, w, h, f, lab, fs=12):
+        return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{f}" stroke="{INK}"/>'
+                f'<text x="{x+w/2}" y="{y+h/2+4}" font-size="{fs}" text-anchor="middle">{lab}</text>')
+    b = box(60, 330, 1020, 14, "#444", "").replace("fill=\"#444\"", "fill=\"#444\"")
+    body = f'<rect x="130" y="320" width="780" height="34" fill="#444" stroke="{INK}"/><text x="520" y="342" font-size="13" fill="#fff" text-anchor="middle">12 mm JOINT SHAFT</text>'
+    body += box(160, 180, 40, 280, "#cfd8dc", "")
+    body += f'<text x="180" y="170" font-size="12" text-anchor="middle">MOTOR CHEEK (12)</text>'
+    body += box(700, 180, 40, 280, "#cfd8dc", "") + f'<text x="720" y="170" font-size="12" text-anchor="middle">PLAIN CHEEK (12)</text>'
+    body += box(200, 230, 500, 180, "#f5f5f5", "") + f'<text x="545" y="262" font-size="12" text-anchor="middle">TUBE BLOCK 56 wide, M5 x4 to cheeks</text>'
+    body += box(165, 300, 30, 80, "#90a4ae", "6001") + box(705, 300, 30, 80, "#90a4ae", "6001")
+    body += box(300, 200, 90, 260, "#a5d6a7", "") + f'<text x="345" y="195" font-size="12" text-anchor="middle">LARGE HTD PULLEY</text>'
+    body += box(395, 300, 14, 80, "#ffcc80", "") + f'<text x="402" y="478" font-size="11" text-anchor="middle">shaft collar</text>'
+    body += box(740, 300, 70, 80, "#ffab91", "") + f'<text x="775" y="404" font-size="11" text-anchor="middle">CLAMP HUB</text>'
+    body += box(810, 250, 40, 180, "#cfd8dc", "") + f'<text x="830" y="240" font-size="12" text-anchor="middle">TUBE SOCKET</text>'
+    body += box(60, 250, 100, 180, "#b0bec5", "") + f'<text x="110" y="244" font-size="12" text-anchor="middle">GEARMOTOR</text>'
+    body += f'<text x="520" y="90" font-size="16" font-weight="bold">Pitch-joint section (schematic, not to scale)</text>'
+    body += f'<text x="520" y="115" font-size="12">Motor output shaft passes through the motor cheek; small HTD pulley sits in the cavity and drives the large pulley by belt.</text>'
+    notes = ["Load path: link > socket > hub > shaft > 2x 6001 > cheeks > block",
+             "Belt tension via slotted motor holes", "Repeats: shoulder 5:1, elbow 3:1, wrist 1:1"]
+    return sheet("PITCH JOINT - SECTION", "ASM-002", body, notes, "NTS")
+
+# ---------- wiring ----------
+def wiring_svg():
+    def blk(x, y, w, h, title, lines, fill="#e3f2fd"):
+        t = "".join(f'<text x="{x+8}" y="{y+40+15*i}" font-size="11">{escape(l)}</text>' for i, l in enumerate(lines))
+        return f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{fill}" stroke="{INK}" stroke-width="1.5"/><text x="{x+8}" y="{y+18}" font-size="14" font-weight="bold">{escape(title)}</text>{t}'
+    def wire(pts, color, label=None, w=2):
+        d = " ".join(("M" if i == 0 else "L") + f"{x},{y}" for i, (x, y) in enumerate(pts))
+        t = f'<text x="{pts[0][0]+4}" y="{pts[0][1]-4}" font-size="10" fill="{color}">{label}</text>' if label else ""
+        return f'<path d="{d}" stroke="{color}" stroke-width="{w}" fill="none"/>{t}'
+    b = ""
+    b += blk(40, 80, 210, 90, "24 V PSU 15 A", ["mains via IEC inlet + switch", "V+ -> fuse;  V- -> GND bus", "Earth to chassis"], "#fff3e0")
+    b += blk(60, 220, 110, 60, "FUSE 20 A", ["inline, on V+"], "#ffebee")
+    b += blk(60, 330, 130, 70, "E-STOP (NC)", ["in series with V+", "cuts all driver power"], "#ffcdd2")
+    b += blk(380, 60, 230, 150, "ARDUINO MEGA 2560", ["STEP: D2 D3 D4 D5 D6", "DIR : D7 D8 D9 D10 D11", "ENA : D12 (all drivers)", "LIMIT: D22..D26 -> GND", "5V -> PUL+/DIR+/ENA+ (common)", "USB -> PC (115200)"], "#e8f5e9")
+    names = [("J1 YAW", "NEMA23 20:1"), ("J2 SHOULDER", "NEMA23 20:1 + 5:1 belt"), ("J3 ELBOW", "NEMA23 20:1 + 3:1 belt"), ("J4 WRIST", "NEMA23 20:1 + 1:1 belt"), ("J5 GRIPPER", "NEMA17 + T8 screw")]
+    drv = ["DM542", "DM542", "DM542", "DM542", "TB6600/DM542"]
+    for i, ((n, m), dv) in enumerate(zip(names, drv)):
+        y = 60 + i * 150
+        b += blk(780, y, 150, 120, f"DRIVER {i}  {dv.split(chr(47))[0]}", ["PUL+ DIR+ ENA+ <- 5V", f"PUL- <- D{2+i}", f"DIR- <- D{7+i}", "ENA- <- D12", "VCC GND <- 24V"], "#f3e5f5")
+        b += blk(1100, y, 220, 120, f"{n}", [m, "A+ A- B+ B- (twisted pair)", f"limit switch NC -> D{22+i}", "CH %d in firmware" % i], "#e0f7fa")
+        b += wire([(930, y + 55), (1100, y + 55)], "#6a1b9a", "A+/A-/B+/B-")
+        b += wire([(610, 100 + i * 12), (700, 100 + i * 12), (700, y + 50), (780, y + 50)], "#1565c0")
+        b += wire([(780, y + 100), (740, y + 100), (740, 790)], "#d84315")
+        b += wire([(780, y + 110), (760, y + 110), (760, 880)], "#212121", None, 1.5)
+    b += wire([(230, 125), (290, 125), (290, 250), (170, 250)], "#d84315", "V+ 24 V", 3)
+    b += wire([(115, 280), (115, 330)], "#d84315", "", 3)
+    b += wire([(190, 365), (330, 365), (330, 840), (740, 840)], "#d84315", "V+ -> drivers", 3)
+    b += wire([(740, 790), (740, 840)], "#d84315", "", 3)
+    b += wire([(145, 170), (145, 190), (30, 190), (30, 880), (1000, 880)], "#212121", "GND bus (PSU V-, driver GND)", 3)
+    leg = ["Legend: red = 24 V power (14 AWG); black = GND; blue = Mega signals (22 AWG); purple = motor phases (twisted/shielded).",
+           "Common-anode: Mega 5 V to PUL+/DIR+/ENA+; Mega pins sink to PUL-/DIR-/ENA-.",
+           "Driver DIP: current per motor (NEMA23 about 3.0 A peak, NEMA17 about 1.5 A), 800 pulses/rev.",
+           "E-stop: cut 24 V; also wire a 2nd NC contact so D12 (ENA) goes high on E-stop.",
+           "Limit switches: COM to GND, NC to D22..D26 (INPUT_PULLUP); 100 nF across each; keep away from motor leads.",
+           "Tie GND once at the PSU V- bus (Mega signal GND via driver signal side only)."]
+    for k, t in enumerate(leg):
+        b += f'<text x="60" y="{915 + 18*k}" font-size="12">{escape(t)}</text>'
+    notes = ["DRAFT schematic. Verify driver terminal names on your exact boards.", "Never connect/disconnect motors with power on", "Fuse + E-stop on the 24 V feed"]
+    return sheet("WIRING SCHEMATIC", "ELE-001", b, notes, "NTS")
+
+def stl_to_obj(stl_path, obj_path, name):
+    """Binary STL -> Wavefront OBJ with shared vertices (CadQuery has no OBJ exporter)."""
+    import struct
+    data = Path(stl_path).read_bytes()
+    n = struct.unpack_from("<I", data, 80)[0]
+    idx, verts, faces = {}, [], []
+    for i in range(n):
+        vals = struct.unpack_from("<12f", data, 84 + i * 50)
+        f = []
+        for k in range(3):
+            v = tuple(round(c, 4) for c in vals[3 + 3 * k: 6 + 3 * k])
+            if v not in idx:
+                idx[v] = len(verts) + 1; verts.append(v)
+            f.append(idx[v])
+        faces.append(f)
+    lines = [f"# {name}: robot arm printed part, units mm (generated by arm/drawings.py)", f"o {name}"]
+    lines += [f"v {x:g} {y:g} {z:g}" for x, y, z in verts] + [f"f {a} {b} {c}" for a, b, c in faces]
+    Path(obj_path).write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_index(d):
+    parts = sorted(p.stem for p in (OUT / "drawings").glob("*.svg"))
+    sch = sorted(p.stem for p in (OUT / "schematics").glob("*.svg"))
+    cards = "".join(
+        f'<figure><a href="drawings/{n}.svg"><img src="drawings/{n}.svg" loading="lazy"></a><figcaption>{n}'
+        + (f' &middot; <a href="cad/step/{n}.step">STEP</a> <a href="cad/stl/{n}.stl">STL</a>' if (OUT / "cad/step" / f"{n}.step").exists() else "")
+        + "</figcaption></figure>" for n in parts)
+    cards += "".join(f'<figure><a href="schematics/{n}.svg"><img src="schematics/{n}.svg"></a><figcaption>{n}</figcaption></figure>' for n in sch)
+    rows = "".join(f"<tr><td>{j}</td><td>{v['drive']}</td><td>{v['required_nm']}</td><td>{v['rated_nm']}</td></tr>" for j, v in d["joints"].items())
+    (OUT / "index.html").write_text(f"""<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Desktop robot arm - design package</title><style>body{{font-family:system-ui,sans-serif;margin:24px;max-width:1300px}}
+figure{{display:inline-block;width:380px;margin:8px;vertical-align:top}}img{{width:100%;border:1px solid #ccc}}table{{border-collapse:collapse}}td,th{{border:1px solid #bbb;padding:4px 10px}}</style>
+<h1>Desktop robot arm - DRAFT rev A</h1><p>{d['payload_lb']} lb payload, {d['extension_in']} in reach (limit 48 in). Measure purchased parts and update <code>arm/hardware.py</code> before printing. See <a href="BOM.md">BOM.md</a>, <a href="../docs/ASSEMBLY.md">ASSEMBLY.md</a>, <a href="../docs/WIRING.md">WIRING.md</a>.</p>
+<table><tr><th>Joint<th>Drive<th>Required N&middot;m<th>Rated N&middot;m</tr>{rows}</table><h2>Drawings and CAD</h2>{cards}""", encoding="utf-8")
+
+def asm_sheets(d):
+    """ASM-002 (true-scale joint section from the CAD) and ASM-001 (general arrangement from the assembled 3D twin,
+    which also exports every part in assembled position to cad/stl/assembly for the live 3D viewer). Falls back to the
+    simple schematic sheets if CadQuery sectioning or the headless browser is not available."""
+    from . import twin, asmsheets
+    try:
+        twin.write()                                   # the twin must match this build before it is drawn
+        m = twin.model()
+        (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(asmsheets.joint_section(m, "shoulder"), encoding="utf-8")
+    except Exception as e:
+        print("ASM-002 section fallback:", e.__class__.__name__, e)
+        m = None
+        (OUT / "drawings" / "ASM-002_joint_section.svg").write_text(joint_section_svg(), encoding="utf-8")
+    ga = None
+    if m is not None:
+        try:
+            stl_dir = OUT / "cad" / "stl" / "assembly"
+            ga = asmsheets.run_ga(pipeline.HERE, stl_dir, OUT / "cad" / "ga_views.json")
+            if ga:
+                rows = asmsheets.items_from(ga, m)
+                (stl_dir / "parts.json").write_text(json.dumps(asmsheets.parts_json(rows), indent=1), encoding="utf-8")
+                (OUT / "drawings" / "ASM-001_assembly.svg").write_text(asmsheets.general_arrangement(ga, m), encoding="utf-8")
+        except Exception as e:
+            print("ASM-001 fallback:", e.__class__.__name__, e)
+            ga = None
+    if not ga:
+        (OUT / "drawings" / "ASM-001_assembly.svg").write_text(assembly_svg(d), encoding="utf-8")
+
+
+def main():
+    d = json.loads((pipeline.HERE / "out" / "arm" / "design.json").read_text(encoding="utf-8")) if (pipeline.HERE / "out/arm/design.json").exists() else B.build()
+    for sub in ("cad/step", "cad/stl", "cad/obj", "drawings", "schematics"):
+        (OUT / sub).mkdir(parents=True, exist_ok=True)
+    ratios = {j: round(BY_KEY[v["drive"]].ratio / 20) if BY_KEY[v["drive"]].ratio >= 20 else 1 for j, v in d["joints"].items() if j != "wrist"}
+    for i, name in enumerate(H.parts(ratios), 1):
+        PART_NO[name] = f"P-{i:02d}"
+    for name, (code, qty, note) in H.parts(ratios).items():
+        svg, shape = part_drawing(name, code, qty, note)
+        (OUT / "drawings" / f"{name}.svg").write_text(svg, encoding="utf-8")
+        cq.exporters.export(shape, str(OUT / "cad/step" / f"{name}.step"))
+        cq.exporters.export(shape, str(OUT / "cad/stl" / f"{name}.stl"), tolerance=0.02, angularTolerance=0.1)
+        stl_to_obj(OUT / "cad/stl" / f"{name}.stl", OUT / "cad/obj" / f"{name}.obj", name)
+    asm_sheets(d)
+    from . import elesheet
+    (OUT / "schematics" / "ELE-001_wiring.svg").write_text(elesheet.ele001(), encoding="utf-8")
+    (OUT / "schematics" / "ELE-002_wire_list.svg").write_text(elesheet.ele002(), encoding="utf-8")
+    (pipeline.HERE / "fab").mkdir(exist_ok=True)
+    elesheet.write_csv(pipeline.HERE / "fab" / "WIRELIST.csv")
+    shutil.copy(pipeline.HERE / "out/arm/BOM.md", OUT / "BOM.md")
+    shutil.copy(pipeline.HERE / "out/arm/design.json", OUT / "design.json")
+    write_index(d)
+    print("wrote", OUT)
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,6 @@
+out/
+__pycache__/
+.pytest_cache/
+print/gcode/
+control/lib/
+dist/

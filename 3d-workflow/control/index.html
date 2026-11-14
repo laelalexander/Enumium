@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Robot Arm Test Table</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.ico">
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three/build/three.module.js",
+  "three/addons/": "./vendor/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div class="brand"><strong>Robot arm</strong> <span class="muted">virtual assembly and test table</span></div>
+    <div id="linkBadge" class="badge sim">SIMULATION</div>
+    <div id="homedBadge" class="badge warn">NOT HOMED</div>
+    <div class="spacer"></div>
+    <button id="btnBuild" class="btn primary" title="Turn the design into a build kit: what to buy, print, cut and assemble">Build it</button>
+    <button id="btnEnable" class="btn">Enable drivers</button>
+    <button id="btnHome" class="btn">Home all</button>
+    <button id="btnStop" class="btn estop" title="Space">STOP</button>
+  </header>
+
+  <main id="stage">
+    <div id="viewport"></div>
+    <div id="hud">
+      <div id="readout"></div>
+      <div id="warnings"></div>
+    </div>
+    <div id="viewbar">
+      <button data-view="iso" class="chip">Iso</button>
+      <button data-view="front" class="chip">Front</button>
+      <button data-view="side" class="chip">Side</button>
+      <button data-view="top" class="chip">Top</button>
+      <button data-view="bench" class="chip">Bench</button>
+      <label class="chip"><input type="checkbox" id="chkFollow"> Follow tool</label>
+    </div>
+    <div id="pickCard" hidden></div>
+    <div id="wizard" hidden>
+      <div class="ins-head">
+        <div><div class="ins-title">Build wizard</div><div class="small muted">Turn this design into everything a person needs to build it: what to buy, what to print, what to cut, how to assemble, wire and test.</div></div>
+        <button id="wzClose" class="btn small ghost" title="Esc">Close</button>
+      </div>
+      <div id="wzSteps"><span data-s="1" class="on">1 Specs</span><span data-s="2">2 Generate</span><span data-s="3">3 Build kit</span></div>
+      <div id="wzBody">
+        <section data-p="1">
+          <div class="wz-grid">
+            <label>Payload, lb <input id="wzPayload" type="number" min="0.5" max="10" step="0.5"></label>
+            <label>Reach, in <input id="wzReach" type="number" min="12" max="48" step="0.1"></label>
+            <label>3D printer <select id="wzBed">
+              <option value="256x256x256">Bambu Lab X1 / P1 / A1 (256 mm)</option>
+              <option value="180x180x180">Bambu Lab A1 mini (180 mm)</option>
+              <option value="250x210x220">Prusa MK4 / MK3 (250 x 210)</option>
+              <option value="360x360x360">Prusa XL (360 mm)</option>
+              <option value="220x220x250">Ender 3 class (220 mm)</option>
+            </select></label>
+            <label>How many arms <input id="wzArms" type="number" min="1" max="50" step="1" value="1"></label>
+          </div>
+          <label class="chk"><input type="checkbox" id="wzRegen"> Regenerate the design from these specs (CAD, drawings, cut files, print plates, prices, guide). Leave off to package the current design.</label>
+          <div id="wzEngine" class="small muted"></div>
+          <div class="row"><button id="wzSetup" class="btn ghost" hidden>Set up the design engine</button><div class="spacer"></div><button id="wzGo" class="btn primary">Generate the build kit</button></div>
+        </section>
+        <section data-p="2" hidden>
+          <div id="wzProg"></div>
+          <details><summary class="small muted">Details</summary><pre id="wzLog" class="code"></pre></details>
+          <div class="row"><button id="wzBack" class="btn ghost">Back</button><div class="spacer"></div><button id="wzToKit" class="btn primary" disabled>See the build kit</button></div>
+        </section>
+        <section data-p="3" hidden>
+          <div id="wzTiles" class="wz-tiles"></div>
+          <div id="wzPhases"></div>
+          <div class="row"><button id="wzAgain" class="btn ghost">Change specs</button><div class="spacer"></div>
+            <a id="wzZip" class="btn ghost" download>Download the kit (zip)</a>
+            <button id="wzSave" class="btn primary desktop-only">Save the kit to Documents</button></div>
+          <div id="wzSaved" class="small muted"></div>
+        </section>
+      </div>
+    </div>
+    <div id="libViewer" hidden>
+      <div class="ins-head">
+        <div><div id="lvTitle" class="ins-title"></div><div id="lvMeta" class="small muted"></div></div>
+        <div class="row">
+          <a id="lvWindow" class="btn small ghost" target="_blank" rel="noopener">Open in new window</a>
+          <button id="lvOpen" class="btn small ghost desktop-only">Open with default app</button>
+          <button id="lvReveal" class="btn small ghost desktop-only">Show in folder</button>
+          <button id="lvClose" class="btn small ghost" title="Esc">Close</button>
+        </div>
+      </div>
+      <div id="lvBody"></div>
+    </div>
+    <div id="inspector" hidden>
+      <div class="ins-head">
+        <div><div id="insTitle" class="ins-title"></div><div id="insMeta" class="small muted"></div></div>
+        <button id="insClose" class="btn small ghost" title="Esc">Close</button>
+      </div>
+      <nav id="insTabs"><button data-t="drawing" class="on">Drawing</button><button data-t="3d">3D</button><button data-t="cad">CAD source</button><button data-t="print">Print</button><button data-t="files">Files</button></nav>
+      <div id="insBody"></div>
+    </div>
+    <div id="loading">Loading parts…</div>
+  </main>
+
+  <aside id="panel">
+    <nav id="tabs">
+      <button data-tab="control" class="on">Control</button>
+      <button data-tab="motors">Motors</button>
+      <button data-tab="test">Test</button>
+      <button data-tab="parts">Parts</button>
+      <button data-tab="library">Library</button>
+      <button data-tab="link">Link</button>
+    </nav>
+
+    <section id="tab-control" class="tab on">
+      <h3>Joints <span class="muted small">target / actual</span></h3>
+      <div id="jointSliders"></div>
+      <div class="row">
+        <label><input type="checkbox" id="chkLive" checked> Send while dragging</label>
+        <button id="btnSendJoints" class="btn small">Send</button>
+      </div>
+      <h3>Tool position (IK) <span class="muted small">wrist axis, mm</span></h3>
+      <div class="grid4">
+        <label>X<input id="ikX" type="number" step="10"></label>
+        <label>Y<input id="ikY" type="number" step="10"></label>
+        <label>Z<input id="ikZ" type="number" step="10"></label>
+        <label>Pitch°<input id="ikP" type="number" step="5" value="0"></label>
+      </div>
+      <div class="row">
+        <button id="btnIK" class="btn small">Go</button>
+        <label><input type="checkbox" id="chkGizmo"> Drag target in 3D</label>
+        <label><input type="checkbox" id="chkOffset" checked> Side-offset links</label>
+      </div>
+      <h3>Presets</h3>
+      <div class="row wrap" id="presets"></div>
+      <h3>Teach and play</h3>
+      <div class="row">
+        <button id="btnTeach" class="btn small">Record pose</button>
+        <button id="btnPlay" class="btn small">Play</button>
+        <label><input type="checkbox" id="chkLoop"> Loop</label>
+        <button id="btnClearSeq" class="btn small ghost">Clear</button>
+      </div>
+      <ol id="seqList"></ol>
+      <h3>Inputs</h3>
+      <div id="gamepadInfo" class="muted small">No gamepad. Press any button on a connected controller.</div>
+      <div class="row">
+        <label>Jog mode
+          <select id="jogMode"><option value="joint">Joint</option><option value="cart">Cartesian</option></select>
+        </label>
+        <label>Speed <input id="jogScale" type="range" min="0.1" max="1" step="0.05" value="0.5"></label>
+      </div>
+      <details class="small muted"><summary>Keyboard and gamepad map</summary>
+        <p>Joint mode: Q/A yaw, W/S shoulder, E/D elbow, R/F wrist, T/G gripper.<br>
+        Cartesian mode: arrows X/Y, PgUp/PgDn Z, R/F pitch.<br>
+        Space STOP, H home all, P record pose.<br>
+        Gamepad: left stick yaw + shoulder (or X/Y), right stick elbow + wrist (or Z/pitch), triggers grip, A record, B STOP, Y home, start toggles mode.</p>
+      </details>
+    </section>
+
+    <section id="tab-motors" class="tab">
+      <p class="muted small">Each channel is one DM542 driver and stepper. Changes are sent as <code>V ch steps/s accel</code>. Pulses/rev and current must match the driver DIP switches.</p>
+      <div id="motorCards"></div>
+      <div id="rateMeter"></div>
+    </section>
+
+    <section id="tab-test" class="tab">
+      <h3>Load</h3>
+      <div class="row">
+        <label>Payload <input id="payload" type="range" min="0" max="8" step="0.25" value="5"> <span id="payloadVal"></span></label>
+      </div>
+      <h3>Gravity torque at current pose</h3>
+      <div id="torqueBars"></div>
+      <p class="muted small">Static holding torque only. Available torque scales with driver current; the design margin target is <span id="safetyVal"></span>×.</p>
+      <h3>Automated tests</h3>
+      <div class="row wrap">
+        <button class="btn small" data-test="sweep">Sweep every joint</button>
+        <button class="btn small" data-test="worst">Worst-case reach</button>
+        <button class="btn small" data-test="grip">Gripper cycle</button>
+        <button class="btn small" data-test="envelope">Reach envelope scan</button>
+      </div>
+      <div id="testLog" class="log"></div>
+      <h3>Pins and signals</h3>
+      <div id="pinTable"></div>
+    </section>
+
+    <section id="tab-parts" class="tab">
+      <div class="row">
+        <input id="partSearch" placeholder="Filter parts">
+      </div>
+      <div class="row wrap" id="layerToggles"></div>
+      <div class="row">
+        <label>Explode <input id="explode" type="range" min="0" max="1" step="0.01" value="0"></label>
+      </div>
+      <div class="row">
+        <label>Assembly steps <select id="buildStep"><option value="-1">Show all (finished arm)</option></select></label>
+        <button id="buildPrev">Prev</button><button id="buildNext">Next</button>
+      </div>
+      <div id="buildText" class="small"></div>
+      <div id="partCount" class="small"></div>
+      <div id="partList"></div>
+    </section>
+
+    <section id="tab-library" class="tab">
+      <p class="muted small">Every note, instruction, drawing and file for the build. Click to open it here.</p>
+      <div class="row"><input id="libSearch" placeholder="Filter the library"></div>
+      <div id="libList"></div>
+    </section>
+
+    <section id="tab-link" class="tab">
+      <h3>Hardware link</h3>
+      <p class="muted small">Talks to <code>firmware/arm_controller</code> on an Arduino Mega over USB at 115200 baud, using Web Serial (Chrome or Edge, served from <code>python run.py ui</code>).</p>
+      <div class="row">
+        <button id="btnConnect" class="btn">Connect Arduino</button>
+        <button id="btnDisconnect" class="btn ghost" disabled>Disconnect</button>
+      </div>
+      <div class="row">
+        <label>Model shows
+          <select id="feedbackMode"><option value="hw">hardware positions</option><option value="sim">simulated positions</option></select>
+        </label>
+      </div>
+      <div class="row">
+        <input id="rawCmd" placeholder="Raw command, e.g. ? or G 1 2000">
+        <button id="btnRaw" class="btn small">Send</button>
+      </div>
+      <div id="serialLog" class="log tall"></div>
+    </section>
+  </aside>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+{
+ "bed": [
+  256.0,
+  256.0,
+  256.0
+ ],
+ "parts": {
+  "shoulder_cheek_motor": {
+   "qty": 1,
+   "note": "Motor-side cheek plate",
+   "size": [
+    245.4,
+    100.0,
+    12.0
+   ],
+   "supports": false,
+   "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
+   "volume_cm3": 269.0,
+   "brim": false,
+   "plates": [
+    1
+   ],
+   "print_stl": "stl/shoulder_cheek_motor.stl",
+   "plate_check": {
+    "1": "pass"
+   }
+  },
+  "shoulder_cheek_plain": {
+   "qty": 1,
+   "note": "Plain cheek plate",
+   "size": [
+    151.0,
+    100.0,
+    12.0
+   ],
+   "supports": false,
+   "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
+   "volume_cm3": 173.1,
+   "brim": false,
+   "plates": [
+    3
+   ],
+   "print_stl": "stl/shoulder_cheek_plain.stl",
+   "plate_check": {
+    "3": "pass"
+   }
+  },
+  "shoulder_tube_block": {
+   "qty": 1,
+   "note": "Spacer block that clamps the incoming tube",
+   "size": [
+    80.0,
+    56.0,
+    50.0
+   ],
+   "supports": false,
+   "why": "Tube bore vertical: round bore without supports, clamp bolts across layers",
+   "volume_cm3": 159.8,
+   "brim": false,
+   "plates": [
+    3
+   ],
+   "print_stl": "stl/shoulder_tube_block.stl",
+   "plate_check": {
+    "3": "pass"
+   }
+  },
+  "elbow_cheek_motor": {
+   "qty": 1,
+   "note": "Motor-side cheek plate",
+   "size": [
+    193.9,
+    100.0,
+    12.0
+   ],
+   "supports": false,
+   "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
+   "volume_cm3": 207.2,
+   "brim": false,
+   "plates": [
+    1
+   ],
+   "print_stl": "stl/elbow_cheek_motor.stl",
+   "plate_check": {
+    "1": "pass"
+   }
+  },
+  "elbow_cheek_plain": {
+   "qty": 1,
+   "note": "Plain cheek plate",
+   "size": [
+    125.0,
+    100.0,
+    12.0
+   ],
+   "supports": false,
+   "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
+   "volume_cm3": 141.9,
+   "brim": false,
+   "plates": [
+    5
+   ],
+   "print_stl": "stl/elbow_cheek_plain.stl",
+   "plate_check": {
+    "5": "pass"
+   }
+  },
+  "elbow_tube_block": {
+   "qty": 1,
+   "note": "Spacer block that clamps the incoming tube",
+   "size": [
+    80.0,
+    56.0,
+    50.0
+   ],
+   "supports": false,
+   "why": "Tube bore vertical: round bore without supports, clamp bolts across layers",
+   "volume_cm3": 159.8,
+   "brim": false,
+   "plates": [
+    3
+   ],
+   "print_stl": "stl/elbow_tube_block.stl",
+   "plate_check": {
+    "3": "pass"
+   }
+  },
+  "wrist_cheek_motor": {
+   "qty": 1,
+   "note": "Motor-side cheek plate",
+   "size": [
+    151.0,
+    100.0,
+    12.0
+   ],
+   "supports": false,
+   "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
+   "volume_cm3": 155.7,
+   "brim": false,
+   "plates": [
+    3
+   ],
+   "print_stl": "stl/wrist_cheek_motor.stl",
+   "plate_check": {
+    "3": "pass"
+   }
+  },
+  "wrist_cheek_plain": {
+   "qty": 1,
+   "note": "Plain cheek plate",
+   "size": [
+    100.0,
+    100.0,
+    12.0
+   ],
+   "supports": false,
+   "why": "Flat on the 12 mm face: bearing recess and bolt holes vertical, bending loads across layers",
+   "volume_cm3": 111.9,
+   "brim": false,
+   "plates": [
+    5
+   ],
+   "print_stl": "stl/wrist_cheek_plain.stl",
+   "plate_check": {
+    "5": "pass"
+   }
+  },
+  "wrist_tube_block": {
+   "qty": 1,
+   "note": "Spacer block that clamps the incoming tube",
+   "size": [
+    80.0,
+    56.0,
+    50.0
+   ],
+   "supports": false,
+   "why": "Tube bore vertical: round bore without supports, clamp bolts across layers",
+   "volume_cm3": 159.8,
+   "brim": false,
+   "plates": [
+    4
+   ],
+   "print_stl": "stl/wrist_tube_block.stl",
+   "plate_check": {
+    "4": "pass"
+   }
+  },
+  "tube_socket": {
+   "qty": 3,
+   "note": "Distal link end: hub flange + tube socket (shoulder, elbow, wrist)",
+   "size": [
+    140.0,
+    80.0,
+    50.0
+   ],
+   "supports": true,
+   "why": "Hub flange on the bed: flat bolting face, flange bolts vertical; socket needs supports underneath",
+   "volume_cm3": 133.3,
+   "brim": true,
+   "plates": [
+    4,
+    5
+   ],
+   "print_stl": "stl/tube_socket.stl",
+   "plate_check": {
+    "4": "pass",
+    "5": "pass"
+   }
+  },
+  "base_top_plate": {
+   "qty": 1,
+   "note": "Rotating plate: yaw hub + turntable + riser socket",
+   "size": [
+    210.0,
+    210.0,
+    80.0
+   ],
+   "supports": false,
+   "why": "As modelled: disc on the bed, riser socket up",
+   "volume_cm3": 402.2,
+   "brim": false,
+   "plates": [
+    2
+   ],
+   "print_stl": "stl/base_top_plate.stl",
+   "plate_check": {
+    "2": "pass"
+   }
+  },
+  "gripper_body": {
+   "qty": 1,
+   "note": "NEMA17 lead-screw gripper body + fixed jaw",
+   "size": [
+    56.0,
+    62.0,
+    120.0
+   ],
+   "supports": false,
+   "why": "Fixed jaw on the bed: rod and lead-screw bores vertical, no overhangs",
+   "volume_cm3": 221.0,
+   "brim": true,
+   "plates": [
+    4
+   ],
+   "print_stl": "stl/gripper_body.stl",
+   "plate_check": {
+    "4": "pass"
+   }
+  },
+  "gripper_adapter": {
+   "qty": 1,
+   "note": "Tube-stub socket + plate bolting to gripper body (M4 heat-set inserts)",
+   "size": [
+    53.0,
+    62.0,
+    62.0
+   ],
+   "supports": false,
+   "why": "Tube socket vertical: round bore, mounting plate as a vertical wall",
+   "volume_cm3": 68.9,
+   "brim": false,
+   "plates": [
+    5
+   ],
+   "print_stl": "stl/gripper_adapter.stl",
+   "plate_check": {
+    "5": "pass"
+   }
+  },
+  "gripper_jaw": {
+   "qty": 1,
+   "note": "Sliding jaw on 2x8 mm rods",
+   "size": [
+    56.0,
+    62.0,
+    30.0
+   ],
+   "supports": false,
+   "why": "Rod bearing and lead-screw bores vertical for a true sliding fit",
+   "volume_cm3": 89.0,
+   "brim": false,
+   "plates": [
+    6
+   ],
+   "print_stl": "stl/gripper_jaw.stl",
+   "plate_check": {
+    "6": "pass"
+   }
+  }
+ },
+ "settings": {
+  "Material": "PETG (Bambu PETG HF or similar), 1.75 mm",
+  "Nozzle / layer": "0.4 mm / 0.20 mm (first layer 0.20 mm)",
+  "Walls": "5 perimeters, 6 top / 5 bottom layers",
+  "Infill": "40 % gyroid",
+  "Temperatures": "nozzle 250 \u00b0C (255 first layer), bed 70 \u00b0C",
+  "Supports": "only where listed, build plate only",
+  "Brim": "5 mm on tube_socket and tall parts over 90 mm"
+ }
+}
