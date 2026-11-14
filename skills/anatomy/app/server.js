@@ -167,7 +167,8 @@ function cleanEnv() {
     }
   if (extra.length) env.PATH = extra.join(path.delimiter) + path.delimiter + (env.PATH || '');
   const kicad = findKiCadBin();
-  if (kicad) env.PATH = kicad + path.delimiter + (env.PATH || '');
+  // KiCad last, so its bundled Python does not shadow the system Python for venvs.
+  if (kicad) env.PATH = (env.PATH || '') + path.delimiter + kicad;
   return env;
 }
 
@@ -186,6 +187,8 @@ function startRun(id, message, display) {
     '--permission-mode', 'acceptEdits',
     '--allowedTools', ALLOWED_TOOLS.join(','),
     '--append-system-prompt', systemAppend()];
+  const skillDir = path.join(os.homedir(), '.claude', 'skills', 'anatomy');
+  if (fs.existsSync(skillDir)) args.push('--add-dir', skillDir);
   if (meta.model) args.push('--model', meta.model);
   if (meta.sessionId) args.push('--resume', meta.sessionId);
 
