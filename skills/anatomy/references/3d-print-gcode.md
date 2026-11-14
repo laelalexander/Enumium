@@ -3,7 +3,7 @@
 Printed parts are often most of a prototype, so this is a major part of the prototype phase with a high bar. The deliverable for every printed part is **ready-to-print G-code for the user's printer**, plus the project file and settings that produced it, and evidence that the part will print and fit.
 
 ## 0. Know the printer and material
-Read the user's printer and material settings from `C:\Anatomy\anatomy-settings.md` (or the project's `CLAUDE.md` / `inputs/`). You need: printer model, bed size, nozzle diameter, firmware flavor (Marlin, Klipper, Prusa, Bambu), available materials, and any slicer profile files the user supplied (`.ini`, `.3mf`, `.json`). If none is given, use a stated default (e.g. 0.4 mm nozzle, 220 x 220 x 250 mm, PLA/PETG, Marlin) and say clearly that the G-code must be re-sliced for their printer. Never silently assume.
+Read the user's printer and material settings from `C:\Anatomy\anatomy-settings.md` (or the project's `CLAUDE.md` / `inputs/`). You need: printer model, bed size, nozzle diameter, firmware flavor (Marlin, Klipper, Prusa, Bambu), available materials, and any slicer profile files the user supplied (`.ini`, `.3mf`, `.json`). If none is given, use the default **Prusa MK4S, 0.4 mm nozzle, PETG** (PrusaSlicer's bundled profile), mark it `[assumed]`, and say clearly that the G-code must be re-sliced for their printer. Never silently assume.
 
 ## 1. Design for printing (in the parametric model)
 - Wall thickness ≥ 3 perimeters of the nozzle width (≥ 1.2 mm at 0.4 mm), ribs and bosses sized for strength.
@@ -18,7 +18,7 @@ Read the user's printer and material settings from `C:\Anatomy\anatomy-settings.
 - Check each mesh by script (trimesh or similar): watertight/manifold, no inverted normals, correct units and bounding box, fits the bed in the chosen orientation, minimum wall thickness, volume and estimated mass.
 
 ## 3. Slice to G-code (headless)
-Use a slicer CLI so the result is reproducible. Preferred: **PrusaSlicer** (`prusa-slicer-console.exe` on Windows, `prusa-slicer` elsewhere; install `winget install Prusa3D.PrusaSlicer` if missing, telling the user). OrcaSlicer or the user's own slicer is fine if they supply a profile.
+G-code comes only from a real slicer, never written by hand. If no slicer can run, stop at checked STL/3MF files plus the ready profile `.ini` files, label the parts "not sliced", and tell the user what to install. Use a slicer CLI so the result is reproducible. Preferred: **PrusaSlicer** (`prusa-slicer-console.exe` on Windows, `prusa-slicer` elsewhere; install `winget install Prusa3D.PrusaSlicer` if missing, telling the user). OrcaSlicer or the user's own slicer is fine if they supply a profile.
 ```
 prusa-slicer-console --export-gcode --load printer.ini --load print.ini --load filament.ini \
   --center X,Y --ensure-on-bed -o print/gcode/<part>.gcode print/stl/<part>.stl
@@ -48,5 +48,8 @@ print/
 ```
 Every printed part is a BUILD line in `bom/bom.csv` whose `design_file` points to its source and whose STL and G-code exist (the BOM gate checks this). Filament is a BUY line.
 
-## 6. Say what is verified
+## 6. Print report and first-article check
+For each printed part write a short print report in `print-plan.md`: why this orientation, where supports go and why, why this material and infill. Add a first-article checklist: 3 to 5 critical dimensions to measure with calipers after the first print, each with nominal value and pass limits (e.g. insert bore Ø4.0 +0.1/-0.05), and what to change in the model if a check fails.
+
+## 7. Say what is verified
 G-code that slices and passes the checks is **checked by script**, not printed. List the fits most likely to need tuning (inserts, press fits, snap-fits, mating faces) and suggest a small test coupon to print first for each critical fit.

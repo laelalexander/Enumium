@@ -9,6 +9,10 @@ Each BUY line must have:
 - **At least one supplier link** with the exact listing (Digi-Key, Mouser, LCSC, McMaster-Carr, Misumi, Adafruit, SparkFun, manufacturer store, Amazon only when nothing better exists), unit price, price date, and stock status when visible.
 - **An alternate** (second source or equivalent MPN) for anything critical, single-source, or likely to go out of stock.
 - **Datasheet URL** for anything electrical or load-bearing, and whether you actually fetched it.
+- **Verified**: what you checked and where (e.g. "Digi-Key product page fetched 2026-11-14, in stock"). An honest "not verified" beats a plausible fake MPN.
+- Standard hardware gets both its standard designation and a real orderable SKU, e.g. `ISO 4762 M3x8 A2-70` plus `McMaster-Carr 91292A112`.
+
+Easily forgotten parts each get their own BUY line: crimp contacts and connector housings, wire by gauge and colour (in metres), heat-set inserts, heat-shrink, adhesive and thread locker, filament (in grams, per material), solder paste or stencil if used, and the PCB fabrication and assembly orders themselves. Words like "assorted", "as needed", "generic" or "TBD" fail the gate.
 
 If you cannot confirm a part exists and is buyable, the line is not done: mark it `[assumed - verify]` and list it under open items. Do not invent MPNs.
 
@@ -17,16 +21,17 @@ Each BUILD line must point to its source and its manufacturing file(s), checked 
 | Process | Required files |
 |---|---|
 | FDM / SLA / SLS print | parametric source (`.py`/`.scad`), `.step`, `.stl` or `.3mf`, sliced `.gcode` per `3d-print-gcode.md`, print settings |
-| CNC / laser / waterjet | `.step`, `.dxf` (2D), drawing with tolerances and material/finish |
+| CNC | `.step`, toleranced drawing with material/finish; stock material is its own BUY line |
+| Laser / waterjet | 1:1 `.dxf` in mm, material and thickness; sheet stock is a BUY line |
 | Sheet metal | `.step` (flat + formed), `.dxf` flat pattern, bend table, drawing |
 | PCB | KiCad project, Gerbers + drill zip, BOM + centroid for assembly (`kicad-pcb.md`) |
-| Cable / harness | wiring diagram, wire gauge and color, lengths, connector housings and crimp MPNs (those are BUY lines) |
+| Cable / harness | wiring diagram, pin-to-pin table, cut list (wire gauge, colour, length, strip length); housings and crimps are BUY lines |
 | Firmware | source, build command, compiled binary if built |
 
 Also give: material (e.g. PETG, 6061-T6, FR-4 1.6 mm), quantity, and the drawing number that defines it.
 
 ## The BOM files
-- `bom/bom.csv` with columns: `line, type (BUY|BUILD), ref/designators, qty, description, manufacturer, mpn_or_standard, key_spec, supplier, supplier_url, unit_price, price_date, alt_mpn, datasheet_url, design_file, drawing, status`
+- `bom/bom.csv` with columns: `line, type (BUY|BUILD), ref/designators, qty, description, manufacturer, mpn_or_standard, key_spec, supplier, supplier_url, unit_price, price_date, alt_mpn, datasheet_url, verified, design_file, drawing, status`
 - `bom/bom.md`: the same, readable, grouped by sub-assembly, with totals (cost per unit, cost for 1 and for 10 units).
 - `bom/order-list.md`: a shopping list grouped by supplier, with quantities rounded up to pack sizes and spares for small parts (+10% or +2, whichever is more).
 
