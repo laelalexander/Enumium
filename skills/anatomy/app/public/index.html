@@ -380,7 +380,7 @@ function handleText(text) {
   const parts = text.split(/\[\[phase:(\d)\]\]/);
   for (let k = 0; k < parts.length; k++) {
     if (k % 2) {
-      const n = +parts[k]; if (n >= 1 && n <= 6 && n !== phase) { phase = n; renderPhases(); add(div('phase-mark', `${n} · ${PHASES[n - 1]}`)); }
+      const n = +parts[k]; if (n >= 1 && n <= 6) setPhase(n, true);
     } else if (parts[k].trim()) add(div('msg say', md(parts[k].trim())));
   }
 }
@@ -403,6 +403,7 @@ function handle(ev) {
       if (c.type === 'text') handleText(c.text);
       else if (c.type === 'tool_use') {
         if (c.name === 'TodoWrite') { renderTodos(c.input?.todos || []); continue; }
+        inferPhase(c);
         const d = describe(c); if (!d) continue;
         const el = div('step pending', `<div class="row"><span class="ic">${d[0]}</span><span class="lbl">${d[1]}</span></div><div class="detail"></div>`);
         el.querySelector('.row').onclick = e => { if (!e.target.closest('a')) el.classList.toggle('open'); };
@@ -426,10 +427,30 @@ function handle(ev) {
   if (ev.type === 'result') {
     for (const el of pending.values()) el.classList.remove('pending'); pending.clear();
     const ok = !ev.is_error && ev.subtype === 'success';
+    if (ok && phase >= 4) setPhase(6, false);
     const mins = ev.duration_ms ? Math.round(ev.duration_ms / 60000) : null;
     add(div('summary', `<div class="h"><span class="pill ${ok ? 'done' : 'failed'}">${ok ? 'finished' : 'stopped'}</span>${mins != null ? `<span style="color:var(--muted);font-size:12px">${mins} min</span>` : ''}</div><div class="say">${md(ev.result || '')}</div>`));
     $('#stats').innerHTML = [mins != null && `Last run: ${mins} min`, ev.num_turns && `${ev.num_turns} steps`].filter(Boolean).join('<br>');
   }
+}
+// Fallback when Claude forgets the [[phase:N]] markers: infer the step from what it is doing. Only moves forward.
+function setPhase(n, mark) {
+  if (n <= phase) return;
+  phase = n; renderPhases();
+  if (mark) add(div('phase-mark', `${n} · ${PHASES[n - 1]}`));
+}
+function inferPhase(t) {
+  const i = t.input || {}; const f = rel(i.file_path || i.path || '').toLowerCase(); const cmd = (i.command || '').toLowerCase();
+  let n = 0;
+  if (t.name === 'Skill') n = 1;
+  else if (['WebFetch', 'WebSearch'].includes(t.name) || (t.name === 'Read' && f.startsWith('inputs/'))) n = 2;
+  else if (t.name === 'Write' || t.name === 'Edit' || t.name === 'MultiEdit') {
+    if (/(^|\/)(9\d-|rebuild-spec)/.test(f)) n = 4;
+    else if (/(^|\/)(prototype|firmware|cad|mechanical|enclosure|pcb|kicad|electronics|src)\/|\.(kicad_\w+|scad|stl|step|ino|cpp|c|h|py|js|ts|html)$/.test(f)) n = 5;
+    else if (/(^|\/)[0-8]\d-[^/]*\.md$/.test(f)) n = /0[3-8]-|architecture|data-model|stack/.test(f) ? 3 : 4;
+  }
+  else if (t.name === 'Bash' && /kicad-cli (sch|pcb)|openscad |pio run|platformio run|arduino-cli compile|pytest|npm (run|test)/.test(cmd)) n = 5;
+  if (n) setPhase(n, true);
 }
 function renderTodos(todos) {
   $('#planWrap').classList.toggle('hidden', !todos.length);

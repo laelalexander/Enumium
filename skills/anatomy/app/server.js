@@ -113,7 +113,7 @@ function systemAppend() {
     'You are running inside the Anatomy app. The user watches your progress in a window and cannot answer prompts mid-run.',
     'Use the anatomy skill for this work. Work in the current folder. Files the user attached are in inputs/; read them first.',
     'Do not stop to ask clarifying questions. Make reasonable assumptions, record them in the blueprint as [assumed], and keep going. Only stop early if you are truly blocked, and then say exactly what you need.',
-    `When you begin each step of the anatomy workflow, print on its own line exactly the marker for it: ${PHASES.map((p, i) => `[[phase:${i + 1}]] = ${p}`).join('; ')}.`,
+    `REQUIRED for the progress display: every time you move to a new step of the anatomy workflow (all six, in order, even if a step is short), your text message must start with its marker on its own line. Markers: ${PHASES.map((p, i) => `[[phase:${i + 1}]] = ${p}`).join('; ')}.`,
     'Before each significant action, write one short plain sentence saying what you are doing and why, so the user can follow along.',
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
