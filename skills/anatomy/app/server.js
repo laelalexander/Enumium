@@ -266,6 +266,21 @@ function listFiles(base, rel = '', out = [], depth = 0) {
   return out;
 }
 
+// Every 3D file in the project, without listFiles' 2000-file cap (large build kits and G-code sets go past it).
+const MESH_RE = /\.(stl|3mf|obj|glb)$/i;
+function listMeshes(base, rel = '', out = [], depth = 0) {
+  if (depth > 12 || out.length > 5000) return out;
+  let ents = [];
+  try { ents = fs.readdirSync(path.join(base, rel), { withFileTypes: true }); } catch { return out; }
+  for (const e of ents) {
+    if (HIDDEN.has(e.name)) continue;
+    const r = rel ? rel + '/' + e.name : e.name;
+    if (e.isDirectory()) listMeshes(base, r, out, depth + 1);
+    else if (MESH_RE.test(e.name)) { try { const st = fs.statSync(path.join(base, r)); out.push({ path: r, size: st.size, mtime: st.mtimeMs }); } catch {} }
+  }
+  return out;
+}
+
 function listProjects() {
   let ents = [];
   try { ents = fs.readdirSync(ROOT, { withFileTypes: true }); } catch {}
@@ -422,6 +437,7 @@ const server = http.createServer(async (req, res) => {
         return;
       }
       if (action === 'files' && req.method === 'GET') return send(res, 200, listFiles(dir));
+      if (action === 'meshes' && req.method === 'GET') return send(res, 200, listMeshes(dir));
       if (action === 'file' && req.method === 'GET') {
         const p = safeJoin(dir, url.searchParams.get('path'));
         const ext = path.extname(p).toLowerCase();

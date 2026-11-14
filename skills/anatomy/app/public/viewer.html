@@ -49,7 +49,7 @@ canvas { display: block; } .hidden { display: none !important; }
   <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
 <div class="info hidden" id="info"></div>
 <div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="lay" title="Lay parts out side by side, or show them where their files place them">Spread</button><button id="fit">Fit</button></div></div>
-<div class="empty" id="empty">NO 3D GEOMETRY YET<br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
+<div class="empty" id="empty"><span id="emptyT">NO 3D GEOMETRY YET</span><br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
 
 <script type="module">
 import * as THREE from 'three';
@@ -161,10 +161,10 @@ function updateZ() {
 }
 
 // ---------------------------------------------------------------- polling the project
-let lastChange = 0, running = false;
+let lastChange = 0, running = false; const failed = new Map();
 async function poll() {
   try {
-    const [list, meta] = await Promise.all([api(`/api/projects/${id}/files`), api(`/api/projects/${id}`)]);
+    const [list, meta] = await Promise.all([api(`/api/projects/${id}/meshes`), api(`/api/projects/${id}`)]);
     $('#title').textContent = meta.title || 'Anatomy';
     running = !!meta.running;
     $('#live').classList.toggle('idle', !running); $('#live').lastChild.textContent = running ? 'LIVE' : 'IDLE';
@@ -185,11 +185,12 @@ async function poll() {
         const g = build(await load(f.path));
         if (have) root.remove(have.group);
         g.userData.path = f.path; root.add(g); parts.set(f.path, { group: g, mtime: f.mtime, born: performance.now() });
-        changed = true; lastChange = Date.now();
-      } catch {}
+        changed = true; lastChange = Date.now(); failed.delete(f.path);
+      } catch (e) { failed.set(f.path, e.message || String(e)); }
     }
-    if (changed) { files = list; layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3 || isSpread()) frame(); renderParts(); }
+    if (changed) { files = []; layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3 || isSpread()) frame(); renderParts(); }
     $('#empty').style.display = parts.size ? 'none' : '';
+    if (!parts.size && failed.size) $("#emptyT").textContent = `${failed.size} 3D file${failed.size === 1 ? '' : 's'} found but could not be read`;
     const ago = lastChange ? Math.round((Date.now() - lastChange) / 1000) : null;
     $('#sub').textContent = `${parts.size} part${parts.size === 1 ? '' : 's'}${ago !== null ? ` · updated ${ago < 60 ? ago + 's' : Math.round(ago / 60) + 'm'} ago` : ''}`;
   } catch {}
