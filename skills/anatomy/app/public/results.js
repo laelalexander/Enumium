@@ -23,6 +23,7 @@ export async function renderResults(host, ctx) {
   S = { ...ctx, files: ctx.files.filter(f => !/(^|\/)(\.venv|venv|\.tools|node_modules|__pycache__|\.pio|\.anatomy)\//.test(f.path)) };
   const manifest = await ctx.api(`/api/projects/${ctx.id}/manifest`).catch(() => ({}));
   S.manifest = manifest;
+  if (manifest.title && ctx.setTitle) ctx.setTitle(manifest.title);
   const F = S.files;
   const has = pred => F.some(pred);
   const tabs = [
