@@ -35,7 +35,7 @@ try {
     else { New-Item -ItemType Directory -Force -Path (Split-Path $meta) | Out-Null
            $m = [ordered]@{ title = "Robot arm test table"; status = "done"; created = $now; updated = $now; model = "";
                             prompt = "4-DOF desktop robot arm test table: 5 lb payload, 39.4 in reach. Finished prototype standard: complete build package (drawings, cut files, G-code, purchase list, assembly guide, wiring, firmware) and a Build wizard." } }
-    $m | ConvertTo-Json | Set-Content -Path $meta -Encoding UTF8
+    [IO.File]::WriteAllText($meta, ($m | ConvertTo-Json), (New-Object Text.UTF8Encoding $false))   # no BOM: Node JSON.parse rejects it
   }
   $shell = New-Object -ComObject WScript.Shell
   foreach ($place in @([Environment]::GetFolderPath("Desktop"), [Environment]::GetFolderPath("Programs"))) {
