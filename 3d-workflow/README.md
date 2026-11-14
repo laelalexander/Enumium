@@ -46,7 +46,8 @@ python -m pytest -q tests
 python -m arm.build                       # size drives, generate + validate parts, write BOM
 python -m arm.build --extension-m 1.219   # full 4 ft (margin drops to ~2.15x at the shoulder)
 ```
-- `docs/ASSEMBLY.md`: step-by-step build, wiring, firmware, load-test procedure.
+- `docs/ASSEMBLY.md`: step-by-step build, wiring, firmware, load-test procedure; `docs/WIRING.md` pin table.
+- `design/`: STEP + STL files, dimensioned drawings, assembly and joint-section sheets, wiring schematic (`python -m arm.drawings`).
 - `docs/BOM.md`: generated bill of materials with Amazon search terms (verify specs; no ASINs).
 - `arm/design.py`: static torque sizing with 2x margin; finds that 5 lb needs belt reduction
   (5:1 shoulder, 3:1 elbow) on top of NEMA 23 20:1 planetary gearmotors.

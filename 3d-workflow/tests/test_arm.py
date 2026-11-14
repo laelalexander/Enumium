@@ -46,3 +46,16 @@ def test_control_steps_and_limits(tmp_path):
         arm.move_joints(0, 170, 0, 0)
     with pytest.raises(ValueError):
         arm.grip(100)
+
+def test_design_package_generates(tmp_path, monkeypatch):
+    from arm import drawings
+    monkeypatch.setattr(drawings, "OUT", tmp_path)
+    import pipeline, json
+    if not (pipeline.HERE / "out/arm/design.json").exists():
+        build.build(5.0, 1.0)
+    drawings.main()
+    assert len(list((tmp_path / "cad/step").glob("*.step"))) == 14
+    assert (tmp_path / "schematics/ELE-001_wiring.svg").exists()
+    import xml.dom.minidom as m
+    for f in list((tmp_path / "drawings").glob("*.svg")) + list((tmp_path / "schematics").glob("*.svg")):
+        m.parse(str(f))      # well-formed XML
