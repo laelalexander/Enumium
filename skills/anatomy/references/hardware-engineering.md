@@ -54,7 +54,10 @@ State machine or task diagram, pin assignments that match the schematic exactly,
 - **Safety**: pressure relief, high-pressure and low-pressure cutouts, flame or combustion safety if any, electrical protection, condensate handling, refrigerant handling certification, local code and standards references. HVAC and mains-powered work has life-safety consequences: mark every step that requires a licensed professional, and never present the design as certified.
 
 ## Build instructions
-Write them for someone who has the parts and tools but not the designer's head.
+Write them for someone who has the parts and tools but not the designer's head. **They are illustrated**: every step has at least one picture.
+- Render a picture for each step from the CAD assembly: the sub-assembly so far, with the parts added in that step highlighted (colour) and earlier parts greyed, exploded slightly along the insertion direction with arrows, from the angle the builder would see it. Close-ups for small or easy-to-get-wrong details (insert orientation, connector polarity, cable routing).
+- Each step lists the BOM lines and quantities used (with the part number), the tools, the torque and thread locker, and the expected result ("the arm turns freely by hand with no play").
+- Deliver `assembly/assembly-guide.html` (self-contained, images embedded) and `assembly/assembly-guide.pdf`, plus the step images in `assembly/steps/`. Look at every page before handing it over.
 1. Tools and consumables list; skills assumed; time estimate.
 2. Parts procurement by BOM line, with kits (print files, PCB order settings, fasteners).
 3. Numbered steps with the expected result of each step and a photo/render reference. Order matters: sub-assemblies, then integration. Call out torque values, solder order, orientation marks, polarity, and anything irreversible.

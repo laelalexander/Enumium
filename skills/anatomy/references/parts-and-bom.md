@@ -22,7 +22,7 @@ Each BUILD line must point to its source and its manufacturing file(s), checked 
 |---|---|
 | FDM / SLA / SLS print | parametric source (`.py`/`.scad`), `.step`, `.stl` or `.3mf`, sliced `.gcode` per `3d-print-gcode.md`, print settings |
 | CNC | `.step`, toleranced drawing with material/finish; stock material is its own BUY line |
-| Laser / waterjet | 1:1 `.dxf` in mm, material and thickness; sheet stock is a BUY line |
+| Laser / waterjet / knife-cut (plates, gaskets, shims) | 1:1 `.dxf` in **both mm and inch**, material and thickness, kerf note, drawing with hole table (see `drawings.md`); sheet stock is a BUY line |
 | Sheet metal | `.step` (flat + formed), `.dxf` flat pattern, bend table, drawing |
 | PCB | KiCad project, Gerbers + drill zip, BOM + centroid for assembly (`kicad-pcb.md`) |
 | Cable / harness | wiring diagram, pin-to-pin table, cut list (wire gauge, colour, length, strip length); housings and crimps are BUY lines |
