@@ -48,7 +48,7 @@ canvas { display: block; } .hidden { display: none !important; }
   <div class="style"><label>Color <input type="color" id="col" value="#5ff3ff"></label><label>Tint <input type="color" id="tint" value="#8a7dff"></label>
   <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
 <div class="info hidden" id="info"></div>
-<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="lay" title="Lay parts out side by side, or show them where their files place them">Spread</button><button id="fit">Fit</button></div></div>
+<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="lay" title="Lay parts out side by side, or show them where their files place them">Spread parts</button><button id="fit">Fit</button></div></div>
 <div class="empty" id="empty"><span id="emptyT">NO 3D GEOMETRY YET</span><br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
 
 <script type="module">
@@ -180,7 +180,7 @@ async function poll() {
     for (const f of meshes) {
       const have = parts.get(f.path);
       if (have && have.mtime === f.mtime) continue;
-      if (Date.now() - f.mtime < 1500) continue; // still being written
+      const age = Date.now() - f.mtime; if (age >= 0 && age < 1500) continue; // still being written (future mtimes, e.g. from an extracted zip, are fine)
       try {
         const g = build(await load(f.path));
         if (have) root.remove(have.group);
@@ -227,15 +227,15 @@ $('#spin').onclick = () => { ctl.autoRotate = !ctl.autoRotate; $('#spin').classL
 $('#fit').onclick = frame;
 // Parts exported for printing all sit at the origin and pile up. Unless the project has an assembled export,
 // detect that and lay the parts out on a grid; the Spread button switches by hand.
-let spread = null, isAsm = false;
+let spread = null, isAsm = false; // isAsm: an assembly folder was found (preferred, but still checked for origin piling)
 $('#lay').onclick = () => { spread = !isSpread(); layout(); frame(); };
-function isSpread() { return spread ?? (!isAsm && stacked()); }
+function isSpread() { return spread ?? atOrigin(); }
 function partBox(g) { const p = g.position.clone(); g.position.set(0, 0, 0); g.updateMatrixWorld(true); const b = new THREE.Box3().setFromObject(g); g.position.copy(p); g.updateMatrixWorld(true); return b; }
-function stacked() {
+// Parts saved one by one (for printing or as separate CAD files) each contain the origin; an assembly mostly does not.
+// The folder name can't be trusted: some "assembly" exports are still one part per origin.
+function atOrigin() {
   const bs = [...parts.values()].map(v => partBox(v.group)); if (bs.length < 3) return false;
-  let hit = 0, n = 0;
-  for (let i = 0; i < bs.length; i++) for (let j = i + 1; j < bs.length; j++) { n++; if (bs[i].intersectsBox(bs[j])) hit++; }
-  return hit / n > 0.3;
+  const o = new THREE.Vector3(); return bs.filter(b => b.clone().expandByScalar(1).containsPoint(o)).length / bs.length >= 0.5;
 }
 function layout() {
   const on = isSpread(); $('#lay').classList.toggle('on', on); 
