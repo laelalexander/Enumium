@@ -216,10 +216,13 @@ function startRun(id, message, display) {
       if (!line) continue;
       let ev; try { ev = JSON.parse(line); } catch { emit(id, { type: 'anatomy', kind: 'log', text: line }); continue; }
       if (ev.session_id && ev.session_id !== meta.sessionId) { meta.sessionId = ev.session_id; writeMeta(id, meta); }
+      if (ev.type === 'result' && (ev.is_error || ev.terminal_reason === 'api_error' || ev.subtype !== 'success')) {
+        resultErr = String(ev.result || (ev.errors || []).join('\n') || ev.subtype || '').trim();
+      }
       emit(id, ev);
     }
   });
-  let errTail = '';
+  let errTail = '', resultErr = '';
   proc.stderr.on('data', d => { errTail = (errTail + d.toString('utf8')).slice(-4000); });
   proc.on('error', e => emit(id, { type: 'anatomy', kind: 'error', text: 'Could not start Claude Code: ' + e.message }));
   proc.on('close', code => {
@@ -228,8 +231,10 @@ function startRun(id, message, display) {
     m.status = stopped ? 'stopped' : (code === 0 ? 'done' : 'failed');
     m.updated = new Date().toISOString(); writeMeta(id, m);
     if (code !== 0 && !stopped) {
-      let text = errTail.trim() || `Claude Code exited with code ${code}.`;
-      if (/login|log in|auth/i.test(text)) text += '\n\nClaude Code needs you to sign in again. Click "Sign in" at the top of the window.';
+      // The reason is usually in the last result event (usage limit, API error), not on stderr.
+      let text = [resultErr, errTail.trim()].filter(Boolean).join('\n\n') || `Claude Code exited with code ${code}.`;
+      if (/rate.?limit|usage limit|session limit|spend limit|429|resets/i.test(text)) text += '\n\nYour Claude usage limit was reached. When it resets, open this project and send \"continue\" to pick up where it stopped.';
+      else if (/login|log in|auth/i.test(text)) text += '\n\nClaude Code needs you to sign in again. Click "Sign in" at the top of the window.';
       emit(id, { type: 'anatomy', kind: 'error', text });
     }
     emit(id, { type: 'anatomy', kind: 'run-end', status: m.status });

@@ -64,6 +64,8 @@ const $ = s => document.querySelector(s);
 const api = p => fetch(p, { cache: 'no-store' }).then(r => r.json());
 const ext = p => p.toLowerCase().split('.').pop();
 const MESH = ['stl', '3mf', 'obj', 'glb'];
+// Print-ready copies (sliced plates, build/2-print, PR-* files) sit at the bed origin; prefer the design parts when there are any.
+const PRINTCOPY = /(^|\/)(build\/\d*-?print|print|prints|gcode|plates?|slic\w*)\/|\.gcode\.3mf$|(^|\/)PR-[^/]*$/i;
 const SKIP = /(^|\/)(\.venv|venv|\.tools|node_modules|\.anatomy|__pycache__)\//;
 
 // ---------------------------------------------------------------- scene
@@ -170,6 +172,7 @@ async function poll() {
     // Prefer an assembled export when the project has one.
     const asm = meshes.filter(f => /assembl/i.test(f.path));
     isAsm = asm.length > 0; if (isAsm) meshes = asm;
+    else { const design = meshes.filter(f => !PRINTCOPY.test(f.path)); if (design.length) meshes = design; }
     meshes = meshes.sort((a, b) => b.mtime - a.mtime).slice(0, 80);
     const keep = new Set(meshes.map(f => f.path));
     for (const [p, v] of parts) if (!keep.has(p)) { root.remove(v.group); parts.delete(p); }
