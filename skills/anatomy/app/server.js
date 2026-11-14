@@ -30,8 +30,10 @@ function projectDir(id) {
 }
 function metaPath(id) { return path.join(projectDir(id), META_DIR, 'project.json'); }
 function logPath(id) { return path.join(projectDir(id), META_DIR, 'events.jsonl'); }
+// Files written by Windows PowerShell (Set-Content -Encoding UTF8) start with a BOM, which JSON.parse rejects.
+const readJson = f => JSON.parse(fs.readFileSync(f, 'utf8').replace(/^\uFEFF/, ''));
 function readMeta(id) {
-  try { return JSON.parse(fs.readFileSync(metaPath(id), 'utf8')); } catch { return null; }
+  try { return readJson(metaPath(id)); } catch { return null; }
 }
 function writeMeta(id, meta) {
   fs.mkdirSync(path.dirname(metaPath(id)), { recursive: true });
@@ -287,7 +289,7 @@ function findManifest(dir) {
   })('', 0);
   hits.sort((a, b) => a.split('/').length - b.split('/').length);
   if (!hits.length) return null;
-  try { const m = JSON.parse(fs.readFileSync(path.join(dir, hits[0]), 'utf8')); m._base = path.posix.dirname(hits[0]) === '.' ? '' : path.posix.dirname(hits[0]); return m; } catch (e) { return { error: 'anatomy.json is not valid JSON: ' + e.message, _base: '' }; }
+  try { const m = readJson(path.join(dir, hits[0])); m._base = path.posix.dirname(hits[0]) === '.' ? '' : path.posix.dirname(hits[0]); return m; } catch (e) { return { error: 'anatomy.json is not valid JSON: ' + e.message, _base: '' }; }
 }
 function projectPython(dir) {
   for (const p of [path.join(dir, '.venv', 'Scripts', 'python.exe'), path.join(dir, '.venv', 'bin', 'python')]) if (fs.existsSync(p)) return p;
@@ -424,14 +426,14 @@ const server = http.createServer(async (req, res) => {
       }
       if (action === 'build-state') {
         const f = path.join(dir, META_DIR, 'build-state.json');
-        if (req.method === 'GET') { try { return send(res, 200, JSON.parse(fs.readFileSync(f, 'utf8'))); } catch { return send(res, 200, {}); } }
+        if (req.method === 'GET') { try { return send(res, 200, readJson(f)); } catch { return send(res, 200, {}); } }
         if (req.method === 'PUT') { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, (await readBody(req, 1024 * 1024)).toString('utf8')); return send(res, 200, { ok: true }); }
       }
       if (action === 'build' && req.method === 'GET') {
         // build/build.json anywhere in the project (shallowest wins)
         const hits = listFiles(dir).filter(f => /(^|\/)build\/build\.json$/.test(f.path)).sort((a, b) => a.path.length - b.path.length);
         if (!hits.length) return send(res, 200, {});
-        try { const j = JSON.parse(fs.readFileSync(path.join(dir, hits[0].path), 'utf8')); j._file = hits[0].path; return send(res, 200, j); }
+        try { const j = readJson(path.join(dir, hits[0].path)); j._file = hits[0].path; return send(res, 200, j); }
         catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }
       }
       if (action === 'manifest' && req.method === 'GET') {
