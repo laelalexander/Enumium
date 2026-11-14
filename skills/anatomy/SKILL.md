@@ -69,7 +69,7 @@ If the product runs code anywhere (firmware, BIOS/bootloader, embedded OS, compa
 - Give the 3D view the assembly. **Always write an `assembly.json`** in a folder of in-place part meshes, for example `prototype/mechanical/assembled/`:
   - Format: `{"units": "mm", "in_place": true, "parts": [{"file", "name", "matrix"?}], "steps": [{"n", "title", "add": [file, ...]}]}`. Files are relative to assembly.json.
   - Export every part in world coordinates, bought parts (motors, boards, PSU) included, so `in_place` is true. Otherwise give each part a 16-number column-major `matrix` in mm.
-  - Take `steps` from the assembly guide, so the viewer's **Assemble** button builds the product step by step.
+  - Take `steps` from the assembly guide, one per `build.json` assembly step (or give each step a `build_step` number), so the viewer's **Assemble** build-along shows the matching card. The card lists the parts to get ready, the tools, the instructions, the torque, the check and the step picture.
   - Export from the CAD assembly with a script saved in that folder (for example `export_assembly.py`), so it can be re-run.
   - Check it: no interference, fasteners where the holes are, nothing left at the origin.
 - Next to the part meshes, write a `parts.json` keyed by file name: `{name, part_no, category, qty, material, note, drawing, step}`. The viewer shows it when a part is clicked. Parts without an assembly.json can instead carry a `pose` there: `{"position": [x, y, z] mm, "rotation": [rx, ry, rz] deg XYZ}`.
