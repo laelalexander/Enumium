@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hvac-system-hardware
+expected_outcome: |
+  A full design package: load and capacity sizing, refrigerant cycle state points with numbers, component selection, controls and wiring, control board electronics, safety, BOM, build and commissioning instructions.
