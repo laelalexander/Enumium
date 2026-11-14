@@ -343,7 +343,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
       if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
-      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'max-age=3600' });
+      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': parts[0] === 'vendor' ? 'max-age=3600' : 'no-store' });
       return fs.createReadStream(p).pipe(res);
     }
     // Raw project files at a stable URL, so HTML outputs (assembly guide, viewers) load their relative assets.
