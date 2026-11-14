@@ -367,7 +367,8 @@ function guideStepFor(k) { // the build.json assembly step that goes with assemb
   const st = asmData.steps[k - 1], g = buildJson?.assembly || []; if (!st || !g.length) return null;
   if (st.build_step != null) return g.find(b => b.step == st.build_step) || null;
   if (g.length === asmData.steps.length) return g[k - 1];
-  return g.find(b => b.step == st.n) || null;
+  const t = String(st.title || '').toLowerCase().trim(); // counts differ: only trust a matching title
+  return g.find(b => String(b.title || '').toLowerCase().trim() === t) || null;
 }
 const gotKey = `anatomy.buildalong.${id}`;
 const gotLoad = () => { try { return JSON.parse(localStorage.getItem(gotKey) || '{}'); } catch { return {}; } };
