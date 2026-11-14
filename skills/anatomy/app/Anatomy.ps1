@@ -73,7 +73,10 @@ function Open-Claude([string]$dir, [string]$firstPrompt) {
   }
   # Build the command run inside the new window. Single quotes are escaped for PowerShell.
   $q = { param($s) "'" + ($s -replace "'", "''") + "'" }
-  $cmd = "Set-Location -LiteralPath $(& $q $dir); & $(& $q $claude)"
+  # Clear markers inherited when the launcher itself was started from a Claude Code session,
+  # otherwise the new session runs as a "child" with transcript saving off.
+  $cmd = "Get-ChildItem Env: | Where-Object { `$_.Name -eq 'CLAUDECODE' -or `$_.Name -like 'CLAUDE_CODE_CHILD*' } | ForEach-Object { Remove-Item -LiteralPath (""Env:"" + `$_.Name) }; "
+  $cmd += "Set-Location -LiteralPath $(& $q $dir); & $(& $q $claude)"
   if ($firstPrompt) { $cmd += " $(& $q $firstPrompt)" }
 
   # -EncodedCommand avoids quoting problems, and Windows Terminal treats ';' as its own separator.
