@@ -505,7 +505,7 @@ function ecoOpen(ctx, line, altId, title) {
   writeJson(path.join(changesDir(ctx), 'changes.json'), C);
   return { id, file: path.posix.join(ctx.root, 'changes', `${id}.md`), impact: imp.map(r => ({ file: r.file, area: r.area, hits: r.hits.length })) };
 }
-const HISTORY_OK = /\b(was|previous(ly)?|replaced|instead of|alternat|alt:|ECO-\d|SUP-\d|formerly|old part|superseded)\b/i;
+const HISTORY_OK = /\b(was|previous(ly)?|replaced|instead of|alternat|alt:|ECO-\d+|SUP-\d+|formerly|old part|superseded)\b/i;
 function ecoVerify(ctx, id) {
   const C = readChanges(ctx);
   const o = (C.open || []).find(x => x.id === id); if (!o) throw new Error(`${id} is not open`);
