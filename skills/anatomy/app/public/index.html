@@ -92,6 +92,8 @@ aside.right { border-right: 0; border-left: 1px solid var(--line); }
 
 main.feed { display: flex; flex-direction: column; min-height: 0; }
 #stream { flex: 1; overflow: auto; padding: 22px clamp(16px, 4vw, 48px) 40px; }
+.notice { margin: 0 0 14px; max-width: 820px; padding: 8px 12px; border-left: 3px solid var(--line); color: var(--muted); font-size: 13px; }
+.alert details { margin-top: 8px; font-size: 12px; opacity: .8; } .alert details pre { white-space: pre-wrap; max-height: 200px; overflow: auto; }
 .msg { margin: 0 0 14px; max-width: 820px; }
 .msg.user { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; color: var(--muted); }
 .msg.user b { color: var(--text); font-weight: 600; }
@@ -252,7 +254,7 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
       <button class="ghost" id="attach" title="Datasheets, photos, specs">＋ Attach files</button>
       <input type="file" id="fileIn" multiple class="hidden">
       <div class="seg" id="model" title="Model">
-        <button data-m="claude-fable-5-2" class="on" title="Most capable. Uses your plan's limits fastest.">Fable</button><button data-m="opus">Opus</button><button data-m="sonnet">Sonnet</button>
+        <button data-m="claude-fable-5-2" class="on" title="Most capable. Uses usage credits; if they run out, Anatomy carries on with Opus automatically.">Fable</button><button data-m="opus">Opus</button><button data-m="sonnet">Sonnet</button>
       </div>
       <div class="spacer"></div>
       <button class="ghost" id="settingsBtn" title="Printer, materials, suppliers">Settings</button>
@@ -497,10 +499,12 @@ function handleText(text) {
 }
 function handle(ev) {
   if (ev.type === 'anatomy') {
-    if (ev.kind === 'run-start') { add(div('msg user', `<b>You</b><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); startTs = ev.ts; setStatus('running'); }
+    if (ev.kind === 'run-start') { if (!ev.auto) add(div('msg user', `<b>You</b><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); startTs = startTs && ev.auto ? startTs : ev.ts; setStatus('running'); }
+    else if (ev.kind === 'notice') add(div('notice', esc(ev.text)));
     else if (ev.kind === 'run-end') { setStatus(ev.status); if (ev.status === 'done' && phase) renderPhases(); refreshFiles(); }
     else if (ev.kind === 'error') {
       const d = div('alert', esc(ev.text));
+      if (ev.details) { const x = document.createElement('details'); x.innerHTML = '<summary>Details</summary><pre></pre>'; x.querySelector('pre').textContent = ev.details; d.append(x); }
       if (/sign in/i.test(ev.text)) { const b = document.createElement('button'); b.className = 'primary'; b.textContent = 'Sign in to Claude'; b.onclick = () => api('/api/login', { method: 'POST' }); d.append(document.createElement('br'), b); }
       add(d);
     }

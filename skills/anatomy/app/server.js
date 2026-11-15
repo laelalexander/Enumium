@@ -177,9 +177,15 @@ function cleanEnv() {
 const ALLOWED_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'MultiEdit', 'Glob', 'Grep', 'WebFetch', 'WebSearch',
   'Skill', 'TodoWrite', 'Task', 'NotebookEdit'];
 
-function startRun(id, message, display) {
+const models = require('./models');
+
+// opts.model: run on this model (set when falling back); opts.tried: models already tried in this run;
+// opts.auto: started by the server itself, so no "You" bubble.
+function startRun(id, message, display, opts = {}) {
   if (runs.get(id)?.proc) throw new Error('already running');
   const meta = readMeta(id);
+  const tried = opts.tried || [];
+  const model = opts.model || models.pickModel(ROOT, meta.model, tried);
   const claude = findClaude();
   if (!claude) {
     emit(id, { type: 'anatomy', kind: 'error', text: 'Claude Code was not found on this PC. Install it from https://claude.com/claude-code and try again.' });
@@ -191,7 +197,7 @@ function startRun(id, message, display) {
     '--append-system-prompt', systemAppend()];
   const skillDir = path.join(os.homedir(), '.claude', 'skills', 'anatomy');
   if (fs.existsSync(skillDir)) args.push('--add-dir', skillDir);
-  if (meta.model) args.push('--model', meta.model);
+  if (model) args.push('--model', model);
   if (meta.sessionId) args.push('--resume', meta.sessionId);
 
   const isCmd = claude.toLowerCase().endsWith('.cmd');
@@ -202,7 +208,7 @@ function startRun(id, message, display) {
   r.proc = proc; runs.set(id, r);
 
   meta.status = 'running'; meta.updated = new Date().toISOString(); writeMeta(id, meta);
-  emit(id, { type: 'anatomy', kind: 'run-start', text: display || message });
+  emit(id, { type: 'anatomy', kind: 'run-start', text: display || message, model, auto: !!opts.auto });
 
   proc.stdin.write(message);
   proc.stdin.end();
@@ -216,26 +222,37 @@ function startRun(id, message, display) {
       if (!line) continue;
       let ev; try { ev = JSON.parse(line); } catch { emit(id, { type: 'anatomy', kind: 'log', text: line }); continue; }
       if (ev.session_id && ev.session_id !== meta.sessionId) { meta.sessionId = ev.session_id; writeMeta(id, meta); }
-      if (ev.type === 'result' && (ev.is_error || ev.terminal_reason === 'api_error' || ev.subtype !== 'success' || /spend limit|usage limit|session limit/i.test(ev.result || ''))) {
-        resultErr = String(ev.result || (ev.errors || []).join('\n') || ev.subtype || '').trim();
-      }
+      watch.see(ev);
       emit(id, ev);
     }
   });
-  let errTail = '', resultErr = '';
+  let errTail = '';
+  const watch = new models.RunWatch();
   proc.stderr.on('data', d => { errTail = (errTail + d.toString('utf8')).slice(-4000); });
   proc.on('error', e => emit(id, { type: 'anatomy', kind: 'error', text: 'Could not start Claude Code: ' + e.message }));
   proc.on('close', code => {
     const m = readMeta(id) || meta;
     const stopped = r.stopping;
-    m.status = stopped ? 'stopped' : (code === 0 ? 'done' : 'failed');
+    const failed = !stopped && (code !== 0 || !!watch.resultErr);
+    // The reason is usually in the last result event (usage limit, API error), not on stderr.
+    const kind = failed ? watch.kind(errTail) : '';
+    const triedNow = [...tried, model].filter(Boolean);
+    if (!failed && model) models.markOk(ROOT, model);
+    if (kind === 'model' && model) {
+      models.markUnavailable(ROOT, model, watch.apiError || 'unavailable');
+      const next = models.pickModel(ROOT, m.model, triedNow);
+      if (next && !triedNow.includes(next)) {
+        emit(id, { type: 'anatomy', kind: 'notice', text: `${models.reasonText(kind, model)}, so Anatomy switched to ${models.label(next)} and is carrying on.` });
+        r.proc = null; r.stopping = false;
+        try { return startRun(id, models.continuePrompt(model, next), '', { model: next, tried: triedNow, auto: true }); }
+        catch (e) { /* fall through to the normal failure path */ }
+      }
+    }
+    m.status = stopped ? 'stopped' : (failed ? 'failed' : 'done');
     m.updated = new Date().toISOString(); writeMeta(id, m);
-    if (code !== 0 && !stopped) {
-      // The reason is usually in the last result event (usage limit, API error), not on stderr.
-      let text = [resultErr, errTail.trim()].filter(Boolean).join('\n\n') || `Claude Code exited with code ${code}.`;
-      if (/rate.?limit|usage limit|session limit|spend limit|429|resets/i.test(text)) text += '\n\nYour Claude usage limit was reached. Raise it at claude.ai/settings/usage or wait for the reset; then open this project and send \"continue\" to pick up where it stopped.';
-      else if (/login|log in|auth/i.test(text)) text += '\n\nClaude Code needs you to sign in again. Click "Sign in" at the top of the window.';
-      emit(id, { type: 'anatomy', kind: 'error', text });
+    if (failed) {
+      const details = [watch.resultErr, errTail.trim()].filter(Boolean).join('\n\n') || `Claude Code exited with code ${code}.`;
+      emit(id, { type: 'anatomy', kind: 'error', text: models.friendlyError(kind, watch, triedNow), details });
     }
     emit(id, { type: 'anatomy', kind: 'run-end', status: m.status });
     r.proc = null; r.stopping = false;
