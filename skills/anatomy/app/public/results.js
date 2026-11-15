@@ -530,7 +530,30 @@ async function sim(el) {
 // ---------------------------------------------------------------- Build wizard
 const BUILD_PROMPT = `Prepare the build package for this project, following references/build-package.md of the anatomy skill exactly.
 Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, PCB order files), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
-First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard. Run the BOM and build.json checks and report what is still open.`;
+First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard.
+Then make the purchase list resilient (references/supply-and-change.md): build/1-purchase/supply.json with each line's needed quantity and the design count behind it, the design requirements a substitute must meet, and vetted alternates (another seller for every line, and an equivalent part for anything critical or single-source). Run the supply tool's audit and refresh, then the BOM and build.json checks, and report what is still open.`;
+const SUPPLY_RULES = 'Follow references/supply-and-change.md of the anatomy skill and use its supply tool (the path is in your instructions). Never place orders or fill in checkout forms.';
+const FIND_PROMPT = (p, note) => `Supply problem on purchase line ${p.line} (${p.desc}; ${p.mfr || ''} ${p.mpn || ''}; ${p.qty} from ${p.supplier}): ${note}.
+${SUPPLY_RULES}
+1. Make sure build/1-purchase/supply.json has this line's requirements, derived from the design: every dimension, rating and interface the design depends on, each with the number, the file it comes from and why.
+2. Look for the same part at other sellers first, then for equivalent parts. Add each as an alternate with its real specs from the datasheet or listing, the price at the quantity needed, the link, and notes on every difference. For a part that is not a drop-in, add an "engineering" note with what in the design would have to change.
+3. Run the tool's refresh and evaluate for this line, and the quantity audit.
+4. Report the best in-kind source that is in stock, if there is one. If there is none, report the best engineered options with what changes, the cost and the trade-offs.
+Do not switch the line or change the design; the user decides in the Build tab.`;
+const VET_PROMPT = (p, a) => `Vet the alternate source ${a.id} (${a.supplier}: ${a.url}) for purchase line ${p.line} (${p.desc}, ${p.mpn}). ${a.notes ? 'User note: ' + a.notes + '.' : ''}
+${SUPPLY_RULES}
+Read the listing and the maker's datasheet, fill in its mfr, mpn, price and every spec key the line's requirements use (add any requirement the design depends on that is missing), run evaluate, and report whether it is a drop-in and, if not, exactly what in the design would have to change and what that costs.`;
+const ECO_PROMPT = (what, p, a) => `Engineering change: ${what}.
+${SUPPLY_RULES}
+Run the full engineering change procedure in that file: open the ECO with eco-open${p ? ` (line ${p.line}${a ? ', alternate ' + a.id : ''})` : ''}, work out the design changes with numbers and calculations, change the design sources (CAD parameters, schematic and PCB, firmware constants, calculations), and regenerate every output from its script: STEP and STL, drawings, G-code, PCBA package, BOM, build.json and carts, assembly guide, assembly.json and the 3D twin, simulator tests. Re-run every check, ${a ? 'switch the line with swap --force once the design matches the new part, ' : ''}and run eco-verify until it passes, so the revision goes up and the change log is written. Report what changed, the cost before and after, and anything not verified.`;
+const IDEA_PROMPT = goal => `The user wants a better version of this design: ${goal}.
+${SUPPLY_RULES}
+Propose up to three concrete options (cheaper parts, a different configuration, fewer parts, more efficient components). For each one give the saving or gain with numbers, what it costs in performance, safety margin or build effort, and every file and output it would change. Write them to changes/proposals/ and add any part-level option to supply.json as an alternate with an "engineering" note, so the user can pick it in the Build tab. Do not change the design yet.`;
+const STOCK_TXT = { in_stock: 'In stock', sold_out: 'Sold out', backorder: 'Back-order', discontinued: 'Discontinued', unknown: 'Not checked', unchecked: 'Not checked' };
+const FIT_TXT = { 'in-kind': ['Drop-in', 'ok'], 'needs-change': ['Needs a design change', 'warn'], unverified: ['Specs not checked', 'muted'] };
+const stockBadge = st => { const k = (st && st.status) || 'unchecked'; const cls = k === 'in_stock' ? 'ok' : k === 'backorder' ? 'warn' : k === 'sold_out' || k === 'discontinued' ? 'err' : 'muted';
+  return `<span class="sb ${cls}" title="${esc(st ? `${st.via || ''}${st.checked ? ' · ' + new Date(st.checked).toLocaleString() : ''}${st.recheck ? ' · last re-check: ' + st.recheck : ''}` : 'press Check stock')}">${STOCK_TXT[k] || k}</span>`; };
+const checkTxt = c => `${esc(c.key)} ${c.value ?? '?'} ${c.ok === false ? '✗' : c.ok ? '✓' : '?'} ${c.eq !== undefined ? '= ' + esc(c.eq) : [c.min !== undefined ? '≥ ' + c.min : '', c.max !== undefined ? '≤ ' + c.max : ''].filter(Boolean).join(' ')}`;
 const STAGES = [['purchase', 'Order parts'], ['print', 'Print parts'], ['fabricate', 'Fabricate'], ['assembly', 'Assemble'], ['firmware', 'Firmware & test']];
 async function build(el) {
   const B = await S.api(`/api/projects/${S.id}/build`).catch(() => ({}));
@@ -544,6 +567,9 @@ async function build(el) {
     return;
   }
   let state = await S.api(`/api/projects/${S.id}/build-state`).catch(() => ({})) || {};
+  let SUP = await S.api(`/api/projects/${S.id}/supply`).catch(e => ({ error: e.message }));
+  const openAlt = new Set(), openFb = new Set();
+  let supMsg = '';
   const save = () => S.api(`/api/projects/${S.id}/build-state`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state) });
   const key = (st, id, f) => `${st}:${id}:${f}`;
   const items = {
@@ -575,19 +601,85 @@ async function build(el) {
   box.addEventListener('change', e => { const k = e.target.dataset.k; if (!k) return; state[k] = e.target.checked; save(); renderNav(); });
   const fileBtns = p => p ? `<a class="file" data-path="${esc(p)}">${esc(base(p))}</a> <button class="mini" data-open="${esc(p)}">open</button> <button class="mini" data-reveal="${esc(p)}">folder</button>` : '';
   box.addEventListener('click', e => { const o = e.target.closest('[data-open]'); if (o) openExt(o.dataset.open); const r = e.target.closest('[data-reveal]'); if (r) reveal(r.dataset.reveal);
-    const all = e.target.closest('[data-openall]'); if (all) (B.purchase || []).filter(p => (p.supplier || 'Other') === all.dataset.openall && p.url).forEach(p => window.open(p.url, '_blank')); });
+    const all = e.target.closest('[data-openall]'); if (all) (B.purchase || []).filter(p => (p.supplier || 'Other') === all.dataset.openall && p.url).forEach(p => window.open(p.url, '_blank'));
+    supplyClick(e); });
+  const supApi = (sub, body) => S.api(`/api/projects/${S.id}/supply/${sub}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+  const lineOf = id => (B.purchase || []).find(p => p.line === id);
+  const altOf = (id, aid) => (((SUP.supply.lines || {})[id] || {}).alternates || []).find(a => a.id === aid);
+  async function supplyClick(e) {
+    const d = e.target.closest('[data-act],[data-alt],[data-fbopen],[data-fb],[data-swap],[data-eco],[data-vet],[data-find],[data-cand]'); if (!d) return;
+    const ds = d.dataset;
+    try {
+      if (ds.act === 'log') { box.querySelector('#suplog').hidden ^= 1; return; }
+      if (ds.act === 'audit') { box.querySelector('#supaudit').hidden ^= 1; return; }
+      if (ds.act === 'refresh') { d.disabled = true; d.textContent = 'Checking…'; SUP = await supApi('refresh'); supMsg = 'Stock checked just now. Sites that block automated checks keep their last known status; open the link to confirm.'; return draw(); }
+      if (ds.act === 'idea') { const g = prompt('What should the better version do? For example: cut the parts cost, more range for the same money, fewer parts to solder.'); if (g && g.trim()) S.startRun(IDEA_PROMPT(g.trim())); return; }
+      if (ds.alt) { openAlt.has(ds.alt) ? openAlt.delete(ds.alt) : openAlt.add(ds.alt); return draw(); }
+      if (ds.fbopen) { openFb.has(ds.fbopen) ? openFb.delete(ds.fbopen) : openFb.add(ds.fbopen); return draw(); }
+      if (ds.fb) { const [line, status] = ds.fb.split('|'); let price = null, note = '';
+        if (status === 'price') { price = prompt('New unit price in USD?'); if (price === null) return; }
+        note = prompt('Anything else to note? (optional)', '') || '';
+        const r = await supApi('feedback', { line, target: 'primary', status: status === 'price' ? 'in_stock' : status, price, note }); SUP = r; openFb.delete(line); openAlt.add(line);
+        const p = lineOf(line), ik = (r.result.inKind || []).map(id => altOf(line, id)).filter(Boolean);
+        supMsg = status === 'in_stock' || status === 'price' ? `Noted for ${esc(line)}.` : ik.length ? `Noted: ${esc(line)} is ${STOCK_TXT[status].toLowerCase()} at ${esc(p.supplier)}. Drop-in source${ik.length > 1 ? 's' : ''} on file: ${ik.map(a => esc(a.supplier)).join(', ')}. Pick one below with "Use this source".`
+          : `Noted: ${esc(line)} is ${STOCK_TXT[status].toLowerCase()} at ${esc(p.supplier)} and there is no drop-in source on file. Use "Find a replacement" to have Claude search and check the options against the design.`;
+        return draw(); }
+      if (ds.swap) { const [line, aid] = ds.swap.split('|'); const a = altOf(line, aid), p = lineOf(line);
+        if (!confirm(`Switch ${line} to ${a.supplier} ${a.mpn || ''}${a.unit_price ? ' at $' + a.unit_price : ''}?\n\nThe purchase list, carts, BOM and build.json are updated and the change is logged. Nothing is ordered.`)) return;
+        await supApi('swap', { line, alt: aid, reason: `${p.supplier}: ${(STOCK_TXT[((SUP.supply.lines[line] || {}).primary || {}).stock?.status] || 'unavailable').toLowerCase()}` });
+        return build(el); }
+      if (ds.eco) { const [line, aid] = ds.eco.split('|'); const a = altOf(line, aid), p = lineOf(line);
+        if (confirm(`Engineer the change to ${a.mfr || ''} ${a.mpn || a.supplier} for ${line}?\n\nClaude updates the design and every output that depends on it (CAD, drawings, G-code, BOM, carts, guide, 3D twin, tests), logs it as an engineering change and raises the revision. You can watch it in the Live view. Nothing is ordered.`))
+          S.startRun(ECO_PROMPT(`replace ${p.mfr || ''} ${p.mpn} on line ${line} with ${a.mfr || ''} ${a.mpn || ''} from ${a.supplier}${a.notes ? ' (' + a.notes + ')' : ''}`, p, a)); return; }
+      if (ds.vet) { const [line, aid] = ds.vet.split('|'); S.startRun(VET_PROMPT(lineOf(line), altOf(line, aid))); return; }
+      if (ds.find) { const p = lineOf(ds.find); const st = ((SUP.supply.lines[p.line] || {}).primary || {}).stock; S.startRun(FIND_PROMPT(p, st && st.status && st.status !== 'in_stock' ? `${STOCK_TXT[st.status] || st.status} (${st.via || ''})` : 'the user wants another source')); return; }
+      if (ds.cand) { const url = prompt('Link to the part you found:'); if (!url) return; const note = prompt('What is it? (for example: Samsung 58E, $6.99, in stock)', '') || '';
+        SUP = await supApi('candidate', { line: ds.cand, url, note }); openAlt.add(ds.cand); supMsg = `Added to ${esc(ds.cand)}'s alternates. Press "Vet it" so Claude checks its specs against the design before you buy.`; return draw(); }
+    } catch (err) { supMsg = `<span style="color:var(--err)">${esc(err.message)}</span>`; draw(); }
+  }
   let stepIx = 0;
   function draw() {
     if (cur === 'purchase') {
+      const L = (SUP && SUP.supply && SUP.supply.lines) || {};
+      const A = new Map(((SUP && SUP.audit) || []).map(r => [r.line, r]));
       const groups = new Map(); (B.purchase || []).forEach(p => { const s = p.supplier || 'Other'; if (!groups.has(s)) groups.set(s, []); groups.get(s).push(p); });
       const carts = S.files.filter(f => /cart.*\.csv$|order.*\.csv$/i.test(f.path));
-      box.innerHTML = (carts.length ? `<p class="lead">Supplier carts ready to upload: ${carts.map(c => fileBtns(c.path)).join(' · ')}</p>` : '') + [...groups].map(([s, list]) => {
+      const prim = (B.purchase || []).map(p => ((L[p.line] || {}).primary || {}).stock || {});
+      const cnt = k => prim.filter(x => (x.status || 'unchecked') === k).length;
+      const aud = (SUP && SUP.audit) || []; const bad = aud.filter(r => r.verdict !== 'OK');
+      const changes = (SUP && SUP.changes) || [], open = (SUP && SUP.open) || [];
+      const needsAction = (B.purchase || []).filter(p => ['swap-ready', 'redesign-option', 'no-source', 'backorder'].includes((L[p.line] || {}).state));
+      const head = SUP && SUP.error ? `<div class="alert">${esc(SUP.error)}</div>` : `<div class="supbar">
+        <div><b>Rev ${esc(SUP.revision || B.revision || 'A')}</b> <button class="mini" data-act="log">change log (${changes.length}${open.length ? `, ${open.length} open` : ''})</button></div>
+        <div>${cnt('in_stock')} in stock · ${cnt('backorder')} back-order · ${cnt('sold_out') + cnt('discontinued')} sold out · ${cnt('unknown') + cnt('unchecked')} not checked</div>
+        <div>Quantities vs the design: ${bad.length ? `<span class="sb warn">${bad.length} to look at</span>` : `<span class="sb ok">${aud.length} of ${aud.length} OK</span>`} <button class="mini" data-act="audit">details</button></div>
+        <div class="grow"></div><button class="mini" data-act="refresh">Check stock now</button> <button class="mini" data-act="idea">Engineer a cheaper or better version…</button></div>
+        ${supMsg ? `<div class="supmsg">${supMsg}</div>` : ''}
+        ${needsAction.length ? `<div class="supmsg warn"><b>Needs a decision:</b> ${needsAction.map(p => `${esc(p.line)} ${esc(p.desc)} (${({ 'swap-ready': 'a drop-in source is in stock', 'redesign-option': 'only parts that need a design change are in stock', 'no-source': 'no source in stock', backorder: 'back-order only' })[L[p.line].state]})`).join('; ')}</div>` : ''}
+        <div id="suplog" hidden>${changes.length || open.length ? `<table class="bom"><tr><th>When</th><th>Rev</th><th>Id</th><th>Kind</th><th>Line</th><th>Change</th><th>Why</th></tr>
+          ${open.map(o => `<tr><td>${esc((o.opened || '').slice(0, 10))}</td><td>open</td><td>${esc(o.id)}</td><td>eco</td><td>${esc(o.line || '')}</td><td>${esc(o.title || '')}</td><td>in progress</td></tr>`).join('')}
+          ${changes.slice().reverse().map(c => `<tr><td>${esc((c.when || '').slice(0, 10))}</td><td>${esc(c.revision)}</td><td>${esc(c.id)}</td><td>${esc(c.kind)}</td><td>${esc(c.line || '')}</td><td>${esc(c.summary || '')}</td><td>${esc(c.reason || '')}</td></tr>`).join('')}</table>` : '<p class="empty">No changes yet. Source switches and engineering changes are recorded here, with the revision they made.</p>'}</div>
+        <div id="supaudit" hidden><table class="bom"><tr><th>Line</th><th>Part</th><th>Order</th><th>Needed</th><th>Result</th><th>Why</th></tr>${aud.map(r => `<tr><td>${esc(r.line)}</td><td>${esc(r.desc)}</td><td>${esc(r.qty)}</td><td>${esc(r.needed ?? '?')}</td><td>${r.verdict === 'OK' ? '<span class="sb ok">OK</span>' : `<span class="sb ${r.verdict === 'FAIL' ? 'err' : 'warn'}">${esc(r.verdict)}</span>`}</td><td>${esc(r.reason)}</td></tr>`).join('')}</table></div>`;
+      const altRows = p => { const s = L[p.line] || {}; const alts = s.alternates || [];
+        return `<tr class="altrow"><td colspan="8">${(s.requirements || []).length ? `<p class="empty">Must meet: ${s.requirements.map(q => `${esc(q.key)} ${q.eq !== undefined ? '= ' + esc(q.eq) : [q.min !== undefined ? '≥ ' + q.min : '', q.max !== undefined ? '≤ ' + q.max : ''].filter(Boolean).join(' ')}`).join(' · ')}</p>` : '<p class="empty">No design requirements recorded for this line yet, so alternates cannot be checked. "Find a replacement" records them.</p>'}
+          ${alts.length ? `<table class="bom alts"><tr><th>Source</th><th>Part</th><th>Price</th><th>Stock</th><th>Fit</th><th>Differences and notes</th><th></th></tr>${alts.map(a => { const f = FIT_TXT[a.fit] || FIT_TXT.unverified; const fails = (a.checks || []).filter(c => c.ok === false);
+            return `<tr><td>${a.url ? `<a href="${esc(a.url)}" target="_blank">${esc(a.supplier)}</a>` : esc(a.supplier)}${a.source === 'user' ? ' <span class="empty">(you found)</span>' : ''}</td><td>${esc(a.mfr || '')} <code>${esc(a.mpn || '')}</code></td>
+            <td>${(a.stock && a.stock.price) ?? a.unit_price ? '$' + (+((a.stock && a.stock.price) ?? a.unit_price)).toFixed(2) : ''}</td><td>${stockBadge(a.stock)}</td><td><span class="sb ${f[1]}">${f[0]}</span></td>
+            <td>${fails.length ? `<div class="fails">${fails.map(c => `<div title="${esc(c.why)}">✗ ${checkTxt(c)} <span class="empty">${esc(c.why)}</span></div>`).join('')}</div>` : ''}${esc(a.notes || '')}</td>
+            <td>${a.fit === 'in-kind' ? `<button class="mini" data-swap="${esc(p.line)}|${esc(a.id)}">Use this source</button>` : a.fit === 'needs-change' ? `<button class="mini" data-eco="${esc(p.line)}|${esc(a.id)}">Engineer this change</button>` : `<button class="mini" data-vet="${esc(p.line)}|${esc(a.id)}">Vet it</button>`}</td></tr>`; }).join('')}</table>` : ''}
+          <div class="ib"><button class="mini" data-find="${esc(p.line)}">Find a replacement</button> <button class="mini" data-cand="${esc(p.line)}">Add a source I found…</button></div></td></tr>`; };
+      const fbRow = p => `<tr class="altrow"><td colspan="8">What did the seller show? <button class="mini" data-fb="${esc(p.line)}|sold_out">Sold out</button> <button class="mini" data-fb="${esc(p.line)}|backorder">Back-order</button> <button class="mini" data-fb="${esc(p.line)}|discontinued">Discontinued</button> <button class="mini" data-fb="${esc(p.line)}|price">Price changed…</button> <button class="mini" data-fb="${esc(p.line)}|in_stock">Back in stock</button></td></tr>`;
+      box.innerHTML = head + (carts.length ? `<p class="lead">Supplier carts ready to upload: ${carts.map(c => fileBtns(c.path)).join(' · ')}</p>` : '') + [...groups].map(([s, list]) => {
         const sub = list.reduce((a, p) => a + (+p.qty || 0) * (+p.unit_price || 0), 0);
-        return `<div class="sgroup"><div class="sgh"><b>${esc(s)}</b><span>${list.length} items · $${sub.toFixed(2)}</span><button class="mini" data-openall="${esc(s)}">open all links</button></div>
-          <table class="bom"><tr><th>Ordered</th><th>Received</th><th>Part</th><th>MPN</th><th>Qty</th><th>Unit</th><th>Link</th></tr>${list.map(p => `<tr>
+        return `<div class="sgroup"><div class="sgh"><b>${esc(s)}</b><span>${list.length} item${list.length === 1 ? '' : 's'} · $${sub.toFixed(2)}</span><button class="mini" data-openall="${esc(s)}">open all links</button></div>
+          <table class="bom"><tr><th>Ordered</th><th>Received</th><th>Part</th><th>MPN</th><th>Qty</th><th>Unit</th><th>Stock</th><th>Link</th></tr>${list.map(p => { const sl = L[p.line] || {}; const nAlt = (sl.alternates || []).length; const ar = A.get(p.line);
+          return `<tr class="${['swap-ready', 'redesign-option', 'no-source'].includes(sl.state) ? 'gen' : ''}">
           <td>${check('purchase', p.line, 'ordered', '')}</td><td>${check('purchase', p.line, 'received', '')}</td>
-          <td>${esc(p.desc)}<div class="empty">${esc(p.line || '')} ${esc(p.mfr || '')}${p.alt ? ' · alt: ' + esc(p.alt) : ''}</div></td><td><code>${esc(p.mpn || '')}</code></td><td>${esc(p.qty)}</td>
-          <td>${p.unit_price ? '$' + (+p.unit_price).toFixed(2) : ''}</td><td>${p.url ? `<a href="${esc(p.url)}" target="_blank">buy</a>` : ''}</td></tr>`).join('')}</table></div>`;
+          <td>${esc(p.desc)}<div class="empty">${esc(p.line || '')} ${esc(p.mfr || '')}${p.alt && !nAlt ? ' · alt: ' + esc(p.alt) : ''}</div>
+            <div class="lact"><button class="mini" data-alt="${esc(p.line)}">${nAlt ? `alternates (${nAlt})` : 'alternates'}</button> <button class="mini" data-fbopen="${esc(p.line)}">sold out or changed?</button></div></td>
+          <td><code>${esc(p.mpn || '')}</code></td><td>${esc(p.qty)}${ar ? `<div class="empty" title="${esc(ar.reason)}">${ar.verdict === 'OK' ? (ar.needed != null && ar.needed !== +p.qty ? 'needs ' + esc(ar.needed) : 'as designed') : '⚠ ' + esc(ar.verdict)}</div>` : ''}</td>
+          <td>${p.unit_price ? '$' + (+p.unit_price).toFixed(2) : ''}</td><td>${stockBadge(sl.primary && sl.primary.stock)}</td><td>${p.url ? `<a href="${esc(p.url)}" target="_blank">buy</a>` : ''}</td></tr>
+          ${openFb.has(p.line) ? fbRow(p) : ''}${openAlt.has(p.line) ? altRows(p) : ''}`; }).join('')}</table></div>`;
       }).join('');
     } else if (cur === 'print') {
       const plates = new Map(); (B.print || []).forEach(p => { const k = p.plate || '—'; if (!plates.has(k)) plates.set(k, []); plates.get(k).push(p); });

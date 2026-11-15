@@ -14,6 +14,11 @@ const PORT = Number(process.env.ANATOMY_PORT || 4377);
 const ROOT = process.env.ANATOMY_ROOT || (process.platform === 'win32' ? 'C:\\Anatomy' : path.join(os.homedir(), 'Anatomy'));
 const PUBLIC = path.join(__dirname, 'public');
 const META_DIR = '.anatomy';
+// Supply and change tool (stock checks, alternates, swaps, engineering changes). Installed next to server.js;
+// in a repo checkout it sits in ../tools/supply; the installed skill keeps a copy too.
+const SUPPLY_JS = [path.join(__dirname, 'supply.js'), path.join(__dirname, '..', 'tools', 'supply', 'supply.js'),
+  path.join(os.homedir(), '.claude', 'skills', 'anatomy', 'tools', 'supply', 'supply.js')].find(p => fs.existsSync(p)) || null;
+const supply = SUPPLY_JS ? require(SUPPLY_JS) : null;
 const HIDDEN = new Set([META_DIR, 'CLAUDE.md', '.tools', 'venv', 'env', '.pio', '.mypy_cache', '.pytest_cache', 'dist-info', '.git', 'node_modules', '.claude', '__pycache__', '.venv']);
 
 fs.mkdirSync(ROOT, { recursive: true });
@@ -144,6 +149,7 @@ function systemAppend() {
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
     'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
+    SUPPLY_JS ? `Supply and change tool: node "${SUPPLY_JS}" <project folder> <command> (status, audit, refresh, evaluate, feedback, candidate, swap, impact, eco-open, eco-verify). Follow references/supply-and-change.md for purchase lines, alternates, sold-out parts and every design change. Never place orders.` : '',
     'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
@@ -457,6 +463,20 @@ const server = http.createServer(async (req, res) => {
         if (!hits.length) return send(res, 200, {});
         try { const j = readJson(path.join(dir, hits[0].path)); j._file = hits[0].path; return send(res, 200, j); }
         catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }
+      }
+      if (action === 'supply') {
+        // Purchase lines: stock, alternates, fit against the design, quantity audit, change log. Never places orders.
+        if (!supply) return send(res, 200, { error: 'supply tool not installed (tools/supply/supply.js)' });
+        const sub = parts[4] || '';
+        const body = req.method === 'POST' ? JSON.parse((await readBody(req, 1024 * 1024)).toString('utf8') || '{}') : {};
+        try {
+          if (!sub && req.method === 'GET') return send(res, 200, { tool: SUPPLY_JS, ...supply.view(dir) });
+          if (sub === 'refresh' && req.method === 'POST') { await supply.refresh(dir, body.lines || []); return send(res, 200, supply.view(dir)); }
+          if (sub === 'feedback' && req.method === 'POST') { const r = supply.feedback(dir, body.line, body.target || 'primary', body.status, body.price, body.note || '', 'user'); return send(res, 200, { result: r, ...supply.view(dir) }); }
+          if (sub === 'candidate' && req.method === 'POST') { const a = await supply.candidate(dir, body.line, body.url, body.note || ''); return send(res, 200, { added: a, ...supply.view(dir) }); }
+          if (sub === 'swap' && req.method === 'POST') { const c = supply.swap(dir, body.line, body.alt, body.reason || 'user switched source in the Build tab', false); return send(res, 200, { change: c, ...supply.view(dir) }); }
+        } catch (e) { return send(res, 400, { error: e.message }); }
+        return send(res, 404, { error: 'not found' });
       }
       if (action === 'simtest' && req.method === 'POST') {
         // Run the simulator's headless tests (anatomy.json "tests": {cwd, run, results}) and return the output.

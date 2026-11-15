@@ -9,8 +9,9 @@ Everything below must already meet `parts-and-bom.md`, `drawings.md`, `3d-print-
 build/
   build.json            the machine-readable plan the app's wizard reads (schema below)
   README.md             one page: what you are building, cost, time, skills, tools, the 5 stages
-  1-purchase/           purchase-list.csv (all BUY lines), one <supplier>-cart.csv per supplier in that
-                        supplier's BOM-upload format (Digi-Key, Mouser, LCSC, McMaster), order-checklist.md
+  1-purchase/           purchase-list.csv (all BUY lines, with needed_qty), one <supplier>-cart.csv per supplier in that
+                        supplier's BOM-upload format (Digi-Key, Mouser, LCSC, McMaster), order-checklist.md,
+                        supply.json (needs, requirements, alternates, stock; supply-and-change.md), qty-audit.md
   2-print/              print-list.csv, gcode/ (per plate and per part, Bambu .gcode.3mf when the printer is Bambu),
                         project/ (.3mf for the slicer), print-plan.md with plates, order, time and filament totals
   3-fabricate/          cut/ DXF in mm and inch, pcb/ <board>-PCBA-rev<rev>.zip from tools/pcba/pcba_export.py
@@ -24,6 +25,7 @@ build/
 ```json
 {
   "title": "TwinArm robot",
+  "revision": "A",
   "summary": "one paragraph",
   "totals": { "parts_cost": 1536.20, "currency": "USD", "print_hours": 41.5, "filament_g": {"PETG": 1830}, "build_hours": 12 },
   "tools": ["hex keys 2/2.5/3 mm", "soldering iron", "multimeter", "M3 heat-set insert tip"],
@@ -56,6 +58,8 @@ All paths are relative to the project root. Every `purchase` line comes from a B
 
 ## Quality bar
 - The purchase list is orderable as written: exact SKUs, quantities rounded to pack sizes plus spares, links that go to the exact product.
+- It stays orderable: `supply.js audit` passes, every line has requirements and vetted alternates, `refresh` was run, and lines with no source in stock are open items with the decision they need (`supply-and-change.md`).
+- Changes are tracked: `build.json` carries `revision`, and `changes/CHANGELOG.md` lists every source switch and engineering change since the package was first written.
 - Every print entry has G-code that exists, was sliced for the user's printer (see Settings), and has its time and weight from the slicer.
 - Every assembly step has a picture rendered from the CAD assembly, with the parts added in that step highlighted.
 - An `assembly.json` (see SKILL.md step 6) whose `steps` match these assembly steps one-to-one, so the 3D viewer's Assemble button plays the same build the guide describes.

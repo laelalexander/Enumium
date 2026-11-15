@@ -198,6 +198,9 @@ if (-not $NoShortcut) {
     foreach ($f in @("server.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
       Copy-Item -LiteralPath (Join-Path $appSrc $f) -Destination $appDir -Force
     }
+    # The Build tab's stock checks, alternates and swaps use the supply tool next to server.js.
+    $supplyJs = Join-Path $here "tools\supply\supply.js"
+    if (Test-Path -LiteralPath $supplyJs) { Copy-Item -LiteralPath $supplyJs -Destination $appDir -Force }
     $pub = Join-Path $appDir "public"
     if (Test-Path -LiteralPath $pub) { Remove-Item -LiteralPath $pub -Recurse -Force }
     Copy-Item -LiteralPath (Join-Path $appSrc "public") -Destination $appDir -Recurse -Force

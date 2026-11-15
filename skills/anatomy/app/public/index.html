@@ -222,6 +222,14 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
 .stages button em { font-style: normal; font-size: 11px; color: var(--faint); }
 .stages button.on { border-color: var(--accent); color: var(--text); } .stages button.done i { background: var(--ok); color: #0b0d12; }
 .stages button:disabled { opacity: .4; cursor: default; }
+.supbar { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; padding: 10px 12px; margin-bottom: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); font-size: 13px; color: var(--muted); }
+.supbar b { color: var(--text); } .supbar .grow { flex: 1; }
+.supmsg { padding: 8px 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid var(--line); font-size: 13px; } .supmsg.warn { border-color: #4a3a16; background: #211c10; }
+#suplog, #supaudit { margin-bottom: 14px; max-height: 360px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
+.sb { display: inline-block; font-size: 11px; border-radius: 4px; padding: 0 5px; border: 1px solid var(--line); white-space: nowrap; }
+.sb.ok { color: var(--ok); border-color: #1d4a33; } .sb.warn { color: var(--warn); border-color: #4a3a16; } .sb.err { color: var(--err); border-color: #4a1d1d; } .sb.muted { color: var(--faint); }
+tr.altrow > td { background: var(--panel); padding: 8px 14px 12px; } table.bom.alts { font-size: 12px; } table.bom.alts td { padding: 5px 8px; }
+.fails { color: var(--warn); margin-bottom: 4px; } .lact { margin-top: 4px; display: flex; gap: 6px; }
 .sgroup { margin-bottom: 18px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
 .sgh { display: flex; gap: 12px; align-items: center; padding: 10px 12px; background: var(--panel); } .sgh span { color: var(--muted); flex: 1; }
 .chk { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; } .chk input { width: 16px; height: 16px; accent-color: var(--ok); }
