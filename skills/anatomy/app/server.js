@@ -145,6 +145,7 @@ function systemAppend() {
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
     'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
     'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
+    'This is a one-shot run: when you end your final message, the run exits and any background agents or background shell tasks still running are killed and their work is lost. Never end the run while background work is pending. Wait for every background agent and task to finish (or do the work in the foreground), review what it produced, and only then write the summary.',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
 }
