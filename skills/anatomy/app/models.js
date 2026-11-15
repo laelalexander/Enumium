@@ -44,8 +44,16 @@ async function ollamaModels() {
     const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 2000);
     const r = await fetch(OLLAMA + '/api/tags', { signal: ctl.signal }); clearTimeout(t);
     const j = await r.json();
-    return (j.models || []).map(m => ({ id: 'ollama:' + m.name, name: m.name, size: m.size,
+    const list = (j.models || []).map(m => ({ id: 'ollama:' + m.name, name: m.name, size: m.size,
       params: m.details && m.details.parameter_size, family: m.details && m.details.family }));
+    // Claude Code needs tool calling; models without it (gemma3, llava, moondream, phi3) can't run Anatomy.
+    await Promise.all(list.map(async m => {
+      try {
+        const s = await fetch(OLLAMA + '/api/show', { method: 'POST', body: JSON.stringify({ model: m.name }) }).then(x => x.json());
+        m.tools = Array.isArray(s.capabilities) ? s.capabilities.includes('tools') : null;
+      } catch { m.tools = null; }
+    }));
+    return list;
   } catch { return null; }
 }
 
@@ -69,7 +77,7 @@ async function overview(root) {
   });
   const local = await ollamaModels();
   return { claude, local: local ? local.map(m => ({ ...m, label: label(m.id),
-    status: st[m.id] && st[m.id].until > now ? 'skipped' : 'ready' })) : null, settings: readSettings(root) };
+    status: m.tools === false ? 'off' : (st[m.id] && st[m.id].until > now ? 'skipped' : 'ready') })) : null, settings: readSettings(root) };
 }
 
 function statusFile(root) { return path.join(root, '.anatomy', 'models.json'); }

@@ -636,19 +636,20 @@ $('#settingsBtn').onclick = async () => { const { text } = await api('/api/setti
 async function renderModels() {
   const box = $('#modelsBox');
   let o; try { o = await api('/api/models'); } catch { box.innerHTML = '<span class="empty">Could not read model status.</span>'; return; }
-  const all = [...o.claude, ...(o.local || [])];
+  const usable = (o.local || []).filter(m => m.tools !== false);
+  const all = [...o.claude, ...usable];
   const opts = sel => all.map(m => `<option value="${esc(m.id)}"${m.id === sel ? ' selected' : ''}>${esc(m.label)}${m.status === 'skipped' ? ' (paused)' : ''}</option>`).join('');
   const when = t => t ? new Date(t).toLocaleString(undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' }) : '';
   const runs = o.running.length ? o.running.map(r => `<div class="mrun" data-id="${esc(r.id)}"><span style="flex:1;min-width:200px"><b>Running now:</b> ${esc(r.title)}<br><span class="empty">on ${esc((all.find(m => m.id === r.model) || {}).label || r.model || 'unknown')}</span></span>
     <select>${opts(r.model)}</select><button class="primary mswitch">Switch now</button></div>`).join('') : '<div class="hint" style="margin:0 0 8px">No project is running right now.</div>';
-  const row = m => `<tr><td><span class="dot ${m.status}"></span>${m.html || esc(m.label)}</td><td class="empty">${m.status === 'ready' ? 'Available' : `Paused until ${when(m.until)} · ${esc(({ model_requires_usage_credits: 'usage credits used up', 'plan limit reached': 'plan limit reached' })[m.reason] || 'unavailable')}`}</td>
+  const row = m => `<tr><td><span class="dot ${m.status}"></span>${m.html || esc(m.label)}</td><td class="empty">${m.status === 'off' ? 'Can\'t use tools, so it can\'t run Anatomy' : m.status === 'ready' ? 'Available' : `Paused until ${when(m.until)} · ${esc(({ model_requires_usage_credits: 'usage credits used up', 'plan limit reached': 'plan limit reached' })[m.reason] || 'unavailable')}`}</td>
     <td style="text-align:right">${m.status === 'skipped' ? `<button class="ghost clr" data-m="${esc(m.id)}">Try again</button>` : ''}</td></tr>`;
   const local = o.local == null ? '<tr><td colspan="3"><span class="dot off"></span>Ollama isn\'t running on this PC, so local models are hidden.</td></tr>'
     : o.local.length ? o.local.map(m => row({ ...m, html: `${esc(m.name)} <span class="empty">${esc(m.params || '')}</span>` })).join('') : '<tr><td colspan="3" class="empty">Ollama has no models installed.</td></tr>';
   box.innerHTML = runs + `<table><tr><td colspan="3" class="empty"><b>Claude</b> · tried in this order when one can't run</td></tr>${o.claude.map(row).join('')}
     <tr><td colspan="3" class="empty" style="padding-top:10px"><b>Local (free, on this PC)</b></td></tr>${local}</table>
-    <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="locFb"${o.settings.localFallback ? ' checked' : ''}${o.local && o.local.length ? '' : ' disabled'}>
-    When no Claude model can run, carry on with <select id="locModel">${(o.local || []).map(m => `<option${m.name === (o.settings.localModel || ((o.local || []).some(x => x.name === 'qwen3:8b') ? 'qwen3:8b' : '')) ? ' selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>
+    <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="locFb"${o.settings.localFallback ? ' checked' : ''}${usable.length ? '' : ' disabled'}>
+    When no Claude model can run, carry on with <select id="locModel">${usable.map(m => `<option${m.name === (o.settings.localModel || (usable.some(x => x.name === 'qwen3:8b') ? 'qwen3:8b' : '')) ? ' selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>
     <p class="hint">On this PC qwen3:8b keeps up; qwen3:14b is too slow while the GPU is busy. Local models are much less capable. They only do light steps (research notes, summaries, BOM tidying, docs) and leave CAD, drawings and PCB work in WAITING-FOR-CLAUDE.md for Claude to pick up.</p>`;
   box.querySelectorAll(".mrun .mswitch").forEach(b => b.onclick = async () => {
     const r = b.closest(".mrun"); b.disabled = true; b.textContent = 'Switching…';
