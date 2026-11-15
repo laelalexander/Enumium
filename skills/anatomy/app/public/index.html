@@ -537,7 +537,8 @@ function handle(ev) {
     return;
   }
   if (ev.type === 'result') {
-    lastResult = ev.result || lastResult;
+    // A usage-limit notice is not the run's result: keep the last real summary for the Overview.
+    if (!/spend limit|usage limit|session limit|rate.?limit/i.test(ev.result || '')) lastResult = ev.result || lastResult;
     for (const el of pending.values()) el.classList.remove('pending'); pending.clear();
     const limited = /spend limit|usage limit|session limit|rate.?limit/i.test(ev.result || '');
     const ok = !ev.is_error && ev.subtype === 'success' && !limited;

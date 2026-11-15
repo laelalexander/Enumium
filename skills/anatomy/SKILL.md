@@ -28,6 +28,10 @@ Pick the sources that match the input; use several when available. Read `referen
 
 Keep a running evidence log (source, what it showed) so claims can be traced.
 
+**Look at every image.** Concept renders, sketches, photos and drawings carry the intended form, and text extraction misses them. Rasterise every PDF page that has little text (PyMuPDF `fitz`: `page.get_pixmap(dpi=110).save(...)`, or `pdftoppm`). Pull the images out of .docx and .pptx files, and Read each one. If no rasteriser is installed, install PyMuPDF (`python -m pip install --user pymupdf`). Do not go on with "could not render". Write a short description of each image into the evidence log, saying what it shows about the form, size, materials and placement.
+
+**When inputs disagree, the design intent comes from the newest and most specific source.** Concept renders and sketches set the form, and so does the user's own review or markup. A long text brief or proposal does not, even when it is the project prompt. If inputs give different forms (for example an open visor in the text and a closed lattice headband in the renders), build the prototype to the renders and the user's own guidance. Record the other form as a conflict. Do not prototype the text version and leave the concept for "rev B". If it is still truly unclear, ask the user in Scope before any CAD, and show the options side by side.
+
 ### 3. Analyze
 Work through the layers in `references/blueprint-template.md`. In order:
 1. Purpose, users, jobs-to-be-done, business model
@@ -52,6 +56,8 @@ Turn the rebuild spec into something the user can see. Read `references/prototyp
 - **3D print**: a parametric model exported to STL with preview renders and print notes
 - **Drawings**: dimensioned orthographic and exploded views, bill of materials, and schematics where relevant
 - **Full hardware build package**: for any product with moving parts, electronics, or thermal/fluid systems (an e-ink display, an appliance, an HVAC system), shape files are not enough. Read `references/hardware-engineering.md` (and `references/kicad-pcb.md` for any circuit board; that KiCad step is experimental and untested, so say so to the user) and deliver the mechanics (parametric CAD, tolerances, mechanism and load calculations), the electronics (real-part BOM, schematic and netlist, power budget, real KiCad schematic and PCB files that pass KiCad's ERC/DRC with Gerber export (or, only if KiCad cannot run, a precise layout spec labeled as unverified)), firmware or controls, thermal/fluid calculations where relevant, and complete build, bring-up and test instructions
+
+Before any CAD, write a one-paragraph **design-intent check** at the top of `prototype/00-design-basis.md`. It names the source of the form (which render, sketch or user note) and lists the must-have features from it (shape, structure such as a lattice, materials, placement of each user-visible element, weight or size targets). It also says how each one shows up in the model. When the first renders exist, compare them side by side with the concept image and fix any mismatch before drawings and G-code.
 
 For physical products the full hardware build package is the default, not an optional extra. Three standards apply to every hardware package and are checked before hand-off:
 - **Every part is BUY or BUILD** (`references/parts-and-bom.md`): each item needed to assemble the product, down to fasteners and wire, is either a purchasable part with manufacturer, MPN or standard designation, spec and supplier link, or a part made from a design file that is in the package. Run the BOM completeness check.
@@ -93,4 +99,5 @@ Default to standard unless told otherwise.
 - G-code that was never sliced for the user's printer, or a drawing sheet nobody looked at.
 - Treating firmware or the companion app as a stub. If the product runs code, that code is part of the build.
 - A prototype that was never run or rendered. Always execute the build, open the viewer, or render the model and drawings before presenting them.
+- Prototyping the wrong form: building from the text brief when the renders, sketches or the user's notes show a different device. The concept images set the form. Check the first render against them before going further.
 - Cloning blindly. If the user's goal is "better", record the original's weaknesses and propose improvements in the spec.
