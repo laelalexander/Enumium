@@ -26,6 +26,14 @@ Scale the package to the product. A bracket needs mechanics and notes; an e-ink 
 ## Mechanical
 - Parametric source (CadQuery/build123d or OpenSCAD) with all key dimensions as named parameters. Export STEP (for CAD handoff) and STL (for printing). Check watertightness, units (mm), wall thickness, overhangs, and split large parts with alignment features.
 - Mechanisms are more than shapes: state the degrees of freedom, motion range, loads and forces, fits and clearances (e.g. H7/g6 or print-tolerance offsets), and fastener choices (thread, length, torque, boss/insert design). Do first-order checks by calculation: torque and gear ratio, spring rate, beam deflection and stress against material yield with a safety factor, bearing loads, snap-fit strain. Show the arithmetic.
+- **Bought parts are modeled as the real part, not as blocks.** Use the manufacturer's STEP when one exists (most motors, casters, bearings, wheels, servos and boards publish one). Otherwise model it from the datasheet drawing, with the features that matter for fit and function: a caster's swivel plate, fork, axle and wheel with the wheel *between* the fork legs; a drive wheel's hub bore on the motor shaft; a motor's flange, pilot and shaft length; a servo's horn and spline. Put the datasheet path and dimensions in the part's CAD source.
+- **Mechanism check, before any render or drawing is shown.** For every moving or load-path joint in the assembly, confirm with a script on the assembled model and in the report:
+  - every wheel and axle is concentric with what drives or carries it (shaft through hub, axle through the fork legs);
+  - every wheel touches the ground plane together, with the chassis level (caster height + plate offset = drive wheel radius + mount offset);
+  - no solid passes through another (pairwise interference, except designed press fits);
+  - each joint can move through its stated range without collision;
+  - every fastener has a hole on both parts it joins.
+  A part that "floats", hangs beside its mount, or passes through its neighbour is a failed check. Fix the CAD and re-export; never present it.
 - Enclosures: board mounting, connector and button cutouts aligned to the actual PCB outline, cable strain relief, ingress protection goal, thermal path, serviceability, tolerance stack-up for anything that must align.
 - Drawings: follow `drawings.md` (title block, full dimensions and tolerances, sections, exploded assembly ballooned to the BOM).
 - Printed parts: follow `3d-print-gcode.md` through to verified G-code for the user's printer.
