@@ -5,7 +5,6 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-import { productionTab } from './production.js';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ext = p => { const b = p.toLowerCase().split('/').pop(); if (b.endsWith('.gcode.3mf')) return 'gcode.3mf'; const i = b.lastIndexOf('.'); return i < 0 ? '' : b.slice(i + 1); };
@@ -17,6 +16,8 @@ const mmin = v => `${v.toFixed(1)} mm [${(v / 25.4).toFixed(3)} in]`;
 const MODEL = ['stl', '3mf', 'obj', 'glb', 'gltf', 'step', 'stp'];
 const IMG = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'];
 const CODE = ['py', 'js', 'mjs', 'ts', 'c', 'cpp', 'h', 'hpp', 'ino', 'rs', 'go', 'sh', 'ini', 'toml', 'json', 'yaml', 'yml', 'txt', 'csv', 'net', 'rpt', 'log', 'scad'];
+
+import { productionTab } from './production.js'; // Production tab (Engineering and Manufacturing Summary)
 
 let S = null; // { id, files, md, api, preview, rawUrl }
 
@@ -99,6 +100,9 @@ async function loadBom() {
   });
   return { file: f.path, head: rows[0], items, total: items.reduce((s, i) => s + i.qty * i.price, 0) };
 }
+
+// ---------------------------------------------------------------- Production
+function production(el) { return productionTab(el, { S, esc, raw, btn, openExt, reveal }); }
 
 // ---------------------------------------------------------------- Overview
 async function overview(el) {
@@ -534,7 +538,6 @@ const BUILD_PROMPT = `Prepare the build package for this project, following refe
 Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, PCB order files), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
 First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard. Run the BOM and build.json checks and report what is still open.`;
 const STAGES = [['purchase', 'Order parts'], ['print', 'Print parts'], ['fabricate', 'Fabricate'], ['assembly', 'Assemble'], ['firmware', 'Firmware & test']];
-function production(el) { return productionTab(el, { S, esc, raw, btn, openExt, reveal }); }
 async function build(el) {
   const B = await S.api(`/api/projects/${S.id}/build`).catch(() => ({}));
   if (!B || (!B.purchase && !B.print && !B.assembly)) {
