@@ -16,7 +16,7 @@ The first target is a 7.5 inch e-ink desk display (calendar and weather over wif
 | `HANDOFF.md` | Notes and lessons from the first cloud test run |
 | `test-results-summary.md` | Benchmark from that run (self-graded, so treat the delta as optimistic) |
 
-The installer copies `SKILL.md` and `references/` into Claude's skills folder and the app into `%LOCALAPPDATA%\Anatomy`. The rest stays in the repo.
+The installer copies `SKILL.md`, `references/` and `tools/` into Claude's skills folder and the app into `%LOCALAPPDATA%\Anatomy`. The rest stays in the repo.
 
 ## Install on Windows
 
@@ -58,7 +58,8 @@ Double-click the **Anatomy** icon. It opens in its own window, with no terminal.
    - **Files produced** (right) updates as files are written. Click one to preview it (Markdown, images, PDFs, code). CAD, KiCad and Gerber files open in their own programs via **Show in folder**.
 3. When a run finishes, the project opens on **Results**: Overview, **Build**, Try it (run the project's software), 3D model with a part inspector, Drawings, Renders, Parts (BOM), 3D printing (G-code toolpath preview), Electronics, Software, Assembly and Documents.
 4. **Build** turns the design into an actual build. If the project has no build package yet, click **Prepare build package**: Claude produces `build/build.json` with the purchase list and supplier carts, the print list with G-code, fabrication and cut files, illustrated assembly steps, and firmware and test steps (`references/build-package.md`). The wizard then walks you through Order parts, Print parts, Fabricate, Assemble (one illustrated step at a time) and Firmware & test, and remembers what you've checked off.
-5. Use the box at the bottom of Live to follow up ("go deeper on the PCB"). It continues the same session.
+5. **Production** holds the Engineering and Manufacturing Summary: a report for investors and manufacturers on taking the product from prototype to mass production. Click **Prepare production brief** and Claude writes `production/production.json` (verified vs on-paper status, cost per unit at 1/100/1,000/10,000, DFM changes and tooling, supply chain, certification, partners, risks, staged timeline and capital, IP notes, every figure tagged and sourced) and renders it with `tools/production/make_brief.py` to HTML and PDF (`references/production-brief.md`). The SSB-1 battery sample is in `examples/ssb1-production/`.
+6. Use the box at the bottom of Live to follow up ("go deeper on the PCB"). It continues the same session.
 
 Projects live in `C:\Anatomy\<name>\` and show on the start screen.
 

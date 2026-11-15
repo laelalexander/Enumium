@@ -65,6 +65,8 @@ If the product runs code anywhere (firmware, BIOS/bootloader, embedded OS, compa
 ### 6. Verify and hand off
 **Build package.** For anything physical, finish with the build package in `references/build-package.md`: `build/build.json` plus the purchase list with supplier carts, print list with G-code, fabrication files, illustrated assembly steps, and firmware and test steps. The Anatomy app's Build wizard reads it so a person can order, print, fabricate, assemble and test without the designer.
 
+**Engineering and Manufacturing Summary.** For anything physical, finish with the prototype-to-production brief in `references/production-brief.md`: write `production/production.json` (what is verified versus on paper, cost per unit at 1/100/1,000/10,000, DFM changes and tooling, supply chain, certification, partners, risks, staged timeline and capital, IP notes, every figure tagged measured/quoted/documented/estimate/assumed with sources) and render it with `tools/production/make_brief.py` to HTML and PDF. It is written for investors and manufacturers who never saw the design work, so it must be accurate and plain: no hype, estimates marked, gaps stated. The app's Production tab shows it.
+
 **Make the result something the user can experience, not just a folder.** The Anatomy app shows every project in a Results view (3D model and part inspector, drawings, BOM, G-code toolpaths, electronics, software, assembly guide). Help it:
 - Write `anatomy.json` at the project root: `{"title": "...", "summary": "one paragraph", "apps": [{"name": "...", "description": "what the user can do with it", "cwd": "path relative to anatomy.json", "run": ["command 1", "command 2"], "url": "http://127.0.0.1:PORT/", "needs": ["e.g. webcam, Ollama"], "startup_ms": 4000}]}`. Every runnable thing the project built (a console, simulator, web app, digital twin, demo) gets an entry. Commands run in background processes, so use servers that stay up, prefer the project's own `.venv`, and start simulators for any hardware so it works with no device attached. Start each app yourself and open its URL to prove the entry works.
 - If the product has a physical form, build an interactive viewer or digital twin (three.js page loading the exported STL/GLB in assembled positions, with each part clickable to its drawing and BOM line) and list it in `apps`.
@@ -92,5 +94,6 @@ Default to standard unless told otherwise.
 - A BOM line that says "generic", "TBD" or "any": it is not buyable. Name the part or the standard, or mark it as an open item.
 - G-code that was never sliced for the user's printer, or a drawing sheet nobody looked at.
 - Treating firmware or the companion app as a stub. If the product runs code, that code is part of the build.
+- A production brief that reads like a pitch: unsourced market sizes, estimates presented as quotes, or a status that hides that nothing has been built.
 - A prototype that was never run or rendered. Always execute the build, open the viewer, or render the model and drawings before presenting them.
 - Cloning blindly. If the user's goal is "better", record the original's weaknesses and propose improvements in the spec.

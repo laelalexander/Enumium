@@ -5,6 +5,7 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { productionTab } from './production.js';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ext = p => { const b = p.toLowerCase().split('/').pop(); if (b.endsWith('.gcode.3mf')) return 'gcode.3mf'; const i = b.lastIndexOf('.'); return i < 0 ? '' : b.slice(i + 1); };
@@ -30,6 +31,7 @@ export async function renderResults(host, ctx) {
     ['overview', 'Overview', true],
     ['build', 'Build', true],
     ['sim', 'Simulate', true],
+    ['production', 'Production', true],
     ['run', 'Try it', (manifest.apps || []).length > 0 || has(f => /(^|\/)(index\.html)$/i.test(f.path) && !/assembly/i.test(f.path))],
     ['model', '3D model', has(f => MODEL.includes(ext(f.path)))],
     ['drawings', 'Drawings', has(f => (['pdf', 'svg', 'dxf'].includes(ext(f.path)) && /draw|blueprint|sheet|cut/i.test(f.path)) || (ext(f.path) === 'pdf'))],
@@ -47,7 +49,7 @@ export async function renderResults(host, ctx) {
     host.querySelectorAll('.rtabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     disposeViewer();
     body.innerHTML = '';
-    ({ overview, build, sim, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
+    ({ overview, build, sim, production, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
     try { localStorage.setItem('anatomy.tab.' + S.id, t); } catch {}
   };
   host.querySelectorAll('.rtabs button').forEach(b => b.onclick = () => show(b.dataset.t));
@@ -532,6 +534,7 @@ const BUILD_PROMPT = `Prepare the build package for this project, following refe
 Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, PCB order files), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
 First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard. Run the BOM and build.json checks and report what is still open.`;
 const STAGES = [['purchase', 'Order parts'], ['print', 'Print parts'], ['fabricate', 'Fabricate'], ['assembly', 'Assemble'], ['firmware', 'Firmware & test']];
+function production(el) { return productionTab(el, { S, esc, raw, btn, openExt, reveal }); }
 async function build(el) {
   const B = await S.api(`/api/projects/${S.id}/build`).catch(() => ({}));
   if (!B || (!B.purchase && !B.print && !B.assembly)) {

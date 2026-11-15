@@ -1,0 +1,252 @@
+{
+  "schema": 1,
+  "title": "SSB-1 replacement traction battery for the Super Soco TS",
+  "short_title": "SSB-1 production brief",
+  "product": "SSB-1",
+  "revision": "B (design), brief rev 1",
+  "date": "2026-11-15",
+  "prepared_by": "Anatomy (Claude) for the project owner",
+  "currency": "USD",
+  "fx": {"EUR_USD": 1.16, "note": "EUR converted at 1.16 USD (assumption A-1)"},
+  "audience_note": "Written for investors and manufacturing partners who are deciding whether to fund or build SSB-1 beyond the prototype. It states what has been checked, what exists only on paper, what it would cost per unit at four volumes, and what each stage to mass production needs in time and money.",
+  "executive_summary": {
+    "one_liner": "A drop-in 60 V, 1.84 kWh replacement battery for a popular light electric motorcycle, designed down to every part, file and test, but not yet built.",
+    "paragraphs": [
+      "SSB-1 is a removable 17S6P lithium-ion pack (61.2 V nominal, about 30 Ah, about 1.84 kWh) for the Super Soco TS, a 60 V light electric motorcycle. It pairs 102 Samsung 50S 21700 cells with a bought 17S smart BMS, a 60 A Class T fuse and a small custom gateway board that answers the bike's RS-485 battery polls, so the dash still shows charge and faults. The prototype housing is 3D printed PETG on four steel tie rods.",
+      "The design package is complete and machine-checked: parametric CAD, drawings in mm and inches, sliced G-code, a 6-gate bill-of-materials check, a KiCad board with 0 ERC and 0 DRC errors and a turnkey PCBA order package, and gateway firmware that builds and passes 120 host unit tests. Nothing has been built, flashed, fitted to a bike or ridden. Three facts that decide whether the pack fits a given bike (plug pin-out, lock geometry, bus protocol on a TS) are open and can be settled with under 100 USD of measurement.",
+      "The parts for one prototype cost about 1,866 USD at 2026-11-15 list prices; the comparable branded replacement lists at 1,250 EUR and was out of stock with a lead time of up to 12 weeks. Estimated cost of goods falls to about 860 USD at 100 units, about 510 USD at 1,000 and about 410 USD at 10,000, driven by cell price and by replacing the printed housing with flame-retardant moulded parts. Those volume figures are estimates; the cell figures rest on one distributor's published 600-piece price.",
+      "The largest gaps between this prototype and a product that can be sold are safety certification (UN 38.3 for transport, UL 2271 or EN 50604-1 for sale), a flame-retardant enclosure (proposal PROP-001), and tooling. Reaching a first 1,000-unit production run is estimated at 0.9 to 1.7 million USD over 18 to 30 months, most of it in certification test packs, tooling and inventory."
+    ],
+    "key_numbers": [
+      {"label": "Prototype parts cost, 1 unit", "value": "$1,866", "basis": "quoted", "source": "S-1"},
+      {"label": "Est. cost of goods at 1,000 units", "value": "≈ $510", "basis": "estimate"},
+      {"label": "Branded replacement list price", "value": "€1,250", "basis": "documented", "source": "S-3"},
+      {"label": "Capital to first 1,000-unit run", "value": "$0.9–1.7 M", "basis": "estimate"},
+      {"label": "Technology readiness", "value": "TRL 3", "basis": "estimate"},
+      {"label": "Firmware host tests", "value": "120 / 120 pass", "basis": "observed", "source": "S-16"}
+    ],
+    "asks": [
+      "Seed funding for stages S0 and S1 (validation and engineering builds, about 45 to 115 thousand USD), which end with a working pack that has run on a real bike.",
+      "A battery-pack contract manufacturer with laser or resistance cell welding and UL 2271 experience for stage 3 onward.",
+      "A certification lab partner for UN 38.3 and UL 2271 / EN 50604-1 planning, before the enclosure design is frozen."
+    ]
+  },
+  "problem": {
+    "paragraphs": [
+      "Light electric motorcycles and mopeds such as the Super Soco TS use a removable proprietary battery. When it wears out, owners depend on the brand's spare-part channel. The one comparable listing found during research was a 60 V 30 Ah pack at 1,250 EUR, out of stock, available to pre-order with a lead time of up to 12 weeks. A worn battery can therefore take a bike off the road for months and cost a large share of the bike's resale value.",
+      "SSB-1 aims to be a compatible pack built from standard, multi-sourced parts (cells, BMS, fuse, connectors) with a small interface board that keeps the bike's dash working."
+    ],
+    "evidence": [
+      {"claim": "TS battery is 60 V, 26 Ah, 170 cells; controller current limit 40 A", "basis": "documented", "source": "S-11"},
+      {"claim": "A 60 V 30 Ah TC/TS replacement lists at 1,250 EUR incl. VAT, not in stock, pre-order with lead time under 12 weeks (read 2026-11-15)", "basis": "documented", "source": "S-3"},
+      {"claim": "Vmoto, the TS maker, reported revenue of about 46.8 million USD for FY2025", "basis": "documented", "source": "S-18"}
+    ],
+    "not_known": [
+      "Installed base of TS, TC and TSX bikes by country, and how many are past their battery's service life. No unit-sales figure was found in public sources during this research. This is the first number an investor will ask for; get it from registration data (for example EU national registries) or a distributor.",
+      "Whether the same housing and gateway can serve the brand's other 60 V models (TC, TC Max, CPx) with a different cell layout or plug. That would decide whether this is one product or a family.",
+      "Willingness to pay for a non-original pack, and the role of warranty and insurance in that decision."
+    ]
+  },
+  "product": {
+    "description": "Removable pack, upright in the frame bay, locked by the bike's key lock, carried by a top handle, connected by one plug. 17 series groups of six cells in two welded bricks, held by printed cell holders between FR-4 barrier plates; BMS, fuse and gateway in the upper bay.",
+    "specs": [
+      {"name": "Cell configuration", "value": "17S6P, 102 × Samsung SDI INR21700-50S", "basis": "observed", "source": "S-14"},
+      {"name": "Voltage (nominal / full / cut-off)", "value": "61.2 V / 71.4 V / 47.6 V", "basis": "documented", "source": "S-11"},
+      {"name": "Capacity and energy", "value": "about 30 Ah, about 1.84 kWh", "basis": "estimate", "source": "S-14"},
+      {"name": "Continuous current to the controller", "value": "40 A (BMS limit set to 45 A)", "basis": "documented", "source": "S-11"},
+      {"name": "Envelope (handle included)", "v": [183, 153, 347], "u": "mm", "basis": "documented", "source": "S-11"},
+      {"name": "Mass (estimate)", "v": 9.8, "u": "kg", "basis": "estimate"},
+      {"name": "Charge", "value": "71.4 V CC/CV, 4–10 A", "basis": "documented", "source": "S-11"},
+      {"name": "Cell temperature rise, 40 A continuous, no heat loss (bound)", "v": 36, "u": "K", "basis": "estimate", "source": "S-15"},
+      {"name": "Operating / charging temperature", "value": "−20…60 °C [−4…140 °F] / 0…45 °C [32…113 °F] (BMS limits)", "basis": "assumed"},
+      {"name": "Bike data link", "value": "Isolated RS-485, answers battery polls at address 0x5A", "basis": "documented", "source": "S-19"}
+    ]
+  },
+  "status": {
+    "trl": {"level": "3 (analytical and experimental proof of concept)", "basis": "estimate", "why": "Every subsystem is designed and checked by analysis and software tests; no hardware exists. TRL 4 needs the gateway board running on a bench and one cell brick built; TRL 6 needs a full pack running a bike."},
+    "mrl": {"level": "3", "basis": "estimate", "why": "Manufacturing concepts identified and a complete prototype build package exists. No production process, tooling or supplier has been qualified."},
+    "verified": [
+      {"item": "Bill of materials complete and consistent", "how": "6-gate script check: every part BUY or BUILD, files on disk, assembly steps, CAD and schematic agree. PASS.", "basis": "observed", "source": "S-1"},
+      {"item": "Gateway circuit board", "how": "KiCad 10.0.8: 0 ERC errors, 0 DRC errors, 0 unconnected; Gerbers and turnkey PCBA package generated.", "basis": "observed", "source": "S-17"},
+      {"item": "Gateway firmware v0.1.0", "how": "Builds for ESP32-C3; 120 of 120 host unit tests pass, including the whole gateway against simulated BMS and bike bus.", "basis": "observed", "source": "S-16"},
+      {"item": "Printed parts", "how": "Meshes watertight; all 7 parts sliced in Bambu Studio; G-code checked by script (49.3 h, 1,523 g PETG).", "basis": "observed", "source": "S-1"},
+      {"item": "Electrical and thermal sizing", "how": "Hand calculations for current, voltage drop, fuse coordination and worst-case heating (no simulation).", "basis": "estimate", "source": "S-15"}
+    ],
+    "on_paper": [
+      {"item": "Fit in a real TS bay and lock engagement", "why": "Envelope from two reseller listings; never measured.", "closes_in": "S0"},
+      {"item": "Bike plug pin-out", "why": "Not published; two connector variants exist.", "closes_in": "S0"},
+      {"item": "Bus protocol on a TS", "why": "Known from third-party work on a TC Max; baud rate disputed.", "closes_in": "S0"},
+      {"item": "Gateway board built and brought up", "why": "Not yet ordered.", "closes_in": "S0"},
+      {"item": "Any cell brick or full pack", "why": "Not built; capacity, resistance and temperature not measured.", "closes_in": "S1"},
+      {"item": "Fire behaviour of the enclosure", "why": "PETG is not flame retardant; PROP-001 awaits a decision.", "closes_in": "S1"},
+      {"item": "Vibration, drop, water ingress, abuse tests", "why": "None run.", "closes_in": "S2"},
+      {"item": "Any certification", "why": "None started.", "closes_in": "S2"}
+    ]
+  },
+  "cost_model": {
+    "intro": "Per-unit cost of goods for one complete pack, without the charger, at four production volumes. Tier 1 is what the prototype costs as bought on 2026-11-15, including pack sizes (100-piece screw packs, whole sheets and spools), and values the owner's 25 hours of bench work at an assumed 35 USD per hour. The higher tiers are estimates built line by line; each line says what it rests on. A supplier quote replaces an estimate as soon as one exists.",
+    "tiers": [1, 100, 1000, 10000],
+    "categories": [
+      {"name": "Cells", "lines": [
+        {"item": "Samsung SDI INR21700-50S, 5.0 Ah", "qty_per_unit": 102,
+         "unit_cost": {"1": 9.99, "100": 3.35, "1000": 3.10, "10000": 2.80},
+         "basis": {"1": "quoted", "100": "estimate", "1000": "estimate", "10000": "assumed"}, "source": ["S-2", "S-4"],
+         "note": "1: distributor price, in stock. 100 and 1,000: NKON published €2.61 ex VAT at 600+ (≈ $3.03) plus about 10 % for dangerous-goods freight and duty; 1,000 assumes a small negotiated discount. 10,000 (1.02 M cells): direct or authorised-distributor allocation, not quoted."}
+      ]},
+      {"name": "BMS", "lines": [
+        {"item": "17S 60 A smart BMS, UART", "qty_per_unit": 1,
+         "unit_cost": {"1": 42.10, "100": 32, "1000": 26, "10000": 20},
+         "basis": {"1": "quoted", "100": "assumed", "1000": "assumed", "10000": "assumed"}, "source": "S-2",
+         "note": "At 10,000 a custom BMS from an ODM that also carries the gateway function (see DFM)."}
+      ]},
+      {"name": "Gateway board", "lines": [
+        {"item": "SocoLink gateway PCBA (ESP32-C3, isolated RS-485)", "qty_per_unit": 1,
+         "unit_cost": {"1": 95, "100": 30, "1000": 16, "10000": 6},
+         "basis": {"1": "estimate", "100": "estimate", "1000": "estimate", "10000": "assumed"}, "source": "S-2",
+         "note": "1: $54.67 of parts as bought for a 5-board run plus about $40 bare board and assembly share (get the RushPCB quote). The isolated transceiver is $19.62 at qty 1 and dominates. 10,000: function merged into the custom BMS, residual cost shown."}
+      ]},
+      {"name": "Housing and insulation", "lines": [
+        {"item": "Enclosure set (shells, lid, handle, 4 cell holders, fuse cradle)", "qty_per_unit": 1,
+         "unit_cost": {"1": 49.98, "100": 150, "1000": 28, "10000": 18},
+         "basis": {"1": "quoted", "100": "estimate", "1000": "estimate", "10000": "estimate"}, "source": ["S-2", "S-8", "S-13"],
+         "note": "1: two PETG spools. 100: flame-retardant parts made without hard tooling (vacuum-cast FR urethane or FR filament per PROP-001), which is why tier 100 is dearer than tier 1. 1,000 and 10,000: injection-moulded UL94 V-0 PC/ABS, tooling below."},
+        {"item": "Gaskets, fish paper, FR-4 barrier plates, pads", "qty_per_unit": 1,
+         "unit_cost": {"1": 40, "100": 9, "1000": 5, "10000": 3},
+         "basis": {"1": "quoted", "100": "estimate", "1000": "estimate", "10000": "estimate"}, "source": "S-2",
+         "note": "1: whole sheets as bought. Volume: die-cut or laser-cut by a converter."}
+      ]},
+      {"name": "Power path and harness", "lines": [
+        {"item": "Fuse, fuse block, connectors, cable, nickel strip, bike-side plug", "qty_per_unit": 1,
+         "unit_cost": {"1": 216.41, "100": 80, "1000": 55, "10000": 42},
+         "basis": {"1": "quoted", "100": "estimate", "1000": "estimate", "10000": "estimate"}, "source": "S-2",
+         "note": "1 includes a $135 branded spare plug and a spare fuse. Volume assumes a compatible plug bought in bulk or moulded onto a harness by a cable assembler, and a 60 A-class connector replacing the XT90 (gap G-16)."}
+      ]},
+      {"name": "Hardware and consumables", "lines": [
+        {"item": "Fasteners, tie rods, inserts, tapes, solder, sleeving", "qty_per_unit": 1,
+         "unit_cost": {"1": 340.61, "100": 45, "1000": 25, "10000": 15},
+         "basis": {"1": "quoted", "100": "estimate", "1000": "estimate", "10000": "estimate"}, "source": "S-2",
+         "note": "1 is driven by pack sizes; actual consumption per pack is about $60 (estimate)."}
+      ]},
+      {"name": "Assembly labour", "lines": [
+        {"item": "Welding, wiring, assembly", "qty_per_unit": 1,
+         "unit_cost": {"1": 875, "100": 140, "1000": 22.5, "10000": 7.2},
+         "basis": {"1": "assumed", "100": "assumed", "1000": "assumed", "10000": "assumed"},
+         "note": "1: 25 h × $35. 100: 4 h × $35 in a small US shop. 1,000: 1.5 h × $15 at a contract manufacturer with fixtures. 10,000: 0.6 h × $12 with automated cell welding. Hours from the 22-step assembly guide; rates assumed."}
+      ]},
+      {"name": "Test, packaging, shipping prep", "lines": [
+        {"item": "End-of-line test, UN-spec Class 9 packaging", "qty_per_unit": 1,
+         "unit_cost": {"1": 0, "100": 35, "1000": 20, "10000": 14},
+         "basis": {"1": "assumed", "100": "estimate", "1000": "estimate", "10000": "estimate"},
+         "note": "1: done by the builder, inside labour. Volume: automated charge/discharge and insulation test plus certified dangerous-goods packaging."}
+      ]}
+    ],
+    "price_context": [
+      {"item": "Branded 60 V 30 Ah TC/TS replacement (EU retailer, incl. VAT)", "price": "€1,250 (≈ $1,450)", "basis": "documented", "source": "S-3"},
+      {"item": "SSB-1 prototype order, one pack incl. charger", "price": "$1,866", "basis": "quoted", "source": "S-1"},
+      {"item": "Same cells, earlier distributor price (P45B, sold out 2026-11-15)", "price": "$5.99 per cell", "basis": "quoted", "source": "S-14"}
+    ],
+    "nre": [
+      {"item": "UN 38.3 transport testing", "from_tier": 100, "cost_low": 4000, "cost_high": 12000, "basis": "estimate", "source": ["S-5", "S-6", "S-7"], "note": "Published ranges $1.7k–7k; large LEV packs often cost more. About 16 test packs are needed on top (Epec table)."},
+      {"item": "UL 2271 (US) and EN 50604-1 (EU) certification", "from_tier": 100, "cost_low": 23000, "cost_high": 70000, "basis": "estimate", "source": ["S-5", "S-6"], "note": "Published category figures $15–20k (UL) and $8–12k (EN); upper bound allows for re-tests and LEV-specific abuse tests. About 50 test packs."},
+      {"item": "Design for moulding, FR enclosure, custom BMS spec", "from_tier": 1000, "cost_low": 25000, "cost_high": 60000, "basis": "assumed"},
+      {"item": "Injection-mould tooling, aluminium (≈ 6 tools)", "from_tier": 1000, "cost_low": 40000, "cost_high": 90000, "basis": "estimate", "source": "S-8", "note": "Formlabs gives $2–5k for small aluminium moulds; these parts are large (up to 183 × 153 × 224 mm), so a quote is needed."},
+      {"item": "Steel production tooling (replaces aluminium)", "from_tier": 10000, "cost_low": 90000, "cost_high": 200000, "basis": "estimate", "source": "S-8"},
+      {"item": "Cell welding and test fixtures, EOL tester", "from_tier": 1000, "cost_low": 30000, "cost_high": 120000, "basis": "assumed", "note": "Lower end if the contract manufacturer already owns laser welding."}
+    ]
+  },
+  "dfm": [
+    {"part": "Enclosure shells, lid, handle", "prototype": "PETG, FDM, 4 mm walls", "production": "Injection-moulded PC/ABS, UL94 V-0", "change": "Add 1–2° draft, uniform 2.5–3 mm walls with ribs, snap or screw bosses in place of tie-rod channels where possible, moulded lock recess once measured.", "tooling_low": 30000, "tooling_high": 70000, "from_tier": 1000, "basis": "estimate", "source": "S-8"},
+    {"part": "Cell holders (×4)", "prototype": "PETG, FDM, 1.1 mm webs", "production": "Injection-moulded V-0 PC or PA66 FR", "change": "Thicken webs to the material's rated V-0 thickness, which grows pitch from 23.0 mm; re-check envelope.", "tooling_low": 10000, "tooling_high": 20000, "from_tier": 1000, "basis": "estimate"},
+    {"part": "Cell interconnect", "prototype": "Hand spot-welded nickel strip", "production": "Laser- or resistance-welded nickel-plated copper busbars on a fixture", "change": "Busbar drawings, weld map for automation, pull-test sampling plan.", "from_tier": 1000, "basis": "assumed"},
+    {"part": "BMS and gateway", "prototype": "Bought JBD BMS + custom gateway board", "production": "One custom BMS with the bike protocol built in", "change": "Write a BMS specification; ODM design; drops a board, a harness and a failure point.", "from_tier": 10000, "basis": "assumed"},
+    {"part": "Housing fasteners", "prototype": "M4 stainless tie rods, nylon lock nuts, heat-set inserts", "production": "Fewer, captive fasteners; tamper-resistant heads (CPSC proposal)", "change": "Count and standardise fastener types for one driver.", "from_tier": 1000, "basis": "estimate", "source": "S-9"},
+    {"part": "Main connector", "prototype": "XT90 to adapter harness", "production": "Moulded plug that mates the bike directly, rated ≥ 60 A", "change": "Settle pin-out (S0), then source or tool the plug.", "from_tier": 100, "basis": "estimate"}
+  ],
+  "supply_chain": [
+    {"item": "Cells (Samsung SDI 50S)", "prototype": "18650 Battery Store, $9.99, in stock", "volume": "Authorised distributor or direct allocation", "alternates": ["Molicel P45B (fits revision B holders)", "LG M50LT", "EVE 50E"], "lead_time": "Stock to 12+ weeks at volume", "risk": "High: price swung from $5.99 to $14.00 between sellers on one day; counterfeit and re-wrapped cells in marketplaces. Buy one lot from a named distributor."},
+    {"item": "BMS", "prototype": "JBD SP17S005 60 A, maker's shop", "volume": "JBD volume or custom ODM", "alternates": ["Any 17S 60 A smart BMS speaking the JBD UART format"], "lead_time": "2–6 weeks", "risk": "Medium: sold in 40 A and 60 A builds under one name; out of stock on 2026-11-15."},
+    {"item": "Gateway PCBA", "prototype": "RushPCB turnkey, 5 boards", "volume": "RushPCB or an Asian EMS", "alternates": ["JLCPCB", "PCBWay"], "lead_time": "2–4 weeks", "risk": "Low: common parts; the isolated transceiver has second sources."},
+    {"item": "Class T fuse and block", "prototype": "Mouser", "volume": "Distributor", "alternates": ["Littelfuse, Eaton Bussmann equivalents"], "lead_time": "Stock", "risk": "Low"},
+    {"item": "Enclosure parts", "prototype": "Printed in-house", "volume": "Moulder near the pack assembler", "lead_time": "8–14 weeks for first tooling (estimate)", "risk": "Medium: tooling lead time sits on the critical path."},
+    {"item": "Bike-side plug", "prototype": "Branded spare part, $135, out of stock", "volume": "Compatible plug from a cable assembler", "lead_time": "Unknown", "risk": "High until the pin-out and connector type are known."}
+  ],
+  "compliance": [
+    {"standard": "UN 38.3", "scope": "Transport tests (altitude, thermal, vibration, shock, short, overcharge)", "markets": "All, for any shipping by road, sea or air", "required": "Yes", "status": "Not started", "cost_low": 4000, "cost_high": 12000, "time": "4–6 weeks", "basis": "estimate", "source": ["S-5", "S-7"]},
+    {"standard": "UL 2271", "scope": "Batteries for light electric vehicles", "markets": "US retail; New York City requires it for sale", "required": "Yes for US sale", "status": "Not designed to pass yet (enclosure not FR)", "cost_low": 15000, "cost_high": 50000, "time": "10–12 weeks after UN 38.3", "basis": "estimate", "source": ["S-5", "S-6", "S-12"]},
+    {"standard": "CPSC proposed rule on e-mobility batteries", "scope": "Would make UL 2849 / 2271 / 2272 mandatory, plus tamper-resistant enclosures and charge blocking on over-temperature", "markets": "US", "required": "Proposed (June 2026 NPR)", "status": "Track; design for it now", "basis": "documented", "source": "S-9"},
+    {"standard": "EN 50604-1", "scope": "Li-ion batteries for light electric vehicles", "markets": "EU, UK", "required": "Expected by retailers and insurers", "status": "Not started", "cost_low": 8000, "cost_high": 20000, "time": "8–10 weeks", "basis": "estimate", "source": "S-6"},
+    {"standard": "EU Battery Regulation 2023/1542", "scope": "CE marking, labelling, producer take-back; battery passport for LMT batteries from 18 Feb 2027", "markets": "EU", "required": "Yes", "status": "Not started; needs an EU economic operator", "basis": "documented", "source": "S-10"},
+    {"standard": "UNECE R136 / R10", "scope": "Electrical safety of L-category vehicle batteries / vehicle EMC", "markets": "EU and other UNECE markets", "required": "To confirm with a homologation consultant for an aftermarket pack", "status": "Open question", "basis": "assumed"},
+    {"standard": "FCC Part 15", "scope": "Radio and unintentional emissions", "markets": "US", "required": "Module pre-certified; radio off in firmware", "status": "Unintentional-radiator check needed for the board", "cost_low": 3000, "cost_high": 8000, "time": "2–4 weeks", "basis": "assumed", "source": "S-12"}
+  ],
+  "partners": [
+    {"process": "Cell sourcing", "prototype": "Retail distributor", "candidates": ["Authorised Samsung SDI distributor", "NKON (EU, published volume tiers)"], "note": "Lot traceability and incoming capacity sampling are required for certification."},
+    {"process": "Pack assembly and welding", "prototype": "Owner, hand spot welder", "candidates": ["US or EU LEV pack contract manufacturer with UL 2271 history", "Asian pack ODM"], "note": "Choose one that already holds UL 2271 listings; it shortens certification."},
+    {"process": "PCB assembly", "prototype": "RushPCB turnkey", "candidates": ["RushPCB", "JLCPCB", "PCBWay"], "note": "Turnkey package (Gerbers, Excel BOM, centroid, drawings) already exists."},
+    {"process": "Injection moulding", "prototype": "FDM printing (Bambu)", "candidates": ["Xometry (quoting network)", "Protolabs", "a regional moulder near the pack assembler"], "note": "Get FR material and tooling quotes before freezing the enclosure."},
+    {"process": "Flat parts", "prototype": "Hand cut from sheet", "candidates": ["Any die-cut or laser converter"], "note": "DXF files in mm and inch exist."},
+    {"process": "Certification", "prototype": "None", "candidates": ["UL Solutions", "TÜV SÜD", "Intertek", "SGS"], "note": "Book a pre-assessment before DVT."}
+  ],
+  "partners_note": "Partner names are candidates for quotes, not endorsements, and none has been contacted.",
+  "risks": [
+    {"risk": "Thermal runaway in the field", "likelihood": "Low", "impact": "Severe (fire, liability)", "mitigation": "Quality cells, BMS plus independent fuse, FR enclosure, certification, conservative 45 A limit", "stage": "S2"},
+    {"risk": "Does not fit or talk to some bikes", "likelihood": "Medium", "impact": "High", "mitigation": "Stage 0 measurements on several bikes and model years before tooling", "stage": "S0"},
+    {"risk": "Cell price and availability", "likelihood": "High", "impact": "High (cells are 55–70 % of cost)", "mitigation": "Qualify two cell models; hold-fits geometry for both; forward-buy at volume", "stage": "S3"},
+    {"risk": "Certification takes longer or fails first time", "likelihood": "Medium", "impact": "Medium-high (3–6 months, re-test cost)", "mitigation": "Pre-assessment, design to the standard from S1, build spare test packs", "stage": "S2"},
+    {"risk": "Brand changes the bus protocol or locks out third-party packs", "likelihood": "Low-medium", "impact": "High", "mitigation": "Gateway firmware is field-updatable; sniffer mode; keep the protocol layer separate", "stage": "S1"},
+    {"risk": "Trademark or design-right claim", "likelihood": "Low", "impact": "Medium", "mitigation": "No branding, plain housing, freedom-to-operate search before launch", "stage": "S2"},
+    {"risk": "Product liability claims", "likelihood": "Low", "impact": "Severe", "mitigation": "Certification, insurance, traceability by serial and cell lot", "stage": "S3"},
+    {"risk": "Small addressable market", "likelihood": "Unknown", "impact": "High", "mitigation": "Size the installed base first; extend the platform to related 60 V models", "stage": "S0"}
+  ],
+  "stages": [
+    {"id": "S0", "name": "Validate", "goal": "Prove the pack can fit and talk to real bikes.", "exit": ["Voltage, bay, lock and plug measured on at least 3 bikes", "Gateway built, flashed, bench-tested", "Bike bus traffic logged and decoded on a TS"], "units": "5 boards", "months_low": 2, "months_high": 3, "capital_low": 5000, "capital_high": 15000, "basis": "estimate", "includes": ["boards", "test equipment", "travel to bikes", "fit-check prints"]},
+    {"id": "S1", "name": "Engineering build (EVT)", "goal": "A working pack on a real bike, with an FR enclosure.", "exit": ["3 packs built; capacity, resistance and temperature measured", "100+ km on a bike with no dash errors", "PROP-001 decided and printed or cast in FR material"], "units": "3–5 packs", "months_low": 3, "months_high": 5, "capital_low": 40000, "capital_high": 100000, "basis": "estimate", "includes": ["packs", "cell cycler", "thermal chamber time", "engineering hours"]},
+    {"id": "S2", "name": "Design verification and certification (DVT)", "goal": "A design that passes UN 38.3 and UL 2271 / EN 50604-1.", "exit": ["UN 38.3 report", "UL 2271 and/or EN 50604-1 certificate", "Design frozen for tooling"], "units": "≈ 70 test packs", "months_low": 6, "months_high": 9, "capital_low": 180000, "capital_high": 380000, "basis": "estimate", "includes": ["test packs at about $900", "certification fees", "soft tooling or cast parts", "pre-assessment", "freedom-to-operate search"]},
+    {"id": "S3", "name": "Pilot production (PVT)", "goal": "Prove the production line and sell the first units.", "exit": ["Aluminium tooling and fixtures qualified", "First-pass yield above 95 %", "First 100–300 packs sold and tracked"], "units": "100–300", "months_low": 4, "months_high": 6, "capital_low": 250000, "capital_high": 500000, "basis": "estimate", "includes": ["tooling", "fixtures", "pilot inventory", "insurance", "dangerous-goods logistics"]},
+    {"id": "S4", "name": "First volume run", "goal": "1,000 units a year at the estimated cost of goods.", "exit": ["Cost of goods within 10 % of estimate", "Field return rate tracked"], "units": "1,000", "months_low": 3, "months_high": 7, "capital_low": 450000, "capital_high": 700000, "basis": "estimate", "includes": ["working capital for about 1,000 packs at $510", "cell forward-buy", "support and warranty reserve"]}
+  ],
+  "capital_note": "Stages are sequential here; S3 tooling can overlap S2 once the design is frozen. Moving to 10,000 units a year needs steel tooling and automated welding, roughly a further 0.3 to 0.6 million USD plus working capital, not included above.",
+  "ip": [
+    {"topic": "Clean-room design", "note": "No original battery, firmware or board was opened or copied. Envelope and voltage come from published specifications."},
+    {"topic": "Bus protocol", "note": "Implemented from a description of the wire format published under the MIT licence by a third party; no code from that project is included. Interoperability with the owner's own vehicle is the purpose. Get advice on interoperability law in each target market before selling."},
+    {"topic": "Trademarks", "note": "Brand and model names are used only to say what the pack fits. The product carries no third-party branding."},
+    {"topic": "Patents and design rights", "note": "Not searched. A freedom-to-operate search is budgeted in S2."},
+    {"topic": "Own IP", "note": "Candidates for protection: the gateway approach (making a standard BMS speak a vehicle's battery protocol) and the holder and housing design. Novelty not assessed."}
+  ],
+  "assumptions": [
+    {"id": "A-1", "text": "EUR to USD at 1.16."},
+    {"id": "A-2", "text": "Labour rates: $35/h (owner and small US shop), $15/h and $12/h fully burdened at contract manufacturers."},
+    {"id": "A-3", "text": "Charger is a separate accessory and not in the cost of goods."},
+    {"id": "A-4", "text": "The bike in the brief is a 60 V TS; a 48 V variant would use 13S and change cell count and cost."},
+    {"id": "A-5", "text": "Volume tiers are units per production run; tooling and certification are paid once and shown separately."},
+    {"id": "A-6", "text": "No shipping, import duty to the end market, distribution margin, warranty reserve or tax in the cost of goods."}
+  ],
+  "open_questions": [
+    "Installed base of compatible bikes and their battery age.",
+    "Target sale price and channel (direct, dealers, refurbishers).",
+    "Which markets first: US (UL 2271) or EU (EN 50604-1 and the Battery Regulation).",
+    "PROP-001 enclosure material decision.",
+    "Whether one design can cover TC, TC Max and CPx."
+  ],
+  "sources": [
+    {"id": "S-1", "title": "SSB-1 build package README and BOM check (project file build/README.md)", "accessed": "2026-11-15", "note": "Parts cost to order 1,865.66 USD at list prices on 2026-11-15; 6-gate check PASS."},
+    {"id": "S-2", "title": "SSB-1 bill of materials and purchase list with per-line supplier prices (build/build.json, prototype/bom/bom.csv)", "accessed": "2026-11-15"},
+    {"id": "S-3", "title": "Doctibike: Batterie moto Super SOCO TC/TS 60V 30A", "url": "https://doctibike.com/en/batteries-for-motorbikes-and-electric-scooters/3707-batterie-moto-super-soco-tc-ts-60v-30a.html", "accessed": "2026-11-15"},
+    {"id": "S-4", "title": "NKON: Samsung INR21700-50S quantity prices", "url": "https://www.nkon.nl/en/rechargeable/li-ion/21700-20700-size/samsung-inr21700-50s-5000mah-35a.html", "accessed": "2026-11-15", "note": "€2.61 excl. tax at 600 pieces."},
+    {"id": "S-5", "title": "Epec Engineered Technologies: Battery pack certifications, what they cost, how long they take", "url": "https://www.epectec.com/batteries/battery-pack-certifications.html", "accessed": "2026-11-15"},
+    {"id": "S-6", "title": "Tritek: Battery certification explained (UL, EN, UN, CE, FCC, IEC)", "url": "https://tritekbattery.com/battery-certification-explained-ul-en-un-ce-fcc-iec/", "accessed": "2026-11-15"},
+    {"id": "S-7", "title": "JJR Lab: How much does UN38.3 testing cost", "url": "https://www.jjrlab.com/news/how-much-does-un383-testing-cost.html", "accessed": "2026-11-15"},
+    {"id": "S-8", "title": "Formlabs: How to estimate injection molding cost", "url": "https://formlabs.com/blog/injection-molding-cost/", "accessed": "2026-11-15"},
+    {"id": "S-9", "title": "Exponent: CPSC proposes new requirements for e-mobility batteries (2026-07-01)", "url": "https://www.exponent.com/article/cpsc-proposes-new-requirements-e-mobility-batteries", "accessed": "2026-11-15"},
+    {"id": "S-10", "title": "Conformance: Batteries Regulation (EU) 2023/1542", "url": "https://www.conformance.co.uk/ce-directives-information/batteries-regulation-eu-2023-1542", "accessed": "2026-11-15"},
+    {"id": "S-11", "title": "Vmoto Soco technical page for the TS, and blueprint evidence E-03/E-04/E-06 (project file evidence-log.md)", "url": "https://shop.vmotosoco.com/pages/info-tecniche-ts", "accessed": "2026-11-15"},
+    {"id": "S-12", "title": "SSB-1 safety and compliance notes (project file prototype/safety-and-compliance.md)", "accessed": "2026-11-15"},
+    {"id": "S-13", "title": "PROP-001 flame-retardant enclosure proposal (project file changes/proposals/)", "accessed": "2026-11-15"},
+    {"id": "S-14", "title": "ECO-001 cell change to Samsung 50S, revision B (project file changes/ECO-001.md)", "accessed": "2026-11-15"},
+    {"id": "S-15", "title": "SSB-1 electrical calculations and thermal note (project files prototype/electrical/calculations.md, prototype/thermal/thermal-note.md)", "accessed": "2026-11-15"},
+    {"id": "S-16", "title": "SocoLink gateway firmware v0.1.0 test report (project file prototype/software/test-report.md)", "accessed": "2026-11-15"},
+    {"id": "S-17", "title": "Gateway PCBA package status, KiCad 10.0.8 checks (project file kicad/fab/pcba/.../status.json)", "accessed": "2026-11-15"},
+    {"id": "S-18", "title": "Vmoto Ltd 2025 annual report summary", "url": "https://www.sustainabilityreports.com/vmoto/2025/annual-report", "accessed": "2026-11-15"},
+    {"id": "S-19", "title": "stprograms/SuperSoco485Monitor protocol notes (MIT), blueprint evidence E-08", "url": "https://github.com/stprograms/SuperSoco485Monitor", "accessed": "2026-11-15"}
+  ]
+}

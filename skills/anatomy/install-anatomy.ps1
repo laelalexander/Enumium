@@ -3,7 +3,7 @@
   Installs the "anatomy" skill for Claude Code on Windows, and optionally KiCad.
 
 .DESCRIPTION
-  Copies SKILL.md and references\ from this folder (the repo checkout) into
+  Copies SKILL.md, references\ and tools\ from this folder (the repo checkout) into
   %USERPROFILE%\.claude\skills\anatomy. If this folder has no SKILL.md but an
   anatomy.skill package sits next to the script, that package is installed instead.
   An existing install is replaced, so files removed upstream do not linger.
@@ -53,7 +53,7 @@ $skillsRoot = Join-Path $home_ ".claude\skills"
 $target     = Join-Path $skillsRoot "anatomy"
 
 # Files that make up the installed skill. evals\, README, HANDOFF and this script stay in the repo.
-$skillItems = @("SKILL.md", "references")
+$skillItems = @("SKILL.md", "references", "tools")
 
 # Never cut off a project run: refuse to update while one is in progress (unless -Force).
 $busy = @()
