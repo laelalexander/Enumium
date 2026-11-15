@@ -203,14 +203,15 @@ def is_dnp(fp, ext):
 
 
 def describe(fp, ext):
-    d = ext.get("description") or fp["props"].get("Description", "")
-    if d:
-        return d
+    if ext.get("description") and ext.get("description") != fp["props"].get("Description"):
+        return ext["description"]  # written for this BOM line
+    sym = fp["props"].get("Description", "")
     pre = re.match(r"[A-Za-z]+", fp["ref"])
     kind = {"R": "Resistor", "C": "Capacitor", "L": "Inductor", "D": "Diode", "LED": "LED", "Q": "Transistor",
             "U": "IC", "J": "Connector", "SW": "Switch", "F": "Fuse", "Y": "Crystal", "FB": "Ferrite bead",
             "BZ": "Buzzer", "TP": "Test point", "K": "Relay"}.get(pre.group(0).upper() if pre else "", "Part")
-    return "%s %s, %s" % (kind, fp["value"], fp["footprint"])
+    d = "%s %s, %s" % (kind, fp["value"], fp["footprint"])
+    return d + (" (%s)" % sym if sym and sym.lower() not in d.lower() else "")
 
 
 def polarity_note(fp):
