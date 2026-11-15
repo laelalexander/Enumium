@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn, execFile } = require('child_process');
 const os = require('os');
+const xometry = require('./xometry');
 
 const PORT = Number(process.env.ANATOMY_PORT || 4377);
 const ROOT = process.env.ANATOMY_ROOT || (process.platform === 'win32' ? 'C:\\Anatomy' : path.join(os.homedir(), 'Anatomy'));
@@ -362,7 +363,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);
     }
-    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'viewer.html')) {
+    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
       if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
       res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': parts[0] === 'vendor' ? 'max-age=3600' : 'no-store' });
@@ -457,6 +458,17 @@ const server = http.createServer(async (req, res) => {
         if (!hits.length) return send(res, 200, {});
         try { const j = readJson(path.join(dir, hits[0].path)); j._file = hits[0].path; return send(res, 200, j); }
         catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }
+      }
+      if (action === 'xometry') {
+        // Parts routed to Xometry (oversized, other materials, machined/cut metal, or moved by hand). Never contacts Xometry.
+        const bf = fs.existsSync(path.join(dir, 'build', 'build.json')) ? 'build/build.json'
+          : (listFiles(dir).filter(f => /(^|\/)build\/build\.json$/.test(f.path)).sort((a, b) => a.path.length - b.path.length)[0] || {}).path;
+        if (!bf) return send(res, 200, { parts: [] });
+        try {
+          if (req.method === 'GET') return send(res, 200, xometry.routing(dir, bf, readSettings(), listFiles));
+          if (req.method === 'PUT') { xometry.savePrefs(dir, bf, JSON.parse((await readBody(req, 1024 * 1024)).toString('utf8') || '{}')); return send(res, 200, xometry.routing(dir, bf, readSettings(), listFiles)); }
+          if (req.method === 'POST' && parts[4] === 'package') return send(res, 200, xometry.preparePackage(dir, bf, readSettings(), listFiles));
+        } catch (e) { return send(res, 200, { parts: [], error: e.message }); }
       }
       if (action === 'simtest' && req.method === 'POST') {
         // Run the simulator's headless tests (anatomy.json "tests": {cwd, run, results}) and return the output.
