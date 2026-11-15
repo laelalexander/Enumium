@@ -191,7 +191,8 @@ function startRun(id, message, display, opts = {}) {
     emit(id, { type: 'anatomy', kind: 'error', text: 'Claude Code was not found on this PC. Install it from https://claude.com/claude-code and try again.' });
     return;
   }
-  const args = ['-p', '--output-format', 'stream-json', '--verbose',
+  // stream-json input keeps stdin open, so the user can steer the run while it works (see steerRun).
+  const args = ['-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose',
     '--permission-mode', 'acceptEdits',
     '--allowedTools', ALLOWED_TOOLS.join(','),
     '--append-system-prompt', systemAppend()];
@@ -210,8 +211,16 @@ function startRun(id, message, display, opts = {}) {
   meta.currentModel = model; meta.status = 'running'; meta.updated = new Date().toISOString(); writeMeta(id, meta);
   emit(id, { type: 'anatomy', kind: 'run-start', text: display || message, model, auto: !!opts.auto });
 
-  proc.stdin.write(message);
-  proc.stdin.end();
+  r.stdinOpen = true; r.lastWrite = Date.now(); r.idleTimer = null;
+  proc.stdin.on('error', () => { r.stdinOpen = false; });
+  proc.stdin.write(userLine(message));
+  // Claude Code waits for more input until stdin closes. Close it once a result has come in and
+  // nothing else happened for a moment (no new turn started, no message from the user).
+  r.finishSoon = () => {
+    clearTimeout(r.idleTimer);
+    const at = Date.now();
+    r.idleTimer = setTimeout(() => { if (r.proc === proc && r.stdinOpen && r.lastWrite <= at && r.lastEvent <= at) { r.stdinOpen = false; try { proc.stdin.end(); } catch {} } }, 2500);
+  };
 
   let buf = '';
   proc.stdout.on('data', d => {
@@ -222,6 +231,8 @@ function startRun(id, message, display, opts = {}) {
       if (!line) continue;
       let ev; try { ev = JSON.parse(line); } catch { emit(id, { type: 'anatomy', kind: 'log', text: line }); continue; }
       if (ev.session_id && ev.session_id !== meta.sessionId) { meta.sessionId = ev.session_id; writeMeta(id, meta); }
+      r.lastEvent = Date.now();
+      if (ev.type === 'result') r.finishSoon(); else if (ev.type !== 'rate_limit_event') clearTimeout(r.idleTimer);
       watch.see(ev);
       emit(id, ev);
     }
@@ -263,15 +274,40 @@ function startRun(id, message, display, opts = {}) {
       const details = [watch.resultErr, errTail.trim()].filter(Boolean).join('\n\n') || `Claude Code exited with code ${code}.`;
       emit(id, { type: 'anatomy', kind: 'error', text: models.friendlyError(kind, watch, triedNow), details });
     }
+    r.proc = null; r.stopping = false; r.stdinOpen = false; clearTimeout(r.idleTimer);
+    // A message sent just as the run was wrapping up: carry on with it instead of dropping it.
+    if (r.pending && r.pending.length && !stopped) {
+      const msgs = r.pending.splice(0);
+      try { return startRun(id, msgs.join('\n\n'), '', { auto: true }); } catch {}
+    }
     emit(id, { type: 'anatomy', kind: 'run-end', status: m.status });
-    r.proc = null; r.stopping = false;
   });
+}
+
+function userLine(text) {
+  return JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text }] } }) + '\n';
+}
+
+// A message from the user while the run is working. It goes straight into the running session;
+// Claude Code picks it up at its next step. If the run is already closing, it starts the next run.
+function steerRun(id, text, display) {
+  const r = runs.get(id);
+  if (!r || !r.proc) return false;
+  const msg = 'Message from the user while you are working. Take it into account now: adjust the plan if it changes anything, ' +
+    'answer any question in a short reply, then carry on with the run.\n\n' + text;
+  emit(id, { type: 'anatomy', kind: 'steer', text: display || text });
+  if (r.stdinOpen) {
+    clearTimeout(r.idleTimer); r.lastWrite = Date.now();
+    try { r.proc.stdin.write(userLine(msg)); return true; } catch {}
+  }
+  (r.pending = r.pending || []).push(msg);
+  return true;
 }
 
 function stopRun(id) {
   const r = runs.get(id);
   if (!r?.proc) return;
-  r.stopping = true;
+  r.stopping = true; r.pending = [];
   if (process.platform === 'win32') execFile('taskkill', ['/pid', String(r.proc.pid), '/T', '/F'], () => {});
   else r.proc.kill('SIGTERM');
 }
@@ -445,6 +481,7 @@ const server = http.createServer(async (req, res) => {
         const { message } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
         const text = message && message.trim() ? message.trim() :
           `Run the anatomy skill on this brief:\n\n${meta.prompt}\n\nRead CLAUDE.md and everything in inputs/ first.`;
+        if (runs.get(id)?.proc && message && message.trim()) { steerRun(id, text, message.trim()); return send(res, 200, { ok: true, steered: true }); }
         try { startRun(id, text, message && message.trim() ? message.trim() : meta.prompt); } catch (e) { return send(res, 409, { error: e.message }); }
         return send(res, 200, { ok: true });
       }

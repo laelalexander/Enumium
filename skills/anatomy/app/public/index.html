@@ -131,7 +131,11 @@ main.feed { display: flex; flex-direction: column; min-height: 0; }
 .summary .h { font-weight: 600; margin-bottom: 8px; display: flex; gap: 10px; align-items: center; }
 .thinking { color: var(--faint); font-size: 13px; display: flex; gap: 8px; align-items: center; margin: 8px 0; }
 .thinking i { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1s infinite; }
-.reply { border-top: 1px solid var(--line); padding: 12px clamp(16px, 4vw, 48px); background: var(--panel); display: flex; gap: 10px; }
+.reply { border-top: 1px solid var(--line); padding: 12px clamp(16px, 4vw, 48px); background: var(--panel); display: flex; flex-direction: column; gap: 8px; }
+.reply .rrow { display: flex; gap: 10px; align-items: stretch; } .reply #replyAttach { width: 42px; padding: 0; font-size: 18px; }
+.rchips { display: flex; flex-wrap: wrap; gap: 6px; } .rchips:empty { display: none; }
+.rchips .chip { font-size: 12px; } .msg.user .tag { font-size: 11px; color: var(--accent); margin-left: 6px; font-weight: 500; }
+.reply.drag { outline: 2px dashed var(--accent); outline-offset: -4px; }
 .reply textarea { flex: 1; resize: none; height: 42px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
   color: var(--text); padding: 10px 12px; font: inherit; outline: 0; }
 
@@ -298,8 +302,13 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
     <main class="feed">
       <div id="stream"></div>
       <div class="reply">
-        <textarea id="replyIn" placeholder="Ask a follow-up or give direction (e.g. go deeper on the PCB)"></textarea>
-        <button class="primary" id="replyGo">Send</button>
+        <div id="replyChips" class="rchips"></div>
+        <div class="rrow">
+          <button class="ghost" id="replyAttach" title="Attach photos, PDFs, datasheets or other files">＋</button>
+          <input type="file" id="replyFile" multiple class="hidden">
+          <textarea id="replyIn" placeholder="Ask a follow-up or give direction (e.g. go deeper on the PCB)"></textarea>
+          <button class="primary" id="replyGo">Send</button>
+        </div>
       </div>
     </main>
     <aside class="right">
@@ -455,8 +464,7 @@ function setStatus(s) {
   running = s === 'running';
   const p = $('#rStatus'); p.className = 'pill ' + s; p.textContent = { running: 'working', done: 'done', failed: 'failed', stopped: 'stopped', new: 'ready' }[s] || s;
   $('#stop').classList.toggle('hidden', !running);
-  $('#replyGo').disabled = running; $('#replyIn').disabled = running;
-  $('#replyIn').placeholder = running ? 'Anatomy is working. You can follow up when it finishes.' : 'Ask a follow-up or give direction (e.g. go deeper on the PCB)';
+  $('#replyIn').placeholder = running ? 'Add insight or ask a question. Anatomy reads it at its next step and keeps working.' : 'Ask a follow-up or give direction (e.g. go deeper on the PCB)';
   setThinking(running);
 }
 function renderPhases() {
@@ -509,6 +517,7 @@ function handle(ev) {
   if (ev.type === 'anatomy') {
     if (ev.kind === 'run-start') { if (!ev.auto) add(div('msg user', `<b>You</b><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); startTs = startTs && ev.auto ? startTs : ev.ts; setStatus('running'); }
     else if (ev.kind === 'notice') add(div('notice', esc(ev.text)));
+    else if (ev.kind === 'steer') { add(div('msg user', `<b>You</b><span class="tag">while working</span><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); if (running) setThinking(true); }
     else if (ev.kind === 'run-end') { setStatus(ev.status); if (ev.status === 'done' && phase) renderPhases(); refreshFiles(); }
     else if (ev.kind === 'error') {
       const d = div('alert', esc(ev.text));
@@ -625,10 +634,33 @@ $('#filesBtn').onclick = () => { const a = document.querySelector('aside.right')
 $('#back').onclick = () => location.hash = '';
 $('#holoBtn').onclick = () => window.open(`/viewer.html?id=${encodeURIComponent(cur)}`, 'anatomy3d-' + cur, 'width=980,height=720');
 $('#stop').onclick = () => api(`/api/projects/${cur}/stop`, { method: 'POST' });
+// Live chat: works while the run is going (the message steers it) and after it ends (a follow-up run).
+// Attached files go to the project's inputs/ folder and the message tells Claude where they are.
+let replyFiles = [];
+function renderReplyChips() {
+  $('#replyChips').innerHTML = replyFiles.map((f, i) => `<span class="chip">📎 ${esc(f.name)} <button data-i="${i}">✕</button></span>`).join('');
+  [...$('#replyChips').querySelectorAll('button')].forEach(b => b.onclick = () => { replyFiles.splice(+b.dataset.i, 1); renderReplyChips(); });
+}
+function addReplyFiles(list) { replyFiles.push(...list); renderReplyChips(); }
+$('#replyAttach').onclick = () => $('#replyFile').click();
+$('#replyFile').onchange = e => { addReplyFiles(e.target.files); e.target.value = ''; };
+const replyBox = $('.reply');
+replyBox.addEventListener('dragover', e => { e.preventDefault(); replyBox.classList.add('drag'); });
+replyBox.addEventListener('dragleave', () => replyBox.classList.remove('drag'));
+replyBox.addEventListener('drop', e => { e.preventDefault(); replyBox.classList.remove('drag'); if (e.dataTransfer.files.length) addReplyFiles(e.dataTransfer.files); });
+$('#replyIn').addEventListener('paste', e => { const fs = [...(e.clipboardData?.files || [])]; if (fs.length) { e.preventDefault(); addReplyFiles(fs.map((f, i) => f.name && f.name !== 'image.png' ? f : new File([f], `pasted-${Date.now()}-${i}.png`, { type: f.type }))); } });
 $('#replyGo').onclick = async () => {
-  const m = $('#replyIn').value.trim(); if (!m || running) return;
-  $('#replyIn').value = '';
-  await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) }).catch(e => alert(e.message));
+  let m = $('#replyIn').value.trim(); const files = replyFiles.slice();
+  if (!m && !files.length) return;
+  $('#replyGo').disabled = true;
+  try {
+    const paths = [];
+    for (const f of files) { const r = await api(`/api/projects/${cur}/upload?name=${encodeURIComponent(f.name)}`, { method: 'POST', body: f }); paths.push(r.path); }
+    if (paths.length) m = (m || 'Please look at the attached file(s).') + `\n\nAttached (saved in this project): ${paths.join(', ')}. Read them before you answer.`;
+    $('#replyIn').value = ''; replyFiles = []; renderReplyChips();
+    await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) });
+  } catch (e) { alert(e.message); }
+  finally { $('#replyGo').disabled = false; }
 };
 $('#replyIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#replyGo').click(); } });
 
