@@ -648,8 +648,8 @@ async function renderModels() {
   box.innerHTML = runs + `<table><tr><td colspan="3" class="empty"><b>Claude</b> · tried in this order when one can't run</td></tr>${o.claude.map(row).join('')}
     <tr><td colspan="3" class="empty" style="padding-top:10px"><b>Local (free, on this PC)</b></td></tr>${local}</table>
     <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="locFb"${o.settings.localFallback ? ' checked' : ''}${o.local && o.local.length ? '' : ' disabled'}>
-    When no Claude model can run, carry on with <select id="locModel">${(o.local || []).map(m => `<option${m.name === o.settings.localModel ? ' selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>
-    <p class="hint">Local models are much less capable. They only do light steps (research notes, summaries, BOM tidying, docs) and leave CAD, drawings and PCB work in WAITING-FOR-CLAUDE.md for Claude to pick up.</p>`;
+    When no Claude model can run, carry on with <select id="locModel">${(o.local || []).map(m => `<option${m.name === (o.settings.localModel || ((o.local || []).some(x => x.name === 'qwen3:8b') ? 'qwen3:8b' : '')) ? ' selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>
+    <p class="hint">On this PC qwen3:8b keeps up; qwen3:14b is too slow while the GPU is busy. Local models are much less capable. They only do light steps (research notes, summaries, BOM tidying, docs) and leave CAD, drawings and PCB work in WAITING-FOR-CLAUDE.md for Claude to pick up.</p>`;
   box.querySelectorAll(".mrun .mswitch").forEach(b => b.onclick = async () => {
     const r = b.closest(".mrun"); b.disabled = true; b.textContent = 'Switching…';
     await api(`/api/projects/${r.dataset.id}/switch`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: r.querySelector('select').value }) }).catch(() => {});
