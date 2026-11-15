@@ -99,5 +99,6 @@ Default to standard unless told otherwise.
 - G-code that was never sliced for the user's printer, or a drawing sheet nobody looked at.
 - Treating firmware or the companion app as a stub. If the product runs code, that code is part of the build.
 - A prototype that was never run or rendered. Always execute the build, open the viewer, or render the model and drawings before presenting them.
+- A reference copy of another project or an earlier revision inside this project: its meshes show up in the Live 3D view as if they were this design. Read the other project in place, or copy only the files you need into `work/ref/`. The viewer skips that folder, along with `*-ref/`, `archive/` and `backup/`.
 - Prototyping the wrong form: building from the text brief when the renders, sketches or the user's notes show a different device. The concept images set the form. Check the first render against them before going further.
 - Cloning blindly. If the user's goal is "better", record the original's weaknesses and propose improvements in the spec.
