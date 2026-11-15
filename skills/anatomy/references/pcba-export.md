@@ -34,7 +34,7 @@ Copper weight comes from the power budget, never from a default. Put MPN, Manufa
 | `02-assembly/` | `<board>-BOM.xlsx` and `.csv` (item, qty, refdes, manufacturer, MPN, Digi-Key/Mouser/LCSC PN, description, value, package, SMD/THT, side, DNP, notes), `<board>-centroid.csv` and `.xlsx` (refdes, X/Y in mm and inches, rotation, side, value, package, mount, DNP), `ASSEMBLY-DRAWING.pdf` (top and, if used, bottom seen from below; pin 1, cathode and + pads in red, body outlines, refdes, origin arrows, orientation check list), `ASSEMBLY-NOTES.md` |
 | `03-test/` | `TEST-NOTES.md`: AOI, unpowered short check per power rail, power-up, test points with coordinates, functional tests, programming |
 | `04-reference/` | schematic PDF, board STEP with 3D models, top/bottom renders, DRC/ERC reports (json and text), KiCad's own pos file, `kicad-cli.log` |
-| root | `README.md` (READY / NOT READY with blockers and warnings), `QUOTE-SHEET.md` (values to type into the quote form), `status.json` |
+| root | `README.md` (READY / NOT READY with blockers and warnings), `QUOTE-SHEET.md` (values to type into the quote form, with the assembly breakdown: PTH, QFN, BGA, fine pitch, large devices, standard SMD, smallest pitch, holes and slots), `rushpcb-quote.json` (the same answers keyed by RushPCB's field names), `status.json` |
 
 The centroid origin is the lower-left corner of the board outline seen from the top, X right, Y up. Bottom-side parts keep top-view coordinates. Positions are cross-checked against KiCad's own pos export; a difference over 0.01 mm is reported.
 
@@ -44,8 +44,11 @@ DRC errors, unconnected items or schematic-parity issues; ERC errors; a placed p
 ## Warnings (READY, but say them to the user)
 DRC/ERC warnings (each must be justified in the board README), supplier numbers marked `[verify]`, copper weight not set, parts on both sides (costs more), no functional tests, leadless or module parts that need X-ray.
 
+## Getting the quote
+When the user wants a price or wants to order, follow `pcba-quote.md`: Claude fills in RushPCB's online quote in the user's Chrome from `rushpcb-quote.json` and stops at the price table.
+
 ## Rules
-- Never upload, submit or change anything on the fab's site. Give the user the zip and the quote sheet; they place the order.
+- Never place an order, click a price or enter payment without the user's go-ahead in chat. Filling in a quote they pointed you to is fine (`pcba-quote.md`).
 - A READY package still says "machine-generated, not reviewed by a person" in the board README until someone has reviewed the schematic and layout. Say so when you hand it over.
 - Do not hand-edit the outputs. Fix the board, the schematic fields or `pcba.json`, and run it again.
 - Add the zip to `build/build.json` `fabricate[]`: `{"part": "<board> PCBA", "process": "PCB fab + turnkey assembly", "files": ["build/3-fabricate/pcb/<board>-PCBA-revA.zip"], "vendor": "RushPCB (or any turnkey house)", "settings": "<from QUOTE-SHEET.md>", "qty": 5}`.

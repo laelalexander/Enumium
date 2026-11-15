@@ -481,6 +481,68 @@ def fab_rows(board, fab):
     return rows
 
 
+# ---------------------------------------------------------------- quote-form answers
+def pad_pitch(fp):
+    """Smallest centre-to-centre distance between two copper pads of a part (mm), or None."""
+    pts = [(p["x"], p["y"]) for p in fp["pads"] if p["type"] in ("smd", "thru_hole") and p["num"]]
+    best = None
+    for i in range(len(pts)):
+        for j in range(i + 1, len(pts)):
+            d = ((pts[i][0] - pts[j][0]) ** 2 + (pts[i][1] - pts[j][1]) ** 2) ** 0.5
+            if d > 0.05 and (best is None or d < best):
+                best = d
+    return best
+
+
+def body_size(fp):
+    xs, ys = [], []
+    for g in fp["gfx"]:
+        if g["layer"] in ("F.CrtYd", "B.CrtYd", "F.Fab", "B.Fab"):
+            for q in g.get("pts", []):
+                xs.append(q[0])
+                ys.append(q[1])
+    for p in fp["pads"]:
+        xs += [p["x"] - p["w"] / 2, p["x"] + p["w"] / 2]
+        ys += [p["y"] - p["h"] / 2, p["y"] + p["h"] / 2]
+    return (max(xs) - min(xs), max(ys) - min(ys)) if xs else (0.0, 0.0)
+
+
+def assembly_breakdown(act):
+    """Split placed parts into the categories turnkey quote forms ask for. Every part lands in exactly one."""
+    cat = {"pth": [], "bga": [], "qfn": [], "fine_pitch": [], "large": [], "standard": []}
+    pitches = []
+    for r, p in sorted(act.items(), key=lambda t: ref_key(t[0])):
+        fp = p["fp"]
+        lib = fp["lib"].lower()
+        if p["mount"] == "tht":
+            cat["pth"].append(r)
+            continue
+        pitch = pad_pitch(fp)
+        npads = len([q for q in fp["pads"] if q["num"]])
+        if npads > 2 and pitch:
+            pitches.append(pitch)
+        w, h = body_size(fp)
+        if re.search(r"bga", lib):
+            cat["bga"].append(r)
+        elif re.search(r"qfn|dfn|wson|vson|lga", lib) and not re.search(r"module|wroom|wrover", lib):
+            cat["qfn"].append(r)
+        elif re.search(r"module|wroom|wrover", lib):
+            cat["large"].append(r)
+        elif npads > 2 and pitch and pitch < 0.64:
+            cat["fine_pitch"].append(r)
+        elif max(w, h) >= 15.0 or (re.match(r"^(L|T|HS)\d", r) and max(w, h) >= 10.0):
+            cat["large"].append(r)
+        else:
+            cat["standard"].append(r)
+    return cat, (min(pitches) if pitches else None)
+
+
+def pick_le(options, value):
+    """Largest option not above value (or the smallest option)."""
+    ok = [o for o in options if o <= value + 1e-9]
+    return max(ok) if ok else min(options)
+
+
 # ---------------------------------------------------------------- main
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -888,10 +950,89 @@ def main(argv=None):
         ("BGA / QFN / leadless", "Yes: %s" % ", ".join(fine) if fine else "No"),
         ("Files to upload", "%s-gerbers.zip, %s-BOM.xlsx, %s-centroid.csv, ASSEMBLY-DRAWING.pdf, FAB-DRAWING.pdf, ASSEMBLY-NOTES.md" % (name, name, name)),
     ]
+    # RushPCB form answers (field names as on app.rushpcb.com, checked 2026-11-15)
+    cat, min_pitch = assembly_breakdown(act)
+    n_holes = sum(1 for f in board["footprints"] for p in f["pads"] if p["drill"]) + len(board["vias"])
+    n_slots = sum(1 for f in board["footprints"] for p in f["pads"] if p["drill"] and abs(p["drill"][0] - p["drill"][1]) > 1e-6)
+    ts = min([v for v in (fab.get("min_track_mm"), fab.get("min_space_mm")) if v] or [0.2])
+    ts_mil = pick_le([3, 4, 5, 6, 8], inch(ts) * 1000)
+    small_hole_in = pick_le([0.006, 0.008, 0.010, 0.012, 0.015, 0.020], inch(fab["min_drill_mm"]) + 0.0005) if fab.get("min_drill_mm") else 0.012
+    lead_free = not re.search(r"\bleaded\b|tin.?lead|snpb", (fab["finish"] + asm["solder"]).lower())
+    finish = fab["finish"].lower()
+    rush_finish = "ENIG" if "enig" in finish else ("Immersion Silver" if "silver" in finish else ("OSP" if "osp" in finish else ("LeadFree HAL" if lead_free else "Leaded")))
+    pitch_mil = pick_le([15, 19, 25, 31, 50], inch(min_pitch) * 1000) if min_pitch else 50
+    all_sides = sorted(set(sides_used) | set(tht_sides))
+    rush = {
+        "_note": "Answers for the RushPCB online turnkey quote (app.rushpcb.com). Fill these in; never click a price (that places the order) or enter payment without the user's go-ahead.",
+        "pcb": {
+            "Number of layers": len(board["copper_layers"]),
+            "Material Type": "FR4 130 Tg (RushPCB may switch to FR4 170 Tg (RoHS) when RoHS is on; both are fine)",
+            "Board Size (Inches)": [round(inch(W), 3), round(inch(H), 3)],
+            "Board Thickness (Inches)": round(inch(fab["thickness_mm"]), 3),
+            "Setup as an Array": False,
+            "Finish Type": rush_finish,
+            "IPC Class": "IPC Class-III" if "class 3" in fab["ipc_class"].lower() else "IPC Class-II",
+            "Routing": "Individually Routed",
+            "Total hole count": n_holes,
+            "Smallest Hole (Inches)": small_hole_in,
+            "Min. Trace/Space (Mil)": "%d/%dmil" % (ts_mil, ts_mil),
+            "Outer Copper Finish (Oz)": "%s Oz" % fab["copper_outer_oz"],
+            "Inner Copper Finish (Oz)": ("%s Oz" % fab["copper_inner_oz"]) if len(board["copper_layers"]) > 2 else None,
+            "Mask Sides": "Both", "Mask Color": fab["mask_color"], "Silk Sides": "Both", "Silk Color": fab["silk_color"],
+            "Flying Probe Electric Testing": True, "RoHs": lead_free,
+            "No. of Slots per board": n_slots, "No. of Cutouts per board": 0, "Countersink per board": 0, "Counterbore per board": 0,
+            "No. of gold fingers": 0, "Impedance": fab["impedance_control"].lower() not in ("none", "no", ""),
+            "Edgeplating/Castellation": "None" if fab["castellated"] == "No" and fab["edge_plating"] == "No" else "see FAB-NOTES",
+            "Mask Tented": "tent" in fab["via_treatment"].lower(),
+            "Blind/Buried Vias": False, "Carbon Ink": False,
+        },
+        "bom": {
+            "upload": "02-assembly/%s-BOM.csv (or .xlsx, first sheet)" % name,
+            "column_mapping": {"Qty per board": "Quantity", "Reference designators": "Reference designator",
+                               "Manufacturer part number": "Mfg. part number", "Description": "Description", "DNP": "DNI/DNP"},
+            "expect_total_parts": len(act), "expect_unique_parts": unique,
+            "consigned": [], "dni": sorted([r for r, p in placed.items() if p["dnp"]], key=ref_key),
+        },
+        "assembly": {
+            "Assembly Sides": "Both" if len(all_sides) > 1 else (all_sides[0].title() if all_sides else "Top"),
+            "Total Line Items": unique, "Total Components": len(act),
+            "PTH Components": len(cat["pth"]), "QFN Per Board": len(cat["qfn"]), "BGAs Per Board": len(cat["bga"]),
+            "Standard SMDs": len(cat["standard"]), "Fine Pitch ICs": len(cat["fine_pitch"]),
+            "Large Devices (incl. Heat Sinks)": len(cat["large"]),
+            "Pressfit Connectors/Modules": 0,
+            "Min SMD Pitch (Mil)": "%d Mil" % pitch_mil if pitch_mil < 50 else "50 Mil",
+            "ITAR": False, "Class III": "class 3" in asm["workmanship"].lower(),
+            "01005 Package Used": any("01005" in p["fp"]["footprint"] for p in act.values()),
+            "0201 Package Used": any(re.search(r"\b0201\b|_0201_", p["fp"]["footprint"]) for p in act.values()),
+            "0402 Package Used": any(re.search(r"_0402_|0402", p["fp"]["footprint"]) for p in act.values()),
+            "Conformal Coating": asm["conformal_coat"].lower() not in ("none", "no", ""),
+            "De-panel after assembly": False,
+            "_which_parts": {k: v for k, v in cat.items()},
+            "_notes": "Pressfit Connectors/Modules stays 0: the online quote refuses any value there. SMD modules (ESP32 etc.) count as Large Devices.",
+        },
+        "after_order_uploads": ["01-fabrication/%s-gerbers.zip" % name, "02-assembly/%s-centroid.csv" % name,
+                                "02-assembly/ASSEMBLY-DRAWING.pdf", "01-fabrication/FAB-DRAWING.pdf", "02-assembly/ASSEMBLY-NOTES.md"],
+    }
+    assert sum(len(v) for v in cat.values()) == len(act)
+    with open(os.path.join(pkg, "rushpcb-quote.json"), "w", encoding="utf-8") as fh:
+        json.dump(rush, fh, indent=2)
+
     with open(os.path.join(pkg, "QUOTE-SHEET.md"), "w", encoding="utf-8") as fh:
         fh.write("# %s rev %s - values for the PCBA quote form\n\n" % (name, rev))
-        fh.write("Type these into the quote form (RushPCB or any turnkey house). Nothing here is sent anywhere by this tool.\n\n")
+        fh.write("Type these into the quote form (RushPCB or any turnkey house). Nothing here is sent anywhere by this tool. "
+                 "`rushpcb-quote.json` has the same answers keyed by RushPCB's field names, for the Get PCBA quote step.\n\n")
         fh.write(md_table(["Field", "Value"], quote))
+        fh.write("\n## Assembly breakdown (quote forms ask for these counts; they add up to %d)\n\n" % len(act))
+        fh.write(md_table(["Category", "Count", "Parts"], [
+            ("Through-hole (PTH)", len(cat["pth"]), " ".join(cat["pth"])),
+            ("QFN / DFN / LGA", len(cat["qfn"]), " ".join(cat["qfn"])),
+            ("BGA", len(cat["bga"]), " ".join(cat["bga"])),
+            ("Fine pitch ICs (< 0.65 mm)", len(cat["fine_pitch"]), " ".join(cat["fine_pitch"])),
+            ("Large devices / modules (>= 10 mm)", len(cat["large"]), " ".join(cat["large"])),
+            ("Standard SMD", len(cat["standard"]), "%d parts" % len(cat["standard"])),
+            ("Smallest SMD pitch", ("%.2f mm (%.1f mil)" % (min_pitch, inch(min_pitch) * 1000)) if min_pitch else "n/a", ""),
+            ("Holes / slots", "%d / %d" % (n_holes, n_slots), ""),
+        ]))
 
     write_xlsx(os.path.join(d_asm, "%s-BOM.xlsx" % name), [
         {"name": "BOM", "rows": [bom_hdr] + bom_rows, "wrap_cols": (2, 8, 14)},
