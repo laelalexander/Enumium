@@ -42,3 +42,7 @@ Before calling the board done, build a table of every critical part with: manufa
 
 ## 6. Report honestly
 State in the README: KiCad version, ERC/DRC results with counts, how it was routed, and what remains: first articles to build, test points to probe, and anything checked only by script. A board that passes DRC can still be electrically wrong; say what was and was not reviewed by a human or simulated.
+
+## Into the product
+- Export the populated board as STEP (`kicad-cli pcb export step --subst-models`) and place it in the assembly: in `assembly.json`, the 3D build-along and the mechanism check (standoffs on its mounting holes, connectors reachable through their cutouts, no collisions).
+- Decide on a custom PCBA from the design's needs, not by default: use one when off-the-shelf modules would need hand wiring that a board removes, or when space, reliability or cost call for it. Record the decision and the reason in the blueprint.
