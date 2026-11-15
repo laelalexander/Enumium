@@ -422,6 +422,8 @@ function swap(ctx, line, altId, reason, force) {
   const { p, s } = entry(ctx, line);
   if (!p) throw new Error(`no purchase line ${line}`);
   const a = s.alternates.find(x => x.id === altId); if (!a) throw new Error(`no alternate ${altId} on ${line}`);
+  if ((a.mpn || '') === (p.mpn || '') && (a.supplier || '') === (p.supplier || '') && (a.url || '') === (p.url || ''))
+    throw new Error(`${line} already uses ${a.supplier} ${a.mpn}: the BOM was regenerated before the swap, so the previous source is no longer on the line. Run swap before regenerating the BOM, or restore the line first.`);
   evaluate(ctx);
   if (a.fit !== 'in-kind' && !force) throw new Error(`${altId} is ${a.fit}: it is not a drop-in. Use an engineering change (eco-open) for it, then swap with --force once the design is updated.`);
   const old = { supplier: p.supplier, url: p.url, mfr: p.mfr, mpn: p.mpn, unit_price: p.unit_price, stock: s.primary && s.primary.stock, specs: s.primary && s.primary.specs };
@@ -464,7 +466,7 @@ function impact(ctx, terms, opts = {}) {
     if (opts.skipHistory && (/(^|\/)changes\//.test(f) || f.endsWith('supply.json') || /qty-audit\.md$/.test(f))) continue;
     let t; try { const st = fs.statSync(path.join(ctx.dir, f)); if (st.size > 5e6) continue; t = fs.readFileSync(path.join(ctx.dir, f), 'utf8'); } catch { continue; }
     const lines = t.split(/\r?\n/); const hits = [];
-    lines.forEach((l, i) => { if (terms.some(x => l.includes(x))) hits.push({ n: i + 1, text: l.trim().slice(0, 200) }); });
+    lines.forEach((l, i) => { if (terms.some(x => l.includes(x))) hits.push({ n: i + 1, text: l.trim().slice(0, 200), full: l }); });
     if (hits.length) res.push({ file: f, area: areaOf(f), hits });
   }
   const zips = walk(ctx.dir).filter(f => /\.zip$/i.test(f) && /pcba|build|kit/i.test(f));
@@ -508,7 +510,7 @@ function ecoVerify(ctx, id) {
   const C = readChanges(ctx);
   const o = (C.open || []).find(x => x.id === id); if (!o) throw new Error(`${id} is not open`);
   const left = impact(ctx, o.old_terms, { skipHistory: true, withZips: false })
-    .map(r => ({ ...r, hits: r.hits.filter(h => !HISTORY_OK.test(h.text)) })).filter(r => r.hits.length);
+    .map(r => ({ ...r, hits: r.hits.filter(h => !HISTORY_OK.test(h.full || h.text)) })).filter(r => r.hits.length);
   if (left.length) return { ok: false, left };
   C.open = C.open.filter(x => x.id !== id);
   writeJson(path.join(changesDir(ctx), 'changes.json'), C);

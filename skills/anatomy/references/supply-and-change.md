@@ -67,7 +67,7 @@ The same MPN from another seller is a `supplier` change and the revision stays t
    - BOM and BOM check, build.json and carts
    - assembly guide, `assembly.json` and the 3D twin
    - simulator tests
-4. Switch the purchase line with `swap LINE ALT_ID --force` once the design matches the new part.
+4. Switch the purchase line with `swap LINE ALT_ID --force` once the design matches the new part, **before** regenerating the BOM and build package (swap writes `bom.csv`, so the regeneration then carries it; swapping afterwards loses the previous source and is refused). Project generators must keep `build/1-purchase/supply.json`, `changes/` and any PCBA package they did not make.
 5. Run `eco-verify ECO-nnn`. It fails while any non-history file still uses the old part. History lines that say "was", "replaced", "alternate" or the ECO id are allowed. Zip packages are not searched, so rebuild them. Once it passes, it closes the ECO, raises the revision in `build.json` and `changes/changes.json`, and writes `changes/CHANGELOG.md`.
 6. Report to the user: what changed, cost before and after, the new revision, and anything not verified.
 
