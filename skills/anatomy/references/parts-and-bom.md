@@ -7,7 +7,8 @@ Each BUY line must have:
 - **Manufacturer and manufacturer part number (MPN)**, or for commodity hardware a full standard designation that any supplier can fill: e.g. `ISO 4762 M3x8 A2-70 socket head cap screw`, `DIN 934 M3 nut A2`, `heat-set insert M3 x 5.7 OD x 4.6 L brass (CNC Kitchen / Ruthex RX-M3x5.7)`, `608-2RS bearing 8x22x7`, `22 AWG UL1007 stranded, 7/0.25`.
 - **Key specification** you relied on (rating, size, thread, voltage, current, tolerance, material, finish).
 - **At least one supplier link** with the exact listing (Digi-Key, Mouser, LCSC, McMaster-Carr, Misumi, Adafruit, SparkFun, manufacturer store, Amazon only when nothing better exists), unit price, price date, and stock status when visible.
-- **An alternate** (second source or equivalent MPN) for anything critical, single-source, or likely to go out of stock.
+- **Alternates** (another seller for every line; an equivalent MPN from a second maker for anything critical, single-source, or likely to go out of stock), recorded with their specs and fit against the line's design requirements in `build/1-purchase/supply.json` (see `supply-and-change.md`).
+- **The needed quantity and its design basis** (e.g. `17S x 6P = 102`), separate from the order quantity, so the quantity audit can trace it.
 - **Datasheet URL** for anything electrical or load-bearing, and whether you actually fetched it.
 - **Verified**: what you checked and where (e.g. "Digi-Key product page fetched 2026-11-14, in stock"). An honest "not verified" beats a plausible fake MPN.
 - Standard hardware gets both its standard designation and a real orderable SKU, e.g. `ISO 4762 M3x8 A2-70` plus `McMaster-Carr 91292A112`.
