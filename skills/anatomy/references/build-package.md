@@ -54,6 +54,13 @@ build/
 ```
 All paths are relative to the project root. Every `purchase` line comes from a BUY line in `bom/bom.csv`; every `print` part and `fabricate` part from a BUILD line. Every part used in an `assembly` step exists in purchase, print or fabricate. Check this with a script (extend `bom/check_bom.py`) and report the result in `build/README.md`.
 
+## Parts sent to Xometry
+The Build tab's Xometry stage routes a print or fabricate part to Xometry (xometry.com/quoting) when it is larger than the printer bed in Settings, needs a material that is not in "Materials on hand", or is a metal or engineering-plastic part that is machined or cut by a service; the user can move any part either way. Their choices and quote notes are saved in `build/xometry.json` (`parts.<part>.route` = `xometry` | `home`, plus `material`, `process`, `finish`, `tolerance`, `qty`, `notes`). When you rebuild the package, keep those choices, and make sure every part that goes to Xometry has:
+- a STEP file (`print[].step` or `fabricate[].step`, or a `.step` with the same stem as the part or its STL). Xometry quotes CNC only from STEP, and it measures 3D-print quotes from CAD; never point it at a `.gcode.3mf`.
+- a PDF drawing in `drawing` (threads, inserts and tight tolerances go on that drawing; Xometry takes it as the technical drawing),
+- an exact material name in `material` for the intended service material (for example "PETG", "Nylon 12 (MJF)", "6061-T6 aluminium 6.35 mm").
+The app never submits anything to Xometry; "Prepare upload folder" copies the files to `build/xometry/` with `XOMETRY-ORDER.md` and `xometry-parts.csv`.
+
 ## Quality bar
 - The purchase list is orderable as written: exact SKUs, quantities rounded to pack sizes plus spares, links that go to the exact product.
 - Every print entry has G-code that exists, was sliced for the user's printer (see Settings), and has its time and weight from the slicer.
