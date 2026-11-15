@@ -200,7 +200,8 @@ async function checkUrl(url) {
   if (!url || !/^https?:\/\//i.test(url)) return { status: 'unknown', checked, via: 'no link' };
   try {
     const u = new URL(url);
-    const m = u.pathname.match(/^(.*\/products\/[^/]+?)\/?$/);
+    if (u.pathname === '/' || u.pathname === '') return { status: 'unknown', checked, via: 'link is the shop, not the product page', final: true };
+    const m =u.pathname.match(/^(.*\/products\/[^/]+?)\/?$/);
     if (m) { // Shopify stores publish the product as JSON at <product>.js
       try {
         const r = await get(u.origin + m[1] + '.js');
@@ -208,6 +209,9 @@ async function checkUrl(url) {
           const j = await r.json();
           const vid = u.searchParams.get('variant');
           const v = (j.variants || []).find(x => String(x.id) === vid) || (j.variants || []).find(x => x.available) || (j.variants || [])[0] || {};
+          const vs = j.variants || [];
+          if (!vid && vs.length > 1 && vs.some(x => x.available) && vs.some(x => !x.available)) // some options in stock, some not: which one the design needs is unknown
+            return { status: 'unknown', checked, via: `${vs.filter(x => x.available).length} of ${vs.length} options in stock; link the exact option (?variant=) to check it`, final: true };
           const avail = vid ? !!v.available : !!j.available;
           return { status: avail ? 'in_stock' : 'sold_out', price: (v.price ?? j.price) != null ? (v.price ?? j.price) / 100 : null, checked, via: 'store product data' };
         }
@@ -246,7 +250,7 @@ async function refresh(ctx, lines) {
     const r = await checkUrl(j.url);
     // A failed or blocked check says nothing new: keep the last known status (a user report, an earlier check)
     // and note that the re-check did not get through.
-    if (r.status === 'unknown' && j.keep && j.keep.status && j.keep.status !== 'unknown') j.tgt.stock = { ...j.keep, recheck: r.via, rechecked: r.checked };
+    if (r.status === 'unknown' && !r.final && j.keep && j.keep.status && j.keep.status !== 'unknown') j.tgt.stock = { ...j.keep, recheck: r.via, rechecked: r.checked };
     else j.tgt.stock = r;
   });
   evaluate(ctx);

@@ -529,7 +529,7 @@ async function sim(el) {
 
 // ---------------------------------------------------------------- Build wizard
 const BUILD_PROMPT = `Prepare the build package for this project, following references/build-package.md of the anatomy skill exactly.
-Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, PCB order files), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
+Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, and for every custom board a turnkey PCBA order zip from tools/pcba/pcba_export.py per references/pcba-export.md, ready for RushPCB), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
 First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard.
 Then make the purchase list resilient (references/supply-and-change.md): build/1-purchase/supply.json with each line's needed quantity and the design count behind it, the design requirements a substitute must meet, and vetted alternates (another seller for every line, and an equivalent part for anything critical or single-source). Run the supply tool's audit and refresh, then the BOM and build.json checks, and report what is still open.`;
 const SUPPLY_RULES = 'Follow references/supply-and-change.md of the anatomy skill and use its supply tool (the path is in your instructions). Never place orders or fill in checkout forms.';
@@ -691,6 +691,7 @@ async function build(el) {
         <td>${esc(p.after || '')}${(p.checks || []).length ? '<ul>' + p.checks.map(c => `<li>${esc(c)}</li>`).join('') + '</ul>' : ''}</td></tr>`).join('')}</table></div>`).join('');
     } else if (cur === 'fabricate') {
       box.innerHTML = (B.fabricate || []).map(f => `<div class="appcard"><div class="t">${check('fabricate', f.part, 'done', '')} ${esc(f.part)} <span class="empty">· ${esc(f.process || '')}${f.qty ? ' · qty ' + esc(f.qty) : ''}</span></div>
+        ${f.pcba_package ? `<div class="checkbox-note"><b>Turnkey PCBA order package:</b> ${fileBtns(f.pcba_package)} Upload the Gerber zip, BOM, centroid and drawings listed in its README; type the values from its QUOTE-SHEET.md into the quote form.</div>` : ''}
         <div class="d">${f.vendor ? 'Vendor: ' + esc(f.vendor) + '. ' : ''}${f.material ? 'Material: ' + esc(f.material) + '. ' : ''}${esc(f.settings || '')}</div>
         <div>${(f.files || []).map(fileBtns).join('<br>')}</div></div>`).join('');
     } else if (cur === 'assembly') {
