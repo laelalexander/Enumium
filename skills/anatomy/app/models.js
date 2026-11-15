@@ -20,7 +20,57 @@ const SKIP_MS = 6 * 3600 * 1000;
 
 const NAMES = { 'claude-fable-5-2': 'Fable 5.2', 'claude-opus-5-5': 'Opus 5.5', 'claude-sonnet-5-5': 'Sonnet 5.5',
   'claude-haiku-5-5': 'Haiku 5.5', opus: 'Opus', sonnet: 'Sonnet', haiku: 'Haiku' };
-const label = m => NAMES[m] || m;
+const isLocal = m => /^ollama:/.test(m || '');
+const label = m => isLocal(m) ? m.slice(7) + ' (local)' : (NAMES[m] || m);
+const OLLAMA = process.env.OLLAMA_HOST ? (/^https?:/.test(process.env.OLLAMA_HOST) ? process.env.OLLAMA_HOST : 'http://' + process.env.OLLAMA_HOST) : 'http://127.0.0.1:11434';
+
+// User choices from Settings > Models: { localFallback: bool, localModel: 'qwen3:14b' }
+function settingsFile(root) { return path.join(root, '.anatomy', 'model-settings.json'); }
+function readSettings(root) {
+  try { return { localFallback: false, localModel: '', ...JSON.parse(fs.readFileSync(settingsFile(root), 'utf8').replace(/^\uFEFF/, '')) }; }
+  catch { return { localFallback: false, localModel: '' }; }
+}
+function writeSettings(root, v) {
+  const cur = readSettings(root);
+  const next = { localFallback: !!(v.localFallback ?? cur.localFallback), localModel: String(v.localModel ?? cur.localModel ?? '') };
+  fs.mkdirSync(path.dirname(settingsFile(root)), { recursive: true });
+  fs.writeFileSync(settingsFile(root), JSON.stringify(next, null, 2));
+  return next;
+}
+
+// Models installed in Ollama on this PC, or null when Ollama isn't running.
+async function ollamaModels() {
+  try {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 2000);
+    const r = await fetch(OLLAMA + '/api/tags', { signal: ctl.signal }); clearTimeout(t);
+    const j = await r.json();
+    return (j.models || []).map(m => ({ id: 'ollama:' + m.name, name: m.name, size: m.size,
+      params: m.details && m.details.parameter_size, family: m.details && m.details.family }));
+  } catch { return null; }
+}
+
+// Claude Code talks to Ollama through Ollama's Anthropic-compatible API. Every model slot
+// (main, fast helper, subagents) points at the local model, since Ollama has no Claude models.
+function applyLocalEnv(env, model) {
+  const name = model.slice(7);
+  Object.assign(env, { ANTHROPIC_BASE_URL: OLLAMA, ANTHROPIC_AUTH_TOKEN: 'ollama', ANTHROPIC_API_KEY: '',
+    ANTHROPIC_DEFAULT_OPUS_MODEL: name, ANTHROPIC_DEFAULT_SONNET_MODEL: name, ANTHROPIC_DEFAULT_HAIKU_MODEL: name,
+    ANTHROPIC_SMALL_FAST_MODEL: name, CLAUDE_CODE_SUBAGENT_MODEL: name, CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: '1' });
+  return env;
+}
+function cliModel(model) { return isLocal(model) ? model.slice(7) : model; }
+
+// Snapshot for Settings > Models.
+async function overview(root) {
+  const st = readStatus(root), now = Date.now();
+  const claude = [...new Set(DEFAULT_CHAIN.map(m => ALIASES[m] || m))].filter(m => /^claude-/.test(m)).map(m => {
+    const s = st[m] && st[m].until > now ? st[m] : null;
+    return { id: m, label: label(m), status: s ? 'skipped' : 'ready', until: s ? new Date(s.until).toISOString() : null, reason: s ? s.reason : null };
+  });
+  const local = await ollamaModels();
+  return { claude, local: local ? local.map(m => ({ ...m, label: label(m.id),
+    status: st[m.id] && st[m.id].until > now ? 'skipped' : 'ready' })) : null, settings: readSettings(root) };
+}
 
 function statusFile(root) { return path.join(root, '.anatomy', 'models.json'); }
 function readStatus(root) {
@@ -31,29 +81,34 @@ function writeStatus(root, st) {
 }
 
 // Preferred model first, then the rest of the default chain, no repeats.
-function chainFor(preferred) {
+// A local model is added last, only when the user turned that on in Settings.
+function chainFor(preferred, root) {
   const p = ALIASES[preferred] || preferred;
   const out = [];
-  for (const m of [p, ...DEFAULT_CHAIN]) if (m && !out.includes(m)) out.push(m);
+  const set = root ? readSettings(root) : {};
+  const tail = set.localFallback && set.localModel ? ['ollama:' + set.localModel] : [];
+  for (const m of [p, ...DEFAULT_CHAIN, ...tail]) if (m && !out.includes(m)) out.push(m);
   return out;
 }
 
 // First model in the chain that hasn't failed recently (or the preferred one if all have).
 function pickModel(root, preferred, exclude = []) {
   const st = readStatus(root), now = Date.now();
-  const chain = chainFor(preferred).filter(m => !exclude.includes(m));
+  const chain = chainFor(preferred, root).filter(m => !exclude.includes(m));
   return chain.find(m => !(st[m] && st[m].until > now)) || chain[0] || null;
 }
 
-function markUnavailable(root, model, reason) {
+function markUnavailable(root, model, reason, resetsAt) {
   const st = readStatus(root);
-  st[model] = { until: Date.now() + SKIP_MS, reason, at: new Date().toISOString() };
+  const reset = resetsAt ? resetsAt * (resetsAt < 1e12 ? 1000 : 1) : 0;
+  st[model] = { until: Math.max(Date.now() + SKIP_MS, Math.min(reset, Date.now() + 7 * 864e5)), reason, at: new Date().toISOString() };
   writeStatus(root, st);
 }
 function markOk(root, model) {
   const st = readStatus(root);
   if (st[model]) { delete st[model]; writeStatus(root, st); }
 }
+const clearSkip = markOk;
 
 // Tracks the stream of one run and decides why it failed.
 class RunWatch {
@@ -93,6 +148,7 @@ class RunWatch {
 
 function reasonText(kind, model) {
   if (kind === 'model') return `${label(model)} can't be used right now (its usage credits are used up, or this Claude Code version doesn't support it)`;
+  if (kind === 'plan') return `Your Claude plan's usage limit is reached`;
   return `${label(model)} stopped with an error`;
 }
 
@@ -110,10 +166,12 @@ function friendlyError(kind, watch, tried) {
   return 'The run stopped because of an error in Claude Code. Send "continue" to try again from where it stopped.';
 }
 
-function continuePrompt(from, to) {
-  return `Continue the anatomy run exactly where it stopped. ${label(from)} became unavailable, so you are now running on ${label(to)}. ` +
+function continuePrompt(from, to, why) {
+  const local = isLocal(to) ? ' You are a local model with less capacity: do only light steps (research notes, summaries, BOM tidying, documentation, checking files). ' +
+    'Do not produce CAD, drawings, PCB layouts or engineering calculations; list those as waiting for Claude in a file named WAITING-FOR-CLAUDE.md and stop when only such steps remain.' : '';
+  return `Continue the anatomy run exactly where it stopped. ${why || `${label(from)} became unavailable`}, so you are now running on ${label(to)}.${local} ` +
     'Check which steps and background agents did not finish (some may have failed with an API error) and redo them. ' +
     'Keep the same quality bar and do not repeat work that is already saved in this folder.';
 }
 
-module.exports = { chainFor, pickModel, markUnavailable, markOk, RunWatch, friendlyError, reasonText, continuePrompt, label };
+module.exports = { isLocal, cliModel, applyLocalEnv, ollamaModels, overview, readSettings, writeSettings, clearSkip, chainFor, pickModel, markUnavailable, markOk, RunWatch, friendlyError, reasonText, continuePrompt, label };

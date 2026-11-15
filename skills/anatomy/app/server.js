@@ -197,17 +197,17 @@ function startRun(id, message, display, opts = {}) {
     '--append-system-prompt', systemAppend()];
   const skillDir = path.join(os.homedir(), '.claude', 'skills', 'anatomy');
   if (fs.existsSync(skillDir)) args.push('--add-dir', skillDir);
-  if (model) args.push('--model', model);
+  if (model) args.push('--model', models.cliModel(model));
   if (meta.sessionId) args.push('--resume', meta.sessionId);
 
   const isCmd = claude.toLowerCase().endsWith('.cmd');
   const proc = spawn(isCmd ? `"${claude}"` : claude, isCmd ? args.map(a => `"${a.replace(/"/g, '\\"')}"`) : args, {
-    cwd: projectDir(id), env: cleanEnv(), windowsHide: true, shell: isCmd,
+    cwd: projectDir(id), env: models.isLocal(model) ? models.applyLocalEnv(cleanEnv(), model) : cleanEnv(), windowsHide: true, shell: isCmd,
   });
   const r = runs.get(id) || { clients: new Set() };
   r.proc = proc; runs.set(id, r);
 
-  meta.status = 'running'; meta.updated = new Date().toISOString(); writeMeta(id, meta);
+  meta.currentModel = model; meta.status = 'running'; meta.updated = new Date().toISOString(); writeMeta(id, meta);
   emit(id, { type: 'anatomy', kind: 'run-start', text: display || message, model, auto: !!opts.auto });
 
   proc.stdin.write(message);
@@ -232,15 +232,24 @@ function startRun(id, message, display, opts = {}) {
   proc.on('error', e => emit(id, { type: 'anatomy', kind: 'error', text: 'Could not start Claude Code: ' + e.message }));
   proc.on('close', code => {
     const m = readMeta(id) || meta;
+    // Settings > Models > "Switch now": the run was stopped on purpose, resume on the chosen model.
+    if (r.switchTo) {
+      const to = r.switchTo; r.switchTo = null; r.proc = null; r.stopping = false;
+      emit(id, { type: 'anatomy', kind: 'notice', text: `Switched from ${models.label(model)} to ${models.label(to)} as you asked. Carrying on where it stopped.` });
+      try { return startRun(id, models.continuePrompt(model, to, 'You asked to switch models'), '', { model: to, tried: [], auto: true }); }
+      catch (e) { /* fall through */ }
+    }
     const stopped = r.stopping;
     const failed = !stopped && (code !== 0 || !!watch.resultErr);
     // The reason is usually in the last result event (usage limit, API error), not on stderr.
     const kind = failed ? watch.kind(errTail) : '';
     const triedNow = [...tried, model].filter(Boolean);
     if (!failed && model) models.markOk(ROOT, model);
-    if (kind === 'model' && model) {
-      models.markUnavailable(ROOT, model, watch.apiError || 'unavailable');
-      const next = models.pickModel(ROOT, m.model, triedNow);
+    // 'plan': the whole Claude plan is at its limit, so only a local model (if turned on in Settings) can carry on.
+    if ((kind === 'model' || kind === 'plan') && model) {
+      models.markUnavailable(ROOT, model, kind === 'plan' ? 'plan limit reached' : (watch.apiError || 'unavailable'), watch.resetsAt);
+      const cand = models.pickModel(ROOT, m.model, triedNow);
+      const next = kind === 'plan' ? models.chainFor(m.model, ROOT).find(x => models.isLocal(x) && !triedNow.includes(x)) : cand;
       if (next && !triedNow.includes(next)) {
         emit(id, { type: 'anatomy', kind: 'notice', text: `${models.reasonText(kind, model)}, so Anatomy switched to ${models.label(next)} and is carrying on.` });
         r.proc = null; r.stopping = false;
@@ -440,6 +449,15 @@ const server = http.createServer(async (req, res) => {
         return send(res, 200, { ok: true });
       }
       if (action === 'stop' && req.method === 'POST') { stopRun(id); return send(res, 200, { ok: true }); }
+      if (action === 'switch' && req.method === 'POST') {
+        const { model } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
+        if (!model) return send(res, 400, { error: 'model required' });
+        models.clearSkip(ROOT, model);
+        const r = runs.get(id);
+        if (r?.proc) { r.switchTo = model; stopRun(id); return send(res, 200, { ok: true, switching: true }); }
+        meta.model = model; writeMeta(id, meta);
+        return send(res, 200, { ok: true, switching: false });
+      }
 
       if (action === 'events' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' });
@@ -510,6 +528,19 @@ const server = http.createServer(async (req, res) => {
         const p = rel ? safeJoin(dir, rel) : dir;
         if (process.platform === 'win32') execFile('explorer.exe', rel ? ['/select,', p] : [p], () => {});
         return send(res, 200, { ok: true });
+      }
+    }
+
+    if (parts[1] === 'models') {
+      if (req.method === 'GET') {
+        const o = await models.overview(ROOT);
+        o.running = listProjects().filter(p => runs.get(p.id)?.proc).map(p => ({ id: p.id, title: p.title, model: (readMeta(p.id) || {}).currentModel || null }));
+        return send(res, 200, o);
+      }
+      if (req.method === 'PUT') return send(res, 200, models.writeSettings(ROOT, JSON.parse((await readBody(req)).toString('utf8') || '{}')));
+      if (req.method === 'POST' && parts[2] === 'clear') {
+        const { model } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
+        models.clearSkip(ROOT, model); return send(res, 200, { ok: true });
       }
     }
 
