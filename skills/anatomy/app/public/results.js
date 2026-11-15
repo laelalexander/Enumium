@@ -29,6 +29,7 @@ export async function renderResults(host, ctx) {
   const tabs = [
     ['overview', 'Overview', true],
     ['build', 'Build', true],
+    ['sim', 'Simulate', true],
     ['run', 'Try it', (manifest.apps || []).length > 0 || has(f => /(^|\/)(index\.html)$/i.test(f.path) && !/assembly/i.test(f.path))],
     ['model', '3D model', has(f => MODEL.includes(ext(f.path)))],
     ['drawings', 'Drawings', has(f => (['pdf', 'svg', 'dxf'].includes(ext(f.path)) && /draw|blueprint|sheet|cut/i.test(f.path)) || (ext(f.path) === 'pdf'))],
@@ -46,7 +47,7 @@ export async function renderResults(host, ctx) {
     host.querySelectorAll('.rtabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     disposeViewer();
     body.innerHTML = '';
-    ({ overview, build, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
+    ({ overview, build, sim, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
     try { localStorage.setItem('anatomy.tab.' + S.id, t); } catch {}
   };
   host.querySelectorAll('.rtabs button').forEach(b => b.onclick = () => show(b.dataset.t));
@@ -467,6 +468,63 @@ async function docs(el) {
   const open = async p => { dl.querySelectorAll('.pi').forEach(x => x.classList.toggle('on', x.dataset.p === p)); el.querySelector('#doc').innerHTML = S.md(await fetchText(p)); };
   dl.onclick = e => { const it = e.target.closest('.pi'); if (it) open(it.dataset.p); };
   const first = mds.find(f => /00-overview|readme/i.test(f.path)) || mds[0]; if (first) open(first.path);
+}
+
+// ---------------------------------------------------------------- Simulate: digital twin + test environment
+const SIM_PROMPT = `Build the simulator and test environment for this project, following references/simulation.md of the anatomy skill exactly. The desktop robot arm test table is the bar.
+Build a digital twin in sim/ from this project's own assembly and numbers. It needs:
+- the assembled 3D model with real joints and limits;
+- a behaviour model of the actuators, sensors, loads and power, using the design's datasheet values;
+- the firmware in the loop, speaking its real command protocol;
+- controls, live checks and an E-stop;
+- automated test scenarios traced to the blueprint's requirements, with pass/fail and margins;
+- headless test runs that write sim/results/latest.json;
+- a hardware link that drives the real device from the same UI.
+Add it to anatomy.json as an app with "kind": "simulator", plus a "tests" entry {"cwd", "run", "results"} for the headless run. Start it, run every scenario, look at the result, and report any failures as design findings.`;
+async function sim(el) {
+  const m = S.manifest || {}, apps = m.apps || [];
+  let n = apps.findIndex(a => a.kind === 'simulator');
+  if (n < 0) n = apps.findIndex(a => /simulator|digital twin|test table/i.test(a.name + ' ' + (a.description || '')));
+  const resPath = (m.tests && m.tests.results ? ((m._base ? m._base + '/' : '') + m.tests.results) : null)
+    || (S.files.find(f => /(^|\/)sim\/results\/latest\.json$/i.test(f.path)) || S.files.find(f => /results\/latest\.json$/i.test(f.path)) || {}).path;
+  if (n < 0) {
+    el.innerHTML = `<div class="buildintro"><h2>Simulate and test before you build</h2>
+      <p class="lead">Anatomy builds a working digital twin of this product. It's made from the same assembly, parts and firmware as the build package, so you can drive it, load it and run its tests on this PC with no hardware. When the real device is connected, the same window drives it too.</p>
+      <ol class="bsteps"><li>3D twin with real joints and limits</li><li>Actuators, sensors, loads and power from the datasheets</li><li>Firmware in the loop on its real command protocol</li><li>Automated tests traced to the requirements, with pass/fail and margins</li><li>Hardware link to the real device</li></ol>
+      <div class="ib"></div><p class="empty">This runs Claude on the project and can take a while. You can watch it in the Live view.</p></div>`;
+    el.querySelector('.ib').append(btn('Build the simulator', () => S.startRun(SIM_PROMPT), 'primary'));
+    return;
+  }
+  const a = apps[n];
+  el.innerHTML = `<div class="tryit"><div class="appcard"><div class="t">${esc(a.name)}</div><div class="d">${esc(a.description || '')}</div>${(a.needs || []).length ? `<div class="n">Needs: ${esc(a.needs.join(', '))}</div>` : ''}<div class="b"></div></div>
+    <p class="sect" style="margin-top:18px">Test results</p><div id="simres"></div><pre class="applog hidden" id="simlog"></pre></div>`;
+  const b = el.querySelector('.b');
+  const open = btn('Open simulator', async () => {
+    open.disabled = true; open.textContent = 'Starting…';
+    await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }).catch(() => {});
+    await new Promise(r => setTimeout(r, a.startup_ms || 4000)); open.disabled = false; open.textContent = 'Open simulator';
+    if (a.url) window.open(a.url, '_blank', 'width=1500,height=950');
+  }, 'primary');
+  b.append(open);
+  if (m.tests && m.tests.run) b.append(btn('Run all tests', async e => {
+    const t = e.target; t.disabled = true; t.textContent = 'Running tests…';
+    const r = await S.api(`/api/projects/${S.id}/simtest`, { method: 'POST' }).catch(x => ({ code: -1, log: x.message }));
+    t.disabled = false; t.textContent = 'Run all tests';
+    const pre = el.querySelector('#simlog'); pre.classList.remove('hidden'); pre.textContent = (r.log || '').trim() || `(exit code ${r.code})`;
+    showRes(r.results || resPath);
+  }));
+  b.append(btn('Rebuild simulator', () => { if (confirm('Run Claude again to rebuild the simulator and its tests?')) S.startRun(SIM_PROMPT); }));
+  async function showRes(p) {
+    const box = el.querySelector('#simres');
+    if (!p) { box.innerHTML = '<p class="empty">No results yet. Run all tests, or run them from inside the simulator.</p>'; return; }
+    const R = await fetch(`/api/projects/${S.id}/file?path=${encodeURIComponent(p)}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
+    if (!R || !Array.isArray(R.tests)) { box.innerHTML = '<p class="empty">No results yet. Run all tests, or run them from inside the simulator.</p>'; return; }
+    const cnt = k => R.tests.filter(t => t.result === k).length;
+    const col = { pass: 'var(--ok, #4ade80)', fail: 'var(--bad, #f87171)', warn: '#fbbf24' };
+    box.innerHTML = `<p class="lead">${cnt('pass')} passed · ${cnt('fail')} failed · ${cnt('warn')} warnings${R.when ? ` · ${esc(new Date(R.when).toLocaleString())}` : ''}</p>
+      <table class="bom"><tr><th>Test</th><th>Requirement</th><th>Result</th><th>Margin</th><th>Detail</th></tr>${R.tests.map(t => `<tr><td>${esc(t.name)}</td><td>${esc(t.requirement || '')}</td><td style="color:${col[t.result] || 'inherit'};font-weight:600">${esc(t.result)}</td><td>${esc(t.margin ?? '')}</td><td>${esc(t.detail || '')}</td></tr>`).join('')}</table>`;
+  }
+  showRes(resPath);
 }
 
 // ---------------------------------------------------------------- Build wizard

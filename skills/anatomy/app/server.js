@@ -458,6 +458,21 @@ const server = http.createServer(async (req, res) => {
         try { const j = readJson(path.join(dir, hits[0].path)); j._file = hits[0].path; return send(res, 200, j); }
         catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }
       }
+      if (action === 'simtest' && req.method === 'POST') {
+        // Run the simulator's headless tests (anatomy.json "tests": {cwd, run, results}) and return the output.
+        const m = findManifest(dir); const t = m && m.tests;
+        if (!t || !t.run) return send(res, 400, { error: 'anatomy.json has no "tests" entry' });
+        const cwd = safeJoin(dir, path.posix.join(m._base || '', t.cwd || '.'));
+        const env = cleanEnv(); const py = projectPython(dir); if (py) env.PATH = path.dirname(py) + path.delimiter + env.PATH;
+        const cmd = Array.isArray(t.run) ? t.run.join(' && ') : t.run;
+        let log = '';
+        const p = spawn(cmd, { cwd, env, shell: true, windowsHide: true });
+        p.stdout.on('data', d => { log = (log + d).slice(-40000); }); p.stderr.on('data', d => { log = (log + d).slice(-40000); });
+        const killer = setTimeout(() => { log += '\n[stopped after 10 minutes]'; if (process.platform === 'win32') execFile('taskkill', ['/pid', String(p.pid), '/T', '/F'], () => {}); else p.kill('SIGTERM'); }, 600000);
+        p.on('close', code => { clearTimeout(killer); send(res, 200, { code, log, results: t.results ? path.posix.join(m._base || '', t.results) : null }); });
+        p.on('error', e => { clearTimeout(killer); send(res, 200, { code: -1, log: e.message }); });
+        return;
+      }
       if (action === 'manifest' && req.method === 'GET') {
         const m = findManifest(dir);
         if (m && m.apps) m.apps = m.apps.map((a, n) => ({ ...a, running: !!apps.get(`${id}/${n}`) }));
