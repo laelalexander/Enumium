@@ -276,7 +276,15 @@ function fitOf(alt, reqs) {
 }
 function evaluate(ctx) {
   for (const [line, s] of Object.entries(ctx.supply.lines)) {
-    for (const a of s.alternates || []) { const f = fitOf(a, s.requirements); a.fit = f.fit; a.checks = f.checks; }
+    const p = (ctx.build.purchase || []).find(x => x.line === line);
+    const base = p && +p.unit_price;
+    for (const a of s.alternates || []) {
+      const f = fitOf(a, s.requirements); a.fit = f.fit; a.checks = f.checks;
+      const ap = +((a.stock && a.stock.price) ?? a.unit_price);
+      // Cost against the line's current price, so a dearer drop-in is never offered as if it were free.
+      if (base > 0 && ap > 0) { a.price_delta_pct = Math.round(100 * (ap - base) / base); a.extra_cost = Math.round((ap - base) * (+p.qty || 0) * 100) / 100; }
+      else { delete a.price_delta_pct; delete a.extra_cost; }
+    }
     s.state = lineState(ctx, line);
   }
 }
@@ -284,7 +292,11 @@ function lineState(ctx, line) {
   const s = ctx.supply.lines[line] || {}; const ps = s.primary && s.primary.stock && s.primary.stock.status;
   const alts = s.alternates || [];
   if (ps === 'in_stock') return 'ok';
-  if (alts.some(a => a.fit === 'in-kind' && a.stock && a.stock.status === 'in_stock')) return 'swap-ready';
+  // "In stock" counts as confirmed only if the latest live check got through; a status kept from an earlier
+  // check (the re-check was refused or failed) has to be confirmed on the page before anyone relies on it.
+  const inKindIn = alts.filter(a => a.fit === 'in-kind' && a.stock && a.stock.status === 'in_stock');
+  if (inKindIn.some(a => !a.stock.recheck)) return 'swap-ready';
+  if (inKindIn.length) return 'swap-to-confirm';
   if (alts.some(a => a.fit === 'in-kind' && a.stock && a.stock.status === 'backorder') || ps === 'backorder') return 'backorder';
   if (alts.some(a => a.fit === 'needs-change' && a.stock && a.stock.status === 'in_stock')) return 'redesign-option';
   if (ps === 'sold_out' || ps === 'discontinued') return 'no-source';
@@ -306,8 +318,8 @@ function feedback(ctx, line, target, status, price, note, by = 'user') {
   if (!p) throw new Error(`no purchase line ${line}`);
   const st = { status, checked: new Date().toISOString(), via: `${by} report${note ? ': ' + note : ''}` };
   if (price != null && price !== '' && Number.isFinite(+price)) st.price = +price;
-  if (target === 'primary') { s.primary = s.primary || {}; s.primary.stock = { ...(s.primary.stock || {}), ...st }; }
-  else { const a = s.alternates.find(x => x.id === target); if (!a) throw new Error(`no alternate ${target} on ${line}`); a.stock = { ...(a.stock || {}), ...st }; }
+  if (target === 'primary') { s.primary = s.primary || {}; s.primary.stock = { ...(s.primary.stock || {}), ...st, recheck: undefined, rechecked: undefined }; }
+  else { const a = s.alternates.find(x => x.id === target); if (!a) throw new Error(`no alternate ${target} on ${line}`); a.stock = { ...(a.stock || {}), ...st, recheck: undefined, rechecked: undefined }; }
   ctx.supply.feedback.push({ when: st.checked, line, target, status, price: st.price, note: note || '', by });
   evaluate(ctx); saveSupply(ctx);
   const alts = (s.alternates || []).filter(a => a.id !== target);

@@ -625,7 +625,7 @@ async function build(el) {
           : `Noted: ${esc(line)} is ${STOCK_TXT[status].toLowerCase()} at ${esc(p.supplier)} and there is no drop-in source on file. Use "Find a replacement" to have Claude search and check the options against the design.`;
         return draw(); }
       if (ds.swap) { const [line, aid] = ds.swap.split('|'); const a = altOf(line, aid), p = lineOf(line);
-        if (!confirm(`Switch ${line} to ${a.supplier} ${a.mpn || ''}${a.unit_price ? ' at $' + a.unit_price : ''}?\n\nThe purchase list, carts, BOM and build.json are updated and the change is logged. Nothing is ordered.`)) return;
+        if (!confirm(`Switch ${line} to ${a.supplier} ${a.mpn || ''}${a.unit_price ? ' at $' + a.unit_price : ''}?${a.price_delta_pct > 25 ? `\n\nThis costs ${a.price_delta_pct} % more than the current price: $${a.extra_cost.toFixed(0)} more for ${p.qty}.` : ''}${a.stock && a.stock.recheck ? `\n\nIts stock could not be re-checked just now (${a.stock.recheck}). Confirm it on the seller's page first.` : ''}\n\nThe purchase list, carts, BOM and build.json are updated and the change is logged. Nothing is ordered.`)) return;
         await supApi('swap', { line, alt: aid, reason: `${p.supplier}: ${(STOCK_TXT[((SUP.supply.lines[line] || {}).primary || {}).stock?.status] || 'unavailable').toLowerCase()}` });
         return build(el); }
       if (ds.eco) { const [line, aid] = ds.eco.split('|'); const a = altOf(line, aid), p = lineOf(line);
@@ -648,14 +648,14 @@ async function build(el) {
       const cnt = k => prim.filter(x => (x.status || 'unchecked') === k).length;
       const aud = (SUP && SUP.audit) || []; const bad = aud.filter(r => r.verdict !== 'OK');
       const changes = (SUP && SUP.changes) || [], open = (SUP && SUP.open) || [];
-      const needsAction = (B.purchase || []).filter(p => ['swap-ready', 'redesign-option', 'no-source', 'backorder'].includes((L[p.line] || {}).state));
+      const needsAction = (B.purchase || []).filter(p => ['swap-ready', 'swap-to-confirm', 'redesign-option', 'no-source', 'backorder'].includes((L[p.line] || {}).state));
       const head = SUP && SUP.error ? `<div class="alert">${esc(SUP.error)}</div>` : `<div class="supbar">
         <div><b>Rev ${esc(SUP.revision || B.revision || 'A')}</b> <button class="mini" data-act="log">change log (${changes.length}${open.length ? `, ${open.length} open` : ''})</button></div>
         <div>${cnt('in_stock')} in stock · ${cnt('backorder')} back-order · ${cnt('sold_out') + cnt('discontinued')} sold out · ${cnt('unknown') + cnt('unchecked')} not checked</div>
         <div>Quantities vs the design: ${bad.length ? `<span class="sb warn">${bad.length} to look at</span>` : `<span class="sb ok">${aud.length} of ${aud.length} OK</span>`} <button class="mini" data-act="audit">details</button></div>
         <div class="grow"></div><button class="mini" data-act="refresh">Check stock now</button> <button class="mini" data-act="idea">Engineer a cheaper or better version…</button></div>
         ${supMsg ? `<div class="supmsg">${supMsg}</div>` : ''}
-        ${needsAction.length ? `<div class="supmsg warn"><b>Needs a decision:</b> ${needsAction.map(p => `${esc(p.line)} ${esc(p.desc)} (${({ 'swap-ready': 'a drop-in source is in stock', 'redesign-option': 'only parts that need a design change are in stock', 'no-source': 'no source in stock', backorder: 'back-order only' })[L[p.line].state]})`).join('; ')}</div>` : ''}
+        ${needsAction.length ? `<div class="supmsg warn"><b>Needs a decision:</b> ${needsAction.map(p => `${esc(p.line)} ${esc(p.desc)} (${({ 'swap-ready': 'a drop-in source is in stock', 'swap-to-confirm': 'a drop-in source was in stock at the last check; confirm on its page', 'redesign-option': 'only parts that need a design change are in stock', 'no-source': 'no source in stock', backorder: 'back-order only' })[L[p.line].state]})`).join('; ')}</div>` : ''}
         <div id="suplog" hidden>${changes.length || open.length ? `<table class="bom"><tr><th>When</th><th>Rev</th><th>Id</th><th>Kind</th><th>Line</th><th>Change</th><th>Why</th></tr>
           ${open.map(o => `<tr><td>${esc((o.opened || '').slice(0, 10))}</td><td>open</td><td>${esc(o.id)}</td><td>eco</td><td>${esc(o.line || '')}</td><td>${esc(o.title || '')}</td><td>in progress</td></tr>`).join('')}
           ${changes.slice().reverse().map(c => `<tr><td>${esc((c.when || '').slice(0, 10))}</td><td>${esc(c.revision)}</td><td>${esc(c.id)}</td><td>${esc(c.kind)}</td><td>${esc(c.line || '')}</td><td>${esc(c.summary || '')}</td><td>${esc(c.reason || '')}</td></tr>`).join('')}</table>` : '<p class="empty">No changes yet. Source switches and engineering changes are recorded here, with the revision they made.</p>'}</div>
@@ -664,7 +664,7 @@ async function build(el) {
         return `<tr class="altrow"><td colspan="8">${(s.requirements || []).length ? `<p class="empty">Must meet: ${s.requirements.map(q => `${esc(q.key)} ${q.eq !== undefined ? '= ' + esc(q.eq) : [q.min !== undefined ? '≥ ' + q.min : '', q.max !== undefined ? '≤ ' + q.max : ''].filter(Boolean).join(' ')}`).join(' · ')}</p>` : '<p class="empty">No design requirements recorded for this line yet, so alternates cannot be checked. "Find a replacement" records them.</p>'}
           ${alts.length ? `<table class="bom alts"><tr><th>Source</th><th>Part</th><th>Price</th><th>Stock</th><th>Fit</th><th>Differences and notes</th><th></th></tr>${alts.map(a => { const f = FIT_TXT[a.fit] || FIT_TXT.unverified; const fails = (a.checks || []).filter(c => c.ok === false);
             return `<tr><td>${a.url ? `<a href="${esc(a.url)}" target="_blank">${esc(a.supplier)}</a>` : esc(a.supplier)}${a.source === 'user' ? ' <span class="empty">(you found)</span>' : ''}</td><td>${esc(a.mfr || '')} <code>${esc(a.mpn || '')}</code></td>
-            <td>${(a.stock && a.stock.price) ?? a.unit_price ? '$' + (+((a.stock && a.stock.price) ?? a.unit_price)).toFixed(2) : ''}</td><td>${stockBadge(a.stock)}</td><td><span class="sb ${f[1]}">${f[0]}</span></td>
+            <td>${(a.stock && a.stock.price) ?? a.unit_price ? '$' + (+((a.stock && a.stock.price) ?? a.unit_price)).toFixed(2) : ''}${a.price_delta_pct ? `<div class="${a.price_delta_pct > 25 ? 'fails' : 'empty'}" title="against the current $${esc(p.unit_price)} for ${esc(p.qty)}">${a.price_delta_pct > 0 ? '+' : ''}${a.price_delta_pct} % (${a.extra_cost > 0 ? '+' : '−'}$${Math.abs(a.extra_cost).toFixed(0)})</div>` : ''}</td><td>${stockBadge(a.stock)}</td><td><span class="sb ${f[1]}">${f[0]}</span></td>
             <td>${fails.length ? `<div class="fails">${fails.map(c => `<div title="${esc(c.why)}">✗ ${checkTxt(c)} <span class="empty">${esc(c.why)}</span></div>`).join('')}</div>` : ''}${esc(a.notes || '')}</td>
             <td>${a.fit === 'in-kind' ? `<button class="mini" data-swap="${esc(p.line)}|${esc(a.id)}">Use this source</button>` : a.fit === 'needs-change' ? `<button class="mini" data-eco="${esc(p.line)}|${esc(a.id)}">Engineer this change</button>` : `<button class="mini" data-vet="${esc(p.line)}|${esc(a.id)}">Vet it</button>`}</td></tr>`; }).join('')}</table>` : ''}
           <div class="ib"><button class="mini" data-find="${esc(p.line)}">Find a replacement</button> <button class="mini" data-cand="${esc(p.line)}">Add a source I found…</button></div></td></tr>`; };
@@ -673,7 +673,7 @@ async function build(el) {
         const sub = list.reduce((a, p) => a + (+p.qty || 0) * (+p.unit_price || 0), 0);
         return `<div class="sgroup"><div class="sgh"><b>${esc(s)}</b><span>${list.length} item${list.length === 1 ? '' : 's'} · $${sub.toFixed(2)}</span><button class="mini" data-openall="${esc(s)}">open all links</button></div>
           <table class="bom"><tr><th>Ordered</th><th>Received</th><th>Part</th><th>MPN</th><th>Qty</th><th>Unit</th><th>Stock</th><th>Link</th></tr>${list.map(p => { const sl = L[p.line] || {}; const nAlt = (sl.alternates || []).length; const ar = A.get(p.line);
-          return `<tr class="${['swap-ready', 'redesign-option', 'no-source'].includes(sl.state) ? 'gen' : ''}">
+          return `<tr class="${['swap-ready', 'swap-to-confirm', 'redesign-option', 'no-source'].includes(sl.state) ? 'gen' : ''}">
           <td>${check('purchase', p.line, 'ordered', '')}</td><td>${check('purchase', p.line, 'received', '')}</td>
           <td>${esc(p.desc)}<div class="empty">${esc(p.line || '')} ${esc(p.mfr || '')}${p.alt && !nAlt ? ' · alt: ' + esc(p.alt) : ''}</div>
             <div class="lact"><button class="mini" data-alt="${esc(p.line)}">${nAlt ? `alternates (${nAlt})` : 'alternates'}</button> <button class="mini" data-fbopen="${esc(p.line)}">sold out or changed?</button></div></td>
