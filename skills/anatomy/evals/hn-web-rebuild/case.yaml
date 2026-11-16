@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hn-web-rebuild
+expected_outcome: |
+  A blueprint folder plus a running demo of a Hacker News style site (ranked story list, comments, submit/vote slice).

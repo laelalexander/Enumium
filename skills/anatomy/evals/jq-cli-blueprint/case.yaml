@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: jq-cli-blueprint
+expected_outcome: |
+  A blueprint of jq behavior: filter language, I/O contract, exit codes, options, and a rebuild spec with a demo of a core subset.

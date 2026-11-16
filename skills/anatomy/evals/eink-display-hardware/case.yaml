@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: eink-display-hardware
+expected_outcome: |
+  A full hardware build package: parametric enclosure with STL/STEP, schematic and netlist, BOM with real part numbers, PCB design or layout spec, power budget, firmware skeleton, build instructions and test procedure.
