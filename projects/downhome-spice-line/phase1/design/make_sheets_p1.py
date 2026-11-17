@@ -62,14 +62,14 @@ def pfd():
         dict(id="hand", tag="P1-201 on P1-206", name="Hand weigh: lines under 4 kg\nscan lot, MES tolerance", x=500, y=640, w=340, h=110),
         dict(id="pm", tag="P1-202 + P1-208", name="Premix minors < 2 %\nwith carrier salt, tumble", x=500, y=860, w=340, h=110),
         dict(id="scr", tag="P1-223 > P1-224", name="Valve, flexible screw\nhand adds + premix at intake", x=940, y=400, w=340, h=110),
-        dict(id="bl", tag="P1-301 on P1-311", name=f"Ribbon blend {c['working_cuft']} cu ft\nmix 12 min, CV <= 5 %", x=1380, y=400, w=340, h=110),
-        dict(id="sv", tag="P1-303 > P1-304/305/307", name="Sift 12 mesh + grate magnet\noversize to reject", x=1380, y=620, w=340, h=110),
+        dict(id="bl", tag="P1-301 (built) > P1-331", name=f"Ribbon blend {c['working_cuft']} cu ft\nmix 12 min, CV <= 5 %", x=1380, y=400, w=340, h=110),
+        dict(id="sv", tag="P1-304/305/307 on drum", name="Drum-top sifter 12 mesh\n+ magnet, oversize to reject", x=1380, y=620, w=340, h=110),
         dict(id="drum", tag="P1-308 on P1-309", name="Lined 55 gal drum\n1 batch = 1 drum, labeled", x=1380, y=840, w=340, h=110),
         dict(id="qc", tag="HOLD-1 / QC", name="QC hold: CV, micro\nrelease in MES", x=1820, y=840, w=320, h=110, fill="#fff3e0"),
-        dict(id="fill", tag="P1-401 + P1-410", name="Auger fill by weight\nnests hold the container", x=1820, y=180, w=320, h=110),
-        dict(id="cap", tag="TBL-1: P1-402/403", name="Cap by hand, torque check\ninduction seal", x=2240, y=180, w=320, h=110),
-        dict(id="lab", tag="TBL-2: P1-404/405", name="Print label with lot + best-by\nwrap-apply label", x=2240, y=400, w=320, h=110),
-        dict(id="md", tag="P1-406", name="Metal detect finished pack\nCCP-1, locked reject", x=2240, y=620, w=320, h=110, fill="#ffebee"),
+        dict(id="fill", tag="P1-401 (built) + P1-410", name="Servo auger fill by weight\nnests hold the container", x=1820, y=180, w=320, h=110),
+        dict(id="cap", tag="TBL-1: P1-412 + P1-403", name="Spindle capper, clutch torque\ninduction seal", x=2240, y=180, w=320, h=110),
+        dict(id="lab", tag="TBL-2: P1-404 + P1-405", name="Print label with lot + best-by\nbuilt wrap labeler", x=2240, y=400, w=320, h=110),
+        dict(id="md", tag="P1-406 + P1-418", name="Metal detect finished pack\nCCP-1, locked reject", x=2240, y=620, w=320, h=110, fill="#ffebee"),
         dict(id="cw", tag="TBL-3: P1-407", name="Checkweigh every unit\nreject < declared", x=2240, y=840, w=320, h=110),
         dict(id="pk", tag="P1-408 > TBL-4", name="Accumulate, case pack\nGS1 case label (P1-204)", x=2660, y=840, w=320, h=110),
         dict(id="fg", tag="PAL-FG > FG-1", name="Pallet, SSCC label\nfinished goods 3 days", x=2660, y=1060, w=320, h=100, fill="#e8f5e9"),
@@ -117,9 +117,9 @@ def pfd():
 # ================================================================== ASM-P1-001 dosing and blending
 XC = 1800.0                 # dosing station centre
 H_RING, Y_BIN, Y_FEED, Y_LID, Y_HOP, Y_VALVE = 2210, 1730, 1380, 1231, 650, 550
-BX0, BX1 = 5200.0, 6900.0   # blender stand
-H_STAND, Y_VOUT = 1150, 1690
-XV = 6100.0                 # blender valve / sieve centreline
+XV = 6100.0                 # blender valve / sifter centreline (built blender P1-301, no riser stand)
+TB, Y_VOUT, Y_FLG = 1400, 1261, 1983          # trough bottom, valve outlet, top flange (cad/p1_machines.py)
+BX0, BX1 = XV - 480 - 38, XV + 480 + 38       # frame legs
 
 
 def bin_shapes(x, label):
@@ -138,12 +138,22 @@ def asm1():
             R((XC - 1590, 975, 1185, 51), fill=SS), R((XC + 405, 975, 1185, 51), fill=SS),
             R((XC - 1590 - 75, 0, 150, 10), fill="#90a4ae"), R((XC + 1590 - 75, 0, 150, 10), fill="#90a4ae"),
             T("ring 2 in sq tube on R1,590; bins on R1,250", (XC, 2560), 12)]
-    fl = [R((b_left - 150, Y_FEED, 900, 350), fill="#fff8e1", sw=2), R((b_left + 650, Y_FEED - 60, 100, 60), fill=SS),
-          C((b_left - 230, Y_FEED + 175), 80, fill=SS), T("0.5 HP", (b_left - 230, Y_FEED + 170), 11)]
-    fr = [R((b_right - 750, Y_FEED, 900, 350), fill="#fff8e1", sw=2), R((b_right - 750, Y_FEED - 60, 100, 60), fill=SS),
-          C((b_right + 230, Y_FEED + 175), 80, fill=SS)]
-    bfm = [P([(b_left + 650, Y_FEED - 60), (b_left + 750, Y_FEED - 60), (XC - 240, Y_LID), (XC - 320, Y_LID)], fill="#e1f5fe", sw=1.5),
-           P([(b_right - 750, Y_FEED - 60), (b_right - 650, Y_FEED - 60), (XC + 320, Y_LID), (XC + 240, Y_LID)], fill="#e1f5fe", sw=1.5)]
+    FA = Y_BIN - 204.0           # built feeder P1-212 barrel axis: bin outlet flange on the transition top (P1-212-GA)
+    FS = FA - 132.0              # spout bottom into the BFM boot
+    def feeder(bx, d):           # d = +1 screw runs right (inward), -1 left
+        xs = lambda a, b: (min(bx + d * a, bx + d * b), abs(b - a))
+        x0, w = xs(-250, 650)
+        sh = [R((x0, FA - 32, w, 64), fill=SS, sw=2), P([(bx - 75, Y_BIN - 6), (bx + 75, Y_BIN - 6), (bx + 70, FA + 32), (bx - 70, FA + 32)], fill=SS, sw=1.5),
+              R((bx - 100, Y_BIN - 6, 200, 6), fill=SS)]
+        x0, w = xs(550, 610)
+        sh.append(R((x0, FS, w, 100), fill=SS))
+        x0, w = xs(-560, -260)
+        sh += [R((x0, FA - 60, w, 120), fill="#b3c7e6", sw=2), T("1/3 HP", (bx - d * 410, FA + 90), 11)]
+        return sh
+    fl = feeder(b_left, 1)
+    fr = feeder(b_right, -1)
+    bfm = [P([(b_left + 550, FS), (b_left + 610, FS), (XC - 240, Y_LID), (XC - 320, Y_LID)], fill="#e1f5fe", sw=1.5),
+           P([(b_right - 610, FS), (b_right - 550, FS), (XC + 320, Y_LID), (XC + 240, Y_LID)], fill="#e1f5fe", sw=1.5)]
     probe = [R((b_left + 160, Y_BIN + 250, 120, 40), fill="#ffe0b2"), R((b_right - 280, Y_BIN + 250, 120, 40), fill="#ffe0b2")]
     hop = [R((XC - 380, Y_LID - 3, 760, 3), fill=SS), R((XC - 352, Y_LID - 253, 704, 250), fill=STEEL, sw=2.5),
            P([(XC - 352, Y_LID - 253), (XC + 352, Y_LID - 253), (XC + 52, Y_HOP + 29), (XC - 52, Y_HOP + 29)], fill=STEEL, sw=2.5),
@@ -152,51 +162,57 @@ def asm1():
     cells = [R((XC - 455, 1033, 100, 90), fill="#ffcc80"), R((XC + 355, 1033, 100, 90), fill="#ffcc80")]
     valve = [R((XC - 70, Y_VALVE, 140, 100), fill="#b0bec5", sw=2), P([(XC + 70, Y_VALVE + 50), (XC + 260, Y_VALVE + 50)], closed=False, sw=4)]
     scr_t = (XC + 500, 220)
+    top = (XV + 330, Y_FLG + 170)
     screw = [P([(XC - 350, Y_VALVE), (XC + 350, Y_VALVE), (XC + 150, 160), (XC - 150, 160)], fill="#fff3e0", sw=2),
              R((XC - 200, 0, 900, 160), fill="#fff3e0", sw=2), P([(XC - 320, Y_VALVE + 15), (XC - 120, Y_VALVE + 15)], closed=False, sw=3, stroke="#5d4037"),
              T("intake grate 600 [23.6]", (XC - 560, Y_VALVE - 40), 12),
-             P([scr_t, (5600, 2950), (5600, 2830)], closed=False, sw=9, stroke="#8d6e63"), R((5480, 2830, 240, 170), fill=SS), T("screw drive 1 HP", (5600, 3060), 12)]
-    stand = [R((BX0, 0, 76, H_STAND), fill=SS), R((BX1 - 76, 0, 76, H_STAND), fill=SS), R((BX0, H_STAND - 76, BX1 - BX0, 76), fill=SS),
-             R((BX0 + 76, 262, BX1 - BX0 - 152, 76), fill=SS), R((BX0 - 37, 0, 150, 12), fill="#90a4ae"), R((BX1 - 113, 0, 150, 12), fill="#90a4ae")]
-    tb = H_STAND + 690
-    blender = [R((BX0 + 150, H_STAND, 70, 690), fill=STEEL), R((BX1 - 220, H_STAND, 70, 690), fill=STEEL),
-               P([(BX0 + 100, tb + 380), (BX0 + 100, tb + 760), (BX1 - 300, tb + 760), (BX1 - 300, tb + 380), (BX1 - 500, tb), (BX0 + 300, tb)], fill=STEEL, sw=2.5),
-               R((BX0 + 80, tb + 760, BX1 - BX0 - 360, 50), fill=SS), R((BX1 - 300, tb + 300, 280, 330), fill=SS), T("2 HP drive", (BX1 - 160, tb + 660), 12),
-               P([(BX0 + 160, tb + 300), (BX1 - 360, tb + 300)], closed=False, dash="18,6,4,6", stroke="#2e7d32", sw=1.5),
-               R((XV - 100, Y_VOUT, 200, tb - Y_VOUT), fill="#b0bec5", sw=2), R((5530, tb + 810, 140, 20), fill=SS)]
-    grate = [R((5800, tb + 810, 600, 40), hatch="h135", fill="none"), R((6300, tb + 850, 100, 120), fill=SS),
-             P([(6350, tb + 970), (6350, 3350), (7400, 3350)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("to P1-310", (7250, 3400), 12)]
-    chute = [P([(XV - 100, Y_VOUT), (XV + 100, Y_VOUT), (XV + 52, Y_VOUT - 186), (XV - 52, Y_VOUT - 186)], hatch="h45", fill="none", sw=2),
-             R((XV - 60, Y_VOUT - 215, 120, 29), hatch="h135", fill="none")]
-    sv_o, sv_c, sv_t = 1080, 1109, 1298
-    sieve = [R((XV - 60, sv_o, 120, 29), fill=SS), P([(XV - 52, sv_c), (XV + 52, sv_c), (XV + 242, sv_t), (XV - 242, sv_t)], fill=STEEL, sw=2),
-             R((XV - 242, sv_t, 484, 150), fill=STEEL, sw=2), P([(XV - 225, sv_t + 40), (XV + 225, sv_t + 40)], closed=False, sw=3, stroke="#37474f", dash="6,3"),
-             R((XV - 419, 0, 38, 1448), fill=SS), R((XV + 381, 0, 38, 1448), fill=SS), R((XV - 419, 1410, 838, 38), fill=SS)]
-    vib = [R((XV + 419, 1180, 200, 120), fill="#ffe0b2")]
+             P([scr_t, top], closed=False, sw=9, stroke="#8d6e63"), R((top[0] - 120, top[1], 240, 170), fill=SS), T("screw drive 1 HP", (top[0], top[1] + 230), 12)]
+    ax = TB + 3 + 280
+    frame = [R((BX0, 0, 76, ax + 150), fill=SS), R((BX1 - 76, 0, 76, ax + 150), fill=SS), R((BX0, 282, BX1 - BX0, 76), fill=SS),
+             R((XV - 338, TB - 76, 76, 76), fill=SS), R((XV + 262, TB - 76, 76, 76), fill=SS),
+             R((BX0 - 12, ax - 320, 12, 520), fill=SS), R((BX1, ax - 320, 12, 520), fill=SS),
+             R((BX0 - 37, 0, 150, 12), fill="#90a4ae"), R((BX1 - 113, 0, 150, 12), fill="#90a4ae")]
+    blender = [P([(XV - 450, Y_FLG), (XV + 450, Y_FLG), (XV + 450, ax), (XV - 450, ax)], fill=STEEL, sw=2.5),
+               P([(XV - 450, ax), (XV + 450, ax), (XV + 450, TB + 140), (XV + 300, TB), (XV - 300, TB), (XV - 450, TB + 140)], fill=STEEL, sw=2.5),
+               R((XV - 500, Y_FLG, 1000, 6), fill=SS), R((XV - 500, Y_FLG + 6, 1000, 3), fill=SS),
+               P([(BX0 - 160, ax), (BX1 + 380, ax)], closed=False, dash="18,6,4,6", stroke="#2e7d32", sw=1.5),
+               R((XV - 460, ax - 285, 10, 570), fill=SS), R((XV + 450, ax - 285, 10, 570), fill=SS),
+               R((BX0 - 52, ax - 95, 40, 190), fill="#ffcc80"), R((BX1 + 12, ax - 95, 40, 190), fill="#ffcc80"),
+               R((BX1 + 60, ax - 195, 230, 330), fill="#90a4ae"), C((BX1 + 420, ax + 80), 100, fill="#90a4ae"), T("2 HP gearmotor 40 rpm", (BX1 + 300, ax + 280), 12),
+               P([(XV - 275, ax - 260), (XV + 275, ax - 260)], closed=False, sw=2, stroke="#37474f", dash="10,6"), T("double ribbons OD 550", (XV, ax + 60), 12)]
+    grate = [R((XV - 410, Y_FLG + 9, 600, 25), hatch="h135", fill="none"), R((XV - 410, Y_FLG + 34, 100, 280), fill=SS),
+             P([(XV - 360, Y_FLG + 314), (XV - 360, 3350), (7400, 3350)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("to P1-310", (7250, 3400), 12)]
+    valve = [R((XV - 60, TB - 29, 120, 29), fill=SS), R((XV - 70, Y_VOUT + 29, 140, 81), fill="#b0bec5", sw=2), R((XV - 60, Y_VOUT, 120, 29), fill=SS),
+             R((XV + 70, Y_VOUT + 40, 160, 60), fill="#90a4ae")]
+    sock = [P([(XV - 50, Y_VOUT), (XV + 50, Y_VOUT), (XV + 45, 1235), (XV - 45, 1235)], fill="#fffde7")]
+    sv_b = 1054 - 60
+    sieve = [R((XV - 310, 1054, 620, 6), fill=SS), R((XV - 242, sv_b, 4, 60), fill=SS), R((XV + 238, sv_b, 4, 60), fill=SS),
+             R((XV - 242, 1060, 484, 150), fill=STEEL, sw=2), P([(XV - 225, 1100), (XV + 225, 1100)], closed=False, sw=3, stroke="#37474f", dash="6,3"),
+             R((XV - 250, 1210, 500, 3), fill=SS), R((XV - 60, 1213, 120, 22), fill=SS)]
+    vib = [R((XV + 250, 1090, 180, 110), fill="#ffe0b2")]
     drum = [R((XV - 320, 114, 640, 26), fill=SS), C((XV - 230, 57), 57, fill="#90a4ae"), C((XV + 230, 57), 57, fill="#90a4ae"),
-            R((XV - 292, 140, 584, 914), fill="#e8f5e9", sw=2), T("55 gal drum + liner", (XV, 620), 12), P([(XV - 40, 1080), (XV - 60, 1054), (XV + 60, 1054), (XV + 40, 1080)], fill="#fffde7")]
+            R((XV - 292, 140, 584, 914), fill="#e8f5e9", sw=2), T("55 gal drum + liner", (XV, 620), 12)]
     plat = [P([(-1500, 0), (-1500, 1016), (-300, 1016), (-300, 762), (-50, 762), (-50, 508), (200, 508), (200, 254), (450, 254), (450, 0)], fill="none", sw=2),
             P([(-1450, 1016), (-1450, 1930), (-350, 1930), (-350, 1016)], closed=False, sw=3, stroke="#546e7a"), T("4-step platform, 40 in top", (-750, 1100), 12)]
     items = [
         item(1, "P1-210", ring, (XC - 1900, 2700), (XC - 1590, 2000)),
         item(2, "P1-211", bin_shapes(b_left, f"B01 {lab['B01']['name'].upper()}") + bin_shapes(b_right, f"B07 {lab.get('B07', lab['B01'])['name'].upper()}"),
              (b_left, 2900), (b_left, Y_BIN + 600)),
-        item(3, "P1-212", fl + fr, (b_left - 600, 1650), (b_left - 150, Y_FEED + 200)),
+        item(3, "P1-212", fl + fr, (b_left - 600, 1650), (b_left - 150, FA)),
         item(4, "P1-213", probe, (b_left + 600, 2050), (b_left + 220, Y_BIN + 270)),
         item(5, "P1-214", bfm, (XC - 750, 1500), (XC - 520, 1300)),
         item(6, "P1-220", hop, (XC + 750, 1500), (XC + 300, 1050)),
         item(7, "P1-221", cells, (XC - 900, 1050), (XC - 405, 1080)),
         item(8, "P1-223", valve, (XC + 650, 700), (XC + 70, 600)),
         item(9, "P1-224", screw, (XC + 1350, 420), (XC + 900, 700), name=EQ["P1-224"]["name"]),
-        item(10, "P1-311", stand, (BX0 - 500, 600), (BX0, 700)),
-        item(11, "P1-301", blender, (BX0 + 500, 3300), (BX0 + 700, tb + 760)),
-        item(12, "P1-302", grate, (5900, 3550), (6000, tb + 830)),
-        item(13, "P1-303", chute, (XV - 650, 1640), (XV - 70, 1560)),
-        item(14, "P1-304", sieve, (XV - 900, 1350), (XV - 242, 1350), name="Sieve deck on leg frame, with screen P1-305 and grate magnet P1-307"),
-        item(15, "P1-306", vib, (XV + 900, 1500), (XV + 520, 1240)),
-        item(16, "P1-308", drum, (XV + 800, 800), (XV + 292, 700)),
-        item(17, "P1-309", [], (XV + 800, 300), (XV + 300, 127)),
-        item(18, "P1-227", plat, (-900, 2200), (-900, 1930)),
+        item(10, "P1-301", frame + blender, (XV + 800, 2700), (XV + 300, Y_FLG - 200), name="Ribbon blender 6 cu ft, built (GA P1-301-GA): trough, double ribbons, cover, frame"),
+        item(11, "P1-302", grate, (XV - 900, 2700), (XV - 300, Y_FLG + 120)),
+        item(12, "P1-331", valve, (XV - 750, 1450), (XV - 70, Y_VOUT + 60)),
+        item(13, "P1-304", sock + sieve, (XV - 900, 1150), (XV - 242, 1130), name="Drum-top sifter: 12 mesh screen P1-305 and grate magnet P1-307 on the drum rim"),
+        item(14, "P1-306", vib, (XV + 900, 1250), (XV + 430, 1140)),
+        item(15, "P1-308", drum, (XV + 800, 800), (XV + 292, 700)),
+        item(16, "P1-309", [], (XV + 800, 300), (XV + 300, 127)),
+        item(17, "P1-227", plat, (-900, 2200), (-900, 1930)),
     ]
     # ---- plan of the ring (1:40) and stack-up table, drawn in px below the floor
     det = []
@@ -219,10 +235,10 @@ def asm1():
         det.append(f'<line x1="{cx + math.cos(a) * 1050 * k}" y1="{cy - math.sin(a) * 1050 * k}" x2="{xi}" y2="{yi}" stroke="#ef6c00" stroke-width="3"/>')
     det.append(f'<text x="{cx - 380}" y="{cy + 215}" font-size="12">Feeders (orange) point to the hopper inlet ring Ø560 [22.05]. Spares B10-B12 blanked for growth to 13 blends.</text>')
     stack = [["Ring top (bin lugs rest here)", mm_in(H_RING + 25)], ["Bin rim / lid", mm_in(Y_BIN + 662)], ["Bin outlet flange = feeder inlet", mm_in(Y_BIN)],
-             ["Feeder discharge (BFM boot top)", mm_in(Y_FEED - 60)], ["Hopper lid, inlet ring Ø560", mm_in(Y_LID)], ["Load-cell mount plate top", mm_in(1028)],
-             ["Hopper outlet (4 in TC)", mm_in(Y_HOP)], ["Valve outlet = screw intake top", mm_in(Y_VALVE)], ["Blender stand top", mm_in(H_STAND)],
-             ["Blender valve outlet", mm_in(Y_VOUT)], ["Chute 4 in TC outlet", mm_in(Y_VOUT - 215)], ["Sieve housing top", mm_in(1448)],
-             ["Sieve outlet (4 in TC)", mm_in(1080)], ["Drum rim on dolly", mm_in(1054)], ["Blender cover / inlet", mm_in(tb + 810)]]
+             ["Feeder barrel axis (built P1-212)", mm_in(FA)], ["Feeder spout = BFM boot top", mm_in(FS)], ["Hopper lid, inlet ring Ø560", mm_in(Y_LID)], ["Load-cell mount plate top", mm_in(1028)],
+             ["Hopper outlet (4 in TC)", mm_in(Y_HOP)], ["Valve outlet = screw intake top", mm_in(Y_VALVE)], ["Blender cover / screw inlet", mm_in(Y_FLG)],
+             ["Blender agitator axis", mm_in(TB + 283)], ["Blender trough bottom", mm_in(TB)], ["Blender valve outlet", mm_in(Y_VOUT)],
+             ["Sifter inlet (4 in TC)", mm_in(1235)], ["Sifter seat = drum rim on dolly", mm_in(1054)], ["Screw discharge", mm_in(Y_FLG + 170)]]
     t, h = es.table(1060, 1440, [("HEIGHT STACK-UP (above finished floor)", 420), ("mm [in]", 160)], stack, "STACK-UP", fs=13, rh=20)
     det.append(t)
     conn = [
@@ -233,11 +249,11 @@ def asm1():
         ["J5", "P1-220 > P1-223 valve", "4 in Tri-Clamp 13MHHM", "EPDM FDA", "hand tight"],
         ["J6", "P1-223 > P1-224 intake", "4 in Tri-Clamp + flex sock", "EPDM FDA", "hand tight"],
         ["J7", "P1-224 > P1-301 inlet", "4 in Tri-Clamp at cover collar", "EPDM FDA", "hand tight"],
-        ["J8", "P1-301 feet > P1-311 pads", "4 x M12 x 40 A2-70 (VERIFY)", "-", "70 N·m"],
-        ["J9", "P1-301 valve > P1-303", "8 x M8 x 25 A2-70 on 170 sq (VERIFY)", "FDA silicone 3 mm", "18 N·m [13 lbf·ft]"],
-        ["J10", "P1-303 > P1-304 housing", "4 in TC outlet into sock over screen", "cotton sock", "drawstring"],
-        ["J11", "P1-304 outlet > P1-308 drum", "4 in TC + sock into liner", "cotton sock", "drawstring"],
-        ["J12", "P1-210 / P1-311 feet > slab", "1/2 in wedge anchor, 3 in embed", "grout pad", "60 N·m [45 lbf·ft]"],
+        ["J8", "P1-301 trough port > P1-331 valve", "4 in Tri-Clamp 13MHHM", "EPDM FDA", "hand tight"],
+        ["J9", "P1-331 > P1-304 sifter inlet", "4 in TC + cotton sock", "cotton sock", "drawstring"],
+        ["J10", "P1-304 seat > P1-308 drum rim", "3 rubber isolator feet, skirt into liner", "-", "rests (no bolts)"],
+        ["J11", "P1-301 trough > frame end plates", "4 x M12 x 35 A2-70 each end", "-", "70 N·m [52 lbf·ft]"],
+        ["J12", "P1-210 / P1-301 feet > slab", "1/2 in wedge anchor, 3 in embed", "grout pad", "60 N·m [45 lbf·ft]"],
     ]
     spec = dict(scale=1 / 20, origin=(150 + 1600 * 0.05 * 96 / IN, 1000), floor_from=-1600, floor_to=7700, ceiling=3658, items=items, conn=conn, details=det,
                 dims=[dict(dir="v", x=XC - 1700, y1=0, y2=H_RING + 25, label=f"RING {mm_in(H_RING + 25)}", ext=XC - 1615),
@@ -245,39 +261,41 @@ def asm1():
                       dict(dir="v", x=XC + 1850, y1=0, y2=Y_BIN, label=f"BIN OUTLET {mm_in(Y_BIN)}", ext=b_right + 100),
                       dict(dir="v", x=XC + 1050, y1=0, y2=Y_LID, label=f"HOPPER LID {mm_in(Y_LID)}", ext=XC + 380),
                       dict(dir="v", x=XC - 950, y1=0, y2=Y_VALVE, label=f"INTAKE {mm_in(Y_VALVE)}", ext=XC - 350),
-                      dict(dir="v", x=BX0 - 200, y1=0, y2=H_STAND, label=f"STAND {mm_in(H_STAND)}", ext=BX0),
+                      dict(dir="v", x=BX0 - 250, y1=0, y2=TB, label=f"TROUGH {mm_in(TB)}", ext=XV - 300),
+                      dict(dir="v", x=XV + 1350, y1=0, y2=Y_FLG, label=f"COVER {mm_in(Y_FLG)}", ext=XV + 500),
                       dict(dir="v", x=XV + 1150, y1=0, y2=Y_VOUT, label=f"VALVE OUTLET {mm_in(Y_VOUT)}", ext=XV + 100),
                       dict(dir="v", x=7650, y1=0, y2=3658, label="CLEAR 3,658 [144.0] (12 ft)"),
                       dict(dir="h", x1=XC - 1590, x2=XC + 1590, y=H_RING + 400, label=f"RING Ø3,180 [125.20] legs", ext=H_RING),
-                      dict(dir="h", x1=BX0, x2=BX1, y=-250, label="STAND 1,700 [66.93]", ext=0)],
+                      dict(dir="h", x1=BX0, x2=BX1, y=-250, label=f"BLENDER FRAME {mm_in(BX1 - BX0)}", ext=0)],
                 notes_at=(SW - 1290, 1335),
                 notes=["Section through the ring on the blender axis, looking north. True scale 1:20; heights from CAD and equipment.json.",
                        "Bins B01-B09 per dosing-plan.md; B10-B12 blanked. Only one feeder runs at a time (DosingStation.st).",
                        "The hopper floats on 3 cells: only the BFM boots touch it. Check free float before calibration.",
                        "Hand adds and premix are tipped into the P1-224 intake grate at 550 [21.7] after the bin charge.",
-                       "Blender on stand P1-311: VERIFY leg height and valve flange on the used unit; stand height may change.",
-                       "Bond bins, feeders, hopper, screw, blender and sieve to ground (< 10 ohm). Lock out before opening (1910.147)."])
+                       "Blender built in house (P1-301-GA): no riser stand; a drum on its dolly rolls in from the free end between the legs (664 clear).",
+                       "Bond bins, feeders, hopper, screw, blender and sifter to ground (< 10 ohm). Lock out before opening (1910.147)."])
     (OUT / "ASM-P1-001_dosing_and_blending.svg").write_text(es.elevation(spec, "ASM-P1-001 DOSING AND BLENDING", "DH-ASM-P1-001", PROJECT))
 
 
 # ================================================================== ASM-P1-002 sifting and grinding (1:10)
 def asm2():
-    XS = 600.0                     # sieve centreline
-    sv_o, sv_c, sv_t = 1080, 1109, 1298
-    sieve = [R((XS - 60, sv_o, 120, 29), hatch="h45", fill="none"), P([(XS - 52, sv_c), (XS + 52, sv_c), (XS + 242, sv_t), (XS - 242, sv_t)], fill=STEEL, sw=2),
-             R((XS - 242, sv_t, 484, 150), fill=STEEL, sw=2.5), R((XS - 240, sv_t + 34, 15, 6), fill="#111"), R((XS + 225, sv_t + 34, 15, 6), fill="#111"),
-             R((XS - 419, 0, 38, 1448), fill=SS), R((XS + 381, 0, 38, 1448), fill=SS), R((XS - 419, 1410, 838, 38), fill=SS),
-             R((XS - 290, sv_t + 146, 50, 8), fill=SS), R((XS + 240, sv_t + 146, 50, 8), fill=SS), T("clamp lug x 4", (XS + 330, sv_t + 190), 11)]
-    screen = [R((XS - 228, sv_t + 40, 456, 50), fill="none", sw=1.5, stroke="#37474f"), P([(XS - 222, sv_t + 45), (XS + 222, sv_t + 45)], closed=False, dash="4,3", sw=2),
-              T("12 mesh", (XS, sv_t + 100), 11)]
-    magnet = [C((XS - 120, sv_t + 15), 12, fill="#b71c1c"), C((XS - 40, sv_t + 15), 12, fill="#b71c1c"), C((XS + 40, sv_t + 15), 12, fill="#b71c1c"),
-              C((XS + 120, sv_t + 15), 12, fill="#b71c1c"), R((XS - 160, sv_t + 2, 320, 4), fill="#455a64")]
-    vib = [R((XS + 419, 1180, 220, 130), fill="#ffe0b2"), T("120 V", (XS + 530, 1240), 11)]
-    chute = [P([(XS - 100, 1690), (XS + 100, 1690), (XS + 52, 1504), (XS - 52, 1504)], hatch="h45", fill="none", sw=2), R((XS - 60, 1475, 120, 29), hatch="h135", fill="none"),
-             P([(XS - 50, 1475), (XS - 70, sv_t + 150), (XS + 70, sv_t + 150), (XS + 50, 1475)], fill="#fffde7", dash="5,3"), T("sock", (XS + 130, 1462), 11)]
+    XS = 600.0                     # drum / sifter centreline
+    Z0 = 994.0                     # sifter skirt bottom: seat ring (z 60) rests on the drum rim at 1,054
+    zs, zh, zl = Z0 + 60, Z0 + 210, Z0 + 241   # seat, housing top / lid, inlet ferrule top (1,235)
+    sieve = [R((XS - 243, Z0, 3, 60), fill=SS), R((XS + 240, Z0, 3, 60), fill=SS), R((XS - 310, zs, 620, 6), fill=SS, sw=2),
+             R((XS - 243, zs, 3, 150), fill=STEEL), R((XS + 240, zs, 3, 150), fill=STEEL), R((XS - 250, zh, 500, 2), fill=SS),
+             R((XS - 60, zh + 2, 120, 29), hatch="h135", fill="none"), R((XS - 240, zs + 40, 15, 6), fill="#111"), R((XS + 225, zs + 40, 15, 6), fill="#111"),
+             R((XS - 310, zs - 6, 50, 6), fill="#263238"), R((XS + 260, zs - 6, 50, 6), fill="#263238"), T("isolator x 3", (XS - 420, zs - 40), 11),
+             R((XS - 290, zh - 8, 50, 8), fill=SS), R((XS + 240, zh - 8, 50, 8), fill=SS), T("clamp lug x 4", (XS - 470, zh + 10), 11)]
+    screen = [R((XS - 228, zs + 46, 456, 30), fill="none", sw=1.5, stroke="#37474f"), P([(XS - 222, zs + 52), (XS + 222, zs + 52)], closed=False, dash="4,3", sw=2),
+              T("12 mesh", (XS, zs + 25), 11)]
+    magnet = [C((XS - 120, zs + 100), 12, fill="#b71c1c"), C((XS - 40, zs + 100), 12, fill="#b71c1c"), C((XS + 40, zs + 100), 12, fill="#b71c1c"),
+              C((XS + 120, zs + 100), 12, fill="#b71c1c"), R((XS - 160, zs + 86, 320, 4), fill="#455a64")]
+    vib = [R((XS + 243, zs + 30, 10, 100), fill=SS), R((XS + 253, zs + 20, 200, 120), fill="#ffe0b2"), T("120 V", (XS + 353, zs + 75), 11)]
+    chute = [R((XS - 60, zl, 120, 26), hatch="h45", fill="none"), P([(XS - 50, zl + 26), (XS - 50, 1500), (XS + 50, 1500), (XS + 50, zl + 26)], fill="#fffde7", dash="5,3"),
+             T("sock from P1-331 valve (outlet 1,261)", (XS + 380, 1400), 11)]
     drum = [R((XS - 320, 114, 640, 26), fill=SS), C((XS - 230, 57), 57, fill="#90a4ae"), C((XS + 230, 57), 57, fill="#90a4ae"),
-            R((XS - 292, 140, 584, 914), fill="#e8f5e9", sw=2), P([(XS - 40, 1080), (XS - 60, 1054), (XS + 60, 1054), (XS + 40, 1080)], fill="#fffde7"),
-            T("55 gal drum, poly liner", (XS, 600), 12), T("ground clip", (XS - 160, 980), 10)]
+            R((XS - 292, 140, 584, 914), fill="#e8f5e9", sw=2), T("55 gal drum, poly liner", (XS, 600), 12), T("ground clip", (XS - 160, 980), 10)]
     # hammer mill on its stand, pail under the discharge
     XM = 2300.0
     mill = [R((XM - 350, 0, 50, 900), fill=SS), R((XM + 300, 0, 50, 900), fill=SS), R((XM - 350, 850, 700, 50), fill=SS), R((XM - 350, 250, 700, 40), fill=SS),
@@ -291,13 +309,13 @@ def asm2():
            R((XM - 60, 715, 120, 29), hatch="h135", fill="none"), P([(XM - 50, 715), (XM - 70, 430), (XM + 70, 430), (XM + 50, 715)], fill="#fffde7", dash="5,3"),
            R((XM - 150, 40, 300, 380), fill="#e8f5e9", sw=2), R((XM - 170, 0, 340, 40), fill=SS), T("5 gal pail + liner", (XM, 230), 11)]
     duct = [P([(XM - 250, 1300), (XM - 450, 1300), (XM - 450, 1900)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("150 cfm to P1-310", (XM - 450, 1950), 11),
-            P([(XS + 242, 1420), (XS + 330, 1420), (XS + 330, 1900)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("200 cfm to P1-310", (XS + 330, 1950), 11)]
+            P([(XS - 250, zh - 40), (XS - 520, zh - 40), (XS - 520, 1900)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("200 cfm to P1-310 (drum vent)", (XS - 520, 1950), 11)]
     items = [
-        item(1, "P1-304", sieve, (XS - 700, 1300), (XS - 242, 1370), name="Sieve deck housing on leg frame (R400), cone to 4 in Tri-Clamp"),
-        item(2, "P1-305", screen, (XS - 700, 1550), (XS - 228, 1360)),
-        item(3, "P1-307", magnet, (XS - 700, 1100), (XS - 120, sv_t + 15)),
-        item(4, "P1-306", vib, (XS + 900, 1500), (XS + 560, 1290)),
-        item(5, "P1-303", chute, (XS - 600, 1750), (XS - 80, 1600)),
+        item(1, "P1-304", sieve, (XS - 750, 1350), (XS - 243, zs + 100), name="Drum-top sifter: Ø480 housing, seat ring on the drum rim, skirt, 4 in TC inlet"),
+        item(2, "P1-305", screen, (XS + 750, 900), (XS + 200, zs + 60)),
+        item(3, "P1-307", magnet, (XS + 750, 1550), (XS + 120, zs + 100)),
+        item(4, "P1-306", vib, (XS + 900, 1250), (XS + 400, zs + 130)),
+        item(5, "P1-331", chute, (XS - 300, 1750), (XS - 50, 1450), name="Blender valve sock and 4 in TC clamp onto the sifter inlet"),
         item(6, "P1-308", drum, (XS - 700, 700), (XS - 292, 700)),
         item(7, "P1-309", [], (XS - 700, 300), (XS - 320, 127)),
         item(8, "P1-320", mill, (XM - 750, 1150), (XM - 250, 1150)),
@@ -305,38 +323,37 @@ def asm2():
         item(10, "P1-321", fmag, (XM + 650, 1700), (XM + 210, 1436)),
         item(11, "P1-310", duct, (XM - 450, 2150), (XM - 450, 1900), name="Dust pickups to the cartridge collector P1-310 (outside)"),
     ]
-    conn = [["J1", "P1-303 > P1-304", "4 in TC outlet + cotton sock over the screen", "sock", "drawstring"],
-            ["J2", "P1-305 screen > housing ledge", "screen frame on 15 mm ledge, 4 quick clamps", "silicone frame seal", "clamp, hand"],
-            ["J3", "P1-307 magnet", "rests on 2 brackets under the screen, lifts out", "-", "-"],
-            ["J4", "P1-304 outlet > drum", "4 in TC + sock into the drum liner", "sock", "drawstring"],
-            ["J5", "P1-306 > leg frame", "4 x 1/2-13 grade 8, with lock washers", "-", "per Martin, ~95 N·m"],
+    conn = [["J1", "P1-331 valve > P1-304 inlet", "cotton sock over the 4 in TC ferrule", "sock", "drawstring"],
+            ["J2", "P1-305 screen > housing ledge", "screen frame on 15 mm ledge, lid + 4 clamp lugs", "silicone frame seal", "clamp, hand"],
+            ["J3", "P1-307 magnet", "rests on the screen frame, lifts out with the lid", "-", "-"],
+            ["J4", "P1-304 seat > drum rim", "3 rubber isolators, skirt 60 deep into the liner", "liner folded over rim", "rests (no bolts)"],
+            ["J5", "P1-306 > vibrator pad", "4 x M10 x 30 A2-70 with lock washers", "-", "45 N·m [33 lbf·ft]"],
             ["J6", "P1-322 feed > P1-320 inlet", "4 x M8 x 20 A2-70 on 170 sq (VERIFY)", "FDA silicone 3 mm", "18 N·m [13 lbf·ft]"],
             ["J7", "P1-321 magnet drawer", "slides through the hopper slot, pull to clean", "-", "-"],
             ["J8", "P1-320 > P1-322 discharge", "4 x M8 x 20 A2-70 on 170 sq (VERIFY)", "FDA silicone 3 mm", "18 N·m"],
             ["J9", "P1-322 outlet > pail", "4 in TC + cotton sock into the pail liner", "sock", "drawstring"],
             ["J10", "P1-320 stand > slab", "4 x 3/8 in wedge anchors", "-", "34 N·m [25 lbf·ft]"]]
     det = []
-    sched = [["Sieve screen", "12 mesh (1.68 mm) SS, 18 in", "check for tears every batch; spare on the shadow board"],
-             ["Sieve rate", "about 8 lb/min [3.6 kg/min]", "a 147 lb batch sifts in about 20 min"],
-             ["Sieve magnet", "12 x 12 in rare earth grate", "wipe every batch, log catches (prerequisite program)"],
+    sched = [["Sifter screen", "12 mesh (1.68 mm) SS, 18 in", "check for tears every batch; spare on the shadow board"],
+             ["Sifter rate", "about 8 lb/min [3.6 kg/min]", "valve throttled: a 147 lb batch empties in about 20 min"],
+             ["Sifter magnet", "Ø400 rare earth grate on the screen", "wipe every batch, log catches (prerequisite program)"],
              ["Mill screens", "1/16, 1/8, 3/16 in perforated SS", "1/8 in for coarse black pepper (B06)"],
              ["Mill batch", "about 25 lb [11 kg] per run, under 20 min", "keeps the spice below 40 °C [104 °F]; check with an IR gun"],
              ["Mill magnet", "6 x 6 in grate in the feed slot", "tramp metal stops before the hammers (NFPA 61 ignition control)"],
              ["Mill clean", "dry clean between spices; screen and hammers out", "ATP swab before a spice change (P1-701)"],
-             ["Dust", "sieve 200 cfm, mill 150 cfm", "collector P1-310 sized 1,400 cfm (foodsafety.py PASS)"]]
+             ["Dust", "drum vent 200 cfm, mill 150 cfm", "collector P1-310 sized 1,400 cfm (foodsafety.py PASS)"]]
     t, h = es.table(130, 1460, [("SETTING", 200), ("VALUE", 380), ("WHY / CHECK", 600)], sched, "SIFTING AND GRINDING SETTINGS", fs=13, rh=22)
     det.append(t)
     spec = dict(scale=1 / 10, origin=(330 + 1000 * 0.1 * 96 / IN, 1130), floor_from=-900, floor_to=3500, items=items, conn=conn, details=det,
-                dims=[dict(dir="v", x=XS - 520, y1=0, y2=1448, label=f"SIEVE TOP {mm_in(1448)}", ext=XS - 419),
-                      dict(dir="v", x=XS + 1000, y1=0, y2=1080, label=f"SIEVE OUTLET {mm_in(1080)}", ext=XS + 60),
+                dims=[dict(dir="v", x=XS + 1000, y1=0, y2=zl, label=f"SIFTER INLET {mm_in(zl)}", ext=XS + 60),
                       dict(dir="v", x=XS + 1150, y1=0, y2=1054, label=f"DRUM RIM {mm_in(1054)}", ext=XS + 292),
                       dict(dir="v", x=XM + 1150, y1=0, y2=1556, label=f"FEED HOPPER TOP {mm_in(1556)}", ext=XM + 150),
                       dict(dir="v", x=XM + 950, y1=0, y2=900, label=f"MILL STAND {mm_in(900)}", ext=XM + 350),
-                      dict(dir="h", x1=XS - 400, x2=XS + 400, y=-150, label="LEGS 800 [31.50] on R400", ext=0),
-                      dict(dir="h", x1=XS - 242, x2=XS + 242, y=1620, label="Ø484 [19.06]", ext=1448)],
+                      dict(dir="h", x1=XS - 310, x2=XS + 310, y=-150, label="SEAT RING Ø620 [24.41]", ext=0),
+                      dict(dir="h", x1=XS - 243, x2=XS + 243, y=1620, label="HOUSING Ø486 [19.13]", ext=zh)],
                 notes_at=(SW - 1290, 1100),
-                notes=["Left: sieve train under the blender (section, looking north). Right: hammer mill station (looking east). True scale 1:10.",
-                       "A 55 gal drum on its dolly rolls in between the sieve legs; the sock seals the outlet to the liner.",
+                notes=["Left: drum-top sifter on the drum under the blender (section, looking north). Right: hammer mill station (looking east). True scale 1:10.",
+                       "The sifter rides on the drum: roll the drum in on its dolly, set the sifter on the rim, clamp the sock. No sieve frame, no chute.",
                        "Mill model and flanges VERIFY on the chosen mill; run a grind trial with our peppercorns before ordering.",
                        "Ground spice goes in lined pails to bin B06 (coarse black pepper); the pail lot is the new MES lot.",
                        "Bond sieve, mill and drums to ground; mill motor TEFC; electrical class per the DHA."])
@@ -350,20 +367,42 @@ def asm3():
     def table_sh(x0, y0=0.0):
         return [R((x0, y0 + TT - 40, 1524, 40), fill=SS, sw=2), R((x0 + 40, y0, 38, TT - 40), fill=SS), R((x0 + 1446, y0, 38, TT - 40), fill=SS),
                 R((x0 + 40, y0 + 200, 1444, 25), fill=SS)]
-    filler = [R((0, 0, 700, 900), fill=STEEL, sw=2), R((560, 900, 60, 900), fill=SS), P([(150, 1800), (550, 1800), (420, 1450), (280, 1450)], fill=STEEL, sw=2),
-              R((300, 1300, 100, 150), fill=SS), R((330, 1010, 40, 290), fill="#90a4ae"), R((100, 1500, 120, 160), fill="#ffe0b2"), T("servo", (160, 1680), 11),
-              R((-150, 0, 160, 60), fill="#90a4ae"), T("foot pedal", (-70, 90), 11), R((220, 820, 260, 18), fill=SS)]
-    nest = [R((290, 838, 120, 40), fill="#c5e1a5"), R((317, 878, 66, 120), fill="#fff", dash="4,3"), T("shaker 66 x 120", (350, 1060), 10)]
+    ZH = 1130.0                 # built filler P1-401: hopper cone bottom (auger clamp), see P1-401-GA
+    filler = [R((20, 0, 600, 850), fill=STEEL, sw=2), R((0, 850, 640, 3), fill=SS), R((40, 40, 560, 790), fill="none", dash="6,4"), T("door", (320, 420), 11),
+              R((60, -40, 40, 40), fill="#90a4ae"), R((540, -40, 40, 40), fill="#90a4ae"),
+              R((269, 853, 102, 1000), fill=SS, dash="6,3"), R((170, ZH + 554, 300, 12), fill=SS, sw=2), R((95, ZH + 190, 450, 12), fill=SS),
+              P([(280, ZH), (360, ZH), (545, ZH + 220), (95, ZH + 220)], fill=STEEL, sw=2), R((95, ZH + 220, 450, 200), fill=STEEL, sw=2),
+              R((85, ZH + 420, 470, 3), fill=SS), R((105, ZH + 423, 170, 40), fill="none", sw=1.5), T("scoop port", (190, ZH + 490), 10),
+              R((281, ZH - 22, 78, 22), hatch="h135", fill="none")]
+    drive = [R((255, ZH + 566, 130, 220), fill="#ffe0b2", sw=2), T("servo 750 W", (320, ZH + 810), 11), R((365, ZH + 566, 110, 160), fill="#ffe0b2"),
+             R((301, ZH - 182, 38, 160), fill="#90a4ae"), R((20, ZH + 225, 200, 150), fill="#e1f5fe", sw=2), T("HMI", (120, ZH + 300), 11),
+             R((-260, 0, 300, 60), fill="#90a4ae"), T("foot switch", (-110, 90), 11)]
+    nest = [R((260, 853, 120, 30), fill="#c5e1a5"), R((287, 883, 66, 120), fill="#fff", dash="4,3"), T("shaker 66 x 120", (440, 1040), 10)]
     tb1 = table_sh(750)
-    torque = [R((900, TT, 300, 200), fill=SS), T("torque", (1050, TT + 250), 11)]
-    grips = [R((1300, TT, 150, 30), fill="#c5e1a5")]
+    CX = 1100.0                 # spindle capper P1-412 on TBL-1
+    capper = [R((CX - 200, TT, 400, 12), fill=SS, sw=2), R((CX + 95, TT + 12, 51, 650), fill=SS), R((CX + 87, TT + 142, 8, 500), fill="#90a4ae"),
+              R((CX - 60, TT + 462, 160, 140), fill=SS), R((CX - 33, TT + 12, 66, 120), fill="#fff", dash="4,3"), T("container in V-nest", (CX - 300, TT + 80), 10)]
+    cdrive = [R((CX - 45, TT + 492, 90, 220), fill="#ffe0b2", sw=2), T("1/8 HP", (CX - 160, TT + 650), 11), R((CX - 40, TT + 432, 80, 50), fill="#90a4ae"),
+              T("slip clutch", (CX - 200, TT + 460), 10), R((CX - 55, TT + 387, 110, 40), fill="#c5e1a5"), R((CX + 160, TT + 132, 22, 350), fill="#90a4ae"),
+              T("gas spring", (CX + 260, TT + 300), 10)]
     sealer = [R((1700, TT, 60, 500), fill=SS), R((1700, TT + 450, 300, 40), fill=SS), R((1900, TT + 230, 210, 220), fill="#ffe0b2"), T("sealer head", (2005, TT + 520), 11)]
     tb2 = table_sh(2300)
     printer = [R((2400, TT, 500, 270), fill="#e1f5fe", sw=2), T("LX910", (2650, TT + 140), 12)]
-    labeler = [R((3150, TT, 500, 300), fill="#e1f5fe", sw=2), C((3400, TT + 150), 60, fill="none", dash="4,3"), T("AP360e", (3400, TT + 340), 12)]
-    md = [R((3850, 0, 1500, 60), fill=SS), R((3900, 60, 40, 690), fill=SS), R((5260, 60, 40, 690), fill=SS), R((3850, 750, 1500, 50), fill="#90a4ae"),
-          R((4350, 700, 500, 520), fill="#ffebee", sw=2.5), R((4450, 800, 300, 150), fill="#fff"), T("aperture ~250 x 150", (4600, 1260), 11),
-          R((5350, 0, 400, 550), fill="#ffcdd2", sw=2), T("locked reject bin", (5550, 600), 11), R((4950, 1250, 60, 350), fill="#90a4ae"), C((4980, 1650), 40, fill="#ffeb3b")]
+    LX = 3400.0                 # built wrap labeler P1-404 on TBL-2
+    labeler = [R((LX - 260, TT, 520, 8), fill=SS, sw=2), R((LX - 80, TT + 8, 40, 60), fill=SS), R((LX + 40, TT + 8, 40, 60), fill=SS),
+               R((LX - 208, TT + 8, 16, 240), fill=SS), R((LX + 192, TT + 8, 16, 240), fill=SS), R((LX - 10, TT + 8, 20, 160), fill=SS),
+               P([(LX + 100, TT + 160), (LX + 210, TT + 110)], closed=False, sw=3)]
+    ldrive = [C((LX - 60, TT + 58), 25, fill="#90a4ae"), C((LX + 60, TT + 58), 25, fill="#90a4ae"), C((LX, TT + 198), 20, fill="#cfd8dc"),
+              C((LX - 200, TT + 258), 90, fill="#fff8e1"), C((LX + 200, TT + 258), 60, fill="#fff8e1"), R((LX - 188, TT + 8, 57, 80), fill="#ffe0b2"),
+              C((LX, TT + 116), 33, fill="none", dash="4,3"), T("container rolls on 2 rollers", (LX, TT + 400), 11)]
+    MX0, ZB = 3850.0, 905.0     # built detector conveyor P1-406, belt top 905
+    md = [R((MX0, ZB - 120, 1500, 120), fill=STEEL, sw=2), R((MX0 + 130, 0, 40, ZB - 120), fill=SS), R((MX0 + 1330, 0, 40, ZB - 120), fill=SS),
+          R((MX0 + 110, 0, 80, 8), fill=SS), R((MX0 + 1310, 0, 80, 8), fill=SS), R((MX0 + 130, 280, 1240, 40), fill=SS),
+          R((5350, 0, 400, 550), fill="#ffcdd2", sw=2), T("locked reject bin", (5550, 600), 11)]
+    mdrive = [R((MX0 + 30, ZB - 4, 1440, 4), fill="#455a64"), C((MX0 + 40, ZB - 32), 30, fill="#90a4ae"), C((MX0 + 1460, ZB - 32), 30, fill="#90a4ae"),
+              C((MX0 + 1460, ZB - 32), 50, fill="none", stroke="#e65100", sw=2), T("gearmotor 1/6 HP", (MX0 + 1460, ZB - 130), 10)]
+    head = [R((4390, ZB - 150, 420, 620), fill="#ffebee", sw=2.5), R((4390, ZB, 420, 152), fill="#fff"), T("aperture 254 x 152", (4600, ZB + 520), 11),
+            R((4910, ZB, 80, 80), fill="#ffe0b2"), T("pusher", (4950, ZB + 110), 10), R((4950, ZB + 470, 60, 350), fill="#90a4ae"), C((4980, ZB + 860), 40, fill="#ffeb3b")]
     floor2 = [R((-200, Y2 - 20, 6300, 20), fill="url(#h45)", sw=0), P([(-200, Y2), (6100, Y2)], closed=False, sw=3)]
     turn = table_sh(0, Y2)[:0] + [R((0, Y2, 762, 40), fill="none"), R((30, Y2, 38, TT - 60), fill=SS), R((694, Y2, 38, TT - 60), fill=SS),
                                   R((0, Y2 + TT - 60, 762, 40), fill=SS), R((250, Y2 + TT - 20, 262, 20), fill="#90a4ae"), R((0, Y2 + TT, 762, 26), fill=STEEL, sw=2),
@@ -375,41 +414,47 @@ def asm3():
     case = [R((3100, Y2 + TT, 330, 220), fill="#fff3e0", sw=2), T("12-ct RSC", (3265, Y2 + TT + 260), 11), R((3700, Y2 + TT, 200, 180), fill="#e1f5fe"), T("case label", (3800, Y2 + TT + 220), 11)]
     pal = [R((4700, Y2, 1219, 140), fill="#d7ccc8"), R((4750, Y2 + 140, 1100, 900), fill="#fff3e0", dash="8,4"), T("pallet being built (PAL-FG)", (5300, Y2 + 600), 12)]
     items = [
-        item(1, "P1-401", filler, (-400, 1500), (0, 1300)),
-        item(2, "P1-410", nest + grips, (700, 1250), (380, 900), name="3D-printed nests (filler) and cap grips (capping), PETG, no product contact", qty=8),
+        item(1, "P1-401", filler, (-450, 1500), (95, ZH + 300), name="Auger filler, built (GA P1-401-GA): cabinet, column, 42 L hopper"),
+        item(12, "P1-413", drive, (700, 2150), (385, ZH + 700), name="Filler servo 750 W + drive, agitator motor, tooling, HMI, foot switch (P1-413..417)", qty=1),
+        item(2, "P1-410", nest, (700, 1250), (380, 900), name="3D-printed container nests (filler), PETG, no product contact", qty=8),
         item(3, "P1-409", tb1 + tb2 + tb3 + tb4, (1200, 400), (1300, TT - 20), name="Stainless tables 60 x 30 in (TBL-1 cap/seal, TBL-2 label, TBL-3, TBL-4)", qty=4),
-        item(4, "P1-402", torque, (1050, 1550), (1050, TT + 200)),
+        item(4, "P1-412", capper, (1450, 1850), (CX + 120, TT + 600), name="Spindle capper, built (GA P1-412-GA): base, column, rail carriage"),
+        item(13, "P1-423", cdrive, (700, 1700), (CX - 45, TT + 600), name="Capper gearmotor, slip clutch + chucks, rail and gas spring (P1-422..424)", qty=1),
         item(5, "P1-403", sealer, (2050, 1700), (2005, TT + 450)),
         item(6, "P1-405", printer, (2650, 1550), (2650, TT + 270)),
-        item(7, "P1-404", labeler, (3400, 1700), (3400, TT + 300)),
-        item(8, "P1-406", md, (4600, 1850), (4600, 1220)),
+        item(7, "P1-404", labeler, (3000, 1700), (LX - 200, TT + 200), name="Wrap labeler, built (GA P1-404-GA): base, roller blocks, spindle posts, peel plate"),
+        item(14, "P1-426", ldrive, (3700, 1800), (LX + 200, TT + 300), name="Labeler rollers, stepper + controller, gap sensor, label rolls (P1-425..427)", qty=1),
+        item(8, "P1-406", md + mdrive, (4100, 1500), (MX0 + 150, 600), name="Detector conveyor, built (GA P1-406-GA): frame, 6 in belt, gearmotor"),
+        item(15, "P1-418", head, (4600, 2100), (4600, ZB + 470), name="Metal detector head + control (used, validated) and reject pusher P1-421", qty=1),
         item(9, "P1-408", turn, (380, Y2 + 1500), (380, Y2 + TT + 26)),
         item(10, "P1-407", cw, (1450, Y2 + 1700), (1450, Y2 + TT + 150)),
         item(11, "P1-411", case + pal + floor2, (3400, Y2 + 1500), (3265, Y2 + TT + 220), name="Case pack: tape gun and stretch-wrap dispenser (Uline), case and pallet labels"),
     ]
-    conn = [["S1", "P1-401 filler", "auger by weight, target net + 1.5 %", "nest per container", "12 upm shaker / 8 jar"],
-            ["S2", "TBL-1 capping", "hand cap with printed grip", "torque check hourly (P1-402)", "53 mm 12-16 lbf·in (VERIFY)"],
+    items.sort(key=lambda d: d["n"])
+    conn = [["S1", "P1-401 filler (built)", "servo auger by count, trimmed by weight, net + 1.5 %", "nest per container", "12 upm shaker / 8 jar"],
+            ["S2", "TBL-1 capping", "P1-412 spindle capper, slip clutch sets torque", "torque check hourly (P1-402)", "53 mm 12-16 lbf·in (VERIFY)"],
             ["S3", "TBL-1 sealing", "P1-403 handheld over each cap", "pull test 1/hour", "per liner supplier"],
             ["S4", "TBL-2 labels", "P1-405 prints lot + best-by", "first-off check in MES", "label UPC scan"],
-            ["S5", "TBL-2 apply", "P1-404 wrap labeler", "position ±1.5 mm", "-"],
+            ["S5", "TBL-2 apply", "P1-404 built wrap labeler, gap sensor stops feed", "position ±1.5 mm", "-"],
             ["S6", "P1-406 metal detect", "CCP-1, Fe 1.5 / NFe 2.0 / SS 2.5", "test pieces start + hourly", "reject to locked bin"],
             ["S7", "TBL-3 checkweigh", "every unit on P1-407", "reject under declared", "HB 133 lot check"],
             ["S8", "P1-408 + TBL-4", "accumulate, pack 12-ct case", "GS1 case label", "-"]]
     det = []
     spec = dict(scale=1 / 15, origin=(140 + 600 * (1 / 15) * 96 / IN, 1960), floor_from=-600, floor_to=5900, items=items, conn=conn, details=det,
                 conn_title="STATIONS, SETTINGS AND CHECKS", conn_cols=[("STN", 60), ("STATION", 230), ("METHOD / SETTING", 420), ("CHECK", 300), ("RATE / VALUE", 250)],
-                dims=[dict(dir="v", x=-450, y1=0, y2=1800, label=f"FILLER {mm_in(1800)}", ext=150),
+                dims=[dict(dir="v", x=-450, y1=0, y2=ZH + 786, label=f"FILLER {mm_in(ZH + 786)}", ext=255),
+                      dict(dir="v", x=-300, y1=0, y2=853, label=f"NEST {mm_in(853)}", ext=0),
                       dict(dir="v", x=2200, y1=0, y2=TT, label=f"TABLE {mm_in(TT)}", ext=2274),
-                      dict(dir="v", x=6150, y1=0, y2=800, label=f"BELT {mm_in(800)} (VERIFY)", ext=5350),
+                      dict(dir="v", x=6150, y1=0, y2=ZB, label=f"BELT {mm_in(ZB)}", ext=5350),
                       dict(dir="h", x1=0, x2=5350, y=-250, label="RUN 1: FILL > CAP > SEAL > LABEL > DETECT 5,350 [210.6]", ext=0),
                       dict(dir="h", x1=0, x2=4424, y=Y2 - 250, label=f"RUN 2: TURNTABLE > CHECKWEIGH > CASE PACK {mm_in(4424)}", ext=Y2)],
                 notes_at=(SW - 1290, 1150),
                 notes=["Two runs of the U-shaped bench (DH-LAY-P1), unfolded and drawn true scale 1:15. Run 2 is drawn above run 1.",
                        "One operator fills, one caps and seals, one labels and packs; the bench is loaded to 29 % (line balance).",
                        "Container change: swap the printed nest and grip, then a first-off label and weight check in the MES.",
-                       "Metal detector P1-406 (used): validate sensitivity on site with certified test pieces before release.",
+                       "Built in house: filler, capper, labeler and the detector conveyor (GA sheets P1-xxx-GA). The detector head P1-418 is bought used: validate on site with certified test pieces.",
                        "All units weighed: under declared are rejected; the lot is accepted by the MES HB 133 check."])
-    (OUT / "ASM-P1-003_pack_bench.svg").write_text(es.elevation(spec, "ASM-P1-003 PACK BENCH: FILL, CAP, SEAL, LABEL", "DH-ASM-P1-003", PROJECT))
+    (OUT / "ASM-P1-003_pack_bench.svg").write_text(es.elevation(spec, "ASM-P1-003 PACK BENCH (BUILT MACHINES)", "DH-ASM-P1-003", PROJECT))
 
 
 # ================================================================== electrical data (io_p1.json)
@@ -422,14 +467,17 @@ def io_data():
     di1 = [("DI_SafetyOK", "SR-P1 safety relay healthy (e-stops, hopper lid, screw guard)", "SR-P1", "panel"),
            ("DI_ValveClosed", "P1-223 valve closed limit", "P1-223", "W-P02"), ("DI_ValveOpen", "P1-223 valve open limit", "P1-223", "W-P02"),
            ("DI_ScrewRunning", "P1-224 screw contactor K-224 aux", "P1-224", "panel MS-P1"), ("DI_BlenderReady", "P1-301 cover closed and valve shut", "P1-301", "W-P04"),
-           ("DI_BlenderHigh", "P1-301 high level probe", "P1-301", "W-P04"), ("DI_DustFanOn", "P1-310 fan running (aux)", "P1-310", "W-P05")]
+           ("DI_BlenderHigh", "P1-301 high level probe", "P1-301", "W-P04"), ("DI_DustFanOn", "P1-310 fan running (aux)", "P1-310", "W-P05"),
+           ("DI_BlValveClosed", "P1-331 blender valve closed limit", "P1-331", "W-P07"), ("DI_BlValveOpen", "P1-331 blender valve open limit", "P1-331", "W-P07"),
+           ("DI_BlCoverOK", "P1-332 cover interlock (via SR-P1 AES input)", "P1-332", "W-P04"), ("DI_BlenderRun", "P1-336 VFD run feedback", "P1-336", "W-P30")]
     for ch, (t, d, dev, cab) in enumerate(di1):
         add(t, d, "DI", 1, ch, dev, cab, f"%IX0.{ch}")
     for i in range(12):
         b = bins.get(f"B{i + 1:02d}")
         add(f"DI_BinLow[{i + 1}]", f"B{i + 1:02d} low level, Soliphant FTM20 ({b['ingredient'] if b else 'spare position'})", "DI", 2, i, "P1-213", f"W-P{11 + i}", f"%IX1.{i}")
     do1 = [("DO_ValveOpen", "P1-223 actuator open command", "P1-223", "W-P02"), ("DO_ScrewRun", "K-224 screw contactor coil (via SR-P1)", "P1-224", "panel MS-P1"),
-           ("DO_Horn", "alarm horn", "HN-P1", "W-P06"), ("DO_Beacon", "alarm beacon", "BC-P1", "W-P06")]
+           ("DO_Horn", "alarm horn", "HN-P1", "W-P06"), ("DO_Beacon", "alarm beacon", "BC-P1", "W-P06"),
+           ("DO_BlValveOpen", "P1-331 blender valve open command", "P1-331", "W-P07"), ("DO_SifterVib", "P1-306 sifter vibrator contactor", "P1-306", "panel MS-P1")]
     for ch, (t, d, dev, cab) in enumerate(do1):
         add(t, d, "DO", 3, ch, dev, cab, f"%QX0.{ch}")
     for i in range(12):
@@ -438,26 +486,28 @@ def io_data():
             "DO", 4, i, "P1-212", f"W-P{11 + i}", f"%QX1.{i}")
     cables = [dict(cable="W-P02", plc="P1-225", device="P1-223", cores=7, spec="7C x 18 AWG [0.82 mm²] TC-ER, 600 V", from_="P1-225 X2", to="P1-223 actuator"),
               dict(cable="W-P04", plc="P1-225", device="P1-301", cores=5, spec="5C x 18 AWG [0.82 mm²] TC-ER, 600 V", from_="P1-225 X4", to="P1-301 junction box"),
+              dict(cable="W-P07", plc="P1-225", device="P1-331", cores=7, spec="7C x 18 AWG [0.82 mm²] TC-ER, 600 V", from_="P1-225 X7", to="P1-331 actuator"),
               dict(cable="W-P05", plc="P1-225", device="P1-310", cores=3, spec="3C x 18 AWG [0.82 mm²] TC-ER, 600 V", from_="P1-225 X5", to="P1-310 starter aux"),
               dict(cable="W-P06", plc="P1-225", device="HN/BC-P1", cores=4, spec="4C x 18 AWG [0.82 mm²] TC-ER", from_="P1-225 X6", to="horn + beacon on panel top")]
     cables += [dict(cable=f"W-P{11 + i}", plc="P1-225", device=f"B{i + 1:02d}", cores=5, spec="5C x 18 AWG [0.82 mm²] shielded TC-ER", from_=f"P1-225 X{11 + i}",
                     to=f"bin B{i + 1:02d} JB (probe + agitator)") for i in range(12)]
-    cables += [dict(cable="W-P30", plc="P1-225", device="P1-226 x 9", cores=3, spec="RS-485 1 pair + drain, Belden 3105A, daisy chain", from_="750-652", to="GS21 #1 > #9, 120 ohm end"),
+    cables += [dict(cable="W-P30", plc="P1-225", device="P1-226 x 9 + P1-336", cores=3, spec="RS-485 1 pair + drain, Belden 3105A, daisy chain", from_="750-652", to="GS21 #1 > #9 > P1-336 blender VFD, 120 ohm end"),
                dict(cable="E-P31", plc="P1-225", device="P1-222", cores=8, spec="Cat 6 S/FTP, Modbus TCP", from_="SW-P1 port 2", to="Rice Lake 880"),
                dict(cable="E-P32", plc="P1-225", device="P1-205", cores=8, spec="Cat 6 S/FTP, OPC UA", from_="SW-P1 port 3", to="MES PC")]
     di = sum(1 for x in io if x["type"] == "DI"); do = sum(1 for x in io if x["type"] == "DO")
     modules = {"P1-225-DI": {"points": di, "modules": 2, "catalog": "WAGO 750-1405 (16 DI)", "spare_pct": round(100 * (32 - di) / 32)},
                "P1-225-DO": {"points": do, "modules": 2, "catalog": "WAGO 750-1504 (16 DO)", "spare_pct": round(100 * (32 - do) / 32)},
-               "P1-225-COM": {"points": 9, "modules": 1, "catalog": "WAGO 750-652 RS-485 Modbus RTU", "spare_pct": 25}}
-    motors = [dict(tag="M-212-01..09", load="P1-212 feeders, 0.5 HP each, via GS21 drives", hp=0.5, fla=2.4, qty=9, supply="208 V 1-ph in, 3-ph out", brk="5 x 20 A 2-pole (2 drives each)"),
+               "P1-225-COM": {"points": 10, "modules": 1, "catalog": "WAGO 750-652 RS-485 Modbus RTU", "spare_pct": 25}}
+    motors = [dict(tag="M-212-01..09", load="P1-212 built feeders, P1-216 1/3 HP gearmotor each, via GS21 drives", hp=0.33, fla=1.6, qty=9, supply="208 V 1-ph in, 3-ph out", brk="5 x 20 A 2-pole (2 drives each)"),
               dict(tag="M-224", load="P1-224 flexible screw", hp=1, fla=4.6, qty=1, supply="208 V 3-ph", brk="MS-P1 MMS 4-6.3 A"),
-              dict(tag="M-301", load="P1-301 ribbon blender", hp=2, fla=7.5, qty=1, supply="208 V 3-ph", brk="MS-P1 MMS 6.3-10 A"),
+              dict(tag="M-301", load="P1-301 built ribbon blender, P1-333 NORD gearmotor via P1-336 VFD", hp=2, fla=7.5, qty=1, supply="208 V 1-ph in, 3-ph out", brk="20 A 2-pole"),
               dict(tag="M-320", load="P1-320 hammer mill", hp=2, fla=7.5, qty=1, supply="208 V 3-ph", brk="MS-P1 MMS 6.3-10 A"),
               dict(tag="M-310", load="P1-310 dust collector fan", hp=2, fla=13.2, qty=1, supply="208 V 1-ph", brk="20 A 2-pole"),
-              dict(tag="M-306", load="P1-306 sieve vibrator", hp=0.25, fla=2.9, qty=1, supply="120 V", brk="15 A 1-pole"),
+              dict(tag="M-306", load="P1-306 drum-top sifter vibrator", hp=0.25, fla=2.9, qty=1, supply="120 V", brk="15 A 1-pole"),
               dict(tag="M-208", load="P1-208 tumbler gearmotor (DC control)", hp=0.125, fla=2.0, qty=1, supply="120 V", brk="15 A 1-pole")]
-    loads = [("P1-401 auger filler", "208 V 1-ph", 10.0, "20 A 2-pole"), ("P1-403 induction sealer", "120 V", 9.0, "15 A dedicated"),
-             ("P1-404 + P1-405 labeler, printer", "120 V", 4.0, "15 A"), ("P1-406 metal detector", "120 V", 3.0, "15 A dedicated (clean power)"),
+    loads = [("P1-401 built filler: P1-413 750 W servo, P1-414 agitator, P1-416 controls", "208 V 1-ph", 8.0, "20 A 2-pole"), ("P1-403 induction sealer", "120 V", 9.0, "15 A dedicated"),
+             ("P1-412 spindle capper (P1-422 1/8 HP PMDC)", "120 V", 2.0, "15 A"),
+             ("P1-404 built labeler (P1-426 stepper) + P1-405 printer", "120 V", 4.0, "15 A"), ("P1-406 conveyor (P1-420 1/6 HP) + P1-418 head + P1-421 pusher", "120 V", 5.0, "15 A dedicated (clean power)"),
              ("P1-225 PLC panel, 24 V PSU, 880", "120 V", 4.0, "15 A dedicated"), ("P1-205 MES PC + UPS, SW-P1", "120 V", 8.0, "20 A dedicated"),
              ("Scales P1-201/202/407, P1-204 printer", "120 V", 3.0, "15 A"), ("Receptacles and lighting (by electrician)", "120 V", 16.0, "per NEC")]
     network = [("SW-P1", "industrial unmanaged switch 8-port (WAGO 852-1111 class)"), ("P1-225", "WAGO PFC200 750-8212: CODESYS, OPC UA server"),
@@ -619,6 +669,12 @@ SHEETS = [("G-P1-000", "Cover and sheet index", "cover"), ("DH-LAY-P1", "Plant l
           ("DH-ASM-P1-001", "Dosing station and blending train elevation 1:20, ring plan, height stack-up", "ASM-P1-001_dosing_and_blending"),
           ("DH-ASM-P1-002", "Sifting and grinding elevations 1:10, settings", "ASM-P1-002_sifting_and_grinding"),
           ("DH-ASM-P1-003", "Pack bench 1:15: fill, cap, seal, label, metal detect, checkweigh, case pack", "ASM-P1-003_pack_bench"),
+          ("P1-301-GA", "Ribbon blender 6 cu ft, built in house: general arrangement and item list", "machines/P1-301-GA"),
+          ("P1-212-GA", "Bin screw feeder, built in house (x 9): general arrangement", "machines/P1-212-GA"),
+          ("P1-401-GA", "Servo auger filler, built in house: general arrangement", "machines/P1-401-GA"),
+          ("P1-406-GA", "Metal detector conveyor, built in house (used head): general arrangement", "machines/P1-406-GA"),
+          ("P1-412-GA", "Bench spindle capper, built in house: general arrangement", "machines/P1-412-GA"),
+          ("P1-404-GA", "Wrap labeler, built in house: general arrangement", "machines/P1-404-GA"),
           ("DH-ELE-P1-001", "Power one-line and control network", "ELE-P1-001_power_and_network"),
           ("DH-ELE-P1-002", "I/O list, wire numbers and field cable schedule", "ELE-P1-002_io_list_and_cables"),
           ("DH-ELE-P1-003", "Typical control wiring: safety circuit, bin channel, valve and screw, feeder drive", "ELE-P1-003_typical_wiring")]
@@ -631,9 +687,9 @@ def cover(parts):
              '<text x="120" y="330" font-size="22">1,000 lb a week of blended seasonings · 5 launch blends, laid out for 13 · bins with automatic dosing · in-house stainless fabrication</text>')
     tot = sum(e["ext_usd"] for e in EQ.values())
     facts = [f"{len(DP['bins'])} of 12 bin positions used; {DP['auto_pct_overall']} % of blend weight dosed automatically",
-             f"6 cu ft ribbon blender on a riser stand, {LB['blending']['chosen']['batches']} batches a week",
-             "Sifting 12 mesh with magnet; hammer mill with feed magnet for whole spices",
-             "Semi-automatic pack bench: auger fill, cap, induction seal, label, metal detect (CCP-1), checkweigh",
+             f"Built in house: 6 cu ft ribbon blender (no riser stand), {LB['blending']['chosen']['batches']} batches a week; 9 bin feeders",
+             "Drum-top sifter 12 mesh with magnet on the drum under the blender; hammer mill with feed magnet for whole spices",
+             "Pack bench with built servo auger filler, spindle capper, wrap labeler and detector conveyor (used head, CCP-1)",
              f"Equipment {len(EQ)} lines, ${tot:,.0f} (bought and fabricated), see bom/phase1-bom.xlsx",
              "All dimensions mm [in]; DXF cut files in mm and inch in dxf/"]
     for i, f in enumerate(facts):
@@ -644,7 +700,7 @@ def cover(parts):
     o.append(t)
     o.append(es.notes(SW - 820, 1500, 796, ["Read with README.md and build/build.json (Anatomy Build wizard).",
                                           "VERIFY marks a dimension set by a bought or used machine: measure it before cutting.",
-                                          "Status FOR REVIEW: not for construction until the used blender and mill are chosen."]))
+                                          "Status FOR REVIEW: not for construction until the mill and the used detector head are chosen and the bought parts confirmed."]))
     o.append("</svg>")
     (OUT / "G-P1-000_cover.svg").write_text("\n".join(o))
 
@@ -659,5 +715,6 @@ if __name__ == "__main__":
     ele2(D)
     ele3(D)
     parts = [p for p in json.loads((P1 / "cad" / "parts.json").read_text()) if not p.get("print")]
+    parts += json.loads((P1 / "cad" / "machines.json").read_text())["parts"]
     cover(parts)
     print("sheets written")

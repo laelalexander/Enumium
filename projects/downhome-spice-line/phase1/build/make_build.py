@@ -23,6 +23,7 @@ ROOT = P1.parent                      # downhome-spice-line: paths in build.json
 REL = "phase1"
 EQ = json.loads((P1 / "design" / "equipment.json").read_text())
 PARTS = {p["id"]: p for p in json.loads((P1 / "cad" / "parts.json").read_text())}
+PARTS.update({p["id"]: p for p in json.loads((P1 / "cad" / "machines.json").read_text())["parts"]})
 DOSING = json.loads((P1 / "design" / "out" / "dosing-plan.json").read_text())
 BY = {e["tag"]: e for e in EQ}
 
@@ -85,7 +86,11 @@ def fabricate():
             for cand in (f"dxf/{stem}_mm.dxf", f"dxf/{stem}_in.dxf", f"cad/step/{stem}.step", f"drawings/parts/{stem}.svg", f"drawings/png/{stem}.png"):
                 if (P1 / cand).exists():
                     files.append(rp(cand))
-        for pid in re.findall(r"P1-\d{3}", b["drawing"]):
+        if b["drawing"].endswith("-GA"):
+            for cand in (f"drawings/machines/{b['drawing']}.svg", f"drawings/png/{b['drawing']}.png", f"cad/step/{b['drawing'][:-3]}-ASM.step"):
+                if (P1 / cand).exists():
+                    files.append(rp(cand))
+        for pid in re.findall(r"P1-\d{3}(?:-\d{2})?", b["drawing"]):
             for k in ("step", "drawing"):
                 if pid in PARTS and PARTS[pid].get(k):
                     files.append(rp(PARTS[pid][k]))
@@ -116,18 +121,26 @@ ASSEMBLY = [
          tools=["torque wrench", "test weights 2 x 20 kg"], text="Bolt the three weigh modules to the frame brackets, lower the hopper onto them, fit the 4 in butterfly valve on the outlet Tri-Clamp. "
          "Nothing but the flexible boots may touch the hopper.", torque="M12 load-cell mount bolts 70 N·m (A2-70)",
          check="hopper rocks freely on the cells; nothing bridges to the frame"),
-    dict(step=5, title="Hang the bins, feeders and level probes", image=PNG("P1-211"), parts=A("P1-211", "P1-212", "P1-213", "P1-214"),
-         tools=["torque wrench", "hex keys"], text="Bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, "
-         "and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md "
-         "(salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
-         torque="M10 outlet flange 25 N·m; M12 bin lugs 70 N·m", check="every connector sits square; tag each bin with its ingredient label"),
-    dict(step=6, title="Riser stand, flexible screw and blender", image=PNG("ASM-P1-001"), parts=A("P1-311", "P1-224", "P1-301", "P1-302", "P1-303"),
-         tools=["pallet truck", "torque wrench"], text="Anchor the riser stand (top 1,150 mm [45.3 in]) and bolt the used blender onto it (valve outlet 1,690 mm [66.5 in]); level it. Fit the bag-dump grate in the cover opening and the discharge chute to the outlet valve. "
-         "Run the flexible screw from the intake grate under the hopper valve (550 mm [21.7 in]) to the blender inlet, supported at its midpoint; hand adds and premix are tipped into this grate.", torque="M12 blender feet 70 N·m; M8 chute flange 18 N·m",
-         check="blender inspected: ribbons clear the trough by 3 to 6 mm, shaft seals tight, cover interlock works"),
-    dict(step=7, title="Sieve deck, magnet and drum dollies", image=PNG("ASM-P1-002"), parts=A("P1-304", "P1-305", "P1-306", "P1-307", "P1-308", "P1-309"),
-         tools=["torque wrench"], text="Stand the sieve deck under the chute, seat the 12 mesh screen on its ledge with the 4 quick clamps, bolt the vibrator to the leg frame and drop the grate magnet "
-         "under the screen. Build the three drum dollies; a 55 gal drum on its dolly must roll in under the 4 in outlet (1,080 mm [42.5 in]).", check="screen seals all round; magnet pull test card picks up"),
+    dict(step=5, title="Build the feeders; hang the bins, feeders and level probes", image=PNG("P1-212-GA"),
+         parts=A("P1-211", "P1-212", "P1-215", "P1-216", "P1-217", "P1-213", "P1-214"), tools=["torque wrench", "hex keys"],
+         text="In the shop, assemble each of the 9 feeders per P1-212-GA: slide the 316 flighting into the barrel weldment, bolt the 1/3 HP gearmotor to the C-face, "
+              "fit the Tri-Clamp end cap (the screw pulls out forward for cleaning). Fit the slow agitator kit on the herb and peel bins. "
+              "On site, bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, "
+              "and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md "
+              "(salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
+         torque="M10 outlet flange 25 N·m; M12 bin lugs 70 N·m; C-face 3/8-16 bolts 27 N·m", check="each screw turns by hand without rubbing; every connector sits square; tag each bin"),
+    dict(step=6, title="Build and set the ribbon blender, run the flexible screw", image=PNG("P1-301-GA"),
+         parts=A("P1-301", "P1-333", "P1-334", "P1-335", "P1-331", "P1-332", "P1-336", "P1-302", "P1-224"), tools=["engine hoist", "torque wrench", "feeler gauges"],
+         text="In the shop, per P1-301-GA: stand the frame, set the trough on its saddles and bolt the end plates; lower the agitator in, slide the UCF212 bearings on and bolt them to the end plates, "
+              "pack the glands (4 PTFE rings each), slide the hollow-shaft gearmotor on the drive end with its torque arm. Clamp the discharge valve P1-331 to the bottom port, "
+              "fit the cover with the interlock P1-332 and the bag-dump grate. Set the blender on its marks (no riser stand; trough bottom 1,400 mm [55.1 in], valve outlet 1,261 mm [49.6 in]) and anchor the feet. "
+              "Run the flexible screw from the intake grate under the hopper valve (550 mm [21.7 in]) up to the 4 in inlet on the cover (1,983 mm [78.1 in]), supported at its midpoint; hand adds and premix are tipped into the intake grate.",
+         torque="M12 end-plate and feet 70 N·m; UCF212 M16 bolts 120 N·m; gland follower M10 hand tight plus 1/4 turn",
+         check="ribbons clear the trough by 3 to 6 mm all along; shaft turns by hand; glands do not weep; cover interlock stops the VFD; drum on its dolly rolls in between the legs"),
+    dict(step=7, title="Drum-top sifter, magnet and drum dollies", image=PNG("ASM-P1-002"), parts=A("P1-304", "P1-305", "P1-306", "P1-307", "P1-308", "P1-309"),
+         tools=["torque wrench"], text="Bolt the vibrator to the sifter's pad, seat the 12 mesh screen on its ledge, lay the grate magnet on the screen frame and clamp the lid. "
+         "Build the three drum dollies. Roll a lined drum in under the blender valve, set the sifter on the drum rim (seat 1,054 mm [41.5 in]) and pull the valve sock over its 4 in inlet (1,235 mm [48.6 in]).",
+         torque="vibrator M10 45 N·m", check="screen seals all round; magnet pull test card picks up; sifter sits level on its 3 isolators"),
     dict(step=8, title="Hammer mill, feed magnet and hopper", image=PNG("ASM-P1-002"), parts=A("P1-320", "P1-321", "P1-322"),
          tools=["torque wrench", "hammer drill 3/8 in", "IR thermometer"], text="Set the mill on its stand and anchor it. Bolt the feed hopper to the mill inlet with the FDA gasket, slide the grate magnet into "
          "the hopper slot, and fit the discharge transition with a sock into a lined 5 gal pail. Connect the 150 cfm dust pickup.",
@@ -136,17 +149,24 @@ ASSEMBLY = [
          tools=["torque wrench"], text="Place the weigh bench, bolt the backdraft hood to its back edge, set the two Mettler scales and the label printer, and set the tumbler on the bench end.",
          torque="M6 hood bolts 6 N·m", check="both scales level (bubble) and calibrated with test weights"),
     dict(step=10, title="Dust collection", image=PNG("P1-207"), parts=A("P1-310"), tools=["duct tools", "anemometer"],
-         text="Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), sieve (200 cfm) and mill (150 cfm), with a blast gate at each.",
+         text="Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), drum-top sifter drum vent (200 cfm) and mill (150 cfm), with a blast gate at each.",
          check="measured airflow at each pickup within 10 % of its design value; total under the collector's 1,400 cfm"),
-    dict(step=11, title="Pack bench", image=PNG("ASM-P1-003"), parts=A("P1-409", "P1-401", "P1-402", "P1-403", "P1-404", "P1-405", "P1-406", "P1-407", "P1-408", "P1-410", "P1-411"),
-         tools=["hex keys", "level"], text="Line up the four stainless tables, then fill, cap, seal, label, metal detect, checkweigh and case pack in that order, with the turntable at the end. "
-         "Fit the printed container nests under the filler and the cap grips at the capping table.",
+    dict(step=11, title="Build the pack machines", image=PNG("P1-401-GA"),
+         parts=A("P1-401", "P1-413", "P1-414", "P1-415", "P1-416", "P1-417", "P1-412", "P1-422", "P1-423", "P1-424", "P1-404", "P1-425", "P1-426", "P1-427",
+                 "P1-406", "P1-418", "P1-419", "P1-420", "P1-421"), tools=["torque wrench", "hex keys", "dial indicator"],
+         text="In the shop, per the GA sheets. Filler P1-401-GA: cabinet, column and hopper ring; servo and agitator motor on the head plate; auger tooling on the 2.5 in clamp; CLICK PLC and HMI in the cabinet. "
+              "Capper P1-412-GA: rail and carriage on the column, gearmotor, slip clutch and chuck, gas spring. Labeler P1-404-GA: rollers in their blocks, stepper and belt, spindles, peel plate, gap sensor. "
+              "Detector conveyor P1-406-GA: frame, pulleys and belt, gearmotor; mount the used detector head over the belt with nothing metal within 1.5 x the aperture height, and the reject pusher after it.",
+         torque="M8 to frames 18 N·m; auger tube clamp hand tight", check="auger runs true within 0.5 mm TIR; capper clutch slips at the set torque on a torque tester; detector conveyor belt tracks centred"),
+    dict(step=12, title="Pack bench", image=PNG("ASM-P1-003"), parts=A("P1-409", "P1-402", "P1-403", "P1-405", "P1-407", "P1-408", "P1-410", "P1-411"),
+         tools=["hex keys", "level"], text="Set the filler, then line up the four stainless tables: capper and sealer, printer and labeler, the detector conveyor, checkweigh and case pack, with the turntable at the end. "
+         "Fit the printed container nests on the filler.",
          check="metal detector rejects the Fe 1.5, non-Fe 2.0 and SS 2.5 mm test pieces in the leading, middle and trailing position"),
-    dict(step=12, title="Controls and wiring", image=PNG("ELE-P1-003"), parts=A("P1-225", "P1-226", "P1-222"), tools=["electrician's tools", "multimeter"],
-         text="Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, valve actuator, screw, blender and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). "
+    dict(step=13, title="Controls and wiring", image=PNG("ELE-P1-003"), parts=A("P1-225", "P1-226", "P1-222"), tools=["electrician's tools", "multimeter"],
+         text="Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, both valve actuators, screw, blender VFD and cover interlock, sifter vibrator and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). "
               "E-stops and the hopper and screw guards go through the safety relay, not the PLC. A licensed electrician does the power wiring.",
          check="every I/O point toggles on the PLC watch list; e-stop drops all drives"),
-    dict(step=13, title="MES computer and commissioning", image=PNG("LAY-P1"), parts=A("P1-205", "P1-701", "P1-702", "P1-703", "P1-704"), tools=["laptop"],
+    dict(step=14, title="MES computer and commissioning", image=PNG("LAY-P1"), parts=A("P1-205", "P1-701", "P1-702", "P1-703", "P1-704"), tools=["laptop"],
          text="Install the MES (software/mes) on the Dell, start it with --blender P1-301, assign B01 to B09 and load the first lots. Calibrate the hopper, tune the dosing in-flight, then run the acceptance tests below.",
          check="all acceptance tests pass and are signed"),
 ]
@@ -161,9 +181,9 @@ def main():
     build = dict(
         title="Down Home Creole spice plant: Phase 1 prototype",
         summary="A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. "
-                f"Ingredients are dosed from {len(DOSING['bins'])} stainless bins (12 positions) into a weigh hopper and blended in a used 6 cu ft ribbon blender, "
-                f"sieved, held for QC, then hand-packed on a semi-automatic bench with metal detection and checkweighing. {DOSING['auto_pct_overall']} % of blend weight is dosed automatically. "
-                "Stainless frames, bins, hoppers, chutes and tables are fabricated in house to save money; scales, feeders, the metal detector and the filler are bought.",
+                f"Ingredients are dosed from {len(DOSING['bins'])} stainless bins (12 positions) into a weigh hopper and blended in a 6 cu ft ribbon blender we build, "
+                f"sifted on the drum, held for QC, then packed on a bench of machines we build: servo auger filler, spindle capper, wrap labeler and a detector conveyor. {DOSING['auto_pct_overall']} % of blend weight is dosed automatically. "
+                "Stainless frames, bins, hoppers, tables and most machines are fabricated in house to save money; scales, motors, drives, valves and a used metal detector head are bought.",
         totals=dict(parts_cost=round(buy_total + fab_total, 2), currency="USD", bought=round(buy_total, 2), fabricated=round(fab_total, 2),
                     fabrication_hours=hours, print_hours=None, filament_g={"PETG": grams}, build_hours=hours + 120,
                     note="build_hours = fabrication + about 120 h install and commissioning; excludes building fit-out and electrical service"),
@@ -189,7 +209,8 @@ def main():
         ],
         gaps=["G-code for the 4 PETG fixtures is not sliced yet: slice the STLs in Bambu Studio on Yaeger and add the .gcode.3mf paths",
               "Assembly pictures are the part drawings and the layout, not rendered 3D assembly steps",
-              "Used blender (P1-301) and used metal detector (P1-406) are priced as estimates until a unit is inspected; flanges marked VERIFY are measured on them before cutting"],
+              "Bought parts for the built machines are catalog-class picks marked confirm: check each model and price before ordering; the used detector head P1-418 is an estimate until a unit is inspected",
+              "Built machines are first articles: expect one round of fit-up changes (ECO) on the blender agitator and the filler auger tooling"],
     )
     (HERE / "build.json").write_text(json.dumps(build, indent=1))
 

@@ -43,22 +43,21 @@
 |---|---|---|---|
 | P1-206 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-211 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
-| P1-212 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-213 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-214 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-220 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-223 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-224 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
-| P1-301 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-302 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
-| P1-303 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
-| P1-304 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-305 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-307 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-308 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-320 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-321 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-322 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
+| P1-304 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
+| P1-301 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
+| P1-212 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-401 | Pack room | Z3 high-care dry (exposed product) | yes |
 
 ## Combustible dust
@@ -70,13 +69,13 @@ Pickups total **1050 cfm**; P1-310 design **1400 cfm** (needs 25% margin): OK.
 | P1-206 | 300 | 1 |
 | P1-220 | 150 | 1 |
 | P1-302 | 250 | 1 |
-| P1-304 | 200 | 1 |
 | P1-320 | 150 | 1 |
+| P1-304 | 200 | 1 |
 
 - NFPA 652 dust hazard analysis (DHA) before ordering DC-310; send Kst/Pmax and MIE samples of the 3 highest-volume blends to a test lab.
 - NFPA 61 (agricultural/food dusts): collector outside the building, explosion vent directed away from people, isolation flap valve on the inlet duct.
 - Bins vent back through the weigh hopper to P1-310; lids gasketed so bins do not puff dust at refill.
-- Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the sieve.
+- Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the drum-top sifter.
 - Housekeeping: dust layer over 1/32 in triggers cleaning; vacuum P1-702 only, never compressed air.
 - Electrical in the dosing and blending room per the DHA (Class II Div 2 Group G unless shown otherwise); controller P1-225 in a sealed SS enclosure.
 
@@ -102,6 +101,6 @@ Pickups total **1050 cfm**; P1-310 design **1400 cfm** (needs 25% margin): OK.
 | Dry clean pack bench and filler | end of each pack day | vacuum (P1-702), dry brush (Vikan green) | visual + ATP < 150 RLU on 3 points | pack operator |
 | Blender and flexible screw purge between blends | every blend change | run screw and blender empty, brush ribbons, vacuum valve; first 5 kg of the next blend back into its own drum | visual | blend operator |
 | Bin run-empty and wipe | weekly per bin, at the low-level switch | feed to empty, vacuum, wipe cone with dry cloth | visual; MES closes the bin lot set | blend operator |
-| Full dry clean of dosing and blending | end of each blending week | open blender (locked out), feeders screws out, hopper and sieve vacuumed | visual + ATP | blend operator |
+| Full dry clean of dosing and blending | end of each blending week | open blender (locked out), feeders screws out, hopper and drum-top sifter vacuumed | visual + ATP | blend operator |
 | Wet clean (only if a wet event or pest finding) | as needed | disassemble, wash, sanitize (quat, no-rinse), dry 12 h before use | ATP + dryness check | sanitation |
 | Environmental monitoring (Salmonella) | monthly, zones 2-4 | sponge swabs to lab | trend in QA | QA |

@@ -4,7 +4,7 @@ Rule for buy vs fabricate (written into the package so it can be argued with):
   BUY   anything that is a CCP or a legal measurement (metal detector, scales), anything whose
         accuracy comes from precision machining or electronics (auger tooling, induction sealer,
         labeler, printers), and the blender agitator (a ribbon is costly to make and to validate).
-  BUILD stainless frames, tables, hoods, chutes, the sieve deck, carts and turntables (a local
+  BUILD stainless frames, tables, hoods, chutes, the drum-top sifter, carts and turntables (a local
         stainless fabricator or in-house TIG), plus 3D-printed jigs, nests and grips that never
         touch product. No 3D-printed part touches product: printed plastic is porous and cannot
         be validated clean.
@@ -78,12 +78,6 @@ eq("P1-211", "Dosing", "Ingredient bin 5 cu ft with hinged lid and bag-rest grat
    "dosing-plan.md: 9 bins used at launch (salt, garlic, paprika, onion, black pepper, coarse pepper, cayenne, lemon peel, red pepper)",
    {"usd": 0, "src": "see build"}, [680, 680, 686], "calculated", None, "304 #4, welds ground, lid gasket FDA silicone", kind="build", contact=True,
    build=fab("P1-211", "304 SS 14 ga ~2.2 m2 + 6 mm flanges + hinge + FDA gasket", 380, 9, "laser cut, brake, TIG, passivate", ["dxf/P1-211_flange"]))
-eq("P1-212", "Dosing", "Volumetric screw feeder, 2 in, stainless, with agitator option for low-density herbs", "Tecweigh",
-   "Volumetric feeder, 2 in screw, SS contact (model per hopper flange, confirm on quote)",
-   {"rate": "~700 L/h at max rpm (estimate, maker class)", "drive": "0.5 HP gearmotor"}, "https://www.tecweigh.com/products/volumetric-feeders",
-   "Tecweigh (White Bear Lake MN)", 9, "one per used bin; 3 more positions bought at growth", {"usd": 4800, "src": "estimate", "per": "each"},
-   [900, 300, 350], "estimate", "230 V 3-ph via VFD", "tool-free screw removal; agitator on lemon peel and herb bins", contact=True,
-   confirm="test-feed salt, garlic and lemon peel samples at Tecweigh; ask for a used-unit price (listings exist)")
 eq("P1-213", "Dosing", "Vibrating fork low-level switch for powders", "Endress+Hauser", "Soliphant FTM20", {"use": "bin low level = refill and run-empty marker"},
    "https://www.endress.com/en/field-instruments-overview/level-measurement/point-level-vibronic-ftm20", "Endress+Hauser", 9, "one per used bin",
    {"usd": 520, "src": "estimate", "per": "each"}, [0, 0, 0], "estimate", "24 V DC", "316L fork, 1.5 in Tri-Clamp process connection (sanitary option)",
@@ -106,7 +100,7 @@ eq("P1-223", "Dosing", "Sanitary butterfly valve 4 in Tri-Clamp with 24 V DC ele
    {"size": "4 in Tri-Clamp", "actuator": "24 V DC on/off, about 10 s stroke, 2 limit switches"}, "https://www.valworx.com/", "Valworx", 1, "weigh hopper outlet",
    {"usd": 1400, "src": "estimate"}, [300, 200, 350], "estimate", "24 V DC from P1-225", "FDA seat, Tri-Clamp both sides", contact=True)
 eq("P1-224", "Dosing", "Flexible screw conveyor, weigh hopper to blender inlet, sanitary, with intake grate for hand adds", "Flexicon", "Flexible screw conveyor, 2.5 in, low-profile floor hopper with bag grate and dust collar, SS (confirm)",
-   {"rate": "~1,000 L/h class (estimate)", "length": "~4.5 m, rising about 2.6 m to the blender inlet on P1-311", "intake": "bin charge from the weigh hopper valve, then hand adds and premix tipped at about 600 mm [24 in]"}, "https://flexicon.com/?p=14", "Flexicon (Bethlehem PA)", 1,
+   {"rate": "~1,000 L/h class (estimate)", "length": "~3.8 m, rising about 1.8 m to the blender cover inlet at 2,050 (built blender, no riser stand)", "intake": "bin charge from the weigh hopper valve, then hand adds and premix tipped at about 600 mm [24 in]"}, "https://flexicon.com/?p=14", "Flexicon (Bethlehem PA)", 1,
    "one dosing station", {"usd": 11000, "src": "estimate"}, [4000, 600, 1600], "estimate", "230/460 V 3-ph, 1 HP", "runs clear between formulas; tool-free screw pull",
    contact=True, growth_equiv="BD-301 flexible screw")
 eq("P1-225", "Dosing", "Dosing controller: WAGO PFC200 (CODESYS) + I/O, SS enclosure, 24 V supply", "WAGO", "750-8212 + 2 x 750-1504 DO + 2 x 750-1405 DI + 750-600 end (confirm)",
@@ -121,40 +115,17 @@ eq("P1-227", "Dosing", "Rolling 4-step platform for loading bins (40 in top step
    confirm="bags over 1.4 m: use the bag-rest grate on each bin lid, or add a vacuum bag lifter if lifting assessment requires")
 
 # ---------------------------------------------------------------- 300 blending
-eq("P1-301", "Blending", "Ribbon blender, 6 cu ft working, 304 SS (used, inspected)", "Sprout-Waldron / Paul O. Abbe class (used market)",
-   "6 cu ft double ribbon blender, 304 SS, 2 HP (example listing: Sprout-Waldron B-6, 21 x 48 in trough)",
-   {"capacity": "6 cu ft (listing)", "trough": "21 in W x 48 in L (listing)", "motor": "2 HP, 27 rpm (listing)"},
-   "https://surplusrecord.com/es/listing/6-cu-ft-sprout-waldron-b-6-stainless-steel-jacketed-double-ribbon-blender-21-width-x-48-l-flange-14-9-psi-5-discharge-2-hp-27-rpm-431930/",
-   "Surplus Record dealers / Genemco / Federal Equipment (used)", 1, "line balance: 6 cu ft, 7 batches/week, 18 % loaded; 13-blend growth fits",
-   {"usd": 9000, "src": "estimate: used 304 SS 5-6 cu ft listings $5-9k + inspection, seals, repolish"}, [1600, 760, 1500], "estimate",
-   "230/460 V 3-ph, 2 HP (single-phase input VFD if no 3-ph)", "inspect welds and shaft seals; repolish contact to #4 if pitted; new FDA packing",
-   contact=True, confirm="see it run first: no pitting, seals replaceable, discharge valve works; measure cover opening and valve flange for P1-302/P1-303",
-   growth_equiv="RB-303")
-eq("P1-311", "Blending", "Blender riser stand: lifts the blender so its valve clears chute + sieve + 55 gal drum", "fabricated", "drawing P1-311",
-   {"height": "1,150 mm [45.3 in] to the blender's leg feet (VERIFY on the used unit)", "load": "blender ~450 kg + 70 kg batch, x3 design factor"},
-   "cad/p1_parts.py", "local stainless fabricator", 1, "one blender", {"usd": 0, "src": "see build"}, [1700, 860, 1150], "calculated", None,
-   "304, all tube ends capped and seal-welded; not product contact", kind="build",
-   build=fab("P1-311", "304 SS 3 in sq tube 11 ga ~14 m, 4 x 12 mm foot plates, 4 leg pads", 650, 16, "saw, TIG, ground, passivate", ["dxf/P1-311_foot"]))
 eq("P1-302", "Blending", "Blender cover grate and dust hood (vent pickup on the blender inlet)", "fabricated", "drawing P1-302",
    {"grate": "50 mm [2 in] bar spacing, bag rest", "pickup": "250 cfm, 4 in collar"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one blender",
    {"usd": 0, "src": "see build"}, [700, 500, 450], "calculated", None, "304 #4, removable without tools for cleaning", kind="build", contact=True, dust_cfm=250,
    build=fab("P1-302", "304 SS 14 ga + 10 mm bar", 340, 10, "laser cut, brake, TIG", ["dxf/P1-302_grate"]))
-eq("P1-303", "Blending", "Blender discharge chute to sieve (scaled DH-101)", "fabricated", "drawing P1-303",
-   {"outlet": "4 in Tri-Clamp ferrule (bought)"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one blender", {"usd": 0, "src": "see build"},
-   [200, 200, 220], "calculated", None, "316L contact, ground welds", kind="build", contact=True,
-   build=fab("P1-303", "316L 14 ga + 4 in BPE ferrule", 210, 6, "laser cut, roll, TIG, polish", ["dxf/P1-303_flange"]),
-   confirm="match the used blender's valve flange before cutting")
-eq("P1-304", "Blending", "Vibratory sieve deck on leg frame (12 mesh screen, grate magnet under the screen)", "fabricated", "drawing P1-304; bought screen, vibrator and magnet",
-   {"rate": "8 lb/min design (line balance)", "screen": "18 in round 12 mesh SS"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one blending train",
-   {"usd": 0, "src": "see build"}, [700, 700, 1100], "calculated", "120 V vibrator", "screen and hopper tool-free removal", kind="build", contact=True, dust_cfm=200,
-   build=fab("P1-304", "304 SS 14 ga sheet, 1.5 in tube legs, rubber isolators", 460, 12, "laser cut, roll, TIG", ["cad/step/P1-304"]), growth_equiv="SC-304")
 eq("P1-305", "Blending", "Sieve screen 18 in, 12 mesh stainless, with frame", "Gilson", "18 in sieve 12 mesh, SS frame (V18SS12 class, confirm)",
    {"mesh": "12 (site sifter spec)"}, "https://www.globalgilson.com/18in-sieves", "Gilson Company", 2, "one in use + one spare (screen check each shift)",
    {"usd": 290, "src": "estimate", "per": "each"}, [457, 457, 100], "documented", None, "inspect for tears each shift", contact=True)
-eq("P1-306", "Blending", "Rotary electric vibrator motor for sieve deck", "Martin Engineering", "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
-   {"force": "~150 lbf class (estimate)"}, "https://www.martin-eng.com/content/product/690/electric-vibrators", "Martin Engineering", 1, "one sieve deck",
+eq("P1-306", "Blending", "Rotary electric vibrator motor for the drum-top sifter", "Martin Engineering", "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
+   {"force": "~150 lbf class (estimate)"}, "https://www.martin-eng.com/content/product/690/electric-vibrators", "Martin Engineering", 1, "one drum-top sifter",
    {"usd": 750, "src": "estimate"}, [200, 120, 120], "estimate", "120 V 1-ph")
-eq("P1-307", "Blending", "Grate magnet 12 x 12 in, rare earth, on brackets under the sieve screen", "Industrial Magnetics, Inc.", "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
+eq("P1-307", "Blending", "Grate magnet 12 x 12 in, rare earth, resting on the drum-top sifter screen frame", "Industrial Magnetics, Inc.", "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
    {"strength": "10,000 G class (estimate)"}, "https://www.magnetics.com/product.asp?ProductID=24", "IMI", 1, "one train (prerequisite, not the CCP)",
    {"usd": 650, "src": "estimate"}, [305, 305, 50], "estimate", None, "pull and wipe each batch; record finds", contact=True)
 eq("P1-308", "Blending", "Lidded food-grade blend drum 55 gal, open top, with liner (one batch per drum, QC hold container)", "Uline",
@@ -163,7 +134,7 @@ eq("P1-308", "Blending", "Lidded food-grade blend drum 55 gal, open top, with li
    "7 batches/week, one drum per batch, held up to 1 day for QC: 1 filling, 2 in hold, 1 at the filler, 2 spare", {"usd": 120, "src": "estimate", "per": "each"},
    [584, 584, 914], "estimate", None, "FDA-grade HDPE + poly liner per batch", contact=True)
 eq("P1-309", "Blending", "Drum dolly with lift handle (stainless)", "fabricated", "drawing P1-309",
-   {"load": "250 lb", "fits": "55 gal drum Ø584 [23 in]"}, "cad/p1_parts.py", "in-house", 3, "one under the sieve, one in hold, one at the filler", {"usd": 0, "src": "see build"}, [640, 640, 130], "calculated",
+   {"load": "250 lb", "fits": "55 gal drum Ø584 [23 in]"}, "cad/p1_parts.py", "in-house", 3, "one under the blender sifter, one in hold, one at the filler", {"usd": 0, "src": "see build"}, [640, 640, 130], "calculated",
    kind="build", build=fab("P1-309", "304 SS 11 ga + 4 x 3 in SS casters (bought, Colson 2 series)", 140, 3, "laser cut, brake, TIG", ["dxf/P1-309_base"]))
 eq("P1-320", "Grinding", "Small sanitary hammer mill on stand: grinds whole peppercorns, chiles and leaf herbs to size in house", "Schutte-Buffalo Hammermill",
    "Mini Mill class lab/pilot hammer mill, 2 HP, stainless contact parts, interchangeable screens (confirm model and screen set)",
@@ -180,17 +151,12 @@ eq("P1-322", "Grinding", "Mill feed hopper and discharge chute to a lined drum (
    {"feed": "10 L hopper with magnet slot", "discharge": "4 in Tri-Clamp to a cotton sock into a lined 5 gal pail (about 10 kg), tipped into bin B06"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one mill",
    {"usd": 0, "src": "see build"}, [400, 400, 700], "calculated", None, "304 #4, welds ground, opens without tools", kind="build", contact=True,
    build=fab("P1-322", "304 SS 14 ga + 4 in BPE ferrule", 230, 8, "laser cut, brake, TIG, polish", ["dxf/P1-322_flange"]))
-eq("P1-310", "Utilities", "Portable cartridge dust collector (weigh hood, blender hood, sieve, mill)", "Camfil APC", "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
-   {"airflow": "1,050 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150, mill 150) + 25 % = 1,313 cfm, checked by foodsafety.py", "design_cfm": 1400}, "https://camfilapc.com/?p=3400", "Camfil APC", 1,
+eq("P1-310", "Utilities", "Portable cartridge dust collector (weigh hood, blender hood, sifter, mill)", "Camfil APC", "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
+   {"airflow": "1,050 cfm pickups (weigh hood 300, blender grate 250, drum-top sifter vent 200, weigh hopper vent 150, mill 150) + 25 % = 1,313 cfm, checked by foodsafety.py", "design_cfm": 1400}, "https://camfilapc.com/?p=3400", "Camfil APC", 1,
    "all five pickups", {"usd": 14000, "src": "estimate"}, [1200, 900, 2400], "estimate", "120/240 V 1-ph",
    "small dust quantity, but a DHA (NFPA 652) is still required; collector outside the room or vented per DHA", confirm="DHA first")
 
 # ---------------------------------------------------------------- 400 packing (one semi-automatic bench)
-eq("P1-401", "Pack bench", "Semi-automatic servo auger filler with weighing, foot pedal", "VTOPS", "Semi-automatic auger filler, 10-5,000 g, servo (model per tooling, confirm)",
-   {"range": "10-5,000 g (maker class)", "rate": "15 upm operator-paced (estimate)"}, "https://vtops.com/filling-machines/auger-fillers/semi-automatic-auger-fillers",
-   "VTOPS (US office)", 1, "line balance: 80 % at peak, 42 % of the week", {"usd": 11500, "src": "estimate"}, [700, 600, 1800], "estimate", "120/240 V 1-ph",
-   "304 SS contact, tool-free hopper and auger", contact=True, dust_cfm=0, confirm="auger tooling for 53 mm shaker, 89 mm jar, pouch and tub on the quote",
-   growth_equiv="NW-501 (moves to station B in Growth)", reuse_in_growth=True)
 eq("P1-402", "Pack bench", "Cap torque tester (verify hand-capped torque each hour)", "Mark-10", "TT01 cap torque tester, 10 lbf-in (confirm range)",
    {"range": "to 10 lbF-in class (confirm)"}, "https://mark-10.com/products/torque-testers/", "Mark-10", 1, "QC check of hand capping",
    {"usd": 1400, "src": "estimate"}, [300, 300, 200], "estimate", "battery")
@@ -198,17 +164,9 @@ eq("P1-403", "Pack bench", "Handheld induction cap sealer, specialty head to 120
    {"caps": "to 83 mm standard head, to 120 mm optional head (documented)", "power": "120 VAC 60 Hz (documented)"},
    "https://www.enerconind.com/sealing/cap-sealers/super-seal-jr.aspx", "Enercon", 1, "one bench", {"usd": 4800, "src": "estimate"},
    [76, 210, 267], "documented", "120 V", growth_equiv="IS-405")
-eq("P1-404", "Pack bench", "Semi-automatic wrap labeler for round containers", "Primera Technology", "AP360e label applicator",
-   {"containers": "round, cylindrical (documented)"}, "https://www.onlinelabels.com/articles/reviewing-the-primera-ap360-label-applicator?src=1", "Primera dealer",
-   1, "one bench", {"usd": 1500, "src": "estimate"}, [500, 400, 300], "estimate", "120 V")
 eq("P1-405", "Pack bench", "Color label printer: full labels with lot and best-by printed per run (no separate coder)", "Primera Technology",
    "LX910 color label printer (pigment ink, confirm water resistance on chosen stock)", {"width": "to 8.25 in (documented class)"},
    "https://www.primera.com/lx910-color-label-printer.html", "Primera dealer", 1, "one bench", {"usd": 2500, "src": "estimate"}, [500, 450, 270], "estimate", "120 V")
-eq("P1-406", "Pack bench", "Conveyor metal detector with reject (CCP-1, on finished packs)", "Fortress Technology", "Stealth with conveyor, ~10 x 6 in aperture (used, Sigma Equipment)",
-   {"aperture": "about 10 in W x 6 in H (listing class)"}, "https://www.sigmaequipment.com/equipment/model/fortress-technology/stealth/", "Sigma Equipment (used) or Fortress (new)",
-   1, "CCP-1 on every pack", {"usd": 14000, "src": "estimate (used); new ~$30k"}, [1500, 600, 1100], "estimate", "120 V",
-   "locked reject bin; validate with test wands per pack size", confirm="sensitivity test with the 12 oz jar (metallized liner) before buying",
-   growth_equiv="MD-305 (Growth checks the blend; Phase 1 checks the pack)")
 eq("P1-407", "Pack bench", "Checkweigh scale 15 kg with over/under lights (100 % weigh, NIST HB 133)", "Mettler-Toledo", "ICS425s-15 (confirm)",
    {"function": "checkweighing with tolerance lights (documented family)"}, "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/Terminals-and-Controllers/bench-scales.html",
    MT, 1, "every unit weighed; MES records", {"usd": 2200, "src": "estimate"}, [350, 300, 150], "estimate", "120 V", growth_equiv="CW-409 (manual here)")
@@ -226,6 +184,44 @@ eq("P1-410", "Pack bench", "3D-printed fixtures: filler container nests, labeler
    build=fab("P1-410a..e", "PETG ~600 g", 15, 1, "3D print (slice in Bambu Studio)", ["cad/print"]))
 eq("P1-411", "Pack bench", "Tape dispenser and hand stretch-wrap dispenser", "Uline", "H-150 tape gun + H-50 hand stretch wrap dispenser (confirm)",
    {}, "https://www.uline.com/", "Uline", 1, "one pack-off", {"usd": 90, "src": "estimate"}, [0, 0, 0], "estimate")
+
+# ---------------------------------------------------------------- machines built in house (cad/p1_machines.py -> cad/machines.json)
+eq("P1-304", "Blending", "Drum-top sifter: 18 in 12 mesh screen deck on the blend drum, grate magnet under the screen", "fabricated", "drawing P1-304",
+   {"rate": "8 lb/min design (line balance)", "screen": "18 in round 12 mesh SS", "height": "200 mm on the drum rim, so the blender needs no riser"},
+   "cad/p1_parts.py", "local stainless fabricator", 1, "one blending train", {"usd": 0, "src": "see build"}, [620, 620, 240], "calculated", "120 V vibrator",
+   "screen and deck lift off without tools", kind="build", contact=True, dust_cfm=200,
+   build=fab("P1-304", "304 SS 14 ga sheet + 6 mm seat ring + 3 rubber isolators", 420, 10, "laser cut, roll, TIG", ["cad/step/P1-304"]), growth_equiv="SC-304")
+MACH = json.loads((HERE.parent / "cad" / "machines.json").read_text())["machines"]
+_M = {
+    "P1-301": dict(area="Blending", name="Ribbon blender 6 cu ft, built in house: 316L U-trough, double ribbons, cover with bag-dump grate, frame (valve 1,260 into the drum-top sifter)",
+                   basis="line balance: 6 cu ft, 7 batches/week, 18 % loaded; 13-blend growth fits", footprint=[1720, 850, 1990], power="230 V 3-ph 2 HP via VFD P1-336",
+                   san="316L #4 contact, ground welds, packing glands outside the product zone, 4 in TC flush port", contact=True, growth="RB-303", dust=0),
+    "P1-212": dict(area="Dosing", name="Bin screw feeder 2 in, built in house: 316L barrel, bought flighting and gearmotor (tool-free screw pull-out)",
+                   basis="one per used bin (dosing-plan.md); 3 more positions at growth", footprint=[1230, 200, 355], power="230 V 3-ph 1/3 HP via VFD P1-226",
+                   san="316L contact, cantilevered screw (no product bearing), 2.5 in TC end cap", contact=True, growth="", dust=0),
+    "P1-401": dict(area="Pack bench", name="Servo auger filler, built in house: cabinet, column, 42 L 316L hopper; bought servo and auger tooling",
+                   basis="line balance: 80 % at peak, 42 % of the week", footprint=[930, 1000, 1960], power="120/240 V 1-ph",
+                   san="316L hopper, tool-free hopper and auger", contact=True, growth="NW-501 (moves to station B in Growth)", dust=0),
+    "P1-406": dict(area="Pack bench", name="Metal detector conveyor (CCP-1 on finished packs): built frame and belt run, bought search head and control",
+                   basis="CCP-1 on every pack", footprint=[1510, 590, 1375], power="120 V", san="locked reject bin; validate with test wands per pack size",
+                   contact=False, growth="MD-305 (Growth checks the blend; Phase 1 checks the pack)", dust=0),
+    "P1-412": dict(area="Pack bench", name="Bench spindle capper, built in house: chuck on a slip clutch sets the cap torque (replaces hand capping)",
+                   basis="one bench; torque checked hourly on P1-402", footprint=[400, 400, 712], power="120 V", san="no product contact (caps on)", contact=False, growth="", dust=0),
+    "P1-404": dict(area="Pack bench", name="Wrap labeler for round containers, built in house: roller bed, stepper label feed, peel plate",
+                   basis="one bench", footprint=[550, 360, 340], power="24 V DC from a 120 V supply", san="no product contact (container closed)", contact=False, growth="", dust=0),
+}
+for _m in MACH:
+    d = _M[_m["id"]]; c = _m["cost"]
+    eq(_m["id"], d["area"], d["name"], "fabricated", f"drawing {_m['id']}-GA + part sheets {', '.join(_m['parts'])}",
+       {"assembly": _m["assy_note"], "bought_parts": ", ".join(b["tag"] for b in _m["bought"] if b["usd"])}, "cad/p1_machines.py", "in-house / local stainless fabricator",
+       _m["qty"], d["basis"], {"usd": 0, "src": "see build"}, d["footprint"], "calculated (CAD)", d["power"], d["san"], kind="build", contact=d["contact"],
+       growth_equiv=d["growth"], build=fab(_m["id"] + "-GA", "SS 304/316L sheet, tube and bar per part sheets", c["material"], c["labor_h"], "laser cut, roll, TIG, machine, polish, assemble",
+                                          [f"cad/step/{x}" for x in _m["parts"]]))
+    for b in _m["bought"]:
+        if not b["usd"]:
+            continue
+        eq(b["tag"], d["area"], b["name"], b["maker"], b["model"], {"for": f"{_m['id']} {_m['title']}"}, b["source"], b["supplier"], b["qty"],
+           f"{b['qty']} for {_m['qty']} x {_m['id']}", {"usd": b["usd"], "src": "estimate", "per": "each"}, [0, 0, 0], "in machine envelope")
 
 # ---------------------------------------------------------------- 700 food safety
 eq("P1-701", "Food safety", "ATP hygiene monitoring (pre-op swabs)", "Hygiena", "EnSURE Touch + UltraSnap swabs", {}, "https://www.hygiena.com/", "Hygiena",

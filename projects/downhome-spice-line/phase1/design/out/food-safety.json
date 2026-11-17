@@ -115,15 +115,6 @@
    "ok": true
   },
   {
-   "tag": "P1-212",
-   "room": "Dosing & blending room",
-   "zone": "Z3 high-care dry (exposed product)",
-   "families": [
-    "allergen-free"
-   ],
-   "ok": true
-  },
-  {
    "tag": "P1-213",
    "room": "Dosing & blending room",
    "zone": "Z3 high-care dry (exposed product)",
@@ -169,34 +160,7 @@
    "ok": true
   },
   {
-   "tag": "P1-301",
-   "room": "Dosing & blending room",
-   "zone": "Z3 high-care dry (exposed product)",
-   "families": [
-    "allergen-free"
-   ],
-   "ok": true
-  },
-  {
    "tag": "P1-302",
-   "room": "Dosing & blending room",
-   "zone": "Z3 high-care dry (exposed product)",
-   "families": [
-    "allergen-free"
-   ],
-   "ok": true
-  },
-  {
-   "tag": "P1-303",
-   "room": "Dosing & blending room",
-   "zone": "Z3 high-care dry (exposed product)",
-   "families": [
-    "allergen-free"
-   ],
-   "ok": true
-  },
-  {
-   "tag": "P1-304",
    "room": "Dosing & blending room",
    "zone": "Z3 high-care dry (exposed product)",
    "families": [
@@ -251,6 +215,33 @@
   },
   {
    "tag": "P1-322",
+   "room": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "families": [
+    "allergen-free"
+   ],
+   "ok": true
+  },
+  {
+   "tag": "P1-304",
+   "room": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "families": [
+    "allergen-free"
+   ],
+   "ok": true
+  },
+  {
+   "tag": "P1-301",
+   "room": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "families": [
+    "allergen-free"
+   ],
+   "ok": true
+  },
+  {
+   "tag": "P1-212",
    "room": "Dosing & blending room",
    "zone": "Z3 high-care dry (exposed product)",
    "families": [
@@ -278,10 +269,6 @@
    "sanitary": "304 #4, welds ground, lid gasket FDA silicone"
   },
   {
-   "tag": "P1-212",
-   "sanitary": "tool-free screw removal; agitator on lemon peel and herb bins"
-  },
-  {
    "tag": "P1-213",
    "sanitary": "316L fork, 1.5 in Tri-Clamp process connection (sanitary option)"
   },
@@ -302,20 +289,8 @@
    "sanitary": "runs clear between formulas; tool-free screw pull"
   },
   {
-   "tag": "P1-301",
-   "sanitary": "inspect welds and shaft seals; repolish contact to #4 if pitted; new FDA packing"
-  },
-  {
    "tag": "P1-302",
    "sanitary": "304 #4, removable without tools for cleaning"
-  },
-  {
-   "tag": "P1-303",
-   "sanitary": "316L contact, ground welds"
-  },
-  {
-   "tag": "P1-304",
-   "sanitary": "screen and hopper tool-free removal"
   },
   {
    "tag": "P1-305",
@@ -342,8 +317,20 @@
    "sanitary": "304 #4, welds ground, opens without tools"
   },
   {
+   "tag": "P1-304",
+   "sanitary": "screen and deck lift off without tools"
+  },
+  {
+   "tag": "P1-301",
+   "sanitary": "316L #4 contact, ground welds, packing glands outside the product zone, 4 in TC flush port"
+  },
+  {
+   "tag": "P1-212",
+   "sanitary": "316L contact, cantilevered screw (no product bearing), 2.5 in TC end cap"
+  },
+  {
    "tag": "P1-401",
-   "sanitary": "304 SS contact, tool-free hopper and auger"
+   "sanitary": "316L hopper, tool-free hopper and auger"
   }
  ],
  "dust": {
@@ -364,13 +351,13 @@
     "qty": 1
    },
    {
-    "tag": "P1-304",
-    "cfm": 200,
+    "tag": "P1-320",
+    "cfm": 150,
     "qty": 1
    },
    {
-    "tag": "P1-320",
-    "cfm": 150,
+    "tag": "P1-304",
+    "cfm": 200,
     "qty": 1
    }
   ],
@@ -383,7 +370,7 @@
    "NFPA 652 dust hazard analysis (DHA) before ordering DC-310; send Kst/Pmax and MIE samples of the 3 highest-volume blends to a test lab.",
    "NFPA 61 (agricultural/food dusts): collector outside the building, explosion vent directed away from people, isolation flap valve on the inlet duct.",
    "Bins vent back through the weigh hopper to P1-310; lids gasketed so bins do not puff dust at refill.",
-   "Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the sieve.",
+   "Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the drum-top sifter.",
    "Housekeeping: dust layer over 1/32 in triggers cleaning; vacuum P1-702 only, never compressed air.",
    "Electrical in the dosing and blending room per the DHA (Class II Div 2 Group G unless shown otherwise); controller P1-225 in a sealed SS enclosure."
   ]
@@ -425,7 +412,7 @@
   {
    "task": "Full dry clean of dosing and blending",
    "when": "end of each blending week",
-   "method": "open blender (locked out), feeders screws out, hopper and sieve vacuumed",
+   "method": "open blender (locked out), feeders screws out, hopper and drum-top sifter vacuumed",
    "verify": "visual + ATP",
    "who": "blend operator"
   },

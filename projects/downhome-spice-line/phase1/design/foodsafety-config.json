@@ -14,7 +14,6 @@
    "P1-224",
    "P1-301",
    "P1-302",
-   "P1-303",
    "P1-304",
    "P1-305",
    "P1-307",
@@ -34,14 +33,25 @@
   "P1-220": "P1-210",
   "P1-223": "P1-210",
   "P1-302": "P1-301",
-  "P1-303": "P1-301",
-  "P1-305": "P1-304",
-  "P1-307": "P1-304",
+  "P1-305": "P1-301",
+  "P1-307": "P1-301",
   "P1-201": "P1-206",
   "P1-202": "P1-206",
   "P1-207": "P1-206",
   "P1-321": "P1-320",
-  "P1-322": "P1-320"
+  "P1-322": "P1-320",
+  "P1-331": "P1-301",
+  "P1-304": "P1-301",
+  "P1-308": "P1-301",
+  "P1-309": "P1-301",
+  "P1-215": "P1-210",
+  "P1-216": "P1-210",
+  "P1-217": "P1-210",
+  "P1-333": "P1-301",
+  "P1-334": "P1-301",
+  "P1-335": "P1-301",
+  "P1-336": "P1-301",
+  "P1-332": "P1-301"
  },
  "claims": [
   {
@@ -58,7 +68,7 @@
    "NFPA 652 dust hazard analysis (DHA) before ordering DC-310; send Kst/Pmax and MIE samples of the 3 highest-volume blends to a test lab.",
    "NFPA 61 (agricultural/food dusts): collector outside the building, explosion vent directed away from people, isolation flap valve on the inlet duct.",
    "Bins vent back through the weigh hopper to P1-310; lids gasketed so bins do not puff dust at refill.",
-   "Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the sieve.",
+   "Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the drum-top sifter.",
    "Housekeeping: dust layer over 1/32 in triggers cleaning; vacuum P1-702 only, never compressed air.",
    "Electrical in the dosing and blending room per the DHA (Class II Div 2 Group G unless shown otherwise); controller P1-225 in a sealed SS enclosure."
   ]
@@ -108,7 +118,7 @@
   {
    "task": "Full dry clean of dosing and blending",
    "when": "end of each blending week",
-   "method": "open blender (locked out), feeders screws out, hopper and sieve vacuumed",
+   "method": "open blender (locked out), feeders screws out, hopper and drum-top sifter vacuumed",
    "verify": "visual + ATP",
    "who": "blend operator"
   },

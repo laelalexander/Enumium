@@ -490,45 +490,6 @@
   "ext_usd": 8685.0
  },
  {
-  "tag": "P1-212",
-  "area": "Dosing",
-  "name": "Volumetric screw feeder, 2 in, stainless, with agitator option for low-density herbs",
-  "maker": "Tecweigh",
-  "model": "Volumetric feeder, 2 in screw, SS contact (model per hopper flange, confirm on quote)",
-  "specs": {
-   "rate": "~700 L/h at max rpm (estimate, maker class)",
-   "drive": "0.5 HP gearmotor"
-  },
-  "source": "https://www.tecweigh.com/products/volumetric-feeders",
-  "supplier": "Tecweigh (White Bear Lake MN)",
-  "qty": 9,
-  "qty_basis": "one per used bin; 3 more positions bought at growth",
-  "price": {
-   "usd": 4800,
-   "src": "estimate",
-   "per": "each"
-  },
-  "footprint_mm": [
-   900,
-   300,
-   350
-  ],
-  "footprint_src": "estimate",
-  "power": "230 V 3-ph via VFD",
-  "air_cfm": 0,
-  "sanitary": "tool-free screw removal; agitator on lemon peel and herb bins",
-  "alternates": [],
-  "rate": null,
-  "kind": "buy",
-  "product_contact": true,
-  "dust_cfm": 0,
-  "confirm": "test-feed salt, garlic and lemon peel samples at Tecweigh; ask for a used-unit price (listings exist)",
-  "growth_equiv": "",
-  "build": null,
-  "reuse_in_growth": false,
-  "ext_usd": 43200
- },
- {
   "tag": "P1-213",
   "area": "Dosing",
   "name": "Vibrating fork low-level switch for powders",
@@ -774,7 +735,7 @@
   "model": "Flexible screw conveyor, 2.5 in, low-profile floor hopper with bag grate and dust collar, SS (confirm)",
   "specs": {
    "rate": "~1,000 L/h class (estimate)",
-   "length": "~4.5 m, rising about 2.6 m to the blender inlet on P1-311",
+   "length": "~3.8 m, rising about 1.8 m to the blender cover inlet at 2,050 (built blender, no riser stand)",
    "intake": "bin charge from the weigh hopper valve, then hand adds and premix tipped at about 600 mm [24 in]"
   },
   "source": "https://flexicon.com/?p=14",
@@ -919,93 +880,6 @@
   "ext_usd": 1100
  },
  {
-  "tag": "P1-301",
-  "area": "Blending",
-  "name": "Ribbon blender, 6 cu ft working, 304 SS (used, inspected)",
-  "maker": "Sprout-Waldron / Paul O. Abbe class (used market)",
-  "model": "6 cu ft double ribbon blender, 304 SS, 2 HP (example listing: Sprout-Waldron B-6, 21 x 48 in trough)",
-  "specs": {
-   "capacity": "6 cu ft (listing)",
-   "trough": "21 in W x 48 in L (listing)",
-   "motor": "2 HP, 27 rpm (listing)"
-  },
-  "source": "https://surplusrecord.com/es/listing/6-cu-ft-sprout-waldron-b-6-stainless-steel-jacketed-double-ribbon-blender-21-width-x-48-l-flange-14-9-psi-5-discharge-2-hp-27-rpm-431930/",
-  "supplier": "Surplus Record dealers / Genemco / Federal Equipment (used)",
-  "qty": 1,
-  "qty_basis": "line balance: 6 cu ft, 7 batches/week, 18 % loaded; 13-blend growth fits",
-  "price": {
-   "usd": 9000,
-   "src": "estimate: used 304 SS 5-6 cu ft listings $5-9k + inspection, seals, repolish"
-  },
-  "footprint_mm": [
-   1600,
-   760,
-   1500
-  ],
-  "footprint_src": "estimate",
-  "power": "230/460 V 3-ph, 2 HP (single-phase input VFD if no 3-ph)",
-  "air_cfm": 0,
-  "sanitary": "inspect welds and shaft seals; repolish contact to #4 if pitted; new FDA packing",
-  "alternates": [],
-  "rate": null,
-  "kind": "buy",
-  "product_contact": true,
-  "dust_cfm": 0,
-  "confirm": "see it run first: no pitting, seals replaceable, discharge valve works; measure cover opening and valve flange for P1-302/P1-303",
-  "growth_equiv": "RB-303",
-  "build": null,
-  "reuse_in_growth": false,
-  "ext_usd": 9000
- },
- {
-  "tag": "P1-311",
-  "area": "Blending",
-  "name": "Blender riser stand: lifts the blender so its valve clears chute + sieve + 55 gal drum",
-  "maker": "fabricated",
-  "model": "drawing P1-311",
-  "specs": {
-   "height": "1,150 mm [45.3 in] to the blender's leg feet (VERIFY on the used unit)",
-   "load": "blender ~450 kg + 70 kg batch, x3 design factor"
-  },
-  "source": "cad/p1_parts.py",
-  "supplier": "local stainless fabricator",
-  "qty": 1,
-  "qty_basis": "one blender",
-  "price": {
-   "usd": 1690.0,
-   "src": "build: material $650 + 16 h x $65",
-   "per": "each"
-  },
-  "footprint_mm": [
-   1700,
-   860,
-   1150
-  ],
-  "footprint_src": "calculated",
-  "power": null,
-  "air_cfm": 0,
-  "sanitary": "304, all tube ends capped and seal-welded; not product contact",
-  "alternates": [],
-  "rate": null,
-  "kind": "build",
-  "product_contact": false,
-  "dust_cfm": 0,
-  "confirm": "",
-  "growth_equiv": "",
-  "build": {
-   "drawing": "P1-311",
-   "material": "304 SS 3 in sq tube 11 ga ~14 m, 4 x 12 mm foot plates, 4 leg pads",
-   "material_usd": 650,
-   "labor_h": 16,
-   "process": "saw, TIG, ground, passivate",
-   "files": [
-    "dxf/P1-311_foot"
-   ]
-  },
-  "reuse_in_growth": false,
-  "ext_usd": 1690.0
- },
- {
   "tag": "P1-302",
   "area": "Blending",
   "name": "Blender cover grate and dust hood (vent pickup on the blender inlet)",
@@ -1054,101 +928,6 @@
   "ext_usd": 990.0
  },
  {
-  "tag": "P1-303",
-  "area": "Blending",
-  "name": "Blender discharge chute to sieve (scaled DH-101)",
-  "maker": "fabricated",
-  "model": "drawing P1-303",
-  "specs": {
-   "outlet": "4 in Tri-Clamp ferrule (bought)"
-  },
-  "source": "cad/p1_parts.py",
-  "supplier": "local stainless fabricator",
-  "qty": 1,
-  "qty_basis": "one blender",
-  "price": {
-   "usd": 600.0,
-   "src": "build: material $210 + 6 h x $65",
-   "per": "each"
-  },
-  "footprint_mm": [
-   200,
-   200,
-   220
-  ],
-  "footprint_src": "calculated",
-  "power": null,
-  "air_cfm": 0,
-  "sanitary": "316L contact, ground welds",
-  "alternates": [],
-  "rate": null,
-  "kind": "build",
-  "product_contact": true,
-  "dust_cfm": 0,
-  "confirm": "match the used blender's valve flange before cutting",
-  "growth_equiv": "",
-  "build": {
-   "drawing": "P1-303",
-   "material": "316L 14 ga + 4 in BPE ferrule",
-   "material_usd": 210,
-   "labor_h": 6,
-   "process": "laser cut, roll, TIG, polish",
-   "files": [
-    "dxf/P1-303_flange"
-   ]
-  },
-  "reuse_in_growth": false,
-  "ext_usd": 600.0
- },
- {
-  "tag": "P1-304",
-  "area": "Blending",
-  "name": "Vibratory sieve deck on leg frame (12 mesh screen, grate magnet under the screen)",
-  "maker": "fabricated",
-  "model": "drawing P1-304; bought screen, vibrator and magnet",
-  "specs": {
-   "rate": "8 lb/min design (line balance)",
-   "screen": "18 in round 12 mesh SS"
-  },
-  "source": "cad/p1_parts.py",
-  "supplier": "local stainless fabricator",
-  "qty": 1,
-  "qty_basis": "one blending train",
-  "price": {
-   "usd": 1240.0,
-   "src": "build: material $460 + 12 h x $65",
-   "per": "each"
-  },
-  "footprint_mm": [
-   700,
-   700,
-   1100
-  ],
-  "footprint_src": "calculated",
-  "power": "120 V vibrator",
-  "air_cfm": 0,
-  "sanitary": "screen and hopper tool-free removal",
-  "alternates": [],
-  "rate": null,
-  "kind": "build",
-  "product_contact": true,
-  "dust_cfm": 200,
-  "confirm": "",
-  "growth_equiv": "SC-304",
-  "build": {
-   "drawing": "P1-304",
-   "material": "304 SS 14 ga sheet, 1.5 in tube legs, rubber isolators",
-   "material_usd": 460,
-   "labor_h": 12,
-   "process": "laser cut, roll, TIG",
-   "files": [
-    "cad/step/P1-304"
-   ]
-  },
-  "reuse_in_growth": false,
-  "ext_usd": 1240.0
- },
- {
   "tag": "P1-305",
   "area": "Blending",
   "name": "Sieve screen 18 in, 12 mesh stainless, with frame",
@@ -1189,7 +968,7 @@
  {
   "tag": "P1-306",
   "area": "Blending",
-  "name": "Rotary electric vibrator motor for sieve deck",
+  "name": "Rotary electric vibrator motor for the drum-top sifter",
   "maker": "Martin Engineering",
   "model": "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
   "specs": {
@@ -1198,7 +977,7 @@
   "source": "https://www.martin-eng.com/content/product/690/electric-vibrators",
   "supplier": "Martin Engineering",
   "qty": 1,
-  "qty_basis": "one sieve deck",
+  "qty_basis": "one drum-top sifter",
   "price": {
    "usd": 750,
    "src": "estimate"
@@ -1226,7 +1005,7 @@
  {
   "tag": "P1-307",
   "area": "Blending",
-  "name": "Grate magnet 12 x 12 in, rare earth, on brackets under the sieve screen",
+  "name": "Grate magnet 12 x 12 in, rare earth, resting on the drum-top sifter screen frame",
   "maker": "Industrial Magnetics, Inc.",
   "model": "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
   "specs": {
@@ -1311,7 +1090,7 @@
   "source": "cad/p1_parts.py",
   "supplier": "in-house",
   "qty": 3,
-  "qty_basis": "one under the sieve, one in hold, one at the filler",
+  "qty_basis": "one under the blender sifter, one in hold, one at the filler",
   "price": {
    "usd": 335.0,
    "src": "build: material $140 + 3 h x $65",
@@ -1474,11 +1253,11 @@
  {
   "tag": "P1-310",
   "area": "Utilities",
-  "name": "Portable cartridge dust collector (weigh hood, blender hood, sieve, mill)",
+  "name": "Portable cartridge dust collector (weigh hood, blender hood, sifter, mill)",
   "maker": "Camfil APC",
   "model": "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
   "specs": {
-   "airflow": "1,050 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150, mill 150) + 25 % = 1,313 cfm, checked by foodsafety.py",
+   "airflow": "1,050 cfm pickups (weigh hood 300, blender grate 250, drum-top sifter vent 200, weigh hopper vent 150, mill 150) + 25 % = 1,313 cfm, checked by foodsafety.py",
    "design_cfm": 1400
   },
   "source": "https://camfilapc.com/?p=3400",
@@ -1508,44 +1287,6 @@
   "build": null,
   "reuse_in_growth": false,
   "ext_usd": 14000
- },
- {
-  "tag": "P1-401",
-  "area": "Pack bench",
-  "name": "Semi-automatic servo auger filler with weighing, foot pedal",
-  "maker": "VTOPS",
-  "model": "Semi-automatic auger filler, 10-5,000 g, servo (model per tooling, confirm)",
-  "specs": {
-   "range": "10-5,000 g (maker class)",
-   "rate": "15 upm operator-paced (estimate)"
-  },
-  "source": "https://vtops.com/filling-machines/auger-fillers/semi-automatic-auger-fillers",
-  "supplier": "VTOPS (US office)",
-  "qty": 1,
-  "qty_basis": "line balance: 80 % at peak, 42 % of the week",
-  "price": {
-   "usd": 11500,
-   "src": "estimate"
-  },
-  "footprint_mm": [
-   700,
-   600,
-   1800
-  ],
-  "footprint_src": "estimate",
-  "power": "120/240 V 1-ph",
-  "air_cfm": 0,
-  "sanitary": "304 SS contact, tool-free hopper and auger",
-  "alternates": [],
-  "rate": null,
-  "kind": "buy",
-  "product_contact": true,
-  "dust_cfm": 0,
-  "confirm": "auger tooling for 53 mm shaker, 89 mm jar, pouch and tub on the quote",
-  "growth_equiv": "NW-501 (moves to station B in Growth)",
-  "build": null,
-  "reuse_in_growth": true,
-  "ext_usd": 11500
  },
  {
   "tag": "P1-402",
@@ -1623,43 +1364,6 @@
   "ext_usd": 4800
  },
  {
-  "tag": "P1-404",
-  "area": "Pack bench",
-  "name": "Semi-automatic wrap labeler for round containers",
-  "maker": "Primera Technology",
-  "model": "AP360e label applicator",
-  "specs": {
-   "containers": "round, cylindrical (documented)"
-  },
-  "source": "https://www.onlinelabels.com/articles/reviewing-the-primera-ap360-label-applicator?src=1",
-  "supplier": "Primera dealer",
-  "qty": 1,
-  "qty_basis": "one bench",
-  "price": {
-   "usd": 1500,
-   "src": "estimate"
-  },
-  "footprint_mm": [
-   500,
-   400,
-   300
-  ],
-  "footprint_src": "estimate",
-  "power": "120 V",
-  "air_cfm": 0,
-  "sanitary": "",
-  "alternates": [],
-  "rate": null,
-  "kind": "buy",
-  "product_contact": false,
-  "dust_cfm": 0,
-  "confirm": "",
-  "growth_equiv": "",
-  "build": null,
-  "reuse_in_growth": false,
-  "ext_usd": 1500
- },
- {
   "tag": "P1-405",
   "area": "Pack bench",
   "name": "Color label printer: full labels with lot and best-by printed per run (no separate coder)",
@@ -1695,43 +1399,6 @@
   "build": null,
   "reuse_in_growth": false,
   "ext_usd": 2500
- },
- {
-  "tag": "P1-406",
-  "area": "Pack bench",
-  "name": "Conveyor metal detector with reject (CCP-1, on finished packs)",
-  "maker": "Fortress Technology",
-  "model": "Stealth with conveyor, ~10 x 6 in aperture (used, Sigma Equipment)",
-  "specs": {
-   "aperture": "about 10 in W x 6 in H (listing class)"
-  },
-  "source": "https://www.sigmaequipment.com/equipment/model/fortress-technology/stealth/",
-  "supplier": "Sigma Equipment (used) or Fortress (new)",
-  "qty": 1,
-  "qty_basis": "CCP-1 on every pack",
-  "price": {
-   "usd": 14000,
-   "src": "estimate (used); new ~$30k"
-  },
-  "footprint_mm": [
-   1500,
-   600,
-   1100
-  ],
-  "footprint_src": "estimate",
-  "power": "120 V",
-  "air_cfm": 0,
-  "sanitary": "locked reject bin; validate with test wands per pack size",
-  "alternates": [],
-  "rate": null,
-  "kind": "buy",
-  "product_contact": false,
-  "dust_cfm": 0,
-  "confirm": "sensitivity test with the 12 oz jar (metallized liner) before buying",
-  "growth_equiv": "MD-305 (Growth checks the blend; Phase 1 checks the pack)",
-  "build": null,
-  "reuse_in_growth": false,
-  "ext_usd": 14000
  },
  {
   "tag": "P1-407",
@@ -1945,6 +1612,1261 @@
   "build": null,
   "reuse_in_growth": false,
   "ext_usd": 90
+ },
+ {
+  "tag": "P1-304",
+  "area": "Blending",
+  "name": "Drum-top sifter: 18 in 12 mesh screen deck on the blend drum, grate magnet under the screen",
+  "maker": "fabricated",
+  "model": "drawing P1-304",
+  "specs": {
+   "rate": "8 lb/min design (line balance)",
+   "screen": "18 in round 12 mesh SS",
+   "height": "200 mm on the drum rim, so the blender needs no riser"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one blending train",
+  "price": {
+   "usd": 1070.0,
+   "src": "build: material $420 + 10 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   620,
+   620,
+   240
+  ],
+  "footprint_src": "calculated",
+  "power": "120 V vibrator",
+  "air_cfm": 0,
+  "sanitary": "screen and deck lift off without tools",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 200,
+  "confirm": "",
+  "growth_equiv": "SC-304",
+  "build": {
+   "drawing": "P1-304",
+   "material": "304 SS 14 ga sheet + 6 mm seat ring + 3 rubber isolators",
+   "material_usd": 420,
+   "labor_h": 10,
+   "process": "laser cut, roll, TIG",
+   "files": [
+    "cad/step/P1-304"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1070.0
+ },
+ {
+  "tag": "P1-301",
+  "area": "Blending",
+  "name": "Ribbon blender 6 cu ft, built in house: 316L U-trough, double ribbons, cover with bag-dump grate, frame (valve 1,260 into the drum-top sifter)",
+  "maker": "fabricated",
+  "model": "drawing P1-301-GA + part sheets P1-301-01, P1-301-02, P1-301-03, P1-301-04, P1-301-05",
+  "specs": {
+   "assembly": "Valve outlet 1,260 [49.6] drops through a sock into the drum-top sifter P1-304 on a 55 gal drum (rim 1,054); cover at 1,983 [78.1]",
+   "bought_parts": "P1-333, P1-334, P1-335, P1-331, P1-332, P1-336"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "line balance: 6 cu ft, 7 batches/week, 18 % loaded; 13-blend growth fits",
+  "price": {
+   "usd": 9248.0,
+   "src": "build: material $1838 + 114.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1720,
+   850,
+   1990
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "230 V 3-ph 2 HP via VFD P1-336",
+  "air_cfm": 0,
+  "sanitary": "316L #4 contact, ground welds, packing glands outside the product zone, 4 in TC flush port",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "RB-303",
+  "build": {
+   "drawing": "P1-301-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 1838,
+   "labor_h": 114.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-301-01",
+    "cad/step/P1-301-02",
+    "cad/step/P1-301-03",
+    "cad/step/P1-301-04",
+    "cad/step/P1-301-05"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 9248.0
+ },
+ {
+  "tag": "P1-333",
+  "area": "Blending",
+  "name": "Hollow-shaft helical-bevel gearmotor 2 HP, about 40 rpm, \u00d860 bore, washdown paint",
+  "maker": "NORD Drivesystems",
+  "model": "SK 9022.1 AZBH class, i about 43 (confirm)",
+  "specs": {
+   "for": "P1-301 Ribbon blender 6 cu ft (built)"
+  },
+  "source": "https://www.nord.com/",
+  "supplier": "NORD distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-301",
+  "price": {
+   "usd": 2600,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 2600
+ },
+ {
+  "tag": "P1-334",
+  "area": "Blending",
+  "name": "Stainless flange bearing UCF212, \u00d860 bore, food-grade grease",
+  "maker": "NTN / Dodge (SS insert)",
+  "model": "UCF212 SS or Dodge ULTRA Kleen F4B-SCEZ (confirm)",
+  "specs": {
+   "for": "P1-301 Ribbon blender 6 cu ft (built)"
+  },
+  "source": "https://www.dodgeindustrial.com/",
+  "supplier": "Applied Industrial / Motion",
+  "qty": 2,
+  "qty_basis": "2 for 1 x P1-301",
+  "price": {
+   "usd": 380,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 760
+ },
+ {
+  "tag": "P1-335",
+  "area": "Blending",
+  "name": "PTFE packing 10 mm sq, FDA, 4 rings per gland",
+  "maker": "Chesterton",
+  "model": "1724 PTFE packing (confirm size)",
+  "specs": {
+   "for": "P1-301 Ribbon blender 6 cu ft (built)"
+  },
+  "source": "https://chesterton.com/",
+  "supplier": "Chesterton distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-301",
+  "price": {
+   "usd": 120,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 120
+ },
+ {
+  "tag": "P1-331",
+  "area": "Blending",
+  "name": "Sanitary butterfly valve 4 in TC with 24 V DC electric actuator and limit switches (blender discharge)",
+  "maker": "Valworx",
+  "model": "4 in sanitary butterfly 316L, EPDM, 24 V DC actuator (same as P1-223)",
+  "specs": {
+   "for": "P1-301 Ribbon blender 6 cu ft (built)"
+  },
+  "source": "https://www.valworx.com/",
+  "supplier": "Valworx",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-301",
+  "price": {
+   "usd": 1400,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1400
+ },
+ {
+  "tag": "P1-332",
+  "area": "Blending",
+  "name": "Cover interlock switch, coded magnetic, stainless",
+  "maker": "Schmersal",
+  "model": "BNS 260 class + AES safety module input on SR-P1 (confirm)",
+  "specs": {
+   "for": "P1-301 Ribbon blender 6 cu ft (built)"
+  },
+  "source": "https://www.schmersal.com/",
+  "supplier": "Schmersal distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-301",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 260
+ },
+ {
+  "tag": "P1-336",
+  "area": "Blending",
+  "name": "VFD 2 HP for the blender (soft start, 40 rpm trim)",
+  "maker": "AutomationDirect",
+  "model": "GS21-22P0 (confirm)",
+  "specs": {
+   "for": "P1-301 Ribbon blender 6 cu ft (built)"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-301",
+  "price": {
+   "usd": 330,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 330
+ },
+ {
+  "tag": "P1-212",
+  "area": "Dosing",
+  "name": "Bin screw feeder 2 in, built in house: 316L barrel, bought flighting and gearmotor (tool-free screw pull-out)",
+  "maker": "fabricated",
+  "model": "drawing P1-212-GA + part sheets P1-212-01",
+  "specs": {
+   "assembly": "Hangs from the bin outlet flange; screw pulls out forward after the 2.5 in TC end cap comes off",
+   "bought_parts": "P1-215, P1-216, P1-217"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 9,
+  "qty_basis": "one per used bin (dosing-plan.md); 3 more positions at growth",
+  "price": {
+   "usd": 558.0,
+   "src": "build: material $103 + 7.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1230,
+   200,
+   355
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "230 V 3-ph 1/3 HP via VFD P1-226",
+  "air_cfm": 0,
+  "sanitary": "316L contact, cantilevered screw (no product bearing), 2.5 in TC end cap",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-212-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 103,
+   "labor_h": 7.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-212-01"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 5022.0
+ },
+ {
+  "tag": "P1-215",
+  "area": "Dosing",
+  "name": "Formed screw flighting 2 in OD x 2 in pitch on 3/4 in shaft, 316, drive end with 5/8 in keyed stub",
+  "maker": "Kase Conveyors / Spirotech",
+  "model": "custom flighting 2 x 2 x 3/4 in, 316 SS, 860 mm (quote)",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2 in (built, 9)"
+  },
+  "source": "https://www.kaseconveyors.com/",
+  "supplier": "Kase Conveyors",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 2340
+ },
+ {
+  "tag": "P1-216",
+  "area": "Dosing",
+  "name": "Gearmotor 1/3 HP 3-ph 56C with 5:1 inline helical gearbox (about 345 rpm)",
+  "maker": "AutomationDirect IronHorse",
+  "model": "MTRP-P33-AD18 motor + inline gearbox 5:1 (confirm SKU)",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2 in (built, 9)"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 420,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 3780
+ },
+ {
+  "tag": "P1-217",
+  "area": "Dosing",
+  "name": "Inlet agitator gearmotor kit for herb and peel bins (slow paddle)",
+  "maker": "Bodine Electric",
+  "model": "1/17 HP 30 rpm gearmotor + SS paddle (confirm)",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2 in (built, 9)"
+  },
+  "source": "https://www.bodine-electric.com/",
+  "supplier": "Bodine distributor",
+  "qty": 3,
+  "qty_basis": "3 for 9 x P1-212",
+  "price": {
+   "usd": 380,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1140
+ },
+ {
+  "tag": "P1-401",
+  "area": "Pack bench",
+  "name": "Servo auger filler, built in house: cabinet, column, 42 L 316L hopper; bought servo and auger tooling",
+  "maker": "fabricated",
+  "model": "drawing P1-401-GA + part sheets P1-401-01, P1-401-02, P1-401-03",
+  "specs": {
+   "assembly": "Container on the printed nest at 850 [33.5]; blend scooped from the drum into the lid port at 1,553 [61.1]",
+   "bought_parts": "P1-413, P1-414, P1-415, P1-416, P1-417"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "line balance: 80 % at peak, 42 % of the week",
+  "price": {
+   "usd": 2964.0,
+   "src": "build: material $624 + 36.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   930,
+   1000,
+   1960
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "120/240 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "316L hopper, tool-free hopper and auger",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "NW-501 (moves to station B in Growth)",
+  "build": {
+   "drawing": "P1-401-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 624,
+   "labor_h": 36.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-401-01",
+    "cad/step/P1-401-02",
+    "cad/step/P1-401-03"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 2964.0
+ },
+ {
+  "tag": "P1-413",
+  "area": "Pack bench",
+  "name": "AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",
+  "maker": "AutomationDirect",
+  "model": "SureServo2 SV2L-207B + SV2A-2075 (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built)"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 1350,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1350
+ },
+ {
+  "tag": "P1-414",
+  "area": "Pack bench",
+  "name": "Hopper agitator gearmotor 1/4 HP about 60 rpm",
+  "maker": "Bison Gear",
+  "model": "011-xxx parallel-shaft 1/4 HP (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built)"
+  },
+  "source": "https://www.bisongear.com/",
+  "supplier": "Bison distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 420,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 420
+ },
+ {
+  "tag": "P1-415",
+  "area": "Pack bench",
+  "name": "Auger tooling sets: auger, tube and funnel for the 53 mm shaker and 89 mm jar",
+  "maker": "All-Fill",
+  "model": "auger tooling to size (quote with our blend samples)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built)"
+  },
+  "source": "https://www.all-fill.com/",
+  "supplier": "All-Fill (Exton PA)",
+  "qty": 2,
+  "qty_basis": "2 for 1 x P1-401",
+  "price": {
+   "usd": 650,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1300
+ },
+ {
+  "tag": "P1-416",
+  "area": "Pack bench",
+  "name": "Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply",
+  "maker": "AutomationDirect",
+  "model": "C2-03CPU-2 + EA3-S3ML (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built)"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 620,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 620
+ },
+ {
+  "tag": "P1-417",
+  "area": "Pack bench",
+  "name": "Foot switch, guarded, IP67",
+  "maker": "Linemaster",
+  "model": "632-S class",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built)"
+  },
+  "source": "https://www.linemaster.com/",
+  "supplier": "Grainger",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 90,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 90
+ },
+ {
+  "tag": "P1-406",
+  "area": "Pack bench",
+  "name": "Metal detector conveyor (CCP-1 on finished packs): built frame and belt run, bought search head and control",
+  "maker": "fabricated",
+  "model": "drawing P1-406-GA + part sheets P1-406-01",
+  "specs": {
+   "assembly": "Belt top 905 [35.6], level with the tables; the bought search head (CCP-1) bolts over the centre",
+   "bought_parts": "P1-418, P1-419, P1-420, P1-421"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "CCP-1 on every pack",
+  "price": {
+   "usd": 1290.0,
+   "src": "build: material $250 + 16.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1510,
+   590,
+   1375
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "locked reject bin; validate with test wands per pack size",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "MD-305 (Growth checks the blend; Phase 1 checks the pack)",
+  "build": {
+   "drawing": "P1-406-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 250,
+   "labor_h": 16.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-406-01"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1290.0
+ },
+ {
+  "tag": "P1-418",
+  "area": "Pack bench",
+  "name": "Metal detector search head about 10 x 6 in aperture with control (CCP-1), used, validated",
+  "maker": "Fortress Technology",
+  "model": "Stealth search head + control only (used, Sigma Equipment) (confirm)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+  },
+  "source": "https://www.sigmaequipment.com/",
+  "supplier": "Sigma Equipment",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 8500,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 8500
+ },
+ {
+  "tag": "P1-419",
+  "area": "Pack bench",
+  "name": "Endless belt 6 in, FDA polyurethane, plus 2 crowned SS pulleys \u00d860 with bearings",
+  "maker": "Ammeraal Beltech",
+  "model": "Ropanyl FDA 6 in endless + pulley set (quote)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+  },
+  "source": "https://www.ammeraalbeltech.com/",
+  "supplier": "Ammeraal distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 650,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 650
+ },
+ {
+  "tag": "P1-420",
+  "area": "Pack bench",
+  "name": "Conveyor gearmotor 1/6 HP shaft-mount, 60 rpm",
+  "maker": "Bodine Electric",
+  "model": "1/6 HP parallel-shaft (confirm)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+  },
+  "source": "https://www.bodine-electric.com/",
+  "supplier": "Bodine distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 480,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 480
+ },
+ {
+  "tag": "P1-421",
+  "area": "Pack bench",
+  "name": "Reject pusher: 24 V linear actuator 100 mm stroke with the head's reject output",
+  "maker": "Progressive Automations",
+  "model": "PA-15 class (confirm speed)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+  },
+  "source": "https://www.progressiveautomations.com/",
+  "supplier": "Progressive Automations",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 180,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 180
+ },
+ {
+  "tag": "P1-412",
+  "area": "Pack bench",
+  "name": "Bench spindle capper, built in house: chuck on a slip clutch sets the cap torque (replaces hand capping)",
+  "maker": "fabricated",
+  "model": "drawing P1-412-GA + part sheets P1-412-01",
+  "specs": {
+   "assembly": "Operator pulls the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips",
+   "bought_parts": "P1-422, P1-423, P1-424"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one bench; torque checked hourly on P1-402",
+  "price": {
+   "usd": 918.0,
+   "src": "build: material $138 + 12.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   400,
+   400,
+   712
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "no product contact (caps on)",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-412-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 138,
+   "labor_h": 12.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-412-01"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 918.0
+ },
+ {
+  "tag": "P1-422",
+  "area": "Pack bench",
+  "name": "Gearmotor 1/8 HP 120 V, about 200 rpm",
+  "maker": "Bodine Electric",
+  "model": "1/8 HP PMDC + speed control (confirm)",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built)"
+  },
+  "source": "https://www.bodine-electric.com/",
+  "supplier": "Bodine distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 420,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 420
+ },
+ {
+  "tag": "P1-423",
+  "area": "Pack bench",
+  "name": "Adjustable slip clutch 0.5-5 N\u00b7m with capping chucks for 53 mm and 89 mm caps",
+  "maker": "Zero-Max / Resina-style chucks",
+  "model": "Torq-Tender TT1 class + urethane chuck inserts (confirm)",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built)"
+  },
+  "source": "https://www.zero-max.com/",
+  "supplier": "Zero-Max distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 520,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 520
+ },
+ {
+  "tag": "P1-424",
+  "area": "Pack bench",
+  "name": "Linear rail MGN15 500 mm with block, and a gas spring counterbalance",
+  "maker": "HIWIN",
+  "model": "MGN15H rail 500 + gas spring 100 N (confirm)",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built)"
+  },
+  "source": "https://www.hiwin.us/",
+  "supplier": "HIWIN distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 160,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 160
+ },
+ {
+  "tag": "P1-404",
+  "area": "Pack bench",
+  "name": "Wrap labeler for round containers, built in house: roller bed, stepper label feed, peel plate",
+  "maker": "fabricated",
+  "model": "drawing P1-404-GA + part sheets P1-404-01",
+  "specs": {
+   "assembly": "Container rolls on the two drive rollers under the idler; the label peels at the plate and wraps in one turn",
+   "bought_parts": "P1-425, P1-426, P1-427"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one bench",
+  "price": {
+   "usd": 1020.0,
+   "src": "build: material $110 + 14.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   550,
+   360,
+   340
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "24 V DC from a 120 V supply",
+  "air_cfm": 0,
+  "sanitary": "no product contact (container closed)",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-404-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 110,
+   "labor_h": 14.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-404-01"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1020.0
+ },
+ {
+  "tag": "P1-425",
+  "area": "Pack bench",
+  "name": "Drive rollers 50 x 240 mm urethane-covered, with shafts, bearings and timing pulleys (set of 3)",
+  "maker": "Misumi",
+  "model": "custom urethane rollers (quote)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built)"
+  },
+  "source": "https://us.misumi-ec.com/",
+  "supplier": "Misumi",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 420,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 420
+ },
+ {
+  "tag": "P1-426",
+  "area": "Pack bench",
+  "name": "NEMA 23 stepper with integrated driver and controller (label feed + roller drive)",
+  "maker": "Teknic",
+  "model": "ClearPath-SD or ClearCore + NEMA 23 (confirm)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built)"
+  },
+  "source": "https://teknic.com/",
+  "supplier": "Teknic",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 560,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 560
+ },
+ {
+  "tag": "P1-427",
+  "area": "Pack bench",
+  "name": "Label gap sensor, fork type",
+  "maker": "SICK",
+  "model": "WFS3 class (confirm)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built)"
+  },
+  "source": "https://www.sick.com/",
+  "supplier": "SICK distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 260
  },
  {
   "tag": "P1-701",

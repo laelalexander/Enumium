@@ -44,28 +44,28 @@
 <rect x="940" y="400" width="340" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1110.0" y="428" font-size="17" font-weight="bold" text-anchor="middle">P1-223 &gt; P1-224</text>
 <text x="1110.0" y="452" font-size="14" text-anchor="middle">Valve, flexible screw</text>
 <text x="1110.0" y="471" font-size="14" text-anchor="middle">hand adds + premix at intake</text>
-<rect x="1380" y="400" width="340" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1550.0" y="428" font-size="17" font-weight="bold" text-anchor="middle">P1-301 on P1-311</text>
+<rect x="1380" y="400" width="340" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1550.0" y="428" font-size="17" font-weight="bold" text-anchor="middle">P1-301 (built) &gt; P1-331</text>
 <text x="1550.0" y="452" font-size="14" text-anchor="middle">Ribbon blend 6 cu ft</text>
 <text x="1550.0" y="471" font-size="14" text-anchor="middle">mix 12 min, CV &lt;= 5 %</text>
-<rect x="1380" y="620" width="340" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1550.0" y="648" font-size="17" font-weight="bold" text-anchor="middle">P1-303 &gt; P1-304/305/307</text>
-<text x="1550.0" y="672" font-size="14" text-anchor="middle">Sift 12 mesh + grate magnet</text>
-<text x="1550.0" y="691" font-size="14" text-anchor="middle">oversize to reject</text>
+<rect x="1380" y="620" width="340" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1550.0" y="648" font-size="17" font-weight="bold" text-anchor="middle">P1-304/305/307 on drum</text>
+<text x="1550.0" y="672" font-size="14" text-anchor="middle">Drum-top sifter 12 mesh</text>
+<text x="1550.0" y="691" font-size="14" text-anchor="middle">+ magnet, oversize to reject</text>
 <rect x="1380" y="840" width="340" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1550.0" y="868" font-size="17" font-weight="bold" text-anchor="middle">P1-308 on P1-309</text>
 <text x="1550.0" y="892" font-size="14" text-anchor="middle">Lined 55 gal drum</text>
 <text x="1550.0" y="911" font-size="14" text-anchor="middle">1 batch = 1 drum, labeled</text>
 <rect x="1820" y="840" width="320" height="110" rx="10" fill="#fff3e0" stroke="#111" stroke-width="2"/><text x="1980.0" y="868" font-size="17" font-weight="bold" text-anchor="middle">HOLD-1 / QC</text>
 <text x="1980.0" y="892" font-size="14" text-anchor="middle">QC hold: CV, micro</text>
 <text x="1980.0" y="911" font-size="14" text-anchor="middle">release in MES</text>
-<rect x="1820" y="180" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1980.0" y="208" font-size="17" font-weight="bold" text-anchor="middle">P1-401 + P1-410</text>
-<text x="1980.0" y="232" font-size="14" text-anchor="middle">Auger fill by weight</text>
+<rect x="1820" y="180" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1980.0" y="208" font-size="17" font-weight="bold" text-anchor="middle">P1-401 (built) + P1-410</text>
+<text x="1980.0" y="232" font-size="14" text-anchor="middle">Servo auger fill by weight</text>
 <text x="1980.0" y="251" font-size="14" text-anchor="middle">nests hold the container</text>
-<rect x="2240" y="180" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="2400.0" y="208" font-size="17" font-weight="bold" text-anchor="middle">TBL-1: P1-402/403</text>
-<text x="2400.0" y="232" font-size="14" text-anchor="middle">Cap by hand, torque check</text>
+<rect x="2240" y="180" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="2400.0" y="208" font-size="17" font-weight="bold" text-anchor="middle">TBL-1: P1-412 + P1-403</text>
+<text x="2400.0" y="232" font-size="14" text-anchor="middle">Spindle capper, clutch torque</text>
 <text x="2400.0" y="251" font-size="14" text-anchor="middle">induction seal</text>
-<rect x="2240" y="400" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="2400.0" y="428" font-size="17" font-weight="bold" text-anchor="middle">TBL-2: P1-404/405</text>
+<rect x="2240" y="400" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="2400.0" y="428" font-size="17" font-weight="bold" text-anchor="middle">TBL-2: P1-404 + P1-405</text>
 <text x="2400.0" y="452" font-size="14" text-anchor="middle">Print label with lot + best-by</text>
-<text x="2400.0" y="471" font-size="14" text-anchor="middle">wrap-apply label</text>
-<rect x="2240" y="620" width="320" height="110" rx="10" fill="#ffebee" stroke="#111" stroke-width="2"/><text x="2400.0" y="648" font-size="17" font-weight="bold" text-anchor="middle">P1-406</text>
+<text x="2400.0" y="471" font-size="14" text-anchor="middle">built wrap labeler</text>
+<rect x="2240" y="620" width="320" height="110" rx="10" fill="#ffebee" stroke="#111" stroke-width="2"/><text x="2400.0" y="648" font-size="17" font-weight="bold" text-anchor="middle">P1-406 + P1-418</text>
 <text x="2400.0" y="672" font-size="14" text-anchor="middle">Metal detect finished pack</text>
 <text x="2400.0" y="691" font-size="14" text-anchor="middle">CCP-1, locked reject</text>
 <rect x="2240" y="840" width="320" height="110" rx="10" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="2400.0" y="868" font-size="17" font-weight="bold" text-anchor="middle">TBL-3: P1-407</text>

@@ -1,7 +1,9 @@
 """Phase 1 plant: one full 3D assembly of every machine, placed from the layout (design/layout.json).
 
 Fabricated parts come from their own STEP models (cad/step, made by p1_parts.py).
-Bought machines are modelled here at catalog size (design/equipment.json footprint_mm and specs) with their
+Machines built in house (blender, feeders, filler, detector conveyor, capper, labeler) come from p1_machines.py:
+our parts as designed plus envelope models of their bought motors, valves and heads.
+Other bought machines are modelled here at catalog size (design/equipment.json footprint_mm and specs) with their
 main features and connection points; they are envelope models, not the makers' own CAD.
 Heights follow the stack-up on ASM-P1-001 / 002 / 003.
 
@@ -10,6 +12,7 @@ Usage: python3 plant_3d.py  ->  plant/DH-P1-plant.step, plant/DH-P1-plant.glb, p
 import json
 import math
 import pathlib
+import sys
 
 import cadquery as cq
 from cadquery import Location, Solid, Vector
@@ -216,6 +219,7 @@ def receiving():
 # ---- dosing station: ring, bins, feeders, hopper, valve ------------------------------------------------
 H_RING, Y_BIN, Y_FEED, Y_LID, Y_HOP, Y_VALVE = 2210, 1730, 1380, 1231, 650, 550
 R_BIN, R_INLET = 1250.0, 280.0
+FA = Y_BIN - 204.0                # built feeder barrel axis (bin outlet flange on the transition top)
 
 
 def dosing():
@@ -232,21 +236,17 @@ def dosing():
             add(step("P1-211", bx, by, Y_BIN, rot=math.degrees(a)), SS, f"P1-211 bin {bid}")
             add(cyl(bx, by, Y_BIN + 662, 120, 4), (0.95, 0.95, 0.95), "bin label")
             # feeder: body tube from under the bin outlet inward, motor outboard, spout to the hopper
+            # built feeder P1-212: inlet flange under the bin outlet, screw runs inward, gearmotor outboard (P1-212-GA)
             ux, uy = math.cos(a), math.sin(a)
-            p_out = (XC + (R_BIN + 330) * ux, YC + (R_BIN + 330) * uy, Y_FEED + 170)
-            p_in = (XC + (R_BIN - 600) * ux, YC + (R_BIN - 600) * uy, Y_FEED + 170)
-            add(tube(p_out, p_in, 75), SSB, "P1-212 feeder barrel")
-            add(cbox(bx, by, Y_FEED + 240, 260, 260, Y_BIN - Y_FEED - 240), SSB, "P1-212 feeder inlet hopper")
-            mx, my = XC + (R_BIN + 470) * ux, YC + (R_BIN + 470) * uy
-            add(tube((mx - 140 * ux, my - 140 * uy, Y_FEED + 170), (mx + 140 * ux, my + 140 * uy, Y_FEED + 170), 85), MOTOR, "P1-212 gearmotor")
-            sx, sy = XC + (R_BIN - 560) * ux, YC + (R_BIN - 560) * uy
-            add(cyl(sx, sy, Y_FEED + 40, 50, 100), SSB, "P1-212 spout")
+            machine("P1-212", bx, by, FA, rot=math.degrees(a) + 180)
+            p_out = (XC + (R_BIN + 410) * ux, YC + (R_BIN + 410) * uy, FA)
+            sx, sy = XC + (R_BIN - 580) * ux, YC + (R_BIN - 580) * uy
             hx, hy = XC + (R_INLET + 10) * ux, YC + (R_INLET + 10) * uy
-            add(tube((sx, sy, Y_FEED + 40), (hx, hy, Y_LID + 4), 50), (0.85, 0.93, 0.98), "P1-214 BFM boot")
+            add(tube((sx, sy, FA - 132), (hx, hy, Y_LID + 4), 50), (0.85, 0.93, 0.98), "P1-214 BFM boot")
             add(cbox(bx + 330 * ux, by + 330 * uy, Y_BIN + 80, 40, 40, 120), (0.15, 0.55, 0.85), "P1-213 level fork")
             if k in (0, 6):
-                anchor("P1-212" if k == 0 else "P1-211", "Volumetric feeder 2 in (9)" if k == 0 else "Ingredient bin 5 cu ft (9 used)",
-                       *(p_out[:2] if k == 0 else (bx, by)), Y_FEED + 260 if k == 0 else Y_BIN + 700, "buy" if k == 0 else "build")
+                anchor("P1-212" if k == 0 else "P1-211", "Screw feeder, built (9)" if k == 0 else "Ingredient bin 5 cu ft (9 used)",
+                       *(p_out[:2] if k == 0 else (bx, by)), FA + 200 if k == 0 else Y_BIN + 700, "build")
         else:
             add(cyl(bx, by, Y_BIN + 300, 200, 6), SS, f"blank plate {bid}")
     # weigh hopper on 3 load cells, valve under it
@@ -283,49 +283,34 @@ def dosing():
 
 # ---- flexible screw, blender on riser, sieve, drum ------------------------------------------------------
 def blending(XC, YC):
-    x0, y0, w, h, BCX, BCY = lay_box("P1-301")      # rotated 90: long axis along Y
-    STAND, TB = 1150.0, 1840.0                       # stand top, trough bottom (ASM-P1-001)
-    add(step("P1-311", BCX, BCY, 0, rot=90), SS, "P1-311 riser stand")
-    anchor("P1-311", "Blender riser stand", BCX + 470, BCY - 700, 900, "build")
-    L, Wt = 1220.0, 530.0
-    # legs, U-trough (box + half round), end plates, cover, drive
-    for sx in (-1, 1):
-        for sy in (-1, 1):
-            add(cbox(BCX + sx * 220, BCY + sy * 520, STAND, 60, 60, TB - STAND + 200), SSB, "blender leg")
-    trough = cbox(BCX, BCY, TB + Wt / 2, Wt, L, 500).fuse(tube((BCX, BCY - L / 2, TB + Wt / 2), (BCX, BCY + L / 2, TB + Wt / 2), Wt / 2))
-    add(trough, SSB, "P1-301 ribbon blender trough")
-    add(cbox(BCX, BCY, TB + Wt / 2 + 500, Wt + 40, L + 40, 12), SSB, "blender cover")
-    add(step("P1-302", BCX, BCY - 120, TB + Wt / 2 + 517, rot=90), SS, "P1-302 grate and hood")
-    anchor("P1-302", "Bag-dump grate + dust hood", BCX, BCY - 120, TB + Wt / 2 + 830, "build")
-    add(tube((BCX, BCY + L / 2, TB + Wt / 2), (BCX, BCY + L / 2 + 120, TB + Wt / 2), 60), SSB, "shaft seal")
-    add(cbox(BCX, BCY + L / 2 + 260, TB + 120, 330, 280, 330), MOTOR, "P1-301 gearbox")
-    add(tube((BCX, BCY + L / 2 + 160, TB + 470), (BCX, BCY + L / 2 + 520, TB + 470), 120), MOTOR, "P1-301 motor 2 HP")
-    add(cbox(BCX, BCY + L / 2 + 260, STAND, 360, 420, TB + 120 - STAND), SSB, "drive bracket")
-    anchor("P1-301", "Ribbon blender 6 cu ft (used)", BCX - 300, BCY, TB + 600, "buy")
-    # discharge valve, chute, sieve, drum on dolly
-    add(cyl(BCX, BCY, 1690 + 60, 70, TB - 1690 - 60 + 5), SSB, "blender discharge valve")
-    add(cbox(BCX - 140, BCY, 1770, 160, 60, 60), RED, "valve handle")
-    add(step("P1-303", BCX, BCY, 1475), SS, "P1-303 chute")
-    add(step("P1-304", BCX, BCY, 0, rot=45), SS, "P1-304 sieve deck")
-    add(cyl(BCX, BCY, 1300, 229, 60), (0.60, 0.62, 0.64), "P1-305 screen frame")
-    add(cbox(BCX + 300, BCY + 300, 1200, 180, 120, 120), MOTOR, "P1-306 vibrator")
-    anchor("P1-304", "Sieve 12 mesh + magnet", BCX + 380, BCY - 380, 1448, "build")
+    x0, y0, w, h, BCX, BCY = lay_box("P1-301")      # rotated 90: long axis along Y, gearmotor north, drum rolls in from the south
+    machine("P1-301", BCX, BCY, 0, rot=90)
+    add(step("P1-302", BCX, BCY - 110, PM.Z_FL + 3, rot=90), SS, "P1-302 grate and hood")
+    anchor("P1-302", "Bag-dump grate + dust hood", BCX, BCY - 110, PM.Z_FL + 330, "build")
+    anchor("P1-301", "Ribbon blender 6 cu ft, built", BCX - 450, BCY, PM.Z_AX + 200, "build")
+    # drum on its dolly under the valve, drum-top sifter on the rim (seat 1,054, inlet 1,235)
     add(step("P1-309", BCX, BCY, 80), SS, "P1-309 dolly")
     for k in range(4):
         a = math.radians(45 + 90 * k)
         add(cyl(BCX + 250 * math.cos(a), BCY + 250 * math.sin(a), 0, 40, 80), DARK, "caster")
-    add(hollow_cyl(BCX, BCY, 105, 292, 914, 6), DRUM, "P1-308 55 gal drum")
-    add(hollow_cyl(BCX, BCY, 120, 284, 930, 1), LINER, "drum liner")
-    anchor("P1-308", "55 gal drum on dolly", BCX - 300, BCY + 300, 1000, "buy")
+    add(hollow_cyl(BCX, BCY, 140, 292, 914, 6), DRUM, "P1-308 55 gal drum")
+    add(hollow_cyl(BCX, BCY, 150, 284, 900, 1), LINER, "drum liner")
+    anchor("P1-308", "55 gal drum on dolly", BCX - 350, BCY - 350, 700, "buy")
+    add(step("P1-304", BCX, BCY, 994, rot=90), SS, "P1-304 drum-top sifter")
+    add(cyl(BCX, BCY, 1094, 228, 30), (0.60, 0.62, 0.64), "P1-305 screen frame")
+    add(cbox(BCX + 350, BCY, 1074, 200, 140, 120), MOTOR, "P1-306 vibrator")
+    add(cyl(BCX, BCY, 1235, 50, PM.Z_TB - 28.6 - 110 - 1235), (0.97, 0.95, 0.88), "cotton sock")
+    anchor("P1-304", "Drum-top sifter 12 mesh + magnet", BCX + 420, BCY - 300, 1250, "build")
+    L, Wt = 1000.0, 560.0
     # flexible screw from the intake under the hopper valve up to the blender inlet
     ix, iy = XC + 0, YC - 0
     intake = cone(ix, iy, 120, 180, 380, Y_VALVE - 120).cut(cone(ix, iy, 125, 175, 375, Y_VALVE - 120))
     add(intake, SSB, "P1-224 intake hopper")
     add(cbox(ix, iy, 0, 520, 520, 120), SSB, "intake base")
     add(cyl(ix, iy, Y_VALVE - 6, 380, 6), (0.55, 0.56, 0.58), "intake grate")
-    top = (BCX, BCY - L / 2 + 150, TB + Wt / 2 + 640)
+    top = (BCX, BCY + 330, PM.Z_FL + 170)          # cover inlet at local x +330 (rotated 90 = +Y)
     add(tube((ix, iy, 300), top, 45), (0.80, 0.82, 0.84), "P1-224 flexible screw tube")
-    add(tube(top, (top[0], top[1], top[2] - 120), 60), SSB, "screw discharge")
+    add(tube(top, (top[0], top[1], PM.Z_FL + 25), 60), SSB, "screw discharge")
     add(cbox(top[0], top[1] - 80, top[2] + 20, 260, 260, 220), MOTOR, "P1-224 screw drive 1 HP")
     mid = [(ix + top[0]) / 2, (iy + top[1]) / 2, (300 + top[2]) / 2]
     add(tube((mid[0], mid[1], 0), (mid[0], mid[1], mid[2]), 30), SSB, "screw mid support")
@@ -402,6 +387,34 @@ def jar(x, y, z, cap=True, label=False):
         add(cyl(x, y, z + 120, 46, 20), RED, "cap")
 
 
+# ---- machines built in house (p1_machines.py) ---------------------------------------------------------
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+import p1_machines as PM  # noqa: E402
+
+_mcache = {}
+BCOL = {"belt": BELT, "detector_head": SSB, "valve": SSB, "screw": SS, "label_rolls": WHITE, "auger_tooling": SS, "pulleys": SSB,
+        "rollers": DARK, "chuck": GRN, "bearings": SSB}
+
+
+def _solid(wp):
+    v = [o for o in wp.vals() if isinstance(o, cq.Shape)]
+    return v[0] if len(v) == 1 else cq.Compound.makeCompound(v)
+
+
+def machine(mid, cx, cy, z0=0.0, rot=0.0):
+    """place a built machine: our parts (stainless) and its bought parts, machine origin at cx, cy, z0, rotated about Z."""
+    if mid not in _mcache:
+        m = next(m for m in PM.MACHINES if m["id"] == mid)
+        sh = [(p["id"], _solid(PM.placed(p["fn"](), p.get("place"))), SS) for p in m["parts"]]
+        sh += [(f"{mid} {k}", _solid(v), BCOL.get(k, MOTOR)) for k, v in PM.BOUGHT_FN[mid]().items()]
+        _mcache[mid] = sh
+    for name, s, col in _mcache[mid]:
+        c = s.copy()
+        if rot:
+            c = c.rotate(Vector(0, 0, 0), Vector(0, 0, 1), rot)
+        add(c.move(Location(Vector(cx, cy, z0))), col, name)
+
+
 def table(tag):
     x0, y0, w, h, cx, cy = lay_box(tag)
     add(step("P1-206", cx, cy, 0), SS, f"P1-409 table {tag}")
@@ -409,53 +422,39 @@ def table(tag):
 
 
 def pack():
-    # filler
+    # built servo auger filler P1-401 (P1-401-GA): column at the back (+y), foot switch at the front
     x0, y0, w, h, cx, cy = lay_box("P1-401")
-    add(cbox(cx, cy, 0, 600, 550, 900), SSB, "P1-401 filler cabinet")
-    add(cbox(cx + 220, cy, 900, 120, 120, 900), SSB, "filler column")
-    add(cbox(cx, cy, 1550, 300, 250, 200), MOTOR, "filler servo")
-    add(cone(cx, cy, 1150, 70, 230, 400), SSB, "filler hopper")
-    add(cyl(cx, cy, 1150 - 200, 25, 200), SSB, "auger tube")
-    add(cbox(cx, cy, 900, 260, 200, 15), (0.95, 0.95, 0.95), "P1-410 printed nest")
-    jar(cx, cy, 915, cap=False)
-    add(cbox(cx - 200, cy - 230, 1400, 200, 40, 160), DARK, "filler HMI")
-    add(cbox(cx, cy - 500, 0, 300, 200, 60), DARK, "foot pedal")
-    anchor("P1-401", "Servo auger filler", cx, cy, 1800, "buy")
-    # capping + seal table
+    machine("P1-401", cx, cy)
+    add(cbox(cx, cy - 60, PM.Z_NEST + 3, 120, 120, 15), (0.95, 0.95, 0.95), "P1-410 printed nest")
+    jar(cx, cy - 60, PM.Z_NEST + 18, cap=False)
+    anchor("P1-401", "Servo auger filler, built", cx + 300, cy, 1900, "build")
+    # capping + seal table: built spindle capper P1-412, induction sealer
     x0, y0, w, h, cx, cy, z = table("TBL-1")
-    add(cbox(cx - 450, cy, z, 300, 300, 200), WHITE, "P1-402 torque tester")
+    machine("P1-412", cx - 450, cy, z)
+    jar(cx - 450, cy - 40, z + 12)
     add(cbox(cx + 250, cy, z, 220, 120, 280), (0.25, 0.30, 0.38), "P1-403 induction sealer")
     add(tube((cx + 250, cy - 60, z + 200), (cx + 250, cy - 260, z + 200), 40), DARK, "sealer head")
     for i in range(5):
         jar(cx - 150 + i * 110, cy + 250, z, cap=i < 3)
-    anchor("P1-402", "Capping: printed grips + torque tester", cx - 450, cy, z + 300, "buy")
+    anchor("P1-412", "Spindle capper, built", cx - 450, cy, z + 800, "build")
     anchor("P1-403", "Induction cap sealer", cx + 250, cy, z + 350, "buy")
-    # label table
+    # label table: LX910 printer, built wrap labeler P1-404
     x0, y0, w, h, cx, cy, z = table("TBL-2")
     add(cbox(cx - 380, cy, z, 500, 450, 270), WHITE, "P1-405 LX910 printer")
-    add(cbox(cx + 330, cy, z, 500, 400, 120), (0.30, 0.32, 0.36), "P1-404 AP360e base")
-    add(tube((cx + 230, cy - 60, z + 160), (cx + 430, cy - 60, z + 160), 45), DARK, "labeler roller")
-    add(tube((cx + 230, cy + 60, z + 160), (cx + 430, cy + 60, z + 160), 45), DARK, "labeler roller")
-    add(cyl(cx + 330, cy + 220, z + 120, 150, 40, (0, 1, 0)), WHITE, "label roll")
+    machine("P1-404", cx + 330, cy, z)
     for i in range(4):
         jar(cx - 100 + i * 110, cy + 280, z, label=True)
     anchor("P1-405", "Colour label printer", cx - 380, cy, z + 330, "buy")
-    anchor("P1-404", "Wrap labeler", cx + 330, cy, z + 330, "buy")
-    # metal detector conveyor
+    anchor("P1-404", "Wrap labeler, built", cx + 330, cy, z + 330, "build")
+    # built detector conveyor P1-406 with the used detector head P1-418
     x0, y0, w, h, cx, cy = lay_box("P1-406")
-    for px in (x0 + 50, x0 + w - 100):
-        for py in (cy - 200, cy + 150):
-            add(box(px, py, 0, 50, 50, 760), SSB, "conveyor leg")
-    add(cbox(cx, cy, 760, w, 330, 50), SSB, "conveyor bed")
-    add(cbox(cx, cy, 810, w, 300, 6), BELT, "conveyor belt")
-    head = cbox(cx, cy, 760, 420, 500, 600).cut(cbox(cx, cy, 800, 440, 254, 152))
-    add(head, SSB, "P1-406 detector head")
+    machine("P1-406", cx, cy)
     add(cbox(cx + 400, cy - 330, 0, 400, 300, 550), RED, "locked reject bin")
     add(cyl(cx - 300, cy - 230, 760, 25, 600), DARK, "beacon post")
     add(cyl(cx - 300, cy - 230, 1360, 50, 120), YEL, "beacon")
     for i in range(3):
-        jar(x0 + 200 + i * 150, cy, 816, label=True)
-    anchor("P1-406", "Metal detector, CCP-1", cx, cy, 1400, "buy")
+        jar(cx - 650 + i * 150, cy, PM.Z_BELT, label=True)
+    anchor("P1-406", "Detector conveyor, built (used head, CCP-1)", cx, cy, 1500, "build")
     # turntable, checkweigh, case pack
     x0, y0, w, h, cx, cy = lay_box("P1-408")
     add(cyl(cx, cy, 0, 300, 40), SS, "turntable base")
@@ -506,14 +505,14 @@ def dust(XC, YC, BCX, BCY):
     mill = lay_box("P1-320")
     pick = [("weigh hood 300 cfm", (bench[4], bench[1] + 125, 914 + 680)),
             ("hopper vent 150 cfm", (XC + 200, YC + 200, Y_LID + 40)),
-            ("blender grate 250 cfm", (BCX, BCY - 120, 1840 + 265 + 830)),
-            ("sieve 200 cfm", (BCX + 250, BCY - 250, 1460)),
+            ("blender grate 250 cfm", (BCX, BCY - 110, PM.Z_FL + 330)),
+            ("sifter drum vent 200 cfm", (BCX - 250, BCY - 250, 1180)),
             ("mill 150 cfm", (mill[4], mill[5] + 200, 1500))]
     HY = 11600.0                   # header run along the north side of the dosing room, out to the pad
-    # the sieve sits inside the blender stand: its pickup leaves sideways, clear of the trough, then rises
+    # the sifter vent sits under the trough: its pickup leaves sideways, clear of the blender frame, then rises
     sx, sy, sz = pick[3][1]
-    add(tube((sx, sy, sz), (BCX + 700, sy, sz), 50), DUCT, "duct sieve outlet")
-    pick[3] = (pick[3][0], (BCX + 700, sy, sz))
+    add(tube((sx, sy, sz), (BCX - 700, sy, sz), 50), DUCT, "duct sifter vent")
+    pick[3] = (pick[3][0], (BCX - 700, sy, sz))
     for nm, (px, py, pz) in pick:
         add(tube((px, py, pz), (px, py, ZD), 50), DUCT, f"duct riser {nm}")
         add(tube((px, py, ZD), (px, HY, ZD), 50), DUCT, f"duct branch {nm}")

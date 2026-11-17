@@ -137,38 +137,18 @@
   ]
  },
  {
-  "id": "P1-303",
-  "title": "Blender discharge chute to 4 in Tri-Clamp",
-  "qty": "1",
-  "material": "SS 316L #4, 14 ga; flange 6 mm 304",
-  "features": 9,
-  "contact": true,
-  "size_mm": [
-   200.0,
-   200.0,
-   214.7
-  ],
-  "mass_kg": 3.12,
-  "step": "cad/step/P1-303.step",
-  "drawing": "drawings/parts/P1-303.svg",
-  "dxf": [
-   "dxf/P1-303_flange_mm.dxf",
-   "dxf/P1-303_flange_in.dxf"
-  ]
- },
- {
   "id": "P1-304",
-  "title": "Sieve deck housing for 18 in screen",
+  "title": "Drum-top sifter for 18 in screen",
   "qty": "1",
-  "material": "SS 304 #4, 14 ga",
-  "features": 6,
+  "material": "SS 304 #4, 14 ga; seat ring 6 mm",
+  "features": 5,
   "contact": true,
   "size_mm": [
-   730.9,
-   663.3,
-   1448.5
+   620.5,
+   622.0,
+   241.0
   ],
-  "mass_kg": 17.75,
+  "mass_kg": 17.01,
   "step": "cad/step/P1-304.step",
   "drawing": "drawings/parts/P1-304.svg",
   "dxf": []
@@ -191,26 +171,6 @@
   "dxf": [
    "dxf/P1-322_flange_mm.dxf",
    "dxf/P1-322_flange_in.dxf"
-  ]
- },
- {
-  "id": "P1-311",
-  "title": "Blender riser stand",
-  "qty": "1",
-  "material": "SS 304 3 in sq tube 11 ga, 12 mm plates",
-  "features": 20,
-  "contact": false,
-  "size_mm": [
-   1773.8,
-   933.8,
-   1162.0
-  ],
-  "mass_kg": 110.2,
-  "step": "cad/step/P1-311.step",
-  "drawing": "drawings/parts/P1-311.svg",
-  "dxf": [
-   "dxf/P1-311_foot_mm.dxf",
-   "dxf/P1-311_foot_in.dxf"
   ]
  },
  {

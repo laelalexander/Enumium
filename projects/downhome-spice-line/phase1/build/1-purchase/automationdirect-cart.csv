@@ -1,2 +1,6 @@
 Manufacturer,Part / model,Quantity,Description,Line
 AutomationDirect,"DURApulse GS20, 0.5 HP (GS21-20P5, confirm)",9,Feeder drives: AC drive 0.5 HP for each feeder (fast/slow dosing),P1-226
+AutomationDirect,GS21-22P0 (confirm),1,"VFD 2 HP for the blender (soft start, 40 rpm trim)",P1-336
+AutomationDirect IronHorse,MTRP-P33-AD18 motor + inline gearbox 5:1 (confirm SKU),9,Gearmotor 1/3 HP 3-ph 56C with 5:1 inline helical gearbox (about 345 rpm),P1-216
+AutomationDirect,SureServo2 SV2L-207B + SV2A-2075 (confirm),1,"AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",P1-413
+AutomationDirect,C2-03CPU-2 + EA3-S3ML (confirm),1,Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply,P1-416

@@ -49,11 +49,11 @@
  },
  {
   "tag": "P1-212",
-  "name": "Volumetric feeder 2 in (9)",
+  "name": "Screw feeder, built (9)",
   "x": 3965,
-  "y": 10545,
-  "z": 1640,
-  "kind": "buy"
+  "y": 10625,
+  "z": 1726,
+  "kind": "build"
  },
  {
   "tag": "P1-211",
@@ -96,51 +96,43 @@
   "kind": "buy"
  },
  {
-  "tag": "P1-311",
-  "name": "Blender riser stand",
-  "x": 7500,
-  "y": 9200,
-  "z": 900,
-  "kind": "build"
- },
- {
   "tag": "P1-302",
   "name": "Bag-dump grate + dust hood",
-  "x": 7030,
-  "y": 9780,
-  "z": 2935,
+  "x": 7075,
+  "y": 9850,
+  "z": 2313,
   "kind": "build"
  },
  {
   "tag": "P1-301",
-  "name": "Ribbon blender 6 cu ft (used)",
-  "x": 6730,
-  "y": 9900,
-  "z": 2440,
-  "kind": "buy"
- },
- {
-  "tag": "P1-304",
-  "name": "Sieve 12 mesh + magnet",
-  "x": 7410,
-  "y": 9520,
-  "z": 1448,
+  "name": "Ribbon blender 6 cu ft, built",
+  "x": 6625,
+  "y": 9960,
+  "z": 1883,
   "kind": "build"
  },
  {
   "tag": "P1-308",
   "name": "55 gal drum on dolly",
-  "x": 6730,
-  "y": 10200,
-  "z": 1000,
+  "x": 6725,
+  "y": 9610,
+  "z": 700,
   "kind": "buy"
+ },
+ {
+  "tag": "P1-304",
+  "name": "Drum-top sifter 12 mesh + magnet",
+  "x": 7495,
+  "y": 9660,
+  "z": 1250,
+  "kind": "build"
  },
  {
   "tag": "P1-224",
   "name": "Flexible screw (hand adds at the intake)",
-  "x": 5498,
-  "y": 9202,
-  "z": 1672,
+  "x": 5520,
+  "y": 9628,
+  "z": 1376,
   "kind": "buy"
  },
  {
@@ -217,19 +209,19 @@
  },
  {
   "tag": "P1-401",
-  "name": "Servo auger filler",
-  "x": 9450,
-  "y": 10600,
-  "z": 1800,
-  "kind": "buy"
+  "name": "Servo auger filler, built",
+  "x": 9865,
+  "y": 10800,
+  "z": 1900,
+  "kind": "build"
  },
  {
-  "tag": "P1-402",
-  "name": "Capping: printed grips + torque tester",
+  "tag": "P1-412",
+  "name": "Spindle capper, built",
   "x": 10162,
   "y": 10631,
-  "z": 1214,
-  "kind": "buy"
+  "z": 1714,
+  "kind": "build"
  },
  {
   "tag": "P1-403",
@@ -249,19 +241,19 @@
  },
  {
   "tag": "P1-404",
-  "name": "Wrap labeler",
+  "name": "Wrap labeler, built",
   "x": 12492,
   "y": 10631,
   "z": 1244,
-  "kind": "buy"
+  "kind": "build"
  },
  {
   "tag": "P1-406",
-  "name": "Metal detector, CCP-1",
-  "x": 13700,
-  "y": 10600,
-  "z": 1400,
-  "kind": "buy"
+  "name": "Detector conveyor, built (used head, CCP-1)",
+  "x": 13705,
+  "y": 10595,
+  "z": 1500,
+  "kind": "build"
  },
  {
   "tag": "P1-408",

@@ -92,6 +92,58 @@
    "cable": "W-P05"
   },
   {
+   "tag": "DI_BlValveClosed",
+   "desc": "P1-331 blender valve closed limit",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-331",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 7,
+   "wire": "225-01-07",
+   "address": "%IX0.7",
+   "cable": "W-P07"
+  },
+  {
+   "tag": "DI_BlValveOpen",
+   "desc": "P1-331 blender valve open limit",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-331",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 8,
+   "wire": "225-01-08",
+   "address": "%IX0.8",
+   "cable": "W-P07"
+  },
+  {
+   "tag": "DI_BlCoverOK",
+   "desc": "P1-332 cover interlock (via SR-P1 AES input)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-332",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 9,
+   "wire": "225-01-09",
+   "address": "%IX0.9",
+   "cable": "W-P04"
+  },
+  {
+   "tag": "DI_BlenderRun",
+   "desc": "P1-336 VFD run feedback",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-336",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 10,
+   "wire": "225-01-10",
+   "address": "%IX0.10",
+   "cable": "W-P30"
+  },
+  {
    "tag": "DI_BinLow[1]",
    "desc": "B01 low level, Soliphant FTM20 (salt)",
    "type": "DI",
@@ -300,6 +352,32 @@
    "cable": "W-P06"
   },
   {
+   "tag": "DO_BlValveOpen",
+   "desc": "P1-331 blender valve open command",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-331",
+   "signal": "24 V DC",
+   "slot": 3,
+   "channel": 4,
+   "wire": "225-03-04",
+   "address": "%QX0.4",
+   "cable": "W-P07"
+  },
+  {
+   "tag": "DO_SifterVib",
+   "desc": "P1-306 sifter vibrator contactor",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-306",
+   "signal": "24 V DC",
+   "slot": 3,
+   "channel": 5,
+   "wire": "225-03-05",
+   "address": "%QX0.5",
+   "cable": "panel MS-P1"
+  },
+  {
    "tag": "DO_Agitator[1]",
    "desc": "B01 agitator relay KA-01 (no flow aid at launch)",
    "type": "DO",
@@ -476,6 +554,15 @@
    "to": "P1-301 junction box"
   },
   {
+   "cable": "W-P07",
+   "plc": "P1-225",
+   "device": "P1-331",
+   "cores": 7,
+   "spec": "7C x 18 AWG [0.82 mm\u00b2] TC-ER, 600 V",
+   "from_": "P1-225 X7",
+   "to": "P1-331 actuator"
+  },
+  {
    "cable": "W-P05",
    "plc": "P1-225",
    "device": "P1-310",
@@ -604,11 +691,11 @@
   {
    "cable": "W-P30",
    "plc": "P1-225",
-   "device": "P1-226 x 9",
+   "device": "P1-226 x 9 + P1-336",
    "cores": 3,
    "spec": "RS-485 1 pair + drain, Belden 3105A, daisy chain",
    "from_": "750-652",
-   "to": "GS21 #1 > #9, 120 ohm end"
+   "to": "GS21 #1 > #9 > P1-336 blender VFD, 120 ohm end"
   },
   {
    "cable": "E-P31",
@@ -631,19 +718,19 @@
  ],
  "modules": {
   "P1-225-DI": {
-   "points": 19,
+   "points": 23,
    "modules": 2,
    "catalog": "WAGO 750-1405 (16 DI)",
-   "spare_pct": 41
+   "spare_pct": 28
   },
   "P1-225-DO": {
-   "points": 16,
+   "points": 18,
    "modules": 2,
    "catalog": "WAGO 750-1504 (16 DO)",
-   "spare_pct": 50
+   "spare_pct": 44
   },
   "P1-225-COM": {
-   "points": 9,
+   "points": 10,
    "modules": 1,
    "catalog": "WAGO 750-652 RS-485 Modbus RTU",
    "spare_pct": 25
@@ -652,9 +739,9 @@
  "motors": [
   {
    "tag": "M-212-01..09",
-   "load": "P1-212 feeders, 0.5 HP each, via GS21 drives",
-   "hp": 0.5,
-   "fla": 2.4,
+   "load": "P1-212 built feeders, P1-216 1/3 HP gearmotor each, via GS21 drives",
+   "hp": 0.33,
+   "fla": 1.6,
    "qty": 9,
    "supply": "208 V 1-ph in, 3-ph out",
    "brk": "5 x 20 A 2-pole (2 drives each)"
@@ -670,12 +757,12 @@
   },
   {
    "tag": "M-301",
-   "load": "P1-301 ribbon blender",
+   "load": "P1-301 built ribbon blender, P1-333 NORD gearmotor via P1-336 VFD",
    "hp": 2,
    "fla": 7.5,
    "qty": 1,
-   "supply": "208 V 3-ph",
-   "brk": "MS-P1 MMS 6.3-10 A"
+   "supply": "208 V 1-ph in, 3-ph out",
+   "brk": "20 A 2-pole"
   },
   {
    "tag": "M-320",
@@ -697,7 +784,7 @@
   },
   {
    "tag": "M-306",
-   "load": "P1-306 sieve vibrator",
+   "load": "P1-306 drum-top sifter vibrator",
    "hp": 0.25,
    "fla": 2.9,
    "qty": 1,
@@ -716,9 +803,9 @@
  ],
  "loads": [
   [
-   "P1-401 auger filler",
+   "P1-401 built filler: P1-413 750 W servo, P1-414 agitator, P1-416 controls",
    "208 V 1-ph",
-   10.0,
+   8.0,
    "20 A 2-pole"
   ],
   [
@@ -728,15 +815,21 @@
    "15 A dedicated"
   ],
   [
-   "P1-404 + P1-405 labeler, printer",
+   "P1-412 spindle capper (P1-422 1/8 HP PMDC)",
+   "120 V",
+   2.0,
+   "15 A"
+  ],
+  [
+   "P1-404 built labeler (P1-426 stepper) + P1-405 printer",
    "120 V",
    4.0,
    "15 A"
   ],
   [
-   "P1-406 metal detector",
+   "P1-406 conveyor (P1-420 1/6 HP) + P1-418 head + P1-421 pusher",
    "120 V",
-   3.0,
+   5.0,
    "15 A dedicated (clean power)"
   ],
   [

@@ -228,23 +228,6 @@
    "rot": 90
   },
   {
-   "tag": "P1-304",
-   "room": "Dosing & blending room",
-   "x": 6680,
-   "y": 7900
-  },
-  {
-   "tag": "P1-308",
-   "room": "Dosing & blending room",
-   "x": 6780,
-   "y": 7300,
-   "size": [
-    560,
-    560
-   ],
-   "name": "Blend drum on dolly P1-309 under sieve"
-  },
-  {
    "tag": "P1-206",
    "room": "Dosing & blending room",
    "x": 2750,
@@ -300,7 +283,7 @@
     1524,
     762
    ],
-   "name": "Cap + induction seal table"
+   "name": "Spindle capper P1-412 + induction sealer"
   },
   {
    "tag": "TBL-2",
@@ -311,7 +294,7 @@
     1524,
     762
    ],
-   "name": "Label table (AP360e + LX910)"
+   "name": "Label table (wrap labeler P1-404 + LX910)"
   },
   {
    "tag": "P1-406",
@@ -414,18 +397,6 @@
   [
    "P1-224",
    "P1-301"
-  ],
-  [
-   "P1-301",
-   "P1-304"
-  ],
-  [
-   "P1-224",
-   "P1-304"
-  ],
-  [
-   "P1-304",
-   "P1-308"
   ],
   [
    "P1-210",
@@ -546,7 +517,7 @@
    ]
   },
   {
-   "name": "dose, blend, sieve",
+   "name": "dose, blend, sift into drum",
    "type": "product",
    "pts": [
     [
@@ -558,16 +529,12 @@
      9500
     ],
     [
-     7100,
+     7075,
      9500
     ],
     [
-     7050,
-     8200
-    ],
-    [
-     7050,
-     7600
+     7075,
+     8700
     ]
    ]
   },
@@ -576,12 +543,16 @@
    "type": "product",
    "pts": [
     [
-     7050,
+     7075,
+     8700
+    ],
+    [
+     7075,
      7300
     ],
     [
-     7050,
-     5600
+     7600,
+     6300
     ]
    ]
   },

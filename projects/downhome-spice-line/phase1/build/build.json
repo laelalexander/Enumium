@@ -1,17 +1,17 @@
 {
  "title": "Down Home Creole spice plant: Phase 1 prototype",
- "summary": "A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a used 6 cu ft ribbon blender, sieved, held for QC, then hand-packed on a semi-automatic bench with metal detection and checkweighing. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, chutes and tables are fabricated in house to save money; scales, feeders, the metal detector and the filler are bought.",
+ "summary": "A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a 6 cu ft ribbon blender we build, sifted on the drum, held for QC, then packed on a bench of machines we build: servo auger filler, spindle capper, wrap labeler and a detector conveyor. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, tables and most machines are fabricated in house to save money; scales, motors, drives, valves and a used metal detector head are bought.",
  "totals": {
-  "parts_cost": 201248.0,
+  "parts_cost": 168710.0,
   "currency": "USD",
-  "bought": 172068.0,
-  "fabricated": 29180.0,
-  "fabrication_hours": 156,
+  "bought": 121528.0,
+  "fabricated": 47182.0,
+  "fabrication_hours": 331.0,
   "print_hours": null,
   "filament_g": {
    "PETG": 857
   },
-  "build_hours": 276,
+  "build_hours": 451.0,
   "note": "build_hours = fabrication + about 120 h install and commissioning; excludes building fit-out and electrical service"
  },
  "tools": [
@@ -132,19 +132,6 @@
    "notes": ""
   },
   {
-   "line": "P1-212",
-   "desc": "Volumetric screw feeder, 2 in, stainless, with agitator option for low-density herbs",
-   "mfr": "Tecweigh",
-   "mpn": "Volumetric feeder, 2 in screw, SS contact (model per hopper flange, confirm on quote)",
-   "qty": 9,
-   "supplier": "Tecweigh (White Bear Lake MN)",
-   "url": "https://www.tecweigh.com/products/volumetric-feeders",
-   "unit_price": 4800.0,
-   "price_src": "estimate",
-   "alt": "",
-   "notes": "test-feed salt, garlic and lemon peel samples at Tecweigh; ask for a used-unit price (listings exist)"
-  },
-  {
    "line": "P1-213",
    "desc": "Vibrating fork low-level switch for powders",
    "mfr": "Endress+Hauser",
@@ -262,19 +249,6 @@
    "notes": "bags over 1.4 m: use the bag-rest grate on each bin lid, or add a vacuum bag lifter if lifting assessment requires"
   },
   {
-   "line": "P1-301",
-   "desc": "Ribbon blender, 6 cu ft working, 304 SS (used, inspected)",
-   "mfr": "Sprout-Waldron / Paul O. Abbe class (used market)",
-   "mpn": "6 cu ft double ribbon blender, 304 SS, 2 HP (example listing: Sprout-Waldron B-6, 21 x 48 in trough)",
-   "qty": 1,
-   "supplier": "Surplus Record dealers / Genemco / Federal Equipment (used)",
-   "url": "https://surplusrecord.com/es/listing/6-cu-ft-sprout-waldron-b-6-stainless-steel-jacketed-double-ribbon-blender-21-width-x-48-l-flange-14-9-psi-5-discharge-2-hp-27-rpm-431930/",
-   "unit_price": 9000.0,
-   "price_src": "estimate: used 304 SS 5-6 cu ft listings $5-9k + inspection, seals, repolish",
-   "alt": "",
-   "notes": "see it run first: no pitting, seals replaceable, discharge valve works; measure cover opening and valve flange for P1-302/P1-303"
-  },
-  {
    "line": "P1-305",
    "desc": "Sieve screen 18 in, 12 mesh stainless, with frame",
    "mfr": "Gilson",
@@ -289,7 +263,7 @@
   },
   {
    "line": "P1-306",
-   "desc": "Rotary electric vibrator motor for sieve deck",
+   "desc": "Rotary electric vibrator motor for the drum-top sifter",
    "mfr": "Martin Engineering",
    "mpn": "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
    "qty": 1,
@@ -302,7 +276,7 @@
   },
   {
    "line": "P1-307",
-   "desc": "Grate magnet 12 x 12 in, rare earth, on brackets under the sieve screen",
+   "desc": "Grate magnet 12 x 12 in, rare earth, resting on the drum-top sifter screen frame",
    "mfr": "Industrial Magnetics, Inc.",
    "mpn": "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
    "qty": 1,
@@ -354,7 +328,7 @@
   },
   {
    "line": "P1-310",
-   "desc": "Portable cartridge dust collector (weigh hood, blender hood, sieve, mill)",
+   "desc": "Portable cartridge dust collector (weigh hood, blender hood, sifter, mill)",
    "mfr": "Camfil APC",
    "mpn": "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
    "qty": 1,
@@ -364,19 +338,6 @@
    "price_src": "estimate",
    "alt": "",
    "notes": "DHA first"
-  },
-  {
-   "line": "P1-401",
-   "desc": "Semi-automatic servo auger filler with weighing, foot pedal",
-   "mfr": "VTOPS",
-   "mpn": "Semi-automatic auger filler, 10-5,000 g, servo (model per tooling, confirm)",
-   "qty": 1,
-   "supplier": "VTOPS (US office)",
-   "url": "https://vtops.com/filling-machines/auger-fillers/semi-automatic-auger-fillers",
-   "unit_price": 11500.0,
-   "price_src": "estimate",
-   "alt": "",
-   "notes": "auger tooling for 53 mm shaker, 89 mm jar, pouch and tub on the quote; carries over to Growth"
   },
   {
    "line": "P1-402",
@@ -405,19 +366,6 @@
    "notes": ""
   },
   {
-   "line": "P1-404",
-   "desc": "Semi-automatic wrap labeler for round containers",
-   "mfr": "Primera Technology",
-   "mpn": "AP360e label applicator",
-   "qty": 1,
-   "supplier": "Primera dealer",
-   "url": "https://www.onlinelabels.com/articles/reviewing-the-primera-ap360-label-applicator?src=1",
-   "unit_price": 1500.0,
-   "price_src": "estimate",
-   "alt": "",
-   "notes": ""
-  },
-  {
    "line": "P1-405",
    "desc": "Color label printer: full labels with lot and best-by printed per run (no separate coder)",
    "mfr": "Primera Technology",
@@ -429,19 +377,6 @@
    "price_src": "estimate",
    "alt": "",
    "notes": ""
-  },
-  {
-   "line": "P1-406",
-   "desc": "Conveyor metal detector with reject (CCP-1, on finished packs)",
-   "mfr": "Fortress Technology",
-   "mpn": "Stealth with conveyor, ~10 x 6 in aperture (used, Sigma Equipment)",
-   "qty": 1,
-   "supplier": "Sigma Equipment (used) or Fortress (new)",
-   "url": "https://www.sigmaequipment.com/equipment/model/fortress-technology/stealth/",
-   "unit_price": 14000.0,
-   "price_src": "estimate (used); new ~$30k",
-   "alt": "",
-   "notes": "sensitivity test with the 12 oz jar (metallized liner) before buying"
   },
   {
    "line": "P1-407",
@@ -465,6 +400,318 @@
    "supplier": "Uline",
    "url": "https://www.uline.com/",
    "unit_price": 90.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-333",
+   "desc": "Hollow-shaft helical-bevel gearmotor 2 HP, about 40 rpm, \u00d860 bore, washdown paint",
+   "mfr": "NORD Drivesystems",
+   "mpn": "SK 9022.1 AZBH class, i about 43 (confirm)",
+   "qty": 1,
+   "supplier": "NORD distributor",
+   "url": "https://www.nord.com/",
+   "unit_price": 2600.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-334",
+   "desc": "Stainless flange bearing UCF212, \u00d860 bore, food-grade grease",
+   "mfr": "NTN / Dodge (SS insert)",
+   "mpn": "UCF212 SS or Dodge ULTRA Kleen F4B-SCEZ (confirm)",
+   "qty": 2,
+   "supplier": "Applied Industrial / Motion",
+   "url": "https://www.dodgeindustrial.com/",
+   "unit_price": 380.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-335",
+   "desc": "PTFE packing 10 mm sq, FDA, 4 rings per gland",
+   "mfr": "Chesterton",
+   "mpn": "1724 PTFE packing (confirm size)",
+   "qty": 1,
+   "supplier": "Chesterton distributor",
+   "url": "https://chesterton.com/",
+   "unit_price": 120.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-331",
+   "desc": "Sanitary butterfly valve 4 in TC with 24 V DC electric actuator and limit switches (blender discharge)",
+   "mfr": "Valworx",
+   "mpn": "4 in sanitary butterfly 316L, EPDM, 24 V DC actuator (same as P1-223)",
+   "qty": 1,
+   "supplier": "Valworx",
+   "url": "https://www.valworx.com/",
+   "unit_price": 1400.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-332",
+   "desc": "Cover interlock switch, coded magnetic, stainless",
+   "mfr": "Schmersal",
+   "mpn": "BNS 260 class + AES safety module input on SR-P1 (confirm)",
+   "qty": 1,
+   "supplier": "Schmersal distributor",
+   "url": "https://www.schmersal.com/",
+   "unit_price": 260.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-336",
+   "desc": "VFD 2 HP for the blender (soft start, 40 rpm trim)",
+   "mfr": "AutomationDirect",
+   "mpn": "GS21-22P0 (confirm)",
+   "qty": 1,
+   "supplier": "AutomationDirect",
+   "url": "https://www.automationdirect.com/",
+   "unit_price": 330.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-215",
+   "desc": "Formed screw flighting 2 in OD x 2 in pitch on 3/4 in shaft, 316, drive end with 5/8 in keyed stub",
+   "mfr": "Kase Conveyors / Spirotech",
+   "mpn": "custom flighting 2 x 2 x 3/4 in, 316 SS, 860 mm (quote)",
+   "qty": 9,
+   "supplier": "Kase Conveyors",
+   "url": "https://www.kaseconveyors.com/",
+   "unit_price": 260.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-216",
+   "desc": "Gearmotor 1/3 HP 3-ph 56C with 5:1 inline helical gearbox (about 345 rpm)",
+   "mfr": "AutomationDirect IronHorse",
+   "mpn": "MTRP-P33-AD18 motor + inline gearbox 5:1 (confirm SKU)",
+   "qty": 9,
+   "supplier": "AutomationDirect",
+   "url": "https://www.automationdirect.com/",
+   "unit_price": 420.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-217",
+   "desc": "Inlet agitator gearmotor kit for herb and peel bins (slow paddle)",
+   "mfr": "Bodine Electric",
+   "mpn": "1/17 HP 30 rpm gearmotor + SS paddle (confirm)",
+   "qty": 3,
+   "supplier": "Bodine distributor",
+   "url": "https://www.bodine-electric.com/",
+   "unit_price": 380.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-413",
+   "desc": "AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",
+   "mfr": "AutomationDirect",
+   "mpn": "SureServo2 SV2L-207B + SV2A-2075 (confirm)",
+   "qty": 1,
+   "supplier": "AutomationDirect",
+   "url": "https://www.automationdirect.com/",
+   "unit_price": 1350.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-414",
+   "desc": "Hopper agitator gearmotor 1/4 HP about 60 rpm",
+   "mfr": "Bison Gear",
+   "mpn": "011-xxx parallel-shaft 1/4 HP (confirm)",
+   "qty": 1,
+   "supplier": "Bison distributor",
+   "url": "https://www.bisongear.com/",
+   "unit_price": 420.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-415",
+   "desc": "Auger tooling sets: auger, tube and funnel for the 53 mm shaker and 89 mm jar",
+   "mfr": "All-Fill",
+   "mpn": "auger tooling to size (quote with our blend samples)",
+   "qty": 2,
+   "supplier": "All-Fill (Exton PA)",
+   "url": "https://www.all-fill.com/",
+   "unit_price": 650.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-416",
+   "desc": "Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply",
+   "mfr": "AutomationDirect",
+   "mpn": "C2-03CPU-2 + EA3-S3ML (confirm)",
+   "qty": 1,
+   "supplier": "AutomationDirect",
+   "url": "https://www.automationdirect.com/",
+   "unit_price": 620.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-417",
+   "desc": "Foot switch, guarded, IP67",
+   "mfr": "Linemaster",
+   "mpn": "632-S class",
+   "qty": 1,
+   "supplier": "Grainger",
+   "url": "https://www.linemaster.com/",
+   "unit_price": 90.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-418",
+   "desc": "Metal detector search head about 10 x 6 in aperture with control (CCP-1), used, validated",
+   "mfr": "Fortress Technology",
+   "mpn": "Stealth search head + control only (used, Sigma Equipment) (confirm)",
+   "qty": 1,
+   "supplier": "Sigma Equipment",
+   "url": "https://www.sigmaequipment.com/",
+   "unit_price": 8500.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-419",
+   "desc": "Endless belt 6 in, FDA polyurethane, plus 2 crowned SS pulleys \u00d860 with bearings",
+   "mfr": "Ammeraal Beltech",
+   "mpn": "Ropanyl FDA 6 in endless + pulley set (quote)",
+   "qty": 1,
+   "supplier": "Ammeraal distributor",
+   "url": "https://www.ammeraalbeltech.com/",
+   "unit_price": 650.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-420",
+   "desc": "Conveyor gearmotor 1/6 HP shaft-mount, 60 rpm",
+   "mfr": "Bodine Electric",
+   "mpn": "1/6 HP parallel-shaft (confirm)",
+   "qty": 1,
+   "supplier": "Bodine distributor",
+   "url": "https://www.bodine-electric.com/",
+   "unit_price": 480.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-421",
+   "desc": "Reject pusher: 24 V linear actuator 100 mm stroke with the head's reject output",
+   "mfr": "Progressive Automations",
+   "mpn": "PA-15 class (confirm speed)",
+   "qty": 1,
+   "supplier": "Progressive Automations",
+   "url": "https://www.progressiveautomations.com/",
+   "unit_price": 180.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-422",
+   "desc": "Gearmotor 1/8 HP 120 V, about 200 rpm",
+   "mfr": "Bodine Electric",
+   "mpn": "1/8 HP PMDC + speed control (confirm)",
+   "qty": 1,
+   "supplier": "Bodine distributor",
+   "url": "https://www.bodine-electric.com/",
+   "unit_price": 420.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-423",
+   "desc": "Adjustable slip clutch 0.5-5 N\u00b7m with capping chucks for 53 mm and 89 mm caps",
+   "mfr": "Zero-Max / Resina-style chucks",
+   "mpn": "Torq-Tender TT1 class + urethane chuck inserts (confirm)",
+   "qty": 1,
+   "supplier": "Zero-Max distributor",
+   "url": "https://www.zero-max.com/",
+   "unit_price": 520.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-424",
+   "desc": "Linear rail MGN15 500 mm with block, and a gas spring counterbalance",
+   "mfr": "HIWIN",
+   "mpn": "MGN15H rail 500 + gas spring 100 N (confirm)",
+   "qty": 1,
+   "supplier": "HIWIN distributor",
+   "url": "https://www.hiwin.us/",
+   "unit_price": 160.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-425",
+   "desc": "Drive rollers 50 x 240 mm urethane-covered, with shafts, bearings and timing pulleys (set of 3)",
+   "mfr": "Misumi",
+   "mpn": "custom urethane rollers (quote)",
+   "qty": 1,
+   "supplier": "Misumi",
+   "url": "https://us.misumi-ec.com/",
+   "unit_price": 420.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-426",
+   "desc": "NEMA 23 stepper with integrated driver and controller (label feed + roller drive)",
+   "mfr": "Teknic",
+   "mpn": "ClearPath-SD or ClearCore + NEMA 23 (confirm)",
+   "qty": 1,
+   "supplier": "Teknic",
+   "url": "https://teknic.com/",
+   "unit_price": 560.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-427",
+   "desc": "Label gap sensor, fork type",
+   "mfr": "SICK",
+   "mpn": "WFS3 class (confirm)",
+   "qty": 1,
+   "supplier": "SICK distributor",
+   "url": "https://www.sick.com/",
+   "unit_price": 260.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
@@ -746,23 +993,6 @@
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
-   "part": "P1-311",
-   "title": "Blender riser stand: lifts the blender so its valve clears chute + sieve + 55 gal drum",
-   "process": "saw, TIG, ground, passivate",
-   "files": [
-    "phase1/dxf/P1-311_foot_mm.dxf",
-    "phase1/dxf/P1-311_foot_in.dxf",
-    "phase1/cad/step/P1-311.step",
-    "phase1/drawings/parts/P1-311.svg"
-   ],
-   "material": "304 SS 3 in sq tube 11 ga ~14 m, 4 x 12 mm foot plates, 4 leg pads",
-   "qty": 1,
-   "vendor": "local stainless fabricator",
-   "labor_h": 16,
-   "material_usd": 650,
-   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
-  },
-  {
    "part": "P1-302",
    "title": "Blender cover grate and dust hood (vent pickup on the blender inlet)",
    "process": "laser cut, brake, TIG",
@@ -777,39 +1007,6 @@
    "vendor": "local stainless fabricator",
    "labor_h": 10,
    "material_usd": 340,
-   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
-  },
-  {
-   "part": "P1-303",
-   "title": "Blender discharge chute to sieve (scaled DH-101)",
-   "process": "laser cut, roll, TIG, polish",
-   "files": [
-    "phase1/dxf/P1-303_flange_mm.dxf",
-    "phase1/dxf/P1-303_flange_in.dxf",
-    "phase1/cad/step/P1-303.step",
-    "phase1/drawings/parts/P1-303.svg"
-   ],
-   "material": "316L 14 ga + 4 in BPE ferrule",
-   "qty": 1,
-   "vendor": "local stainless fabricator",
-   "labor_h": 6,
-   "material_usd": 210,
-   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
-  },
-  {
-   "part": "P1-304",
-   "title": "Vibratory sieve deck on leg frame (12 mesh screen, grate magnet under the screen)",
-   "process": "laser cut, roll, TIG",
-   "files": [
-    "phase1/cad/step/P1-304.step",
-    "phase1/drawings/parts/P1-304.svg",
-    "phase1/drawings/png/P1-304.png"
-   ],
-   "material": "304 SS 14 ga sheet, 1.5 in tube legs, rubber isolators",
-   "qty": 1,
-   "vendor": "local stainless fabricator",
-   "labor_h": 12,
-   "material_usd": 460,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
@@ -878,6 +1075,154 @@
    "vendor": "local stainless fabricator",
    "labor_h": 6,
    "material_usd": 520,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-304",
+   "title": "Drum-top sifter: 18 in 12 mesh screen deck on the blend drum, grate magnet under the screen",
+   "process": "laser cut, roll, TIG",
+   "files": [
+    "phase1/cad/step/P1-304.step",
+    "phase1/drawings/parts/P1-304.svg",
+    "phase1/drawings/png/P1-304.png"
+   ],
+   "material": "304 SS 14 ga sheet + 6 mm seat ring + 3 rubber isolators",
+   "qty": 1,
+   "vendor": "local stainless fabricator",
+   "labor_h": 10,
+   "material_usd": 420,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-301",
+   "title": "Ribbon blender 6 cu ft, built in house: 316L U-trough, double ribbons, cover with bag-dump grate, frame (valve 1,260 into the drum-top sifter)",
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "phase1/cad/step/P1-301-01.step",
+    "phase1/drawings/parts/P1-301-01.svg",
+    "phase1/drawings/png/P1-301-01.png",
+    "phase1/cad/step/P1-301-02.step",
+    "phase1/drawings/parts/P1-301-02.svg",
+    "phase1/drawings/png/P1-301-02.png",
+    "phase1/cad/step/P1-301-03.step",
+    "phase1/drawings/parts/P1-301-03.svg",
+    "phase1/drawings/png/P1-301-03.png",
+    "phase1/cad/step/P1-301-04.step",
+    "phase1/drawings/parts/P1-301-04.svg",
+    "phase1/drawings/png/P1-301-04.png",
+    "phase1/cad/step/P1-301-05.step",
+    "phase1/drawings/parts/P1-301-05.svg",
+    "phase1/drawings/png/P1-301-05.png",
+    "phase1/drawings/machines/P1-301-GA.svg",
+    "phase1/drawings/png/P1-301-GA.png",
+    "phase1/cad/step/P1-301-ASM.step"
+   ],
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "qty": 1,
+   "vendor": "in-house / local stainless fabricator",
+   "labor_h": 114.0,
+   "material_usd": 1838,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-212",
+   "title": "Bin screw feeder 2 in, built in house: 316L barrel, bought flighting and gearmotor (tool-free screw pull-out)",
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "phase1/cad/step/P1-212-01.step",
+    "phase1/drawings/parts/P1-212-01.svg",
+    "phase1/drawings/png/P1-212-01.png",
+    "phase1/drawings/machines/P1-212-GA.svg",
+    "phase1/drawings/png/P1-212-GA.png",
+    "phase1/cad/step/P1-212-ASM.step"
+   ],
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "qty": 9,
+   "vendor": "in-house / local stainless fabricator",
+   "labor_h": 7.0,
+   "material_usd": 103,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-401",
+   "title": "Servo auger filler, built in house: cabinet, column, 42 L 316L hopper; bought servo and auger tooling",
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "phase1/cad/step/P1-401-01.step",
+    "phase1/drawings/parts/P1-401-01.svg",
+    "phase1/drawings/png/P1-401-01.png",
+    "phase1/cad/step/P1-401-02.step",
+    "phase1/drawings/parts/P1-401-02.svg",
+    "phase1/drawings/png/P1-401-02.png",
+    "phase1/cad/step/P1-401-03.step",
+    "phase1/drawings/parts/P1-401-03.svg",
+    "phase1/drawings/png/P1-401-03.png",
+    "phase1/drawings/machines/P1-401-GA.svg",
+    "phase1/drawings/png/P1-401-GA.png",
+    "phase1/cad/step/P1-401-ASM.step"
+   ],
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "qty": 1,
+   "vendor": "in-house / local stainless fabricator",
+   "labor_h": 36.0,
+   "material_usd": 624,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-406",
+   "title": "Metal detector conveyor (CCP-1 on finished packs): built frame and belt run, bought search head and control",
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "phase1/cad/step/P1-406-01.step",
+    "phase1/drawings/parts/P1-406-01.svg",
+    "phase1/drawings/png/P1-406-01.png",
+    "phase1/drawings/machines/P1-406-GA.svg",
+    "phase1/drawings/png/P1-406-GA.png",
+    "phase1/cad/step/P1-406-ASM.step"
+   ],
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "qty": 1,
+   "vendor": "in-house / local stainless fabricator",
+   "labor_h": 16.0,
+   "material_usd": 250,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-412",
+   "title": "Bench spindle capper, built in house: chuck on a slip clutch sets the cap torque (replaces hand capping)",
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "phase1/cad/step/P1-412-01.step",
+    "phase1/drawings/parts/P1-412-01.svg",
+    "phase1/drawings/png/P1-412-01.png",
+    "phase1/drawings/machines/P1-412-GA.svg",
+    "phase1/drawings/png/P1-412-GA.png",
+    "phase1/cad/step/P1-412-ASM.step"
+   ],
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "qty": 1,
+   "vendor": "in-house / local stainless fabricator",
+   "labor_h": 12.0,
+   "material_usd": 138,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-404",
+   "title": "Wrap labeler for round containers, built in house: roller bed, stepper label feed, peel plate",
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "phase1/cad/step/P1-404-01.step",
+    "phase1/drawings/parts/P1-404-01.svg",
+    "phase1/drawings/png/P1-404-01.png",
+    "phase1/drawings/machines/P1-404-GA.svg",
+    "phase1/drawings/png/P1-404-GA.png",
+    "phase1/cad/step/P1-404-ASM.step"
+   ],
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "qty": 1,
+   "vendor": "in-house / local stainless fabricator",
+   "labor_h": 14.0,
+   "material_usd": 110,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   }
  ],
@@ -971,8 +1316,8 @@
   },
   {
    "step": 5,
-   "title": "Hang the bins, feeders and level probes",
-   "image": "phase1/drawings/png/P1-211.png",
+   "title": "Build the feeders; hang the bins, feeders and level probes",
+   "image": "phase1/drawings/png/P1-212-GA.png",
    "parts": [
     {
      "line": "P1-211",
@@ -981,6 +1326,18 @@
     {
      "line": "P1-212",
      "qty": 9
+    },
+    {
+     "line": "P1-215",
+     "qty": 9
+    },
+    {
+     "line": "P1-216",
+     "qty": 9
+    },
+    {
+     "line": "P1-217",
+     "qty": 3
     },
     {
      "line": "P1-213",
@@ -995,25 +1352,41 @@
     "torque wrench",
     "hex keys"
    ],
-   "text": "Bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md (salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
-   "torque": "M10 outlet flange 25 N\u00b7m; M12 bin lugs 70 N\u00b7m",
-   "check": "every connector sits square; tag each bin with its ingredient label"
+   "text": "In the shop, assemble each of the 9 feeders per P1-212-GA: slide the 316 flighting into the barrel weldment, bolt the 1/3 HP gearmotor to the C-face, fit the Tri-Clamp end cap (the screw pulls out forward for cleaning). Fit the slow agitator kit on the herb and peel bins. On site, bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md (salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
+   "torque": "M10 outlet flange 25 N\u00b7m; M12 bin lugs 70 N\u00b7m; C-face 3/8-16 bolts 27 N\u00b7m",
+   "check": "each screw turns by hand without rubbing; every connector sits square; tag each bin"
   },
   {
    "step": 6,
-   "title": "Riser stand, flexible screw and blender",
-   "image": "phase1/drawings/png/ASM-P1-001.png",
+   "title": "Build and set the ribbon blender, run the flexible screw",
+   "image": "phase1/drawings/png/P1-301-GA.png",
    "parts": [
     {
-     "line": "P1-311",
-     "qty": 1
-    },
-    {
-     "line": "P1-224",
-     "qty": 1
-    },
-    {
      "line": "P1-301",
+     "qty": 1
+    },
+    {
+     "line": "P1-333",
+     "qty": 1
+    },
+    {
+     "line": "P1-334",
+     "qty": 2
+    },
+    {
+     "line": "P1-335",
+     "qty": 1
+    },
+    {
+     "line": "P1-331",
+     "qty": 1
+    },
+    {
+     "line": "P1-332",
+     "qty": 1
+    },
+    {
+     "line": "P1-336",
      "qty": 1
     },
     {
@@ -1021,21 +1394,22 @@
      "qty": 1
     },
     {
-     "line": "P1-303",
+     "line": "P1-224",
      "qty": 1
     }
    ],
    "tools": [
-    "pallet truck",
-    "torque wrench"
+    "engine hoist",
+    "torque wrench",
+    "feeler gauges"
    ],
-   "text": "Anchor the riser stand (top 1,150 mm [45.3 in]) and bolt the used blender onto it (valve outlet 1,690 mm [66.5 in]); level it. Fit the bag-dump grate in the cover opening and the discharge chute to the outlet valve. Run the flexible screw from the intake grate under the hopper valve (550 mm [21.7 in]) to the blender inlet, supported at its midpoint; hand adds and premix are tipped into this grate.",
-   "torque": "M12 blender feet 70 N\u00b7m; M8 chute flange 18 N\u00b7m",
-   "check": "blender inspected: ribbons clear the trough by 3 to 6 mm, shaft seals tight, cover interlock works"
+   "text": "In the shop, per P1-301-GA: stand the frame, set the trough on its saddles and bolt the end plates; lower the agitator in, slide the UCF212 bearings on and bolt them to the end plates, pack the glands (4 PTFE rings each), slide the hollow-shaft gearmotor on the drive end with its torque arm. Clamp the discharge valve P1-331 to the bottom port, fit the cover with the interlock P1-332 and the bag-dump grate. Set the blender on its marks (no riser stand; trough bottom 1,400 mm [55.1 in], valve outlet 1,261 mm [49.6 in]) and anchor the feet. Run the flexible screw from the intake grate under the hopper valve (550 mm [21.7 in]) up to the 4 in inlet on the cover (1,983 mm [78.1 in]), supported at its midpoint; hand adds and premix are tipped into the intake grate.",
+   "torque": "M12 end-plate and feet 70 N\u00b7m; UCF212 M16 bolts 120 N\u00b7m; gland follower M10 hand tight plus 1/4 turn",
+   "check": "ribbons clear the trough by 3 to 6 mm all along; shaft turns by hand; glands do not weep; cover interlock stops the VFD; drum on its dolly rolls in between the legs"
   },
   {
    "step": 7,
-   "title": "Sieve deck, magnet and drum dollies",
+   "title": "Drum-top sifter, magnet and drum dollies",
    "image": "phase1/drawings/png/ASM-P1-002.png",
    "parts": [
     {
@@ -1066,8 +1440,9 @@
    "tools": [
     "torque wrench"
    ],
-   "text": "Stand the sieve deck under the chute, seat the 12 mesh screen on its ledge with the 4 quick clamps, bolt the vibrator to the leg frame and drop the grate magnet under the screen. Build the three drum dollies; a 55 gal drum on its dolly must roll in under the 4 in outlet (1,080 mm [42.5 in]).",
-   "check": "screen seals all round; magnet pull test card picks up"
+   "text": "Bolt the vibrator to the sifter's pad, seat the 12 mesh screen on its ledge, lay the grate magnet on the screen frame and clamp the lid. Build the three drum dollies. Roll a lined drum in under the blender valve, set the sifter on the drum rim (seat 1,054 mm [41.5 in]) and pull the valve sock over its 4 in inlet (1,235 mm [48.6 in]).",
+   "torque": "vibrator M10 45 N\u00b7m",
+   "check": "screen seals all round; magnet pull test card picks up; sifter sits level on its 3 isolators"
   },
   {
    "step": 8,
@@ -1147,21 +1522,108 @@
     "duct tools",
     "anemometer"
    ],
-   "text": "Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), sieve (200 cfm) and mill (150 cfm), with a blast gate at each.",
+   "text": "Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), drum-top sifter drum vent (200 cfm) and mill (150 cfm), with a blast gate at each.",
    "check": "measured airflow at each pickup within 10 % of its design value; total under the collector's 1,400 cfm"
   },
   {
    "step": 11,
+   "title": "Build the pack machines",
+   "image": "phase1/drawings/png/P1-401-GA.png",
+   "parts": [
+    {
+     "line": "P1-401",
+     "qty": 1
+    },
+    {
+     "line": "P1-413",
+     "qty": 1
+    },
+    {
+     "line": "P1-414",
+     "qty": 1
+    },
+    {
+     "line": "P1-415",
+     "qty": 2
+    },
+    {
+     "line": "P1-416",
+     "qty": 1
+    },
+    {
+     "line": "P1-417",
+     "qty": 1
+    },
+    {
+     "line": "P1-412",
+     "qty": 1
+    },
+    {
+     "line": "P1-422",
+     "qty": 1
+    },
+    {
+     "line": "P1-423",
+     "qty": 1
+    },
+    {
+     "line": "P1-424",
+     "qty": 1
+    },
+    {
+     "line": "P1-404",
+     "qty": 1
+    },
+    {
+     "line": "P1-425",
+     "qty": 1
+    },
+    {
+     "line": "P1-426",
+     "qty": 1
+    },
+    {
+     "line": "P1-427",
+     "qty": 1
+    },
+    {
+     "line": "P1-406",
+     "qty": 1
+    },
+    {
+     "line": "P1-418",
+     "qty": 1
+    },
+    {
+     "line": "P1-419",
+     "qty": 1
+    },
+    {
+     "line": "P1-420",
+     "qty": 1
+    },
+    {
+     "line": "P1-421",
+     "qty": 1
+    }
+   ],
+   "tools": [
+    "torque wrench",
+    "hex keys",
+    "dial indicator"
+   ],
+   "text": "In the shop, per the GA sheets. Filler P1-401-GA: cabinet, column and hopper ring; servo and agitator motor on the head plate; auger tooling on the 2.5 in clamp; CLICK PLC and HMI in the cabinet. Capper P1-412-GA: rail and carriage on the column, gearmotor, slip clutch and chuck, gas spring. Labeler P1-404-GA: rollers in their blocks, stepper and belt, spindles, peel plate, gap sensor. Detector conveyor P1-406-GA: frame, pulleys and belt, gearmotor; mount the used detector head over the belt with nothing metal within 1.5 x the aperture height, and the reject pusher after it.",
+   "torque": "M8 to frames 18 N\u00b7m; auger tube clamp hand tight",
+   "check": "auger runs true within 0.5 mm TIR; capper clutch slips at the set torque on a torque tester; detector conveyor belt tracks centred"
+  },
+  {
+   "step": 12,
    "title": "Pack bench",
    "image": "phase1/drawings/png/ASM-P1-003.png",
    "parts": [
     {
      "line": "P1-409",
      "qty": 4
-    },
-    {
-     "line": "P1-401",
-     "qty": 1
     },
     {
      "line": "P1-402",
@@ -1172,15 +1634,7 @@
      "qty": 1
     },
     {
-     "line": "P1-404",
-     "qty": 1
-    },
-    {
      "line": "P1-405",
-     "qty": 1
-    },
-    {
-     "line": "P1-406",
      "qty": 1
     },
     {
@@ -1204,11 +1658,11 @@
     "hex keys",
     "level"
    ],
-   "text": "Line up the four stainless tables, then fill, cap, seal, label, metal detect, checkweigh and case pack in that order, with the turntable at the end. Fit the printed container nests under the filler and the cap grips at the capping table.",
+   "text": "Set the filler, then line up the four stainless tables: capper and sealer, printer and labeler, the detector conveyor, checkweigh and case pack, with the turntable at the end. Fit the printed container nests on the filler.",
    "check": "metal detector rejects the Fe 1.5, non-Fe 2.0 and SS 2.5 mm test pieces in the leading, middle and trailing position"
   },
   {
-   "step": 12,
+   "step": 13,
    "title": "Controls and wiring",
    "image": "phase1/drawings/png/ELE-P1-003.png",
    "parts": [
@@ -1229,11 +1683,11 @@
     "electrician's tools",
     "multimeter"
    ],
-   "text": "Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, valve actuator, screw, blender and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). E-stops and the hopper and screw guards go through the safety relay, not the PLC. A licensed electrician does the power wiring.",
+   "text": "Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, both valve actuators, screw, blender VFD and cover interlock, sifter vibrator and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). E-stops and the hopper and screw guards go through the safety relay, not the PLC. A licensed electrician does the power wiring.",
    "check": "every I/O point toggles on the PLC watch list; e-stop drops all drives"
   },
   {
-   "step": 13,
+   "step": 14,
    "title": "MES computer and commissioning",
    "image": "phase1/drawings/png/LAY-P1.png",
    "parts": [
@@ -1352,6 +1806,7 @@
  "gaps": [
   "G-code for the 4 PETG fixtures is not sliced yet: slice the STLs in Bambu Studio on Yaeger and add the .gcode.3mf paths",
   "Assembly pictures are the part drawings and the layout, not rendered 3D assembly steps",
-  "Used blender (P1-301) and used metal detector (P1-406) are priced as estimates until a unit is inspected; flanges marked VERIFY are measured on them before cutting"
+  "Bought parts for the built machines are catalog-class picks marked confirm: check each model and price before ordering; the used detector head P1-418 is an estimate until a unit is inspected",
+  "Built machines are first articles: expect one round of fit-up changes (ECO) on the blender agitator and the filler auger tooling"
  ]
 }

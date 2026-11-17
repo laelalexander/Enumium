@@ -200,29 +200,27 @@ def p1_322():
 
 
 def p1_304():
-    """Sieve deck: Ø480 x 150 housing with screen ledge, 4 clamp lugs, cone to 4 in TC, 3 legs."""
+    """Drum-top sifter: Ø480 x 150 screen housing with ledge and 4 clamp lugs, on a seat ring that rests on the 55 gal drum rim
+    through 3 rubber isolators, with a skirt into the drum; the inlet cover takes the blender valve's sock. 200 mm overall."""
     R = 240.0
+    seat = cq.Workplane("XY").circle(310).circle(R + GA14).extrude(6)
+    skirt = cq.Workplane("XY").circle(R + GA14).circle(R).extrude(60).translate((0, 0, -60))
     hs = cq.Workplane("XY").circle(R + GA14).circle(R).extrude(150)
     ledge = cq.Workplane("XY").circle(R).circle(R - 15).extrude(6).translate((0, 0, 40))
-    hc = R - TC4_TUBE / 2
-    cone = (cq.Workplane("XY").circle(R + GA14).workplane(offset=-hc).circle(TC4_TUBE / 2 + GA14).loft()
-            .cut(cq.Workplane("XY").workplane(offset=0.01).circle(R).workplane(offset=-hc - 0.02).circle(TC4_TUBE / 2).loft()))
-    fer = ferrule4().translate((0, 0, -hc - 28.6))
-    part = hs.union(ledge).union(cone).union(fer)
+    lid = cq.Workplane("XY").circle(R + 10).extrude(2).translate((0, 0, 150))
+    lid = lid.cut(cq.Workplane("XY").circle(TC4_TUBE / 2 - 1.65).extrude(10).translate((0, 0, 145)))
+    lid = lid.union(ferrule4().translate((0, 0, 152)).cut(cq.Workplane("XY").circle(TC4_TUBE / 2 - 1.65).extrude(40).translate((0, 0, 150))))
+    part = seat.union(skirt).union(hs).union(ledge).union(lid)
+    for k in range(3):                                          # isolator feet on the drum rim (Ø584 drum: rim on R292)
+        a = math.radians(90 + 120 * k)
+        part = part.union(cq.Workplane("XY").box(50, 40, 6).translate((math.cos(a) * 292, math.sin(a) * 292, 3))
+                          .faces(">Z").workplane(centerOption="CenterOfBoundBox").hole(9))
     for k in range(4):
         a = math.radians(45 + 90 * k)
         part = part.union(cq.Workplane("XY").box(50, 40, 8).translate((math.cos(a) * (R + 25), math.sin(a) * (R + 25), 146))
                           .faces(">Z").workplane(centerOption="CenterOfBoundBox").hole(11))
-    part = part.translate((0, 0, hc + 28.6))
-    # leg frame: 3 legs 1.5 in sq on R400 so a 55 gal drum (Ø584) on its dolly rolls in underneath; outlet 1,080 above the floor
-    zt = hc + 28.6 + 146
-    for k in range(3):
-        a = math.radians(90 + 120 * k); c, sn = math.cos(a), math.sin(a)
-        leg = sqt(38.1, 38.1, 1080 + zt, 1.65).translate((c * 400, sn * 400, (zt - 1080) / 2))
-        arm = sqt(400 - R + 19, 38.1, 38.1, 1.65).translate((c * (R + (400 - R) / 2), sn * (R + (400 - R) / 2), zt - 19))
-        arm = arm.rotate((c * (R + (400 - R) / 2), sn * (R + (400 - R) / 2), 0), (c * (R + (400 - R) / 2), sn * (R + (400 - R) / 2), 1), math.degrees(a))
-        part = part.union(leg).union(arm)
-    return part.translate((0, 0, 1080))
+    part = part.union(cq.Workplane("XY").box(10, 140, 100).translate((R + 8, 0, 80)))   # vibrator pad
+    return part.translate((0, 0, 60))
 
 
 def sqt(lx, ly, lz, t=3.0):
@@ -345,27 +343,18 @@ PARTS = [
          process="Laser cut, TIG, ground", assy="Blender P1-301", flat="grate", contact=True,
          notes=["Bars 10 mm wide at 50 mm pitch keep bags and gloves out", "VERIFY outside 600 x 400 against the used blender's cover opening"],
          fasteners=lambda f: "4 in Tri-Clamp to dust duct"),
-    dict(id="P1-303", fn=p1_303, title="Blender discharge chute to 4 in Tri-Clamp", material="SS 316L #4, 14 ga; flange 6 mm 304", qty="1", tol="sheet",
-         process="Laser cut, form, TIG, polish", assy="Blender P1-301 to sieve P1-304", flat="flange", contact=True,
-         notes=["VERIFY flange to the used blender's discharge valve before cutting"],
-         fasteners=lambda f: "M8 x 25 A2-70, 18 N·m + FDA silicone gasket"),
-    dict(id="P1-304", fn=p1_304, title="Sieve deck housing for 18 in screen", material="SS 304 #4, 14 ga", qty="1", tol="sheet",
-         process="Laser cut, roll, TIG, ground", assy="Blending", flat=None, contact=True,
-         notes=["Screen (P1-305) sits on the 15 mm ledge, grate magnet P1-307 on brackets under it; 4 quick clamps on the lugs", "Vibrator P1-306 bolts to the leg frame, not the housing",
-                "Leg frame on R400: a 55 gal drum on its dolly rolls in under the 4 in outlet (1,080 [42.5] above floor)"],
-         fasteners=lambda f: "quick clamp 1/2 in"),
+    dict(id="P1-304", fn=p1_304, title="Drum-top sifter for 18 in screen", material="SS 304 #4, 14 ga; seat ring 6 mm", qty="1", tol="sheet",
+         process="Laser cut, roll, TIG, ground", assy="Blender P1-301 to blend drum P1-308", flat=None, contact=True,
+         notes=["Screen (P1-305) sits on the 15 mm ledge, grate magnet P1-307 on brackets under it; 4 quick clamps on the lugs",
+                "Sits on the drum rim on 3 rubber isolators (M8); skirt keeps dust in the liner; vibrator P1-306 bolts to the side pad",
+                "Blender valve sock clamps to the 4 in TC inlet; 200 mm overall, so the blender stands 1,400 [55.1] to the trough, no riser stand"],
+         fasteners=lambda f: "M8 rubber isolator foot" if f["dia"] < 10 else "quick clamp 1/2 in"),
     dict(id="P1-322", fn=p1_322, title="Mill feed hopper and discharge transition", material="SS 304 #4, 14 ga; flanges 6 mm", qty="1 set", tol="sheet",
          process="Laser cut, brake, TIG, ground, polished", assy="Hammer mill P1-320", flat="flange", contact=True,
          notes=["Feed hopper bolts to the mill inlet; P1-321 grate magnet slides through the side slot (tramp metal stops before the hammers)",
                 "Discharge transition bolts under the mill screen housing; 4 in Tri-Clamp to a cotton sock into a lined 5 gal pail",
                 "VERIFY both flange patterns on the chosen mill before cutting"],
          fasteners=lambda f: "M8 x 20 A2-70 + FDA silicone gasket, 18 N·m"),
-    dict(id="P1-311", fn=p1_311, title="Blender riser stand", material="SS 304 3 in sq tube 11 ga, 12 mm plates", qty="1", tol="sheet",
-         process="Saw, TIG, ground, passivated", assy="Blender P1-301", flat="foot", contact=False,
-         notes=["Raises the blender valve outlet to 1,690 [66.5] so chute P1-303, sieve P1-304 and a 55 gal drum on P1-309 fit under it",
-                "Anchor 4 x 1/2 in wedge anchors per foot, 3 in embed; tube ends capped and seal-welded",
-                "Blender foot pads: VERIFY bolt pattern and leg height on the used blender before cutting"],
-         fasteners=lambda f: "1/2 in wedge anchor / M12 x 40 A2-70 to blender foot, 70 N·m"),
     dict(id="P1-309", fn=p1_309, title="Drum dolly base", material="SS 304, 3 mm [11 ga]", qty="3", tol="sheet", process="Laser cut, roll rim, TIG",
          assy="Blend drums P1-308", flat="base", contact=False, notes=["4 casters 3 in, 2 with brakes"],
          fasteners=lambda f: "5/16-18 x 3/4 SS + nyloc (caster plate)" if f["dia"] < 10 else "drain"),
