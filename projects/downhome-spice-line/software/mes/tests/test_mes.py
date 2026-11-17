@@ -126,6 +126,70 @@ class Flow(unittest.TestCase):
         self.assertEqual(status, "REJECTED")
 
 
+
+class Phase1Bins(unittest.TestCase):
+    """Phase 1 prototype: 6 cu ft blender, ingredients dosed from bins into weigh hopper P1-220."""
+    BINS = {"B01": "salt", "B02": "garlic", "B03": "paprika", "B04": "onion"}
+
+    def setUp(self):
+        self.m = MES(blender="P1-301")
+        self.m.load_site(SITE)
+        self.lots = stocked(self.m, "f-orig")
+        for b, ing in self.BINS.items():
+            self.m.assign_bin(b, ing, 120, "lead1")
+            self.m.refill_bin(b, self.lots[ing], 50, "rcv1")
+
+    def test_capacity_and_routes(self):
+        self.assertEqual(self.m.max_batch_kg("f-orig"), int(6 * 28.3168 * 0.548))
+        bid = self.m.create_batch("f-orig", 66, "op1")
+        routes = {p["ingredient"]: p["kind"] for p in self.m.pick_list(bid)}
+        self.assertEqual(routes["salt"], "bin")
+        self.assertEqual(routes["black-pepper"], "hand")      # no bin assigned in this test
+        self.assertEqual(routes["thyme"], "hand")             # 2 % is not a minor, 1.3 kg is under the 4 kg bin minimum
+        self.assertEqual(routes["cayenne"], "minor")
+        dl = self.m.dose_list(bid)
+        self.assertEqual([s["BinID"] for s in dl["Steps"]], ["B01", "B03", "B02", "B04"])   # largest first
+        with self.assertRaises(MESError):
+            self.m.dispense(bid, "salt", self.lots["salt"], 25.08, "P1-201", "op1")         # bin lines are not hand-weighed
+
+    def test_refill_checks(self):
+        with self.assertRaises(MESError):
+            self.m.refill_bin("B01", self.lots["garlic"], 10, "rcv1")                       # wrong ingredient
+        with self.assertRaises(MESError):
+            self.m.refill_bin("B01", self.lots["salt"], 100, "rcv1")                        # over capacity
+        q = self.m.receive("salt", "ACME", "S-2", 500, "2099-01-01", False, "rcv1")
+        with self.assertRaises(MESError):
+            self.m.refill_bin("B01", q, 10, "rcv1")                                         # quarantined lot
+        with self.assertRaises(MESError):
+            self.m.assign_bin("B01", "onion", 120, "lead1")                                 # not empty
+
+    def test_dose_tolerance_trace_and_empty(self):
+        bid = self.m.create_batch("f-orig", 66, "op1")
+        salt2 = self.m.receive("salt", "ACME", "S-2", 500, "2099-01-01", True, "rcv1")
+        self.m.refill_bin("B01", salt2, 25, "rcv1")                                          # bin now mixes two salt lots
+        with self.assertRaises(MESError):
+            self.m.record_dose(bid, "B01", 25.08 + 0.4, "plc")                               # +/-1 % of 25.08 kg
+        for p in self.m.pick_list(bid):
+            if p["kind"] == "bin":
+                self.m.record_dose(bid, p["bin"], p["target_kg"] + 0.01, "plc")
+            else:
+                self.m.dispense(bid, p["ingredient"], self.lots[p["ingredient"]], p["target_kg"], "P1-201", "op1")
+        self.assertEqual(self.m.batch(bid)["status"], "READY_TO_BLEND")
+        salt_lots = {i["lot"] for i in self.m.trace_back(bid)["ingredients"] if i["ingredient"] == "salt"}
+        self.assertEqual(salt_lots, {self.lots["salt"], salt2})
+        self.assertIn(bid, [r["batch"] for r in self.m.trace_forward(salt2)])
+        self.assertAlmostEqual(self.m.bin("B01")["kg"], 75 - 25.09, places=2)
+        # after the bin runs empty, the next batch is linked only to lots poured after that
+        self.m.bin_empty("B01", "lead1")
+        salt3 = self.m.receive("salt", "ACME", "S-3", 500, "2099-01-01", True, "rcv1")
+        self.m.refill_bin("B01", salt3, 60, "rcv1")
+        self.assertEqual([l["lot"] for l in self.m.bin("B01")["lots"]], [salt3])
+        bid2 = self.m.create_batch("f-orig", 66, "op1")
+        self.m.record_dose(bid2, "B01", 25.08, "plc")
+        self.assertNotIn(bid2, [r["batch"] for r in self.m.trace_forward(salt2)])
+        with self.assertRaises(MESError):
+            self.m.record_dose(bid2, "B01", 25.08, "plc")                                    # one dose per bin per batch
+
 class Api(unittest.TestCase):
     def test_http(self):
         m = MES(); m.load_site(SITE)

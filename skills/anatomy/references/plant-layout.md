@@ -12,12 +12,14 @@ Worked example: `projects/downhome-spice-line/` (Down Home Creole dry blending a
 ## Layout tool: `tools/plant/layout.py`
 `python3 layout.py layout.json equipment.json out_dir` draws an ARCH D sheet at the largest standard scale that fits. The sheet has a grid, rooms coloured by hygiene zone, racks, equipment footprints taken from `equipment.json`, material and people flows, dual-unit dimensions, an equipment schedule, a zone schedule and a checks block. It also writes DXF files in mm and inch for the architect, and `layout-check.json/.md`.
 
+Narrow rooms can take `"label": "Hygiene\nvestibule"` (line breaks) and `"compact": true` (zone and area on their own lines) so the room name stays inside its walls.
+
 `layout.json` holds: `building`, `rules.min_clear_mm`, `rooms` (each with a zone), `racks`, `equipment` (tag, room, x, y, optional rotation), `lines` (chains of conveyor-linked tags), `linked` pairs, `doors`, `flows` (raw, finished, people, waste), `dims` and `notes`.
 
 The checks must all pass before hand-off:
 - **overlaps**: no two footprints intersect.
 - **outside room**: every machine sits inside its room.
-- **tight aisles**: at least 900 mm (OSHA 1910.22 / 1910.37 egress, and forklift aisles per the truck spec). Conveyor-linked machines are exempt.
+- **tight aisles**: at least 900 mm (OSHA 1910.22 / 1910.37 egress, and forklift aisles per the truck spec) between machines in the same room. Conveyor-linked machines are exempt, and a wall between two machines is not an aisle problem.
 - **zone violations**: a machine's zone must match its room (see food-safety-design.md).
 - **flow crossings**: raw material and finished goods flows must not cross, and people do not enter high-care except through the hygiene vestibule.
 

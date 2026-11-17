@@ -113,6 +113,9 @@ def run(basis_path, cfg_path, out_dir):
         c["utilization"] = round((c["run_min"] + c["changeover_min"]) / week_min, 3)
     fits = [c for c in cands if c["utilization"] <= limit and not c["under_filled"]]
     chosen = min(fits, key=lambda c: c["working_cuft"]) if fits else max(cands, key=lambda c: c["working_cuft"])
+    pick = cfg["blending"].get("choose_cuft")          # designer override (e.g. fewer batches for a manual plant), stated in notes
+    if pick:
+        chosen = next(c for c in cands if c["working_cuft"] == pick)
     # ---- pack lines
     lines = []
     for ln in cfg["pack_lines"]:

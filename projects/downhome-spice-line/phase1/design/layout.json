@@ -1,0 +1,718 @@
+{
+ "title": {
+  "title": "LAY-P1 PHASE 1 PROTOTYPE LAYOUT",
+  "project": "Down Home Creole \u00b7 Phase 1 prototype \u00b7 1,000 lb/week, 5 blends (13-blend ready)",
+  "number": "DH-LAY-P1",
+  "rev": "A",
+  "date": "2026-11-17",
+  "status": "FOR REVIEW"
+ },
+ "building": {
+  "w": 15240.0,
+  "h": 12192.0,
+  "clear_height_mm": 3657.6000000000004
+ },
+ "rules": {
+  "min_clear_mm": 900
+ },
+ "rooms": [
+  {
+   "name": "Receiving & ingredient storage",
+   "x": 0,
+   "y": 0,
+   "w": 9000,
+   "h": 4000,
+   "zone": "Z1 warehouse",
+   "label_at": [
+    300,
+    3880
+   ]
+  },
+  {
+   "name": "Finished goods & shipping",
+   "x": 9000,
+   "y": 0,
+   "w": 6240.0,
+   "h": 4000,
+   "zone": "Z1 warehouse",
+   "label_at": [
+    9300,
+    3250
+   ]
+  },
+  {
+   "name": "Hygiene vestibule",
+   "x": 0,
+   "y": 4000,
+   "w": 2000,
+   "h": 3000,
+   "zone": "support",
+   "label_at": [
+    120,
+    6850
+   ],
+   "label": "Hygiene\nvestibule",
+   "compact": true
+  },
+  {
+   "name": "Office & QC",
+   "x": 0,
+   "y": 7000,
+   "w": 2000,
+   "h": 5192.0,
+   "zone": "support",
+   "label_at": [
+    120,
+    11942.0
+   ],
+   "compact": true
+  },
+  {
+   "name": "Dosing & blending room",
+   "x": 2000,
+   "y": 4000,
+   "w": 6800,
+   "h": 8192.0,
+   "zone": "Z3 high-care dry (exposed product)",
+   "label_at": [
+    2300,
+    11892.0
+   ]
+  },
+  {
+   "name": "Pack room",
+   "x": 8800,
+   "y": 4000,
+   "w": 6440.0,
+   "h": 8192.0,
+   "zone": "Z3 high-care dry (exposed product)",
+   "label_at": [
+    9100,
+    11992.0
+   ]
+  },
+  {
+   "name": "Dust collector pad (outside)",
+   "x": 600,
+   "y": 12592.0,
+   "w": 2000,
+   "h": 1600,
+   "zone": "Z0 outside",
+   "wall": false,
+   "label_at": [
+    600,
+    14942.0
+   ]
+  }
+ ],
+ "racks": [],
+ "equipment": [
+  {
+   "tag": "P1-101",
+   "room": "Receiving & ingredient storage",
+   "x": 1500,
+   "y": 150
+  },
+  {
+   "tag": "SH-1",
+   "room": "Receiving & ingredient storage",
+   "x": 300,
+   "y": 2300,
+   "size": [
+    1524,
+    610
+   ],
+   "name": "NSF shelving 24 x 60 in (P1-102)"
+  },
+  {
+   "tag": "SH-2",
+   "room": "Receiving & ingredient storage",
+   "x": 1950,
+   "y": 2300,
+   "size": [
+    1524,
+    610
+   ],
+   "name": "NSF shelving 24 x 60 in (P1-102)"
+  },
+  {
+   "tag": "SH-3",
+   "room": "Receiving & ingredient storage",
+   "x": 3600,
+   "y": 2300,
+   "size": [
+    1524,
+    610
+   ],
+   "name": "NSF shelving 24 x 60 in (P1-102)"
+  },
+  {
+   "tag": "SH-4",
+   "room": "Receiving & ingredient storage",
+   "x": 5250,
+   "y": 2300,
+   "size": [
+    1524,
+    610
+   ],
+   "name": "NSF shelving 24 x 60 in (P1-102)"
+  },
+  {
+   "tag": "SH-5",
+   "room": "Receiving & ingredient storage",
+   "x": 6900,
+   "y": 2300,
+   "size": [
+    1524,
+    610
+   ],
+   "name": "NSF shelving 24 x 60 in (P1-102)"
+  },
+  {
+   "tag": "PAL-RM",
+   "room": "Receiving & ingredient storage",
+   "x": 4000,
+   "y": 150,
+   "size": [
+    2500,
+    1200
+   ],
+   "name": "Floor pallets: salt, garlic, paprika (2 weeks)"
+  },
+  {
+   "tag": "P1-103",
+   "room": "Receiving & ingredient storage",
+   "x": 7400,
+   "y": 300
+  },
+  {
+   "tag": "P1-210",
+   "room": "Dosing & blending room",
+   "x": 2300,
+   "y": 7300,
+   "name": "Dosing station: 12-bin ring P1-210/211, feeders P1-212, weigh hopper P1-220"
+  },
+  {
+   "tag": "P1-227",
+   "room": "Dosing & blending room",
+   "x": 3500,
+   "y": 6200
+  },
+  {
+   "tag": "P1-225",
+   "room": "Dosing & blending room",
+   "x": 2100,
+   "y": 4300,
+   "size": [
+    600,
+    250
+   ],
+   "name": "Dosing controller P1-225 + drives P1-226"
+  },
+  {
+   "tag": "P1-224",
+   "room": "Dosing & blending room",
+   "x": 5630,
+   "y": 9300,
+   "size": [
+    1000,
+    400
+   ],
+   "name": "Flexible screw P1-224 (inclined)"
+  },
+  {
+   "tag": "P1-301",
+   "room": "Dosing & blending room",
+   "x": 6650,
+   "y": 9100,
+   "rot": 90
+  },
+  {
+   "tag": "P1-304",
+   "room": "Dosing & blending room",
+   "x": 6680,
+   "y": 7900
+  },
+  {
+   "tag": "P1-308",
+   "room": "Dosing & blending room",
+   "x": 6780,
+   "y": 7300,
+   "size": [
+    560,
+    560
+   ],
+   "name": "Blend drum on dolly P1-309 under sieve"
+  },
+  {
+   "tag": "P1-206",
+   "room": "Dosing & blending room",
+   "x": 2800,
+   "y": 4300,
+   "name": "Weigh bench P1-206 + hood P1-207 (minors, hand adds)"
+  },
+  {
+   "tag": "P1-208",
+   "room": "Dosing & blending room",
+   "x": 4500,
+   "y": 4300
+  },
+  {
+   "tag": "HOLD-1",
+   "room": "Dosing & blending room",
+   "x": 5500,
+   "y": 4300,
+   "size": [
+    3000,
+    1100
+   ],
+   "name": "QC hold: 6 drums on dollies"
+  },
+  {
+   "tag": "P1-310",
+   "room": "Dust collector pad (outside)",
+   "x": 800,
+   "y": 12792.0
+  },
+  {
+   "tag": "P1-401",
+   "room": "Pack room",
+   "x": 9100,
+   "y": 10300
+  },
+  {
+   "tag": "TBL-1",
+   "room": "Pack room",
+   "x": 9850,
+   "y": 10250,
+   "size": [
+    1524,
+    762
+   ],
+   "name": "Cap + induction seal table"
+  },
+  {
+   "tag": "TBL-2",
+   "room": "Pack room",
+   "x": 11400,
+   "y": 10250,
+   "size": [
+    1524,
+    762
+   ],
+   "name": "Label table (AP360e + LX910)"
+  },
+  {
+   "tag": "P1-406",
+   "room": "Pack room",
+   "x": 12950,
+   "y": 10300
+  },
+  {
+   "tag": "P1-408",
+   "room": "Pack room",
+   "x": 13950,
+   "y": 8600,
+   "size": [
+    762,
+    762
+   ],
+   "name": "Turntable P1-408"
+  },
+  {
+   "tag": "TBL-3",
+   "room": "Pack room",
+   "x": 12100,
+   "y": 8500,
+   "size": [
+    1524,
+    762
+   ],
+   "name": "Checkweigh table (P1-407)"
+  },
+  {
+   "tag": "TBL-4",
+   "room": "Pack room",
+   "x": 10500,
+   "y": 8500,
+   "size": [
+    1524,
+    762
+   ],
+   "name": "Case-pack table"
+  },
+  {
+   "tag": "PKG",
+   "room": "Pack room",
+   "x": 9100,
+   "y": 4300,
+   "size": [
+    2400,
+    1200
+   ],
+   "name": "Empty containers, caps, labels (1 day)"
+  },
+  {
+   "tag": "PAL-FG",
+   "room": "Pack room",
+   "x": 12500,
+   "y": 4300,
+   "size": [
+    1220,
+    1020
+   ],
+   "name": "Pallet being built"
+  },
+  {
+   "tag": "FG-1",
+   "room": "Finished goods & shipping",
+   "x": 9500,
+   "y": 600,
+   "size": [
+    3700,
+    1300
+   ],
+   "name": "FG pallets (3 days)"
+  }
+ ],
+ "lines": [
+  [
+   "P1-401",
+   "TBL-1",
+   "TBL-2",
+   "P1-406"
+  ],
+  [
+   "TBL-4",
+   "TBL-3",
+   "P1-408"
+  ],
+  [
+   "SH-1",
+   "SH-2",
+   "SH-3",
+   "SH-4",
+   "SH-5"
+  ]
+ ],
+ "linked": [
+  [
+   "P1-210",
+   "P1-224"
+  ],
+  [
+   "P1-224",
+   "P1-301"
+  ],
+  [
+   "P1-301",
+   "P1-304"
+  ],
+  [
+   "P1-224",
+   "P1-304"
+  ],
+  [
+   "P1-304",
+   "P1-308"
+  ],
+  [
+   "P1-210",
+   "P1-227"
+  ],
+  [
+   "P1-406",
+   "P1-408"
+  ],
+  [
+   "P1-206",
+   "P1-208"
+  ],
+  [
+   "P1-206",
+   "P1-225"
+  ],
+  [
+   "P1-208",
+   "HOLD-1"
+  ],
+  [
+   "TBL-3",
+   "P1-408"
+  ]
+ ],
+ "doors": [
+  {
+   "name": "Roll-up (receiving)",
+   "x": 600,
+   "y": 0,
+   "w": 2400,
+   "side": "S"
+  },
+  {
+   "name": "Roll-up (shipping)",
+   "x": 13300,
+   "y": 0,
+   "w": 2400,
+   "side": "S"
+  },
+  {
+   "name": "Staff entry",
+   "x": 0,
+   "y": 5000,
+   "w": 1000,
+   "side": "W"
+  },
+  {
+   "name": "Ingredients in",
+   "x": 5000,
+   "y": 4000,
+   "w": 1500,
+   "side": "S"
+  },
+  {
+   "name": "Packaging in",
+   "x": 9000,
+   "y": 4000,
+   "w": 1200,
+   "side": "S"
+  },
+  {
+   "name": "Cases out",
+   "x": 12000,
+   "y": 4000,
+   "w": 1200,
+   "side": "S"
+  },
+  {
+   "name": "Released drums",
+   "x": 8800,
+   "y": 5600,
+   "w": 1500,
+   "side": "E"
+  },
+  {
+   "name": "Gowning",
+   "x": 2000,
+   "y": 5000,
+   "w": 1000,
+   "side": "E"
+  }
+ ],
+ "flows": [
+  {
+   "name": "raw in",
+   "type": "raw",
+   "pts": [
+    [
+     1800,
+     300
+    ],
+    [
+     1800,
+     1950
+    ],
+    [
+     5700,
+     1950
+    ],
+    [
+     5700,
+     4300
+    ],
+    [
+     4000,
+     6800
+    ]
+   ]
+  },
+  {
+   "name": "dose, blend, sieve",
+   "type": "product",
+   "pts": [
+    [
+     3950,
+     8950
+    ],
+    [
+     6200,
+     9500
+    ],
+    [
+     7100,
+     9500
+    ],
+    [
+     7050,
+     8200
+    ],
+    [
+     7050,
+     7600
+    ]
+   ]
+  },
+  {
+   "name": "drum to QC hold",
+   "type": "product",
+   "pts": [
+    [
+     7050,
+     7300
+    ],
+    [
+     7050,
+     5500
+    ]
+   ]
+  },
+  {
+   "name": "released drum to filler",
+   "type": "product",
+   "pts": [
+    [
+     8000,
+     5000
+    ],
+    [
+     8800,
+     6300
+    ],
+    [
+     9400,
+     10250
+    ]
+   ]
+  },
+  {
+   "name": "containers along the bench",
+   "type": "product",
+   "pts": [
+    [
+     9500,
+     10650
+    ],
+    [
+     14400,
+     10650
+    ],
+    [
+     14300,
+     9000
+    ],
+    [
+     11000,
+     8900
+    ]
+   ]
+  },
+  {
+   "name": "packaging in",
+   "type": "packaging",
+   "pts": [
+    [
+     8600,
+     2800
+    ],
+    [
+     9600,
+     3600
+    ],
+    [
+     9600,
+     4300
+    ]
+   ]
+  },
+  {
+   "name": "cases to pallet, pallet to FG",
+   "type": "finished",
+   "pts": [
+    [
+     11000,
+     8500
+    ],
+    [
+     12900,
+     5400
+    ],
+    [
+     12600,
+     4000
+    ],
+    [
+     12000,
+     1900
+    ],
+    [
+     14500,
+     300
+    ]
+   ]
+  },
+  {
+   "name": "staff",
+   "type": "people",
+   "pts": [
+    [
+     300,
+     5500
+    ],
+    [
+     1500,
+     5500
+    ],
+    [
+     2400,
+     5500
+    ]
+   ]
+  },
+  {
+   "name": "dust to collector",
+   "type": "waste",
+   "pts": [
+    [
+     3500,
+     4800
+    ],
+    [
+     2200,
+     6500
+    ],
+    [
+     2200,
+     12000
+    ],
+    [
+     1600,
+     12900
+    ]
+   ]
+  }
+ ],
+ "dims": [
+  {
+   "dir": "h",
+   "x1": 9100,
+   "x2": 14450,
+   "y": 9950,
+   "label": "PACK BENCH 5,350 [17.6 ft]"
+  },
+  {
+   "dir": "v",
+   "x": 2150,
+   "y1": 7300,
+   "y2": 10630,
+   "label": "DOSING RING 3,330 [10.9 ft]"
+  }
+ ],
+ "notes": [
+  "About 2,000 sq ft (50 x 40 ft) light-industrial or food-grade unit; 12 ft clear is enough (no bulk bags in Phase 1).",
+  "Dosing station: 12 bin positions (9 used for the 5 launch blends); bins are loaded from the rolling platform P1-227.",
+  "Blend path: weigh hopper > flexible screw > 6 cu ft blender > discharge chute > sieve + magnet > lined drum > QC hold > filler.",
+  "Metal detection (CCP-1) is on the finished pack (P1-406), after labeling, with a locked reject bin.",
+  "Z3 rooms: sealed epoxy floor, coved base, washable ceiling; enter only through the hygiene vestibule.",
+  "Footprints from equipment.json (Phase 1); used-machine sizes are estimates until the unit is chosen."
+ ]
+}

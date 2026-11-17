@@ -1,0 +1,5 @@
+part,title,qty,material,stl,grams_est,status
+P1-410a,"Filler nest, shaker-250 (Ø66 mm)",2,PETG,phase1/cad/print/P1-410a.stl,139.4,"NOT SLICED: open the STL in Bambu Studio on Yaeger, PETG, 0.2 mm, 3 walls, 25 % gyroid, then save .gcode.3mf beside it"
+P1-410b,"Filler nest, jar-12 (Ø86 mm)",2,PETG,phase1/cad/print/P1-410b.stl,188.3,"NOT SLICED: open the STL in Bambu Studio on Yaeger, PETG, 0.2 mm, 3 walls, 25 % gyroid, then save .gcode.3mf beside it"
+P1-410c,"Cap grip, 53 mm sifter cap",2,PETG,phase1/cad/print/P1-410c.stl,39.8,"NOT SLICED: open the STL in Bambu Studio on Yaeger, PETG, 0.2 mm, 3 walls, 25 % gyroid, then save .gcode.3mf beside it"
+P1-410d,"Cap grip, 89 mm jar cap",2,PETG,phase1/cad/print/P1-410d.stl,61.0,"NOT SLICED: open the STL in Bambu Studio on Yaeger, PETG, 0.2 mm, 3 walls, 25 % gyroid, then save .gcode.3mf beside it"

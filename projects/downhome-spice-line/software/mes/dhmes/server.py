@@ -1,6 +1,7 @@
 """Plant-floor web UI and JSON API for the MES. Standard library only.
 
 Run:  python3 -m dhmes.server --db plant.db --site ../../data/site.json --port 8080
+      python3 -m dhmes.server --blender P1-301 --db p1.db          (Phase 1 prototype with the bin ring)
 Panel PCs (WS-207) and the weigh terminals open http://<mes-server>:8080 in a browser.
 
 API (POST JSON, each body carries "by": operator badge):
@@ -15,7 +16,11 @@ API (POST JSON, each body carries "by": operator badge):
   /api/weights        {run, gross_g:[...]}
   /api/run/end        {run, good, rej_weight, rej_vision}
   /api/pallet         {run, cases}
-GET: /api/batch/<id>/picklist, /api/batch/<id>/plc, /api/batch/<id>/record,
+  /api/bin/assign     {bin, ingredient, capacity_kg}          (Phase 1)
+  /api/bin/refill     {bin, lot, kg}                          (Phase 1, operator scans the bag lot)
+  /api/bin/empty      {bin}                                   (Phase 1, low-level switch confirmed)
+  /api/dose           {batch, bin, actual_kg}                 (Phase 1, posted by the dosing PLC)
+GET: /api/bins, /api/bin/<id>, /api/batch/<id>/doselist, /api/batch/<id>/picklist, /api/batch/<id>/plc, /api/batch/<id>/record,
      /api/run/<id>/plc, /api/run/<id>/hb133, /api/run/<id>/case_label,
      /api/trace/back/<lot>, /api/trace/forward/<rm lot>, /api/sequence?f=a,b,c
 """
@@ -66,8 +71,12 @@ def make_handler(mes: MES):
             try:
                 if not p:
                     return self._send(200, self.dashboard(), "text/html; charset=utf-8")
+                if p == ["api", "bins"]:
+                    return self._json([mes.bin(r["id"]) for r in mes.q("SELECT id FROM bin ORDER BY id")])
+                if p[:2] == ["api", "bin"] and len(p) == 3:
+                    return self._json(mes.bin(p[2]))
                 if p[:2] == ["api", "batch"] and len(p) == 4:
-                    fn = {"picklist": mes.pick_list, "plc": mes.plc_download, "record": mes.batch_record}[p[3]]
+                    fn = {"doselist": mes.dose_list, "picklist": mes.pick_list, "plc": mes.plc_download, "record": mes.batch_record}[p[3]]
                     return self._json(fn(p[2]))
                 if p[:2] == ["api", "run"] and len(p) == 4:
                     if p[3] == "case_label":
@@ -100,6 +109,10 @@ def make_handler(mes: MES):
                 "/api/weights": lambda: mes.record_weights(b["run"], b["gross_g"]),
                 "/api/run/end": lambda: mes.end_run(b["run"], b["good"], b["rej_weight"], b["rej_vision"], by),
                 "/api/pallet": lambda: mes.build_pallet(b["run"], b["cases"], by),
+                "/api/bin/assign": lambda: mes.assign_bin(b["bin"], b["ingredient"], b["capacity_kg"], by),
+                "/api/bin/refill": lambda: mes.refill_bin(b["bin"], b["lot"], b["kg"], by),
+                "/api/bin/empty": lambda: mes.bin_empty(b["bin"], by),
+                "/api/dose": lambda: mes.record_dose(b["batch"], b["bin"], b["actual_kg"], by),
             }.get(urlparse(self.path).path)
             if not r:
                 return self._json({"error": "not found"}, 404)
@@ -113,12 +126,17 @@ def make_handler(mes: MES):
             batches = mes.q("SELECT id, formula, target_kg, status, cv_pct, md_rejects, bag FROM batch ORDER BY created DESC LIMIT 30")
             runs = mes.q("SELECT id, sku, batch, line, status, good, rej_weight, rej_vision FROM pack_run ORDER BY started DESC LIMIT 30")
             audit = mes.q("SELECT at, by, kind, ref FROM audit ORDER BY seq DESC LIMIT 25")
+            bins = mes.q("SELECT b.id, b.ingredient, ROUND(b.kg, 1) AS kg, b.capacity_kg, ROUND(100 * b.kg / b.capacity_kg) AS pct_full, "
+                         "(SELECT COUNT(DISTINCT lot) FROM bin_lot l WHERE l.bin=b.id AND l.cycle=b.cycle) AS lots_in_bin, b.emptied "
+                         "FROM bin b ORDER BY b.id")
+            bin_sec = (f'<section><h2>Ingredient bins ({mes.blender})</h2>'
+                       f'{table(bins, ["id", "ingredient", "kg", "capacity_kg", "pct_full", "lots_in_bin", "emptied"])}</section>') if bins else ""
             return f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="10"><title>Down Home Creole MES</title><style>{CSS}</style></head><body>
 <header>Down Home Creole · Plant MES</header><main>
 <section><h2>Blend batches</h2>{table(batches, ["id", "formula", "target_kg", "status", "cv_pct", "md_rejects", "bag"])}</section>
 <section><h2>Pack runs</h2>{table(runs, ["id", "sku", "batch", "line", "status", "good", "rej_weight", "rej_vision"])}</section>
-<section><h2>Ingredient lots</h2>{table(lots, ["id", "ingredient", "supplier_lot", "kg_left", "expires", "status"])}</section>
+{bin_sec}<section><h2>Ingredient lots</h2>{table(lots, ["id", "ingredient", "supplier_lot", "kg_left", "expires", "status"])}</section>
 <section><h2>Audit trail</h2>{table(audit, ["at", "by", "kind", "ref"])}</section></main></body></html>"""
 
     return H
@@ -129,8 +147,9 @@ def main():
     ap.add_argument("--db", default="plant.db")
     ap.add_argument("--site", default=str(Path(__file__).resolve().parents[3] / "data" / "site.json"))
     ap.add_argument("--port", type=int, default=8080)
+    ap.add_argument("--blender", default="RB-303", help="RB-303 (Growth plant) or P1-301 (Phase 1 prototype with bins)")
     a = ap.parse_args()
-    mes = MES(a.db)
+    mes = MES(a.db, blender=a.blender)
     if not mes.q("SELECT id FROM formula LIMIT 1"):
         mes.load_site(json.loads(Path(a.site).read_text()))
     print(f"MES on http://0.0.0.0:{a.port}")

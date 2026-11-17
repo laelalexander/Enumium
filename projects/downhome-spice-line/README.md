@@ -4,6 +4,7 @@ This is the design package for automating Down Home Creole's spice plant in Bato
 
 - **Source:** the client's factory site (https://silocloud.dev/factory/#/floor), read page by page on 2026-11-17 and extracted to `data/site.json`. The site marks nearly all of its numbers as placeholders, so every value here carries a source tag.
 - **Sized for:** 6,000 lb a day on one 8-hour shift, 5 days a week (30,000 lb and about 82,000 units a week). The client chose this "Growth" option.
+- **Phase 1 first:** a smaller prototype plant (1,000 lb a week, seasonings only, 5 launch blends laid out for 13, bins with automatic dosing, about $184k with in-house stainless fabrication) is in [`phase1/`](phase1/README.md). Its Anatomy build package is `phase1/build/build.json`.
 - **Scope:** the dry line only: 16 blends and 23 SKUs (shakers, jars, pouch, 5 lb tub, boxed wheat mixes). Sauces and the canned concept are not in this package.
 
 ## The plant in one paragraph

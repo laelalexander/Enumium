@@ -1,0 +1,9 @@
+{
+ "apps": [
+  {"name": "Plant MES, Phase 1 (bins)", "description": "Down Home Creole MES with the 12-position bin ring and the 6 cu ft blender", "cwd": "software/mes",
+   "run": ["python -m dhmes.server --blender P1-301 --db p1.db --port 8080"], "url": "http://127.0.0.1:8080"},
+  {"name": "Plant MES, Growth", "description": "Down Home Creole MES for the 6,000 lb/day Growth plant", "cwd": "software/mes",
+   "run": ["python -m dhmes.server --db plant.db --port 8081"], "url": "http://127.0.0.1:8081"}
+ ],
+ "tests": {"cwd": "software/mes", "run": "python -m unittest discover -s tests -t . -v"}
+}

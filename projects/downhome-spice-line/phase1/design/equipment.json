@@ -1,0 +1,1911 @@
+[
+ {
+  "tag": "P1-101",
+  "area": "Receiving",
+  "name": "Low-profile pallet floor scale 1,000 lb with indicator (verify inbound weights)",
+  "maker": "Rice Lake Weighing Systems",
+  "model": "RoughDeck QC 4x4 ft, 1,000 lb x 0.2 lb + 482 Legend indicator (confirm)",
+  "specs": {
+   "capacity": "1,000 lb (estimate of size chosen)"
+  },
+  "source": "https://www.ricelake.com/products/floor-scales/",
+  "supplier": "Rice Lake dealer",
+  "qty": 1,
+  "qty_basis": "one receiving point",
+  "price": {
+   "usd": 2600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1219,
+   1219,
+   90
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "painted platform, Z1 only",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "RCV-101",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 2600
+ },
+ {
+  "tag": "P1-102",
+  "area": "Storage",
+  "name": "NSF wire shelving unit 24x60x74 in, 4 shelves",
+  "maker": "InterMetro",
+  "model": "Super Erecta 2460NC + 74P posts (confirm)",
+  "specs": {
+   "load": "800 lb per shelf, NSF (documented class)"
+  },
+  "source": "https://www.emerson.com/en-us/catalog/metro-super-erecta",
+  "supplier": "WebstaurantStore / Metro dealer",
+  "qty": 6,
+  "qty_basis": "storage.json: raw 2 weeks + packaging 1 week + finished 3 days in shelves and floor pallets",
+  "price": {
+   "usd": 420,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1524,
+   610,
+   1880
+  ],
+  "footprint_src": "documented",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "NSF, 6 in off the floor, 18 in from walls for pest inspection",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 2520
+ },
+ {
+  "tag": "P1-103",
+  "area": "Storage",
+  "name": "Manual pallet truck 5,500 lb",
+  "maker": "Crown",
+  "model": "PTH 50 hand pallet truck",
+  "specs": {
+   "capacity": "5,500 lb (documented class)"
+  },
+  "source": "https://www.crown.com/en-us/forklifts/hand-pallet-truck.html",
+  "supplier": "Crown dealer",
+  "qty": 1,
+  "qty_basis": "one dock",
+  "price": {
+   "usd": 650,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1550,
+   690,
+   1220
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 650
+ },
+ {
+  "tag": "P1-201",
+  "area": "Weigh & dispense",
+  "name": "Bench scale 60 kg for majors (legal for trade, SICS)",
+  "maker": "Mettler-Toledo",
+  "model": "ICS685 bench scale, 60 kg (ICS685k-60LA/f, confirm)",
+  "specs": {
+   "readability": "10 g class (documented family)",
+   "interface": "MT-SICS over Ethernet option (documented family)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/Terminals-and-Controllers/bench-scales/ICS685.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "one weigh station",
+  "price": {
+   "usd": 3600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   500,
+   400,
+   120
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "SS platform",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "WS-202",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 3600
+ },
+ {
+  "tag": "P1-202",
+  "area": "Weigh & dispense",
+  "name": "Precision scale 6 kg x 0.1 g for minors (< 2 %)",
+  "maker": "Mettler-Toledo",
+  "model": "ICS685s-6 precision (confirm)",
+  "specs": {
+   "readability": "0.1 g (site scale_resolution_g)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/Terminals-and-Controllers/bench-scales/ICS685.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "site rule: minors to 0.1 g",
+  "price": {
+   "usd": 3900,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   350,
+   300,
+   120
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "SS pan",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "WS-203",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 3900
+ },
+ {
+  "tag": "P1-203",
+  "area": "Weigh & dispense",
+  "name": "Cordless barcode scanner (lot scan of every bag)",
+  "maker": "Zebra",
+  "model": "DS3678-SR rugged cordless",
+  "specs": {
+   "rating": "IP65/IP67 (documented)"
+  },
+  "source": "https://www.zebra.com/us/en/products/scanners/ultra-rugged-scanners/ds36x8.html",
+  "supplier": "CDW / Zebra partner",
+  "qty": 2,
+  "qty_basis": "weigh station + pack bench",
+  "price": {
+   "usd": 520,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "WS-205",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 1040
+ },
+ {
+  "tag": "P1-204",
+  "area": "Weigh & dispense",
+  "name": "Desktop thermal transfer printer: bag, batch and case labels (ZPL)",
+  "maker": "Zebra",
+  "model": "ZD421t 203 dpi (ZD4A042-301M00EZ, confirm)",
+  "specs": {
+   "width": "4 in (documented)",
+   "language": "ZPL (documented)"
+  },
+  "source": "https://www.zebra.com/us/en/products/printers/desktop/zd400-series.html",
+  "supplier": "CDW / Zebra partner",
+  "qty": 1,
+  "qty_basis": "one printer serves weigh, blend and pack-off",
+  "price": {
+   "usd": 650,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   230,
+   200,
+   180
+  ],
+  "footprint_src": "documented",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 650
+ },
+ {
+  "tag": "P1-205",
+  "area": "Controls",
+  "name": "MES computer + 24 in touch monitor + UPS (runs software/mes, Phase 1 config)",
+  "maker": "Dell + APC",
+  "model": "OptiPlex Micro + P2424HT + APC BX1500M",
+  "specs": {
+   "os": "Linux or Windows, Python 3.11+"
+  },
+  "source": "https://www.dell.com/en-us/shop/desktop-computers/sc/optiplex-desktops",
+  "supplier": "Dell",
+  "qty": 1,
+  "qty_basis": "one plant",
+  "price": {
+   "usd": 1600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "monitor in a wipe-clean cover in Z3",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1600
+ },
+ {
+  "tag": "P1-206",
+  "area": "Weigh & dispense",
+  "name": "Weigh bench with backdraft dust hood (stainless)",
+  "maker": "fabricated",
+  "model": "drawing P1-206 (table) + P1-207 (hood)",
+  "specs": {
+   "top": "1524 x 762 mm [60 x 30 in], 900 mm [35.4 in] high",
+   "hood": "slot hood 300 cfm"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator or in-house TIG",
+  "qty": 1,
+  "qty_basis": "one weigh station",
+  "price": {
+   "usd": 1690.0,
+   "src": "build: material $780 + 14 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1524,
+   762,
+   1600
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "304 #4 top, sealed welds, no hollow legs open at the top",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 300,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-206, P1-207",
+   "material": "304 SS 14 ga sheet, 1.5 in sq tube",
+   "material_usd": 780,
+   "labor_h": 14,
+   "process": "laser cut, brake, TIG",
+   "files": [
+    "dxf/P1-206_top",
+    "dxf/P1-207_front"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1690.0
+ },
+ {
+  "tag": "P1-208",
+  "area": "Weigh & dispense",
+  "name": "Premix pail tumbler (minors + carrier salt in a sealed SS pail on driven rollers)",
+  "maker": "fabricated",
+  "model": "drawing P1-208; bought pail and gearmotor",
+  "specs": {
+   "pail": "Vollrath 5 qt SS (bought)",
+   "speed": "30 rpm rollers"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "in-house",
+  "qty": 1,
+  "qty_basis": "replaces the PM-210 V-cone at this scale",
+  "price": {
+   "usd": 1040.0,
+   "src": "build: material $520 + 8 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   600,
+   400,
+   300
+  ],
+  "footprint_src": "calculated",
+  "power": "120 V, 1/8 HP",
+  "air_cfm": 0,
+  "sanitary": "pail is the only product-contact part (bought SS)",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-208",
+   "material": "304 SS 11 ga plate, 2 x UHMW rollers, 1/8 HP gearmotor",
+   "material_usd": 520,
+   "labor_h": 8,
+   "process": "laser cut, brake, TIG; lathe the rollers",
+   "files": []
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1040.0
+ },
+ {
+  "tag": "P1-210",
+  "area": "Dosing",
+  "name": "Ingredient bin ring frame, 12 positions around the weigh hopper",
+  "maker": "fabricated",
+  "model": "drawing P1-210",
+  "specs": {
+   "positions": "12 (9 used at launch, 3 for growth: dosing-plan.md)"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one dosing station",
+  "price": {
+   "usd": 5000.0,
+   "src": "build: material $2400 + 40 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   3330,
+   3330,
+   1275
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "no product contact; closed tube ends",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-210",
+   "material": "304 SS 2 in sq tube 11 ga ~60 m, 12 foot plates",
+   "material_usd": 2400,
+   "labor_h": 40,
+   "process": "saw, TIG, passivate",
+   "files": [
+    "cad/step/P1-210"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 5000.0
+ },
+ {
+  "tag": "P1-211",
+  "area": "Dosing",
+  "name": "Ingredient bin 5 cu ft with hinged lid and bag-rest grate",
+  "maker": "fabricated",
+  "model": "drawing P1-211",
+  "specs": {
+   "volume": "141 L working",
+   "outlet": "120 sq to feeder"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 9,
+  "qty_basis": "dosing-plan.md: 9 bins used at launch (salt, garlic, paprika, onion, black pepper, coarse pepper, cayenne, lemon peel, red pepper)",
+  "price": {
+   "usd": 965.0,
+   "src": "build: material $380 + 9 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   680,
+   680,
+   686
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "304 #4, welds ground, lid gasket FDA silicone",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-211",
+   "material": "304 SS 14 ga ~2.2 m2 + 6 mm flanges + hinge + FDA gasket",
+   "material_usd": 380,
+   "labor_h": 9,
+   "process": "laser cut, brake, TIG, passivate",
+   "files": [
+    "dxf/P1-211_flange"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 8685.0
+ },
+ {
+  "tag": "P1-212",
+  "area": "Dosing",
+  "name": "Volumetric screw feeder, 2 in, stainless, with agitator option for low-density herbs",
+  "maker": "Tecweigh",
+  "model": "Volumetric feeder, 2 in screw, SS contact (model per hopper flange, confirm on quote)",
+  "specs": {
+   "rate": "~700 L/h at max rpm (estimate, maker class)",
+   "drive": "0.5 HP gearmotor"
+  },
+  "source": "https://www.tecweigh.com/products/volumetric-feeders",
+  "supplier": "Tecweigh (White Bear Lake MN)",
+  "qty": 9,
+  "qty_basis": "one per used bin; 3 more positions bought at growth",
+  "price": {
+   "usd": 4800,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   900,
+   300,
+   350
+  ],
+  "footprint_src": "estimate",
+  "power": "230 V 3-ph via VFD",
+  "air_cfm": 0,
+  "sanitary": "tool-free screw removal; agitator on lemon peel and herb bins",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "test-feed salt, garlic and lemon peel samples at Tecweigh; ask for a used-unit price (listings exist)",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 43200
+ },
+ {
+  "tag": "P1-213",
+  "area": "Dosing",
+  "name": "Vibrating fork low-level switch for powders",
+  "maker": "Endress+Hauser",
+  "model": "Soliphant FTM20",
+  "specs": {
+   "use": "bin low level = refill and run-empty marker"
+  },
+  "source": "https://www.endress.com/en/field-instruments-overview/level-measurement/point-level-vibronic-ftm20",
+  "supplier": "Endress+Hauser",
+  "qty": 9,
+  "qty_basis": "one per used bin",
+  "price": {
+   "usd": 520,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": "24 V DC",
+  "air_cfm": 0,
+  "sanitary": "316L fork, 1.5 in Tri-Clamp process connection (sanitary option)",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "LS-624",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 4680
+ },
+ {
+  "tag": "P1-214",
+  "area": "Dosing",
+  "name": "Flexible snap-fit connector feeder spout to hopper inlet (scale isolation)",
+  "maker": "BFM Global",
+  "model": "BFM fitting, 100 mm, Seeflex 040E (confirm size)",
+  "specs": {
+   "material": "FDA polyether urethane (documented class)"
+  },
+  "source": "https://www.bfmfitting.com/",
+  "supplier": "BFM Global distributor",
+  "qty": 9,
+  "qty_basis": "one per feeder",
+  "price": {
+   "usd": 140,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "tool-free, see-through",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1260
+ },
+ {
+  "tag": "P1-220",
+  "area": "Dosing",
+  "name": "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing)",
+  "maker": "fabricated",
+  "model": "drawing P1-220",
+  "specs": {
+   "capacity": "100 kg",
+   "accuracy": "+/-20 g with fast/slow feed"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one dosing station",
+  "price": {
+   "usd": 1400.0,
+   "src": "build: material $620 + 12 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   840,
+   840,
+   580
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "316L #4, ground welds",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 150,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-220",
+   "material": "316L 14 ga ~2 m2 + 4 in BPE ferrule + 304 lugs",
+   "material_usd": 620,
+   "labor_h": 12,
+   "process": "laser cut, roll, TIG, polish, passivate",
+   "files": [
+    "dxf/P1-220_lid"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1400.0
+ },
+ {
+  "tag": "P1-221",
+  "area": "Dosing",
+  "name": "Weigh module (load cell + mount) 50 kg, stainless",
+  "maker": "Mettler-Toledo",
+  "model": "SWB505 MultiMount + SLB615D cell, 50 kg (confirm)",
+  "specs": {
+   "capacity": "50 kg each, 3 per hopper",
+   "class": "OIML C3 class (documented family)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/automation-and-oem/weigh-modules.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 3,
+  "qty_basis": "3-point hopper support",
+  "price": {
+   "usd": 650,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "IP68 SS",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1950
+ },
+ {
+  "tag": "P1-222",
+  "area": "Dosing",
+  "name": "Weight indicator/controller with EtherNet/IP or Modbus TCP",
+  "maker": "Rice Lake Weighing Systems",
+  "model": "880 Performance Series, panel mount",
+  "specs": {
+   "function": "setpoints, fast/slow cutoffs (documented class)"
+  },
+  "source": "https://ricelake.com/products/880-performance-series-digital-weight-indicator-and-controller",
+  "supplier": "Rice Lake dealer",
+  "qty": 1,
+  "qty_basis": "one hopper",
+  "price": {
+   "usd": 1500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1500
+ },
+ {
+  "tag": "P1-223",
+  "area": "Dosing",
+  "name": "Sanitary butterfly valve 4 in Tri-Clamp, manual squeeze-trigger handle",
+  "maker": "Central States Industrial (CSI)",
+  "model": "4 in butterfly valve, 316L, EPDM seat (confirm)",
+  "specs": {
+   "size": "4 in Tri-Clamp"
+  },
+  "source": "https://www.csidesigns.com/",
+  "supplier": "CSI",
+  "qty": 1,
+  "qty_basis": "weigh hopper outlet",
+  "price": {
+   "usd": 420,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "FDA seat",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 420
+ },
+ {
+  "tag": "P1-224",
+  "area": "Dosing",
+  "name": "Flexible screw conveyor, weigh hopper to blender inlet, sanitary",
+  "maker": "Flexicon",
+  "model": "Flexible screw conveyor, 2.5 in, low-profile floor hopper, SS (confirm)",
+  "specs": {
+   "rate": "~1,000 L/h class (estimate)",
+   "length": "~4 m to the blender cover"
+  },
+  "source": "https://flexicon.com/?p=14",
+  "supplier": "Flexicon (Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "one dosing station",
+  "price": {
+   "usd": 11000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   4000,
+   600,
+   1600
+  ],
+  "footprint_src": "estimate",
+  "power": "230/460 V 3-ph, 1 HP",
+  "air_cfm": 0,
+  "sanitary": "runs clear between formulas; tool-free screw pull",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "BD-301 flexible screw",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 11000
+ },
+ {
+  "tag": "P1-225",
+  "area": "Dosing",
+  "name": "Dosing controller: WAGO PFC200 (CODESYS) + I/O, SS enclosure, 24 V supply",
+  "maker": "WAGO",
+  "model": "750-8212 + 2 x 750-1504 DO + 2 x 750-1405 DI + 750-600 end (confirm)",
+  "specs": {
+   "runtime": "CODESYS 3.5 (documented)",
+   "program": "software/plc/DosingStation.st"
+  },
+  "source": "https://www.wago.com/pfc200",
+  "supplier": "WAGO distributor",
+  "qty": 1,
+  "qty_basis": "one dosing station",
+  "price": {
+   "usd": 2900,
+   "src": "estimate incl. enclosure and 24 V supply"
+  },
+  "footprint_mm": [
+   600,
+   500,
+   250
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 2900
+ },
+ {
+  "tag": "P1-226",
+  "area": "Dosing",
+  "name": "Feeder drives: AC drive 0.5 HP for each feeder (fast/slow dosing)",
+  "maker": "AutomationDirect",
+  "model": "DURApulse GS20, 0.5 HP (GS21-20P5, confirm)",
+  "specs": {
+   "control": "Modbus TCP/RTU or digital speed select"
+  },
+  "source": "https://www.automationdirect.com/adc/overview/catalog/drives_-a-_soft_starters/ac_variable_frequency_drives_(vfd)",
+  "supplier": "AutomationDirect",
+  "qty": 9,
+  "qty_basis": "one per feeder",
+  "price": {
+   "usd": 190,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": "230 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1710
+ },
+ {
+  "tag": "P1-227",
+  "area": "Dosing",
+  "name": "Rolling 2-step platform for loading bins",
+  "maker": "Cotterman",
+  "model": "2-step rolling ladder with handrails, OSHA (confirm)",
+  "specs": {},
+  "source": "https://www.cotterman.com/",
+  "supplier": "Grainger",
+  "qty": 1,
+  "qty_basis": "bin loading",
+  "price": {
+   "usd": 650,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   900,
+   600,
+   1200
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 650
+ },
+ {
+  "tag": "P1-301",
+  "area": "Blending",
+  "name": "Ribbon blender, 6 cu ft working, 304 SS (used, inspected)",
+  "maker": "Sprout-Waldron / Paul O. Abbe class (used market)",
+  "model": "6 cu ft double ribbon blender, 304 SS, 2 HP (example listing: Sprout-Waldron B-6, 21 x 48 in trough)",
+  "specs": {
+   "capacity": "6 cu ft (listing)",
+   "trough": "21 in W x 48 in L (listing)",
+   "motor": "2 HP, 27 rpm (listing)"
+  },
+  "source": "https://surplusrecord.com/es/listing/6-cu-ft-sprout-waldron-b-6-stainless-steel-jacketed-double-ribbon-blender-21-width-x-48-l-flange-14-9-psi-5-discharge-2-hp-27-rpm-431930/",
+  "supplier": "Surplus Record dealers / Genemco / Federal Equipment (used)",
+  "qty": 1,
+  "qty_basis": "line balance: 6 cu ft, 7 batches/week, 18 % loaded; 13-blend growth fits",
+  "price": {
+   "usd": 9000,
+   "src": "estimate: used 304 SS 5-6 cu ft listings $5-9k + inspection, seals, repolish"
+  },
+  "footprint_mm": [
+   1600,
+   760,
+   1500
+  ],
+  "footprint_src": "estimate",
+  "power": "230/460 V 3-ph, 2 HP (single-phase input VFD if no 3-ph)",
+  "air_cfm": 0,
+  "sanitary": "inspect welds and shaft seals; repolish contact to #4 if pitted; new FDA packing",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "see it run first: no pitting, seals replaceable, discharge valve works; measure cover opening and valve flange for P1-302/P1-303",
+  "growth_equiv": "RB-303",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 9000
+ },
+ {
+  "tag": "P1-302",
+  "area": "Blending",
+  "name": "Blender bag-dump grate and dust hood (sits on the blender cover opening)",
+  "maker": "fabricated",
+  "model": "drawing P1-302",
+  "specs": {
+   "grate": "50 mm [2 in] bar spacing, bag rest",
+   "pickup": "250 cfm, 4 in collar"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one blender",
+  "price": {
+   "usd": 990.0,
+   "src": "build: material $340 + 10 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   700,
+   500,
+   450
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "304 #4, removable without tools for cleaning",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 250,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-302",
+   "material": "304 SS 14 ga + 10 mm bar",
+   "material_usd": 340,
+   "labor_h": 10,
+   "process": "laser cut, brake, TIG",
+   "files": [
+    "dxf/P1-302_grate"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 990.0
+ },
+ {
+  "tag": "P1-303",
+  "area": "Blending",
+  "name": "Blender discharge chute to sieve (scaled DH-101)",
+  "maker": "fabricated",
+  "model": "drawing P1-303",
+  "specs": {
+   "outlet": "4 in Tri-Clamp ferrule (bought)"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one blender",
+  "price": {
+   "usd": 600.0,
+   "src": "build: material $210 + 6 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   200,
+   200,
+   220
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "316L contact, ground welds",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "match the used blender's valve flange before cutting",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-303",
+   "material": "316L 14 ga + 4 in BPE ferrule",
+   "material_usd": 210,
+   "labor_h": 6,
+   "process": "laser cut, roll, TIG, polish",
+   "files": [
+    "dxf/P1-303_flange"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 600.0
+ },
+ {
+  "tag": "P1-304",
+  "area": "Blending",
+  "name": "Vibratory sieve deck with hopper (12 mesh screen, magnet grate in outlet)",
+  "maker": "fabricated",
+  "model": "drawing P1-304; bought screen, vibrator and magnet",
+  "specs": {
+   "rate": "8 lb/min design (line balance)",
+   "screen": "18 in round 12 mesh SS"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one blending train",
+  "price": {
+   "usd": 1240.0,
+   "src": "build: material $460 + 12 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   700,
+   700,
+   1100
+  ],
+  "footprint_src": "calculated",
+  "power": "120 V vibrator",
+  "air_cfm": 0,
+  "sanitary": "screen and hopper tool-free removal",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 200,
+  "confirm": "",
+  "growth_equiv": "SC-304",
+  "build": {
+   "drawing": "P1-304",
+   "material": "304 SS 14 ga sheet, 1.5 in tube legs, rubber isolators",
+   "material_usd": 460,
+   "labor_h": 12,
+   "process": "laser cut, roll, TIG",
+   "files": [
+    "cad/step/P1-304"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1240.0
+ },
+ {
+  "tag": "P1-305",
+  "area": "Blending",
+  "name": "Sieve screen 18 in, 12 mesh stainless, with frame",
+  "maker": "Gilson",
+  "model": "18 in sieve 12 mesh, SS frame (V18SS12 class, confirm)",
+  "specs": {
+   "mesh": "12 (site sifter spec)"
+  },
+  "source": "https://www.globalgilson.com/18in-sieves",
+  "supplier": "Gilson Company",
+  "qty": 2,
+  "qty_basis": "one in use + one spare (screen check each shift)",
+  "price": {
+   "usd": 290,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   457,
+   457,
+   100
+  ],
+  "footprint_src": "documented",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "inspect for tears each shift",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 580
+ },
+ {
+  "tag": "P1-306",
+  "area": "Blending",
+  "name": "Rotary electric vibrator motor for sieve deck",
+  "maker": "Martin Engineering",
+  "model": "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
+  "specs": {
+   "force": "~150 lbf class (estimate)"
+  },
+  "source": "https://www.martin-eng.com/content/product/690/electric-vibrators",
+  "supplier": "Martin Engineering",
+  "qty": 1,
+  "qty_basis": "one sieve deck",
+  "price": {
+   "usd": 750,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   200,
+   120,
+   120
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 750
+ },
+ {
+  "tag": "P1-307",
+  "area": "Blending",
+  "name": "Grate magnet 12 x 12 in, rare earth, in sieve outlet",
+  "maker": "Industrial Magnetics, Inc.",
+  "model": "Grate-in-housing, 1 in tubes, 10,000 gauss class (confirm)",
+  "specs": {
+   "strength": "10,000 G class (estimate)"
+  },
+  "source": "https://www.magnetics.com/product.asp?ProductID=24",
+  "supplier": "IMI",
+  "qty": 1,
+  "qty_basis": "one train (prerequisite, not the CCP)",
+  "price": {
+   "usd": 650,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   305,
+   305,
+   50
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "pull and wipe each batch; record finds",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 650
+ },
+ {
+  "tag": "P1-308",
+  "area": "Blending",
+  "name": "Lidded food-grade blend drum 30 gal with liner (QC hold container)",
+  "maker": "Uline",
+  "model": "30 gallon plastic drum, open top, with lever-lock lid (confirm SKU)",
+  "specs": {
+   "volume": "30 gal (113 L) holds one 100 lb batch at 0.42 g/mL"
+  },
+  "source": "https://www.uline.com/BL_1525/Plastic-Drums",
+  "supplier": "Uline",
+  "qty": 8,
+  "qty_basis": "17 batches/week, held 1 day for QC: 6 in use + 2 spare",
+  "price": {
+   "usd": 85,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   500,
+   500,
+   750
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "FDA-grade HDPE + poly liner per batch",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 680
+ },
+ {
+  "tag": "P1-309",
+  "area": "Blending",
+  "name": "Drum dolly with lift handle (stainless)",
+  "maker": "fabricated",
+  "model": "drawing P1-309",
+  "specs": {
+   "load": "250 lb"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "in-house",
+  "qty": 3,
+  "qty_basis": "two drums moving + one at the filler",
+  "price": {
+   "usd": 335.0,
+   "src": "build: material $140 + 3 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   560,
+   560,
+   150
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-309",
+   "material": "304 SS 11 ga + 4 x 3 in SS casters (bought, Colson 2 series)",
+   "material_usd": 140,
+   "labor_h": 3,
+   "process": "laser cut, brake, TIG",
+   "files": [
+    "dxf/P1-309_base"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1005.0
+ },
+ {
+  "tag": "P1-310",
+  "area": "Utilities",
+  "name": "Portable cartridge dust collector (weigh hood, blender hood, sieve)",
+  "maker": "Camfil APC",
+  "model": "Gold Series GS-Mini portable / small GSX (confirm >= 1,150 cfm model)",
+  "specs": {
+   "airflow": "900 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150) + 25 % = 1,125 cfm, checked by foodsafety.py",
+   "design_cfm": 1150
+  },
+  "source": "https://camfilapc.com/?p=3400",
+  "supplier": "Camfil APC",
+  "qty": 1,
+  "qty_basis": "all three pickups",
+  "price": {
+   "usd": 12500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1200,
+   900,
+   2400
+  ],
+  "footprint_src": "estimate",
+  "power": "120/240 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "small dust quantity, but a DHA (NFPA 652) is still required; collector outside the room or vented per DHA",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "DHA first",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 12500
+ },
+ {
+  "tag": "P1-401",
+  "area": "Pack bench",
+  "name": "Semi-automatic servo auger filler with weighing, foot pedal",
+  "maker": "VTOPS",
+  "model": "Semi-automatic auger filler, 10-5,000 g, servo (model per tooling, confirm)",
+  "specs": {
+   "range": "10-5,000 g (maker class)",
+   "rate": "15 upm operator-paced (estimate)"
+  },
+  "source": "https://vtops.com/filling-machines/auger-fillers/semi-automatic-auger-fillers",
+  "supplier": "VTOPS (US office)",
+  "qty": 1,
+  "qty_basis": "line balance: 80 % at peak, 42 % of the week",
+  "price": {
+   "usd": 11500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   700,
+   600,
+   1800
+  ],
+  "footprint_src": "estimate",
+  "power": "120/240 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "304 SS contact, tool-free hopper and auger",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "auger tooling for 53 mm shaker, 89 mm jar, pouch and tub on the quote",
+  "growth_equiv": "NW-501 (moves to station B in Growth)",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 11500
+ },
+ {
+  "tag": "P1-402",
+  "area": "Pack bench",
+  "name": "Cap torque tester (verify hand-capped torque each hour)",
+  "maker": "Mark-10",
+  "model": "TT01 cap torque tester, 10 lbf-in (confirm range)",
+  "specs": {
+   "range": "to 10 lbF-in class (confirm)"
+  },
+  "source": "https://mark-10.com/products/torque-testers/",
+  "supplier": "Mark-10",
+  "qty": 1,
+  "qty_basis": "QC check of hand capping",
+  "price": {
+   "usd": 1400,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   300,
+   300,
+   200
+  ],
+  "footprint_src": "estimate",
+  "power": "battery",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1400
+ },
+ {
+  "tag": "P1-403",
+  "area": "Pack bench",
+  "name": "Handheld induction cap sealer, specialty head to 120 mm for the 89 mm jar",
+  "maker": "Enercon",
+  "model": "Super Seal Jr + optional 120 mm head",
+  "specs": {
+   "caps": "to 83 mm standard head, to 120 mm optional head (documented)",
+   "power": "120 VAC 60 Hz (documented)"
+  },
+  "source": "https://www.enerconind.com/sealing/cap-sealers/super-seal-jr.aspx",
+  "supplier": "Enercon",
+  "qty": 1,
+  "qty_basis": "one bench",
+  "price": {
+   "usd": 4800,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   76,
+   210,
+   267
+  ],
+  "footprint_src": "documented",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "IS-405",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 4800
+ },
+ {
+  "tag": "P1-404",
+  "area": "Pack bench",
+  "name": "Semi-automatic wrap labeler for round containers",
+  "maker": "Primera Technology",
+  "model": "AP360e label applicator",
+  "specs": {
+   "containers": "round, cylindrical (documented)"
+  },
+  "source": "https://www.onlinelabels.com/articles/reviewing-the-primera-ap360-label-applicator?src=1",
+  "supplier": "Primera dealer",
+  "qty": 1,
+  "qty_basis": "one bench",
+  "price": {
+   "usd": 1500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   500,
+   400,
+   300
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 1500
+ },
+ {
+  "tag": "P1-405",
+  "area": "Pack bench",
+  "name": "Color label printer: full labels with lot and best-by printed per run (no separate coder)",
+  "maker": "Primera Technology",
+  "model": "LX910 color label printer (pigment ink, confirm water resistance on chosen stock)",
+  "specs": {
+   "width": "to 8.25 in (documented class)"
+  },
+  "source": "https://www.primera.com/lx910-color-label-printer.html",
+  "supplier": "Primera dealer",
+  "qty": 1,
+  "qty_basis": "one bench",
+  "price": {
+   "usd": 2500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   500,
+   450,
+   270
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 2500
+ },
+ {
+  "tag": "P1-406",
+  "area": "Pack bench",
+  "name": "Conveyor metal detector with reject (CCP-1, on finished packs)",
+  "maker": "Fortress Technology",
+  "model": "Stealth with conveyor, ~10 x 6 in aperture (used, Sigma Equipment)",
+  "specs": {
+   "aperture": "about 10 in W x 6 in H (listing class)"
+  },
+  "source": "https://www.sigmaequipment.com/equipment/model/fortress-technology/stealth/",
+  "supplier": "Sigma Equipment (used) or Fortress (new)",
+  "qty": 1,
+  "qty_basis": "CCP-1 on every pack",
+  "price": {
+   "usd": 14000,
+   "src": "estimate (used); new ~$30k"
+  },
+  "footprint_mm": [
+   1500,
+   600,
+   1100
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "locked reject bin; validate with test wands per pack size",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "sensitivity test with the 12 oz jar (metallized liner) before buying",
+  "growth_equiv": "MD-305 (Growth checks the blend; Phase 1 checks the pack)",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 14000
+ },
+ {
+  "tag": "P1-407",
+  "area": "Pack bench",
+  "name": "Checkweigh scale 15 kg with over/under lights (100 % weigh, NIST HB 133)",
+  "maker": "Mettler-Toledo",
+  "model": "ICS425s-15 (confirm)",
+  "specs": {
+   "function": "checkweighing with tolerance lights (documented family)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/Terminals-and-Controllers/bench-scales.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "every unit weighed; MES records",
+  "price": {
+   "usd": 2200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   350,
+   300,
+   150
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "CW-409 (manual here)",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 2200
+ },
+ {
+  "tag": "P1-408",
+  "area": "Pack bench",
+  "name": "Accumulation turntable 30 in (stainless disc on lazy-susan bearing)",
+  "maker": "fabricated",
+  "model": "drawing P1-408",
+  "specs": {
+   "disc": "762 mm [30 in] 304 SS with 25 mm rim"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "in-house",
+  "qty": 1,
+  "qty_basis": "buffer between labeler and checkweigh",
+  "price": {
+   "usd": 450.0,
+   "src": "build: material $190 + 4 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   762,
+   762,
+   900
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-408",
+   "material": "304 SS 14 ga disc + 12 in steel lazy-susan bearing (bought) on a P1-206 table",
+   "material_usd": 190,
+   "labor_h": 4,
+   "process": "laser cut, roll rim, TIG",
+   "files": [
+    "dxf/P1-408_disc"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 450.0
+ },
+ {
+  "tag": "P1-409",
+  "area": "Pack bench",
+  "name": "Stainless work table 60 x 30 in (fill, cap, seal, label, pack)",
+  "maker": "fabricated",
+  "model": "drawing P1-206 (same table)",
+  "specs": {
+   "top": "1524 x 762 mm"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 4,
+  "qty_basis": "fill, cap/seal, label, case-pack stations",
+  "price": {
+   "usd": 910.0,
+   "src": "build: material $520 + 6 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1524,
+   762,
+   900
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "304 #4",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-206",
+   "material": "304 SS 14 ga + 1.5 in sq tube + 4 adjustable bullet feet",
+   "material_usd": 520,
+   "labor_h": 6,
+   "process": "laser cut, brake, TIG",
+   "files": [
+    "dxf/P1-206_top"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 3640.0
+ },
+ {
+  "tag": "P1-410",
+  "area": "Pack bench",
+  "name": "3D-printed fixtures: filler container nests, labeler guides, cap grips (no product contact)",
+  "maker": "printed",
+  "model": "STL in cad/print/",
+  "specs": {
+   "material": "PETG, white (cleanable, food-area color code)"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "Bambu printer (in-house)",
+  "qty": 1,
+  "qty_basis": "one set per container size",
+  "price": {
+   "usd": 80.0,
+   "src": "build: material $15 + 1 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-410a..e",
+   "material": "PETG ~600 g",
+   "material_usd": 15,
+   "labor_h": 1,
+   "process": "3D print (slice in Bambu Studio)",
+   "files": [
+    "cad/print"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 80.0
+ },
+ {
+  "tag": "P1-411",
+  "area": "Pack bench",
+  "name": "Tape dispenser and hand stretch-wrap dispenser",
+  "maker": "Uline",
+  "model": "H-150 tape gun + H-50 hand stretch wrap dispenser (confirm)",
+  "specs": {},
+  "source": "https://www.uline.com/",
+  "supplier": "Uline",
+  "qty": 1,
+  "qty_basis": "one pack-off",
+  "price": {
+   "usd": 90,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 90
+ },
+ {
+  "tag": "P1-701",
+  "area": "Food safety",
+  "name": "ATP hygiene monitoring (pre-op swabs)",
+  "maker": "Hygiena",
+  "model": "EnSURE Touch + UltraSnap swabs",
+  "specs": {},
+  "source": "https://www.hygiena.com/",
+  "supplier": "Hygiena",
+  "qty": 1,
+  "qty_basis": "one plant",
+  "price": {
+   "usd": 2200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "FS-701",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 2200
+ },
+ {
+  "tag": "P1-702",
+  "area": "Food safety",
+  "name": "Combustible-dust rated vacuum (no compressed air cleaning)",
+  "maker": "Nilfisk",
+  "model": "VHC120 Z22 (Class II Div 2 class, confirm)",
+  "specs": {},
+  "source": "https://www.nilfisk.com/en-us/",
+  "supplier": "Nilfisk",
+  "qty": 1,
+  "qty_basis": "one plant",
+  "price": {
+   "usd": 6800,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   700,
+   600,
+   1100
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "FS-703",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 6800
+ },
+ {
+  "tag": "P1-703",
+  "area": "Food safety",
+  "name": "Color-coded hygienic hand tools and shadow board",
+  "maker": "Vikan",
+  "model": "brushes, scoops, scrapers (green set)",
+  "specs": {},
+  "source": "https://www.vikan.com/us/",
+  "supplier": "Vikan dealer",
+  "qty": 1,
+  "qty_basis": "one set",
+  "price": {
+   "usd": 450,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "FS-704",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 450
+ },
+ {
+  "tag": "P1-704",
+  "area": "Food safety",
+  "name": "Hands-free hand sink at the room entry",
+  "maker": "Eagle Group",
+  "model": "HSA-10-FOW-LRS (confirm)",
+  "specs": {},
+  "source": "https://www.eaglegrp.com/",
+  "supplier": "WebstaurantStore",
+  "qty": 1,
+  "qty_basis": "one entry",
+  "price": {
+   "usd": 650,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   400,
+   400,
+   600
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "FS-705",
+  "build": null,
+  "reuse_in_growth": true,
+  "ext_usd": 650
+ }
+]

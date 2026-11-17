@@ -62,11 +62,13 @@ def checks(L, eqs):
     for chain in L.get("lines", []):            # machines joined by conveyor: neighbours sit close on purpose
         linked |= {tuple(sorted(p)) for p in zip(chain, chain[1:])}
     tags = list(rects)
+    room_of = {p["tag"]: p["room"] for p in places}
     for i, a in enumerate(tags):
         for b in tags[i + 1:]:
             if overlap(rects[a], rects[b]) and tuple(sorted((a, b))) not in linked:
                 res["overlaps"].append([a, b])
-            elif overlap(rects[a], rects[b], L["rules"]["min_clear_mm"]) and tuple(sorted((a, b))) not in linked:
+            elif (overlap(rects[a], rects[b], L["rules"]["min_clear_mm"]) and tuple(sorted((a, b))) not in linked
+                  and room_of[a] == room_of[b]):     # a wall between two rooms is not an aisle
                 res["tight_aisles"].append([a, b])
     rooms = {r["name"]: r for r in L["rooms"]}
     for p in places:
@@ -129,8 +131,18 @@ def svg(L, eqs, chk):
         if r.get("hatch"):
             o.append(f'<rect x="{X(r["x"])}" y="{Y(r["y"] + r["h"])}" width="{r["w"] * s}" height="{r["h"] * s}" fill="url(#hz)" opacity="0.35"/>')
         lx, ly = r.get("label_at", (r["x"] + 300, r["y"] + r["h"] - 300))
-        o.append(f'<text x="{X(lx)}" y="{Y(ly) + 20}" font-size="20" font-weight="bold" fill="#263238">{escape(r["name"].upper())}</text>')
-        o.append(f'<text x="{X(lx)}" y="{Y(ly) + 42}" font-size="14" fill="#455a64">{escape(r["zone"])} · {r["w"] * r["h"] / 1e6:,.0f} m² [{r["w"] * r["h"] / FT ** 2:,.0f} ft²]</text>')
+        # narrow rooms: "label" may hold line breaks and "compact" puts the zone and the area on separate lines
+        heads = r.get("label", r["name"]).upper().split("\n")
+        area = f'{r["w"] * r["h"] / 1e6:,.0f} m² [{r["w"] * r["h"] / FT ** 2:,.0f} ft²]'
+        subs = [r["zone"], area] if r.get("compact") else [f'{r["zone"]} · {area}']
+        fs = 16 if r.get("compact") else 20
+        yy = Y(ly) + fs
+        for h in heads:
+            o.append(f'<text x="{X(lx)}" y="{yy}" font-size="{fs}" font-weight="bold" fill="#263238">{escape(h)}</text>')
+            yy += fs + 3
+        for t in subs:
+            o.append(f'<text x="{X(lx)}" y="{yy + 2}" font-size="13" fill="#455a64">{escape(t)}</text>')
+            yy += 16
     # outer walls
     o.append(f'<rect x="{X(0)}" y="{Y(B["h"])}" width="{B["w"] * s}" height="{B["h"] * s}" fill="none" stroke="#111" stroke-width="9"/>')
     # doors

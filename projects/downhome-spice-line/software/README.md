@@ -53,3 +53,10 @@ The GS1 company prefix in `gs1.py` is a placeholder (`0000000`) until Down Home 
 5. **Changeover:** a checklist per container, taken from the ASM-002 change-parts table. Every step must be signed before reset.
 6. **Sanitation:** the dry clean and wet clean checklists from the SSOP, signed by an operator and verified with ATP.
 7. **Maintenance:** motor hours, blender amps trend, and dust collector dP trend.
+
+## Phase 1 prototype (bins)
+
+Start the MES with `--blender P1-301` for the Phase 1 plant. It then knows the 6 cu ft blender's limits and the bin ring:
+`/api/bin/assign`, `/api/bin/refill` (scan the bag lot; the wrong ingredient, a quarantined or expired lot, or an overfill is refused), `/api/bin/empty`,
+`GET /api/batch/<id>/doselist` for the dosing PLC (`plc/DosingStation.st`) and `/api/dose` for each finished dose (±1 %, 20 g minimum).
+A dose writes a dispense record for every lot in the bin since it last ran empty, so trace back and forward work through the bins.

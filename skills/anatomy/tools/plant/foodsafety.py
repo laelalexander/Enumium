@@ -25,6 +25,9 @@ def run(basis, equipment, layout, cfg):
     eq = {e["tag"]: e for e in equipment}
     room_zone = {r["name"]: r["zone"] for r in layout["rooms"]}
     placed = {p["tag"]: p["room"] for p in layout["equipment"]}
+    for part, host in cfg.get("housed_in", {}).items():      # parts mounted on or inside a placed machine
+        if host in placed:
+            placed.setdefault(part, placed[host])
     formulas = basis["formulas"]
     checks, issues = [], []
 
