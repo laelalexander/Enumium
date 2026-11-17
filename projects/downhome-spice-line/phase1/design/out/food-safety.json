@@ -232,6 +232,33 @@
    "ok": true
   },
   {
+   "tag": "P1-320",
+   "room": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "families": [
+    "allergen-free"
+   ],
+   "ok": true
+  },
+  {
+   "tag": "P1-321",
+   "room": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "families": [
+    "allergen-free"
+   ],
+   "ok": true
+  },
+  {
+   "tag": "P1-322",
+   "room": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "families": [
+    "allergen-free"
+   ],
+   "ok": true
+  },
+  {
    "tag": "P1-401",
    "room": "Pack room",
    "zone": "Z3 high-care dry (exposed product)",
@@ -268,7 +295,7 @@
   },
   {
    "tag": "P1-223",
-   "sanitary": "FDA seat"
+   "sanitary": "FDA seat, Tri-Clamp both sides"
   },
   {
    "tag": "P1-224",
@@ -303,6 +330,18 @@
    "sanitary": "FDA-grade HDPE + poly liner per batch"
   },
   {
+   "tag": "P1-320",
+   "sanitary": "SS contact, tool-free screen and hammer access, dry clean between spices"
+  },
+  {
+   "tag": "P1-321",
+   "sanitary": "pull-out tubes, wipe clean each run"
+  },
+  {
+   "tag": "P1-322",
+   "sanitary": "304 #4, welds ground, opens without tools"
+  },
+  {
    "tag": "P1-401",
    "sanitary": "304 SS contact, tool-free hopper and auger"
   }
@@ -328,11 +367,16 @@
     "tag": "P1-304",
     "cfm": 200,
     "qty": 1
+   },
+   {
+    "tag": "P1-320",
+    "cfm": 150,
+    "qty": 1
    }
   ],
-  "total_cfm": 900,
+  "total_cfm": 1050,
   "collector": "P1-310",
-  "design_cfm": 1150,
+  "design_cfm": 1400,
   "margin": 0.25,
   "ok": true,
   "nfpa": [

@@ -117,7 +117,7 @@ def md(p, growth=None):
         L += [f"### {r['name']} ({r['formula']}): {r['batch_kg']} kg batch, {r['batches_per_week']:g}/week, {r['auto_pct']} % auto-dosed", "",
               "| Ingredient | % | kg | Route | Bin | Tolerance kg |", "|---|---|---|---|---|---|"]
         L += [f"| {x['ingredient']} | {x['pct']} | {x['kg']} | {x['route']} | {x['bin']} | ±{x['tol_kg']} |" for x in r["lines"]]
-        L += ["", f"Dosing order: {' > '.join(r['sequence'])}, then hand adds into the blender, then the premix last.", ""]
+        L += ["", f"Dosing order: {' > '.join(r['sequence'])}, then the hand adds, then the premix last.", ""]
     if growth:
         L += ["## Growth to the full range", "",
               f"With every product running, the same rules use **{len(growth['bins'])}** bins "

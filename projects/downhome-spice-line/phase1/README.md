@@ -8,10 +8,11 @@ We fabricate everything we can in stainless and buy only what has to be certifie
 |---|---|---|
 | Output | 1,000 lb/week | 6,000 lb/day |
 | Building | 2,000 sq ft | 12,600 sq ft (140 x 90 ft) |
-| Blender | used 6 cu ft ribbon, 7 batches/week (18 % used) | 36 cu ft ribbon |
-| Ingredients | 12-position bin ring, weigh hopper, 82.5 % of blend weight auto-dosed | hand dispense to bulk bags |
-| Packing | semi-automatic bench, 29 % loaded | two automatic lines |
-| Equipment cost | **$183,900** ($158,080 buy, $25,820 fabricate) | $1,512,682 |
+| Blender | used 6 cu ft ribbon on a riser stand, 7 batches/week (18 % used) | 36 cu ft ribbon |
+| Sifting and grinding | 18 in 12 mesh sieve with magnet into 55 gal drums; small hammer mill for whole spices | sifters and mill per line |
+| Ingredients | 12-position bin ring (2.2 m high), weigh hopper, 82.5 % of blend weight auto-dosed | hand dispense to bulk bags |
+| Packing | semi-automatic bench: auger fill, cap, induction seal, label, metal detect, checkweigh; 29 % loaded | two automatic lines |
+| Equipment cost | **$200,180** ($171,000 buy, $29,180 fabricate) | $1,512,682 |
 
 ## Silos (bins) and how each blend is built
 
@@ -31,14 +32,15 @@ lines under 2 % go to the hand-weighed premix; everything else is hand-weighed a
 | `design/design_basis_p1.py` | Phase 1 design basis (`SET=launch5` or `all13`) |
 | `design/linebal-config.json`, `design/out/line-balance.md` | blender size and pack-bench balance |
 | `design/dosing-config.json`, `design/out/dosing-plan.md` | bins, feeders, recipe routes per product, growth to 13 |
-| `design/equipment_p1.py` → `equipment.json` | 48 lines, buy vs build, Growth equivalent and carry-over |
-| `cad/p1_parts.py` | 11 fabricated stainless parts + 4 PETG fixtures: STEP, STL, drawings, DXF |
-| `drawings/DH-P1-drawing-set.pdf` | layout DH-LAY-P1 (1:50) and 11 part sheets, dual units |
+| `design/equipment_p1.py` → `equipment.json` | 52 lines, buy vs build, Growth equivalent and carry-over |
+| `cad/p1_parts.py` | 13 fabricated stainless parts + 4 PETG fixtures: STEP, STL, drawings, DXF |
+| `drawings/DH-P1-drawing-set.pdf` | 22 sheets, dual units: cover, layout 1:50, process flow, assemblies (dosing and blending 1:20 with height stack-up, sifting and grinding 1:10, pack bench 1:15), electrical (power one-line and network, I/O list with wire numbers and cable schedule, typical wiring), 13 part sheets |
+| `design/make_sheets_p1.py` | writes the cover, PFD, ASM and ELE sheets and `io_p1.json` |
 | `dxf/` | cut files in mm and inch |
 | `design/plant_layout_p1.py`, `drawings/LAY-P1_*` | plant layout and check (all PASS) |
 | `design/foodsafety-config.json`, `design/out/food-safety.md` | HACCP, SSOP, zoning, dust (all PASS) |
 | `bom/phase1-bom.xlsx`, `bom/phase1-cost.md` | BOM, fabrication list, bins, recipes, cost by area, carry-over |
-| `build/` | Anatomy build package: `build.json`, purchase carts, print and fab lists, 12 assembly steps, tests |
+| `build/` | Anatomy build package: `build.json`, purchase carts, print and fab lists, 13 assembly steps, tests |
 | `../software/plc/DosingStation.st` | WAGO PFC200 dosing control |
 | `../software/mes` | MES; run Phase 1 with `python3 -m dhmes.server --blender P1-301` |
 
@@ -52,10 +54,18 @@ python3 $T/dosing.py design-basis.json out/line-balance.json dosing-config.json 
 python3 equipment_p1.py && python3 plant_layout_p1.py
 python3 $T/layout.py layout.json equipment.json ../drawings     # then rename LAY-001_* to LAY-P1_*
 python3 $T/foodsafety.py design-basis.json equipment.json layout.json foodsafety-config.json out
+python3 make_sheets_p1.py
 cd ../cad && python3 p1_parts.py
 cd ../bom && python3 make_bom_p1.py
 cd ../build && python3 make_build.py
 ```
+
+## What the height stack-up changed
+
+Drawing the dosing and blending train to true scale (ASM-P1-001) moved several things:
+the bin ring went up to 2.2 m so feeders discharge above the hopper lid, the blender sits on a fabricated 1,150 mm riser stand (P1-311) so its valve clears chute, sieve and drum,
+blend drums are 55 gal (one 131 L batch did not fit a 30 gal drum), the hopper valve is electrically actuated to match the PLC, hand adds go in at the flexible-screw intake grate,
+a 4-step platform serves bin loading, and a small hammer mill (P1-320 with feed magnet P1-321 and hopper P1-322) grinds whole spices. The dust collector is sized at 1,400 cfm.
 
 ## Open items
 

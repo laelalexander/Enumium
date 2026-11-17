@@ -56,11 +56,14 @@
 | P1-305 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-307 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-308 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
+| P1-320 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
+| P1-321 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
+| P1-322 | Dosing & blending room | Z3 high-care dry (exposed product) | yes |
 | P1-401 | Pack room | Z3 high-care dry (exposed product) | yes |
 
 ## Combustible dust
 
-Pickups total **900 cfm**; P1-310 design **1150 cfm** (needs 25% margin): OK.
+Pickups total **1050 cfm**; P1-310 design **1400 cfm** (needs 25% margin): OK.
 
 | Pickup | cfm | qty |
 |---|---|---|
@@ -68,6 +71,7 @@ Pickups total **900 cfm**; P1-310 design **1150 cfm** (needs 25% margin): OK.
 | P1-220 | 150 | 1 |
 | P1-302 | 250 | 1 |
 | P1-304 | 200 | 1 |
+| P1-320 | 150 | 1 |
 
 - NFPA 652 dust hazard analysis (DHA) before ordering DC-310; send Kst/Pmax and MIE samples of the 3 highest-volume blends to a test lab.
 - NFPA 61 (agricultural/food dusts): collector outside the building, explosion vent directed away from people, isolation flap valve on the inlet duct.

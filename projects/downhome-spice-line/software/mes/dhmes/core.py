@@ -46,7 +46,7 @@ BLENDER = {
     "RB-303": {"working_cuft": 36, "min_fill_frac": 0.30, "bins": False, "tol_major": 0.005,
                "routes": {"minor": "WS-203 -> PM-210 premix", "salt": "BB-302 by blender load cells", "major": "WS-201/202 -> BD-301"}},
     "P1-301": {"working_cuft": 6, "min_fill_frac": 0.35, "bins": True, "tol_major": 0.01,
-               "routes": {"minor": "P1-202 0.1 g scale -> P1-208 premix", "hand": "P1-201 hand weigh -> P1-302 grate",
+               "routes": {"minor": "P1-202 0.1 g scale -> P1-208 premix -> P1-224 intake (last)", "hand": "P1-201 hand weigh -> P1-224 intake",
                           "bin": "bin -> P1-220 weigh hopper -> P1-224 screw"}},
 }
 BIN_MIN_DOSE_KG = 4.0      # 2 x 20 g hopper accuracy / 1 % tolerance (dosing-config.json)

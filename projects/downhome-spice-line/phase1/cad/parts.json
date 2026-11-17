@@ -64,14 +64,14 @@
   "title": "Ingredient bin ring frame (12 positions)",
   "qty": "1",
   "material": "SS 304 2 in sq tube 11 ga, 10 mm foot plates",
-  "features": 48,
+  "features": 60,
   "contact": false,
   "size_mm": [
    3330.0,
    3330.0,
-   1275.4
+   2235.4
   ],
-  "mass_kg": 171.07,
+  "mass_kg": 245.41,
   "step": "cad/step/P1-210.step",
   "drawing": "drawings/parts/P1-210.svg",
   "dxf": []
@@ -164,14 +164,54 @@
   "features": 6,
   "contact": true,
   "size_mm": [
-   488.4,
-   488.6,
-   368.2
+   730.9,
+   663.3,
+   1448.5
   ],
-  "mass_kg": 8.44,
+  "mass_kg": 17.75,
   "step": "cad/step/P1-304.step",
   "drawing": "drawings/parts/P1-304.svg",
   "dxf": []
+ },
+ {
+  "id": "P1-322",
+  "title": "Mill feed hopper and discharge transition",
+  "qty": "1 set",
+  "material": "SS 304 #4, 14 ga; flanges 6 mm",
+  "features": 5,
+  "contact": true,
+  "size_mm": [
+   398.8,
+   398.8,
+   832.2
+  ],
+  "mass_kg": 6.67,
+  "step": "cad/step/P1-322.step",
+  "drawing": "drawings/parts/P1-322.svg",
+  "dxf": [
+   "dxf/P1-322_flange_mm.dxf",
+   "dxf/P1-322_flange_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-311",
+  "title": "Blender riser stand",
+  "qty": "1",
+  "material": "SS 304 3 in sq tube 11 ga, 12 mm plates",
+  "features": 20,
+  "contact": false,
+  "size_mm": [
+   1773.8,
+   933.8,
+   1162.0
+  ],
+  "mass_kg": 110.2,
+  "step": "cad/step/P1-311.step",
+  "drawing": "drawings/parts/P1-311.svg",
+  "dxf": [
+   "dxf/P1-311_foot_mm.dxf",
+   "dxf/P1-311_foot_in.dxf"
+  ]
  },
  {
   "id": "P1-309",
@@ -181,11 +221,11 @@
   "features": 17,
   "contact": false,
   "size_mm": [
-   560.3,
-   560.5,
-   25.7
+   640.4,
+   640.6,
+   25.8
   ],
-  "mass_kg": 6.78,
+  "mass_kg": 8.72,
   "step": "cad/step/P1-309.step",
   "drawing": "drawings/parts/P1-309.svg",
   "dxf": [

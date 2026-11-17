@@ -299,7 +299,14 @@ def title_block(t):
 
 
 def notes_block(lines, x=1060, y=740, w=520, h=160):
-    body = "".join(f'<text x="{x + 8}" y="{y + 34 + 13.5 * i}" font-size="10.5">{escape(l)}</text>' for i, l in enumerate(lines[:9]))
+    import textwrap
+    wrapped = []
+    for l in lines:  # wrap to the box width (about 5.3 px per char at 10.5 px)
+        wrapped += textwrap.wrap(l, int((w - 16) / 5.3), subsequent_indent="  ") or [""]
+    rows = int((h - 30) / 13.5)
+    if len(wrapped) > rows:
+        wrapped = wrapped[:rows - 1] + ["  (more notes in the equipment list)"]
+    body = "".join(f'<text x="{x + 8}" y="{y + 34 + 13.5 * i}" font-size="10.5">{escape(l)}</text>' for i, l in enumerate(wrapped))
     return (f'<g><rect x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="{INK}" stroke-width="1"/>'
             f'<text x="{x + 8}" y="{y + 17}" font-size="12" font-weight="bold">NOTES (UNLESS OTHERWISE SPECIFIED)</text>{body}</g>')
 
@@ -333,8 +340,8 @@ def sheet(shape, info, fasteners=None, extra_notes=()):
     avail_w = 1030 - ox - (110 if plate else gap + 110)
     avail_h = H - 40 - oy - gap - 140
     raw = min(avail_w / wsum, avail_h / (F.h + T.h)) / PXMM
-    steps = [5, 4, 2, 1.5, 1, 1 / 1.5, 0.5, 0.4, 1 / 3, 0.25, 0.2, 0.1, 0.05]
-    sc = next((k for k in steps if k <= raw + 1e-9), 0.05)
+    steps = [5, 4, 2, 1.5, 1, 1 / 1.5, 0.5, 0.4, 1 / 3, 0.25, 0.2, 0.1, 0.05, 0.04, 1 / 30, 0.025, 0.02]
+    sc = next((k for k in steps if k <= raw + 1e-9), 0.02)
     S = sc * PXMM
     scale_txt = f"{sc:g}:1" if sc >= 1 else f"1:{round(1 / sc, 2):g}"
     # third-angle arrangement: TOP above FRONT, RIGHT to the right of FRONT

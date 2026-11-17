@@ -2,14 +2,14 @@
 
 A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a used 6 cu ft ribbon blender, sieved, held for QC, then hand-packed on a semi-automatic bench with metal detection and checkweighing. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, chutes and tables are fabricated in house to save money; scales, feeders, the metal detector and the filler are bought.
 
-**Cost:** $184,968 ($159,148 bought, $25,820 fabricated). **Fabrication:** 124 shop hours. **Install and commissioning:** about 120 hours. **Prints:** 4 PETG fixtures, about 857 g.
+**Cost:** $201,248 ($172,068 bought, $29,180 fabricated). **Fabrication:** 156 shop hours. **Install and commissioning:** about 120 hours. **Prints:** 4 PETG fixtures, about 857 g.
 
 ## Stages
 
-1. **Purchase**: `1-purchase/purchase-list.csv` (40 lines) and one cart file per supplier.
+1. **Purchase**: `1-purchase/purchase-list.csv` (42 lines) and one cart file per supplier.
 2. **Print**: `2-print/print-list.csv` (4 fixtures). Not sliced yet: slice in Bambu Studio on Yaeger.
-3. **Fabricate**: `3-fabricate/fab-list.csv` (11 items) with DXF cut files in mm and inch, STEP models and dimensioned drawings.
-4. **Assemble**: 12 steps in `build.json`, from floor marking to commissioning.
+3. **Fabricate**: `3-fabricate/fab-list.csv` (13 items) with DXF cut files in mm and inch, STEP models and dimensioned drawings.
+4. **Assemble**: 13 steps in `build.json`, from floor marking to commissioning.
 5. **Software and tests**: `software/plc/DosingStation.st` on the WAGO, the MES with `--blender P1-301`, and the acceptance tests in `build.json`.
 
 ## Package check

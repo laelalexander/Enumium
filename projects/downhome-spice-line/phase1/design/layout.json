@@ -195,7 +195,7 @@
   {
    "tag": "P1-227",
    "room": "Dosing & blending room",
-   "x": 3500,
+   "x": 2400,
    "y": 6200
   },
   {
@@ -247,7 +247,7 @@
   {
    "tag": "P1-206",
    "room": "Dosing & blending room",
-   "x": 2800,
+   "x": 2750,
    "y": 4300,
    "name": "Weigh bench P1-206 + hood P1-207 (minors, hand adds)"
   },
@@ -260,13 +260,24 @@
   {
    "tag": "HOLD-1",
    "room": "Dosing & blending room",
-   "x": 5500,
+   "x": 7300,
    "y": 4300,
    "size": [
-    3000,
-    1100
+    1300,
+    1900
    ],
-   "name": "QC hold: 6 drums on dollies"
+   "name": "QC hold: 55 gal drums on dollies (2 x 3)"
+  },
+  {
+   "tag": "P1-320",
+   "room": "Dosing & blending room",
+   "x": 5180,
+   "y": 5800,
+   "size": [
+    900,
+    600
+   ],
+   "name": "Hammer mill P1-320 + feed magnet P1-321 + chute P1-322"
   },
   {
    "tag": "P1-310",
@@ -521,8 +532,16 @@
      4300
     ],
     [
-     4000,
-     6800
+     5700,
+     5300
+    ],
+    [
+     4100,
+     5300
+    ],
+    [
+     4050,
+     7200
     ]
    ]
   },
@@ -562,7 +581,7 @@
     ],
     [
      7050,
-     5500
+     5600
     ]
    ]
   },
@@ -677,11 +696,15 @@
      4800
     ],
     [
-     2200,
-     6500
+     3500,
+     5550
     ],
     [
-     2200,
+     2150,
+     5900
+    ],
+    [
+     2150,
      12000
     ],
     [

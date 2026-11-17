@@ -109,8 +109,8 @@ ASSEMBLY = [
     dict(step=2, title="Receiving and storage", image=PNG("LAY-P1"), parts=A("P1-101", "P1-102", "P1-103"), tools=["hex keys", "level"],
          text="Set the floor scale with its ramp at the receiving door and level it. Build the six NSF shelving units 6 in off the floor and 18 in from walls.",
          check="floor scale reads a 50 lb test weight within 0.2 lb"),
-    dict(step=3, title="Anchor the bin ring frame", image=PNG("P1-210"), parts=A("P1-210", "P1-227"), tools=["hammer drill 1/2 in", "torque wrench", "laser level"],
-         text="Stand the ring frame on its marks, shim the foot plates level and anchor each with 1/2 in wedge anchors, 3 in embed. Seal the foot plates to the floor with food-grade silicone.",
+    dict(step=3, title="Anchor the bin ring frame", image=PNG("ASM-P1-001"), parts=A("P1-210", "P1-227"), tools=["hammer drill 1/2 in", "torque wrench", "laser level"],
+         text="Stand the ring frame on its marks (ring top 2,235 mm [88.0 in], drawing ASM-P1-001), shim the foot plates level and anchor each with 1/2 in wedge anchors, 3 in embed. Seal the foot plates to the floor with food-grade silicone. Roll the 4-step platform to the bin side.",
          torque="1/2 in wedge anchors 60 N·m [45 lbf·ft]", check="ring top level within 2 mm across"),
     dict(step=4, title="Mount the load cells and weigh hopper", image=PNG("P1-220"), parts=A("P1-221", "P1-220", "P1-223"),
          tools=["torque wrench", "test weights 2 x 20 kg"], text="Bolt the three weigh modules to the frame brackets, lower the hopper onto them, fit the 4 in butterfly valve on the outlet Tri-Clamp. "
@@ -121,28 +121,32 @@ ASSEMBLY = [
          "and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md "
          "(salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
          torque="M10 outlet flange 25 N·m; M12 bin lugs 70 N·m", check="every connector sits square; tag each bin with its ingredient label"),
-    dict(step=6, title="Flexible screw and blender", image=PNG("P1-302"), parts=A("P1-224", "P1-301", "P1-302", "P1-303"),
-         tools=["pallet truck", "torque wrench"], text="Set the used blender on its marks and level it. Fit the bag-dump grate in the cover opening and the discharge chute to the outlet valve. "
-         "Run the flexible screw from under the hopper valve to the blender inlet, supported at its midpoint.", torque="M8 chute flange 18 N·m",
+    dict(step=6, title="Riser stand, flexible screw and blender", image=PNG("ASM-P1-001"), parts=A("P1-311", "P1-224", "P1-301", "P1-302", "P1-303"),
+         tools=["pallet truck", "torque wrench"], text="Anchor the riser stand (top 1,150 mm [45.3 in]) and bolt the used blender onto it (valve outlet 1,690 mm [66.5 in]); level it. Fit the bag-dump grate in the cover opening and the discharge chute to the outlet valve. "
+         "Run the flexible screw from the intake grate under the hopper valve (550 mm [21.7 in]) to the blender inlet, supported at its midpoint; hand adds and premix are tipped into this grate.", torque="M12 blender feet 70 N·m; M8 chute flange 18 N·m",
          check="blender inspected: ribbons clear the trough by 3 to 6 mm, shaft seals tight, cover interlock works"),
-    dict(step=7, title="Sieve deck, magnet and drum dollies", image=PNG("P1-304"), parts=A("P1-304", "P1-305", "P1-306", "P1-307", "P1-308", "P1-309"),
+    dict(step=7, title="Sieve deck, magnet and drum dollies", image=PNG("ASM-P1-002"), parts=A("P1-304", "P1-305", "P1-306", "P1-307", "P1-308", "P1-309"),
          tools=["torque wrench"], text="Stand the sieve deck under the chute, seat the 12 mesh screen on its ledge with the 4 quick clamps, bolt the vibrator to the leg frame and drop the grate magnet "
-         "into the outlet. Build the three drum dollies with their casters.", check="screen seals all round; magnet pull test card picks up"),
-    dict(step=8, title="Weigh bench, hood and premix tumbler", image=PNG("P1-206"), parts=A("P1-206", "P1-208", "P1-201", "P1-202", "P1-203", "P1-204"),
+         "under the screen. Build the three drum dollies; a 55 gal drum on its dolly must roll in under the 4 in outlet (1,080 mm [42.5 in]).", check="screen seals all round; magnet pull test card picks up"),
+    dict(step=8, title="Hammer mill, feed magnet and hopper", image=PNG("ASM-P1-002"), parts=A("P1-320", "P1-321", "P1-322"),
+         tools=["torque wrench", "hammer drill 3/8 in", "IR thermometer"], text="Set the mill on its stand and anchor it. Bolt the feed hopper to the mill inlet with the FDA gasket, slide the grate magnet into "
+         "the hopper slot, and fit the discharge transition with a sock into a lined 5 gal pail. Connect the 150 cfm dust pickup.",
+         torque="M8 hopper and discharge flanges 18 N·m; 3/8 in stand anchors 34 N·m", check="a 1 kg peppercorn trial grinds through the 1/8 in screen with the product under 40 °C [104 °F]; magnet pull test passes"),
+    dict(step=9, title="Weigh bench, hood and premix tumbler", image=PNG("P1-206"), parts=A("P1-206", "P1-208", "P1-201", "P1-202", "P1-203", "P1-204"),
          tools=["torque wrench"], text="Place the weigh bench, bolt the backdraft hood to its back edge, set the two Mettler scales and the label printer, and set the tumbler on the bench end.",
          torque="M6 hood bolts 6 N·m", check="both scales level (bubble) and calibrated with test weights"),
-    dict(step=9, title="Dust collection", image=PNG("P1-207"), parts=A("P1-310"), tools=["duct tools", "anemometer"],
-         text="Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm) and sieve (200 cfm), with a blast gate at each.",
-         check="measured airflow at each pickup within 10 % of its design value; total under the collector's 1,150 cfm"),
-    dict(step=10, title="Pack bench", image=PNG("P1-408"), parts=A("P1-409", "P1-401", "P1-402", "P1-403", "P1-404", "P1-405", "P1-406", "P1-407", "P1-408", "P1-410", "P1-411"),
+    dict(step=10, title="Dust collection", image=PNG("P1-207"), parts=A("P1-310"), tools=["duct tools", "anemometer"],
+         text="Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), sieve (200 cfm) and mill (150 cfm), with a blast gate at each.",
+         check="measured airflow at each pickup within 10 % of its design value; total under the collector's 1,400 cfm"),
+    dict(step=11, title="Pack bench", image=PNG("ASM-P1-003"), parts=A("P1-409", "P1-401", "P1-402", "P1-403", "P1-404", "P1-405", "P1-406", "P1-407", "P1-408", "P1-410", "P1-411"),
          tools=["hex keys", "level"], text="Line up the four stainless tables, then fill, cap, seal, label, metal detect, checkweigh and case pack in that order, with the turntable at the end. "
          "Fit the printed container nests under the filler and the cap grips at the capping table.",
          check="metal detector rejects the Fe 1.5, non-Fe 2.0 and SS 2.5 mm test pieces in the leading, middle and trailing position"),
-    dict(step=11, title="Controls and wiring", image=PNG("LAY-P1"), parts=A("P1-225", "P1-226", "P1-222"), tools=["electrician's tools", "multimeter"],
-         text="Mount the WAGO panel and the nine GS20 drives, wire feeders, probes, valve, screw and the 880 indicator per DosingStation.st's I/O declaration. "
+    dict(step=12, title="Controls and wiring", image=PNG("ELE-P1-003"), parts=A("P1-225", "P1-226", "P1-222"), tools=["electrician's tools", "multimeter"],
+         text="Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, valve actuator, screw, blender and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). "
               "E-stops and the hopper and screw guards go through the safety relay, not the PLC. A licensed electrician does the power wiring.",
          check="every I/O point toggles on the PLC watch list; e-stop drops all drives"),
-    dict(step=12, title="MES computer and commissioning", image=PNG("LAY-P1"), parts=A("P1-205", "P1-701", "P1-702", "P1-703", "P1-704"), tools=["laptop"],
+    dict(step=13, title="MES computer and commissioning", image=PNG("LAY-P1"), parts=A("P1-205", "P1-701", "P1-702", "P1-703", "P1-704"), tools=["laptop"],
          text="Install the MES (software/mes) on the Dell, start it with --blender P1-301, assign B01 to B09 and load the first lots. Calibrate the hopper, tune the dosing in-flight, then run the acceptance tests below.",
          check="all acceptance tests pass and are signed"),
 ]

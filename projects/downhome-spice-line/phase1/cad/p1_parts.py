@@ -11,7 +11,9 @@ Fabricate-in-house list (equipment_p1.py kind="build"):
   P1-302  Blender bag-dump grate (sits in the blender cover opening)
   P1-303  Blender discharge chute, flange to 4 in Tri-Clamp
   P1-304  Sieve deck housing for an 18 in round screen, cone to 4 in Tri-Clamp
-  P1-309  Drum dolly base for a 30 gal drum
+  P1-309  Drum dolly base for a 55 gal drum
+  P1-311  Blender riser stand
+  P1-322  Hammer-mill feed hopper (magnet slot) and discharge transition to 4 in Tri-Clamp
   P1-408  Accumulation turntable disc 30 in with rim
   P1-410a-d  3D-printed: shaker nest, jar nest, 53 mm and 89 mm cap grips (PETG, never touch product)
 
@@ -128,8 +130,9 @@ def htube(L, s=50.8, t=3.0, axis="X"):
 
 
 def p1_210():
-    """Ring frame: 12 bin positions on a dodecagon, radius 1,250 to bin centres, 50 sq tube ring at 1,250 high on 12 legs."""
-    Rb, Hr, tube = 1250.0, 1250.0, 50.8
+    """Ring frame: 12 bin positions on a dodecagon, radius 1,250 to bin centres, 50 sq tube ring at 2,210 high on 12 legs,
+    3 load-cell hanger arms at 1,000 for the weigh hopper (stack-up on ASM-P1-001)."""
+    Rb, Hr, tube = 1250.0, 2210.0, 50.8
     n = 12
     pts = [(math.cos(2 * math.pi * k / n) * (Rb + 340), math.sin(2 * math.pi * k / n) * (Rb + 340)) for k in range(n)]
     frame = cq.Workplane("XY")
@@ -144,6 +147,14 @@ def p1_210():
         a = 2 * math.pi * (k + 0.5) / n
         arm = htube(700).rotate((0, 0, 0), (0, 0, 1), math.degrees(a)).translate((math.cos(a) * Rb, math.sin(a) * Rb, Hr))
         frame = frame.union(arm)
+    # 3 hanger arms from the legs to the load-cell mounts (hopper lugs on Ø810 at 120°), top of mount plate at 1,028
+    for k in range(3):
+        a = math.radians(90 + 120 * k)
+        L = Rb + 340 - 405
+        arm = htube(L).rotate((0, 0, 0), (0, 0, 1), math.degrees(a)).translate((math.cos(a) * (405 + L / 2), math.sin(a) * (405 + L / 2), 1000 - 25.4))
+        mp = (cq.Workplane("XY").box(150, 150, 10).translate((math.cos(a) * 405, math.sin(a) * 405, 1023))
+              .faces(">Z").workplane(centerOption="CenterOfBoundBox").rect(100, 100, forConstruction=True).vertices().hole(13))
+        frame = frame.union(arm).union(mp)
     plate = cq.Workplane("XY")
     for k in range(n):                                  # foot plates with anchor holes
         x0, y0 = pts[k]
@@ -172,6 +183,22 @@ def p1_303():
     return fl.union(tr).union(fer).translate((0, 0, 180 + 28.6))
 
 
+def p1_322():
+    """Mill feed hopper: 300 sq top x 200 pyramid to 110 sq throat, 6 mm flange 200 sq with 4 x Ø9 on 170 sq (VERIFY mill inlet),
+    and a 160 x 40 slot each side for the P1-321 grate magnet drawer. Discharge transition (separate, below the mill): same flange
+    loft 150 to a 4 in Tri-Clamp ferrule for the sock to a lined pail. Both drawn on one sheet, discharge 400 below the hopper."""
+    hop = shell_loft(300, 300, 110, 110, 200, GA14)
+    fl = (cq.Workplane("XY").rect(200, 200).extrude(6).translate((0, 0, -206)).faces(">Z").workplane()
+          .rect(170, 170, forConstruction=True).vertices().hole(9).faces(">Z").workplane().rect(110, 110).cutThruAll())
+    feed = hop.union(fl).cut(cq.Workplane("XY").box(400, 160, 40).translate((0, 0, -120)))      # magnet drawer slot through both side walls
+    dfl = (cq.Workplane("XY").rect(200, 200).extrude(6).faces(">Z").workplane().rect(170, 170, forConstruction=True).vertices().hole(9)
+           .faces(">Z").workplane().rect(110, 110).cutThruAll())
+    tr = shell_loft(110, 110, TC4_TUBE, 0, 150, GA14, round2=True)
+    fer = ferrule4().translate((0, 0, -150 - 28.6))
+    dis = dfl.union(tr).union(fer).translate((0, 0, -606))
+    return feed.union(dis).translate((0, 0, 606 + 150 + 28.6))
+
+
 def p1_304():
     """Sieve deck: Ø480 x 150 housing with screen ledge, 4 clamp lugs, cone to 4 in TC, 3 legs."""
     R = 240.0
@@ -186,13 +213,53 @@ def p1_304():
         a = math.radians(45 + 90 * k)
         part = part.union(cq.Workplane("XY").box(50, 40, 8).translate((math.cos(a) * (R + 25), math.sin(a) * (R + 25), 146))
                           .faces(">Z").workplane(centerOption="CenterOfBoundBox").hole(11))
-    return part.translate((0, 0, hc + 28.6))
+    part = part.translate((0, 0, hc + 28.6))
+    # leg frame: 3 legs 1.5 in sq on R400 so a 55 gal drum (Ø584) on its dolly rolls in underneath; outlet 1,080 above the floor
+    zt = hc + 28.6 + 146
+    for k in range(3):
+        a = math.radians(90 + 120 * k); c, sn = math.cos(a), math.sin(a)
+        leg = sqt(38.1, 38.1, 1080 + zt, 1.65).translate((c * 400, sn * 400, (zt - 1080) / 2))
+        arm = sqt(400 - R + 19, 38.1, 38.1, 1.65).translate((c * (R + (400 - R) / 2), sn * (R + (400 - R) / 2), zt - 19))
+        arm = arm.rotate((c * (R + (400 - R) / 2), sn * (R + (400 - R) / 2), 0), (c * (R + (400 - R) / 2), sn * (R + (400 - R) / 2), 1), math.degrees(a))
+        part = part.union(leg).union(arm)
+    return part.translate((0, 0, 1080))
+
+
+def sqt(lx, ly, lz, t=3.0):
+    """Square tube as a box with the bore along its longest axis (open ends), so masses come out right."""
+    dims = [lx, ly, lz]; k = dims.index(max(dims))
+    inner = [d - 2 * t for d in dims]; inner[k] = dims[k] + 1
+    return cq.Workplane("XY").box(*dims).cut(cq.Workplane("XY").box(*inner))
+
+
+def p1_311():
+    """Blender riser stand: 3 in sq tube 11 ga, top frame 1,700 x 860, 4 legs 1,150 high, brace at 300, 150 sq x 12 foot plates 4 x Ø14,
+    4 blender foot pads 4 x Ø14 on 1,500 x 660 centres (VERIFY on the used blender)."""
+    s, H, L, W = 76.2, 1150.0, 1700.0, 860.0
+    top = None
+    for (x, y, lx, ly) in [(0, (W - s) / 2, L, s), (0, -(W - s) / 2, L, s), ((L - s) / 2, 0, s, W), (-(L - s) / 2, 0, s, W)]:
+        b = sqt(lx, ly, s).translate((x, y, H - s / 2))
+        top = b if top is None else top.union(b)
+    part = top
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            cx, cy = sx * (L - s) / 2, sy * (W - s) / 2
+            part = part.union(sqt(s, s, H - s - 12).translate((cx, cy, 12 + (H - s - 12) / 2)))
+            part = part.union(cq.Workplane("XY").box(150, 150, 12).translate((cx, cy, 6))
+                              .faces(">Z").workplane(centerOption="CenterOfBoundBox").rect(100, 100, forConstruction=True).vertices().hole(14))
+            part = part.union(cq.Workplane("XY").box(120, 120, 12).translate((sx * 750, sy * 330, H + 6))
+                              .faces(">Z").workplane(centerOption="CenterOfBoundBox").hole(14))
+    for y in ((W - s) / 2, -(W - s) / 2):
+        part = part.union(sqt(L - 2 * s, s, s).translate((0, y, 300)))
+    for x in ((L - s) / 2, -(L - s) / 2):
+        part = part.union(sqt(s, W - 2 * s, s).translate((x, 0, 300)))
+    return part
 
 
 def p1_309():
-    """Dolly base: Ø560 x 3 mm plate with a 25 mm rim, 4 caster pads with 4 x Ø9 each (Colson 2 series plate 2.5 x 3.6 in, VERIFY)."""
-    base = cq.Workplane("XY").circle(280).extrude(GA11)
-    rim = cq.Workplane("XY").circle(280).circle(280 - GA11).extrude(25)
+    """Dolly base: Ø640 x 3 mm plate (55 gal drum Ø584) with a 25 mm rim, 4 caster pads with 4 x Ø9 each (Colson 2 series plate 2.5 x 3.6 in, VERIFY)."""
+    base = cq.Workplane("XY").circle(320).extrude(GA11)
+    rim = cq.Workplane("XY").circle(320).circle(320 - GA11).extrude(25)
     part = base.union(rim)
     pts = []
     for k in range(4):
@@ -261,7 +328,8 @@ PARTS = [
          fasteners=lambda f: "1 in shaft, flange bearing" if f["dia"] > 20 else "M8 x 20 A2-70"),
     dict(id="P1-210", fn=p1_210, title="Ingredient bin ring frame (12 positions)", material="SS 304 2 in sq tube 11 ga, 10 mm foot plates", qty="1",
          process="Saw, TIG, ground, passivated", tol="sheet", assy="Dosing station", flat=None, contact=False,
-         notes=["Bin centres on R1,250 mm; ring 1,250 high so feeder spouts drop into the weigh hopper inlet ring", "Anchor 4 x 1/2 in wedge anchors per foot"],
+         notes=["Bin centres on R1,250; ring 2,210 high: bin outlet 1,730, feeder discharge 1,380, hopper lid 1,231, valve to screw intake 550 (ASM-P1-001)",
+                "3 hanger arms carry the load-cell mounts at 1,028 [40.5] top of plate", "Anchor 4 x 1/2 in wedge anchors per foot"],
          fasteners=lambda f: "1/2 in wedge anchor, 3 in embed" if f["dia"] > 13 else "M12 to bin lug"),
     dict(id="P1-211", fn=p1_211, title="Ingredient bin 5 cu ft", material="SS 304 #4, 14 ga; flanges 6 mm", qty="9 (12 positions)", tol="sheet",
          process="Laser cut, brake, TIG, ground, passivated", assy="Dosing station", flat="flange", contact=True,
@@ -283,8 +351,21 @@ PARTS = [
          fasteners=lambda f: "M8 x 25 A2-70, 18 N·m + FDA silicone gasket"),
     dict(id="P1-304", fn=p1_304, title="Sieve deck housing for 18 in screen", material="SS 304 #4, 14 ga", qty="1", tol="sheet",
          process="Laser cut, roll, TIG, ground", assy="Blending", flat=None, contact=True,
-         notes=["Screen (P1-305) sits on the 15 mm ledge; 4 quick clamps on the lugs", "Vibrator P1-306 bolts to the leg frame, not the housing"],
+         notes=["Screen (P1-305) sits on the 15 mm ledge, grate magnet P1-307 on brackets under it; 4 quick clamps on the lugs", "Vibrator P1-306 bolts to the leg frame, not the housing",
+                "Leg frame on R400: a 55 gal drum on its dolly rolls in under the 4 in outlet (1,080 [42.5] above floor)"],
          fasteners=lambda f: "quick clamp 1/2 in"),
+    dict(id="P1-322", fn=p1_322, title="Mill feed hopper and discharge transition", material="SS 304 #4, 14 ga; flanges 6 mm", qty="1 set", tol="sheet",
+         process="Laser cut, brake, TIG, ground, polished", assy="Hammer mill P1-320", flat="flange", contact=True,
+         notes=["Feed hopper bolts to the mill inlet; P1-321 grate magnet slides through the side slot (tramp metal stops before the hammers)",
+                "Discharge transition bolts under the mill screen housing; 4 in Tri-Clamp to a cotton sock into a lined 5 gal pail",
+                "VERIFY both flange patterns on the chosen mill before cutting"],
+         fasteners=lambda f: "M8 x 20 A2-70 + FDA silicone gasket, 18 N·m"),
+    dict(id="P1-311", fn=p1_311, title="Blender riser stand", material="SS 304 3 in sq tube 11 ga, 12 mm plates", qty="1", tol="sheet",
+         process="Saw, TIG, ground, passivated", assy="Blender P1-301", flat="foot", contact=False,
+         notes=["Raises the blender valve outlet to 1,690 [66.5] so chute P1-303, sieve P1-304 and a 55 gal drum on P1-309 fit under it",
+                "Anchor 4 x 1/2 in wedge anchors per foot, 3 in embed; tube ends capped and seal-welded",
+                "Blender foot pads: VERIFY bolt pattern and leg height on the used blender before cutting"],
+         fasteners=lambda f: "1/2 in wedge anchor / M12 x 40 A2-70 to blender foot, 70 N·m"),
     dict(id="P1-309", fn=p1_309, title="Drum dolly base", material="SS 304, 3 mm [11 ga]", qty="3", tol="sheet", process="Laser cut, roll rim, TIG",
          assy="Blend drums P1-308", flat="base", contact=False, notes=["4 casters 3 in, 2 with brakes"],
          fasteners=lambda f: "5/16-18 x 3/4 SS + nyloc (caster plate)" if f["dia"] < 10 else "drain"),
@@ -309,7 +390,7 @@ def dxf(shape, pid, kind, outdir):
         flat = sec.val().rotate(cq.Vector(0, 0, 0), cq.Vector(1, 0, 0), -90)
     else:
         z = {"top": bb.zmax - 0.95, "flange": bb.zmin + 3, "lid": bb.zmax - 1.5, "grate": bb.zmin + 5,
-             "base": bb.zmin + 1.5, "disc": bb.zmin + 0.9}[kind]
+             "base": bb.zmin + 1.5, "disc": bb.zmin + 0.9, "foot": bb.zmin + 6}[kind]
         flat = cq.Workplane("XY").add(sv).section(z).val().translate(cq.Vector(0, 0, -z))
     cq.exporters.export(cq.Workplane("XY").add(flat), str(outdir / f"{pid}_{kind}_mm.dxf"), "DXF")
     cq.exporters.export(cq.Workplane("XY").add(flat.scale(1 / IN)), str(outdir / f"{pid}_{kind}_in.dxf"), "DXF")

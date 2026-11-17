@@ -71,8 +71,8 @@ eq("P1-208", "Weigh & dispense", "Premix pail tumbler (minors + carrier salt in 
 # ---------------------------------------------------------------- 210 ingredient bins and metered dosing (client 2026-11-17: "silo these spices")
 eq("P1-210", "Dosing", "Ingredient bin ring frame, 12 positions around the weigh hopper", "fabricated", "drawing P1-210",
    {"positions": "12 (9 used at launch, 3 for growth: dosing-plan.md)"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one dosing station",
-   {"usd": 0, "src": "see build"}, [3330, 3330, 1275], "calculated", None, "no product contact; closed tube ends", kind="build",
-   build=fab("P1-210", "304 SS 2 in sq tube 11 ga ~60 m, 12 foot plates", 2400, 40, "saw, TIG, passivate", ["cad/step/P1-210"]))
+   {"usd": 0, "src": "see build"}, [3330, 3330, 2235], "calculated", None, "no product contact; closed tube ends", kind="build",
+   build=fab("P1-210", "304 SS 2 in sq tube 11 ga ~70 m, 12 foot plates, 3 load-cell mount plates", 2800, 48, "saw, TIG, passivate", ["cad/step/P1-210"]))
 eq("P1-211", "Dosing", "Ingredient bin 5 cu ft with hinged lid and bag-rest grate", "fabricated", "drawing P1-211",
    {"volume": "141 L working", "outlet": "120 sq to feeder"}, "cad/p1_parts.py", "local stainless fabricator", 9,
    "dosing-plan.md: 9 bins used at launch (salt, garlic, paprika, onion, black pepper, coarse pepper, cayenne, lemon peel, red pepper)",
@@ -101,11 +101,12 @@ eq("P1-221", "Dosing", "Weigh module (load cell + mount) 50 kg, stainless", "Met
 eq("P1-222", "Dosing", "Weight indicator/controller with EtherNet/IP or Modbus TCP", "Rice Lake Weighing Systems", "880 Performance Series, panel mount",
    {"function": "setpoints, fast/slow cutoffs (documented class)"}, "https://ricelake.com/products/880-performance-series-digital-weight-indicator-and-controller",
    "Rice Lake dealer", 1, "one hopper", {"usd": 1500, "src": "estimate"}, [0, 0, 0], "estimate", "120 V")
-eq("P1-223", "Dosing", "Sanitary butterfly valve 4 in Tri-Clamp, manual squeeze-trigger handle", "Central States Industrial (CSI)", "4 in butterfly valve, 316L, EPDM seat (confirm)",
-   {"size": "4 in Tri-Clamp"}, "https://www.csidesigns.com/", "CSI", 1, "weigh hopper outlet", {"usd": 420, "src": "estimate"}, [0, 0, 0], "estimate",
-   None, "FDA seat", contact=True)
-eq("P1-224", "Dosing", "Flexible screw conveyor, weigh hopper to blender inlet, sanitary", "Flexicon", "Flexible screw conveyor, 2.5 in, low-profile floor hopper, SS (confirm)",
-   {"rate": "~1,000 L/h class (estimate)", "length": "~4 m to the blender cover"}, "https://flexicon.com/?p=14", "Flexicon (Bethlehem PA)", 1,
+eq("P1-223", "Dosing", "Sanitary butterfly valve 4 in Tri-Clamp with 24 V DC electric actuator and open/closed limit switches (PLC-operated)", "Valworx",
+   "4 in sanitary butterfly valve 316L, EPDM seat, 24 V DC electric actuator with position switches (confirm model)",
+   {"size": "4 in Tri-Clamp", "actuator": "24 V DC on/off, about 10 s stroke, 2 limit switches"}, "https://www.valworx.com/", "Valworx", 1, "weigh hopper outlet",
+   {"usd": 1400, "src": "estimate"}, [300, 200, 350], "estimate", "24 V DC from P1-225", "FDA seat, Tri-Clamp both sides", contact=True)
+eq("P1-224", "Dosing", "Flexible screw conveyor, weigh hopper to blender inlet, sanitary, with intake grate for hand adds", "Flexicon", "Flexible screw conveyor, 2.5 in, low-profile floor hopper with bag grate and dust collar, SS (confirm)",
+   {"rate": "~1,000 L/h class (estimate)", "length": "~4.5 m, rising about 2.6 m to the blender inlet on P1-311", "intake": "bin charge from the weigh hopper valve, then hand adds and premix tipped at about 600 mm [24 in]"}, "https://flexicon.com/?p=14", "Flexicon (Bethlehem PA)", 1,
    "one dosing station", {"usd": 11000, "src": "estimate"}, [4000, 600, 1600], "estimate", "230/460 V 3-ph, 1 HP", "runs clear between formulas; tool-free screw pull",
    contact=True, growth_equiv="BD-301 flexible screw")
 eq("P1-225", "Dosing", "Dosing controller: WAGO PFC200 (CODESYS) + I/O, SS enclosure, 24 V supply", "WAGO", "750-8212 + 2 x 750-1504 DO + 2 x 750-1405 DI + 750-600 end (confirm)",
@@ -114,8 +115,10 @@ eq("P1-225", "Dosing", "Dosing controller: WAGO PFC200 (CODESYS) + I/O, SS enclo
 eq("P1-226", "Dosing", "Feeder drives: AC drive 0.5 HP for each feeder (fast/slow dosing)", "AutomationDirect", "DURApulse GS20, 0.5 HP (GS21-20P5, confirm)",
    {"control": "Modbus TCP/RTU or digital speed select"}, "https://www.automationdirect.com/adc/overview/catalog/drives_-a-_soft_starters/ac_variable_frequency_drives_(vfd)",
    "AutomationDirect", 9, "one per feeder", {"usd": 190, "src": "estimate", "per": "each"}, [0, 0, 0], "estimate", "230 V")
-eq("P1-227", "Dosing", "Rolling 2-step platform for loading bins", "Cotterman", "2-step rolling ladder with handrails, OSHA (confirm)", {},
-   "https://www.cotterman.com/", "Grainger", 1, "bin loading", {"usd": 650, "src": "estimate"}, [900, 600, 1200], "estimate")
+eq("P1-227", "Dosing", "Rolling 4-step platform for loading bins (40 in top step, handrails both sides)", "Cotterman",
+   "4-step rolling ladder, 40 in top step, 24 in wide, handrails, OSHA/ANSI A14.7 (confirm)", {"reach": "bin rim 2,392 mm is about 1.38 m above the top step"},
+   "https://www.cotterman.com/", "Grainger", 1, "bin loading", {"usd": 1100, "src": "estimate"}, [1300, 800, 1900], "estimate",
+   confirm="bags over 1.4 m: use the bag-rest grate on each bin lid, or add a vacuum bag lifter if lifting assessment requires")
 
 # ---------------------------------------------------------------- 300 blending
 eq("P1-301", "Blending", "Ribbon blender, 6 cu ft working, 304 SS (used, inspected)", "Sprout-Waldron / Paul O. Abbe class (used market)",
@@ -127,7 +130,12 @@ eq("P1-301", "Blending", "Ribbon blender, 6 cu ft working, 304 SS (used, inspect
    "230/460 V 3-ph, 2 HP (single-phase input VFD if no 3-ph)", "inspect welds and shaft seals; repolish contact to #4 if pitted; new FDA packing",
    contact=True, confirm="see it run first: no pitting, seals replaceable, discharge valve works; measure cover opening and valve flange for P1-302/P1-303",
    growth_equiv="RB-303")
-eq("P1-302", "Blending", "Blender bag-dump grate and dust hood (sits on the blender cover opening)", "fabricated", "drawing P1-302",
+eq("P1-311", "Blending", "Blender riser stand: lifts the blender so its valve clears chute + sieve + 55 gal drum", "fabricated", "drawing P1-311",
+   {"height": "1,150 mm [45.3 in] to the blender's leg feet (VERIFY on the used unit)", "load": "blender ~450 kg + 70 kg batch, x3 design factor"},
+   "cad/p1_parts.py", "local stainless fabricator", 1, "one blender", {"usd": 0, "src": "see build"}, [1700, 860, 1150], "calculated", None,
+   "304, all tube ends capped and seal-welded; not product contact", kind="build",
+   build=fab("P1-311", "304 SS 3 in sq tube 11 ga ~14 m, 4 x 12 mm foot plates, 4 leg pads", 650, 16, "saw, TIG, ground, passivate", ["dxf/P1-311_foot"]))
+eq("P1-302", "Blending", "Blender cover grate and dust hood (vent pickup on the blender inlet)", "fabricated", "drawing P1-302",
    {"grate": "50 mm [2 in] bar spacing, bag rest", "pickup": "250 cfm, 4 in collar"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one blender",
    {"usd": 0, "src": "see build"}, [700, 500, 450], "calculated", None, "304 #4, removable without tools for cleaning", kind="build", contact=True, dust_cfm=250,
    build=fab("P1-302", "304 SS 14 ga + 10 mm bar", 340, 10, "laser cut, brake, TIG", ["dxf/P1-302_grate"]))
@@ -136,7 +144,7 @@ eq("P1-303", "Blending", "Blender discharge chute to sieve (scaled DH-101)", "fa
    [200, 200, 220], "calculated", None, "316L contact, ground welds", kind="build", contact=True,
    build=fab("P1-303", "316L 14 ga + 4 in BPE ferrule", 210, 6, "laser cut, roll, TIG, polish", ["dxf/P1-303_flange"]),
    confirm="match the used blender's valve flange before cutting")
-eq("P1-304", "Blending", "Vibratory sieve deck with hopper (12 mesh screen, magnet grate in outlet)", "fabricated", "drawing P1-304; bought screen, vibrator and magnet",
+eq("P1-304", "Blending", "Vibratory sieve deck on leg frame (12 mesh screen, grate magnet under the screen)", "fabricated", "drawing P1-304; bought screen, vibrator and magnet",
    {"rate": "8 lb/min design (line balance)", "screen": "18 in round 12 mesh SS"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one blending train",
    {"usd": 0, "src": "see build"}, [700, 700, 1100], "calculated", "120 V vibrator", "screen and hopper tool-free removal", kind="build", contact=True, dust_cfm=200,
    build=fab("P1-304", "304 SS 14 ga sheet, 1.5 in tube legs, rubber isolators", 460, 12, "laser cut, roll, TIG", ["cad/step/P1-304"]), growth_equiv="SC-304")
@@ -146,19 +154,35 @@ eq("P1-305", "Blending", "Sieve screen 18 in, 12 mesh stainless, with frame", "G
 eq("P1-306", "Blending", "Rotary electric vibrator motor for sieve deck", "Martin Engineering", "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
    {"force": "~150 lbf class (estimate)"}, "https://www.martin-eng.com/content/product/690/electric-vibrators", "Martin Engineering", 1, "one sieve deck",
    {"usd": 750, "src": "estimate"}, [200, 120, 120], "estimate", "120 V 1-ph")
-eq("P1-307", "Blending", "Grate magnet 12 x 12 in, rare earth, in sieve outlet", "Industrial Magnetics, Inc.", "Grate-in-housing, 1 in tubes, 10,000 gauss class (confirm)",
+eq("P1-307", "Blending", "Grate magnet 12 x 12 in, rare earth, on brackets under the sieve screen", "Industrial Magnetics, Inc.", "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
    {"strength": "10,000 G class (estimate)"}, "https://www.magnetics.com/product.asp?ProductID=24", "IMI", 1, "one train (prerequisite, not the CCP)",
    {"usd": 650, "src": "estimate"}, [305, 305, 50], "estimate", None, "pull and wipe each batch; record finds", contact=True)
-eq("P1-308", "Blending", "Lidded food-grade blend drum 30 gal with liner (QC hold container)", "Uline", "30 gallon plastic drum, open top, with lever-lock lid (confirm SKU)",
-   {"volume": "30 gal (113 L) holds one 100 lb batch at 0.42 g/mL"}, "https://www.uline.com/BL_1525/Plastic-Drums", "Uline", 8,
-   "17 batches/week, held 1 day for QC: 6 in use + 2 spare", {"usd": 85, "src": "estimate", "per": "each"}, [500, 500, 750], "estimate", None,
-   "FDA-grade HDPE + poly liner per batch", contact=True)
+eq("P1-308", "Blending", "Lidded food-grade blend drum 55 gal, open top, with liner (one batch per drum, QC hold container)", "Uline",
+   "55 gallon plastic drum, open top, with lever-lock lid, 23 x 36 in (confirm SKU)",
+   {"volume": "55 gal (208 L); a 147 lb [66.7 kg] batch at 0.51 g/mL is 131 L, 63 % full"}, "https://www.uline.com/BL_1525/Plastic-Drums", "Uline", 6,
+   "7 batches/week, one drum per batch, held up to 1 day for QC: 1 filling, 2 in hold, 1 at the filler, 2 spare", {"usd": 120, "src": "estimate", "per": "each"},
+   [584, 584, 914], "estimate", None, "FDA-grade HDPE + poly liner per batch", contact=True)
 eq("P1-309", "Blending", "Drum dolly with lift handle (stainless)", "fabricated", "drawing P1-309",
-   {"load": "250 lb"}, "cad/p1_parts.py", "in-house", 3, "two drums moving + one at the filler", {"usd": 0, "src": "see build"}, [560, 560, 150], "calculated",
+   {"load": "250 lb", "fits": "55 gal drum Ø584 [23 in]"}, "cad/p1_parts.py", "in-house", 3, "one under the sieve, one in hold, one at the filler", {"usd": 0, "src": "see build"}, [640, 640, 130], "calculated",
    kind="build", build=fab("P1-309", "304 SS 11 ga + 4 x 3 in SS casters (bought, Colson 2 series)", 140, 3, "laser cut, brake, TIG", ["dxf/P1-309_base"]))
-eq("P1-310", "Utilities", "Portable cartridge dust collector (weigh hood, blender hood, sieve)", "Camfil APC", "Gold Series GS-Mini portable / small GSX (confirm >= 1,150 cfm model)",
-   {"airflow": "900 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150) + 25 % = 1,125 cfm, checked by foodsafety.py", "design_cfm": 1150}, "https://camfilapc.com/?p=3400", "Camfil APC", 1,
-   "all three pickups", {"usd": 12500, "src": "estimate"}, [1200, 900, 2400], "estimate", "120/240 V 1-ph",
+eq("P1-320", "Grinding", "Small sanitary hammer mill on stand: grinds whole peppercorns, chiles and leaf herbs to size in house", "Schutte-Buffalo Hammermill",
+   "Mini Mill class lab/pilot hammer mill, 2 HP, stainless contact parts, interchangeable screens (confirm model and screen set)",
+   {"rate": "50-150 lb/h on pepper at 1/8 in screen (maker class, estimate)", "need": "coarse black pepper about 50 lb/week at launch, 1 h/week",
+    "screens": "1/16, 1/8 and 3/16 in perforated, SS", "temperature": "batch under 20 min so the spice stays below 40 °C (volatile oils)"},
+   "https://www.hammermills.com/", "Schutte-Buffalo (Buffalo NY)", 1, "one mill; whole spices are optional at launch (buy ground if deferred)",
+   {"usd": 9500, "src": "estimate: new pilot-scale mill with stand"}, [900, 700, 1500], "estimate", "230 V 1-ph or 208 V 3-ph, 2 HP",
+   "SS contact, tool-free screen and hammer access, dry clean between spices", kind="buy", contact=True, dust_cfm=150,
+   confirm="grind trial with our peppercorns before ordering: particle size, heat rise, rate")
+eq("P1-321", "Grinding", "Grate magnet in the mill feed throat (tramp metal ahead of the mill, NFPA 61 ignition control)", "Industrial Magnetics, Inc.",
+   "Grate-in-housing 6 x 6 in, rare earth, 1 in tubes (confirm to mill inlet)", {"strength": "10,000 gauss class"}, "https://www.magnetics.com/",
+   "IMI", 1, "one mill", {"usd": 450, "src": "estimate"}, [200, 200, 120], "estimate", None, "pull-out tubes, wipe clean each run", contact=True)
+eq("P1-322", "Grinding", "Mill feed hopper and discharge chute to a lined drum (stainless, fabricated)", "fabricated", "drawing P1-322",
+   {"feed": "10 L hopper with magnet slot", "discharge": "4 in Tri-Clamp to a cotton sock into a lined 5 gal pail (about 10 kg), tipped into bin B06"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one mill",
+   {"usd": 0, "src": "see build"}, [400, 400, 700], "calculated", None, "304 #4, welds ground, opens without tools", kind="build", contact=True,
+   build=fab("P1-322", "304 SS 14 ga + 4 in BPE ferrule", 230, 8, "laser cut, brake, TIG, polish", ["dxf/P1-322_flange"]))
+eq("P1-310", "Utilities", "Portable cartridge dust collector (weigh hood, blender hood, sieve, mill)", "Camfil APC", "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
+   {"airflow": "1,050 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150, mill 150) + 25 % = 1,313 cfm, checked by foodsafety.py", "design_cfm": 1400}, "https://camfilapc.com/?p=3400", "Camfil APC", 1,
+   "all five pickups", {"usd": 14000, "src": "estimate"}, [1200, 900, 2400], "estimate", "120/240 V 1-ph",
    "small dust quantity, but a DHA (NFPA 652) is still required; collector outside the room or vented per DHA", confirm="DHA first")
 
 # ---------------------------------------------------------------- 400 packing (one semi-automatic bench)

@@ -1,0 +1,802 @@
+{
+ "io": [
+  {
+   "tag": "DI_SafetyOK",
+   "desc": "SR-P1 safety relay healthy (e-stops, hopper lid, screw guard)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "SR-P1",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 0,
+   "wire": "225-01-00",
+   "address": "%IX0.0",
+   "cable": "panel"
+  },
+  {
+   "tag": "DI_ValveClosed",
+   "desc": "P1-223 valve closed limit",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-223",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 1,
+   "wire": "225-01-01",
+   "address": "%IX0.1",
+   "cable": "W-P02"
+  },
+  {
+   "tag": "DI_ValveOpen",
+   "desc": "P1-223 valve open limit",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-223",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 2,
+   "wire": "225-01-02",
+   "address": "%IX0.2",
+   "cable": "W-P02"
+  },
+  {
+   "tag": "DI_ScrewRunning",
+   "desc": "P1-224 screw contactor K-224 aux",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-224",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 3,
+   "wire": "225-01-03",
+   "address": "%IX0.3",
+   "cable": "panel MS-P1"
+  },
+  {
+   "tag": "DI_BlenderReady",
+   "desc": "P1-301 cover closed and valve shut",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-301",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 4,
+   "wire": "225-01-04",
+   "address": "%IX0.4",
+   "cable": "W-P04"
+  },
+  {
+   "tag": "DI_BlenderHigh",
+   "desc": "P1-301 high level probe",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-301",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 5,
+   "wire": "225-01-05",
+   "address": "%IX0.5",
+   "cable": "W-P04"
+  },
+  {
+   "tag": "DI_DustFanOn",
+   "desc": "P1-310 fan running (aux)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-310",
+   "signal": "24 V DC",
+   "slot": 1,
+   "channel": 6,
+   "wire": "225-01-06",
+   "address": "%IX0.6",
+   "cable": "W-P05"
+  },
+  {
+   "tag": "DI_BinLow[1]",
+   "desc": "B01 low level, Soliphant FTM20 (salt)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 0,
+   "wire": "225-02-00",
+   "address": "%IX1.0",
+   "cable": "W-P11"
+  },
+  {
+   "tag": "DI_BinLow[2]",
+   "desc": "B02 low level, Soliphant FTM20 (garlic)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 1,
+   "wire": "225-02-01",
+   "address": "%IX1.1",
+   "cable": "W-P12"
+  },
+  {
+   "tag": "DI_BinLow[3]",
+   "desc": "B03 low level, Soliphant FTM20 (paprika)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 2,
+   "wire": "225-02-02",
+   "address": "%IX1.2",
+   "cable": "W-P13"
+  },
+  {
+   "tag": "DI_BinLow[4]",
+   "desc": "B04 low level, Soliphant FTM20 (onion)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 3,
+   "wire": "225-02-03",
+   "address": "%IX1.3",
+   "cable": "W-P14"
+  },
+  {
+   "tag": "DI_BinLow[5]",
+   "desc": "B05 low level, Soliphant FTM20 (black-pepper)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 4,
+   "wire": "225-02-04",
+   "address": "%IX1.4",
+   "cable": "W-P15"
+  },
+  {
+   "tag": "DI_BinLow[6]",
+   "desc": "B06 low level, Soliphant FTM20 (black-pepper-coarse)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 5,
+   "wire": "225-02-05",
+   "address": "%IX1.5",
+   "cable": "W-P16"
+  },
+  {
+   "tag": "DI_BinLow[7]",
+   "desc": "B07 low level, Soliphant FTM20 (cayenne)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 6,
+   "wire": "225-02-06",
+   "address": "%IX1.6",
+   "cable": "W-P17"
+  },
+  {
+   "tag": "DI_BinLow[8]",
+   "desc": "B08 low level, Soliphant FTM20 (lemon-peel)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 7,
+   "wire": "225-02-07",
+   "address": "%IX1.7",
+   "cable": "W-P18"
+  },
+  {
+   "tag": "DI_BinLow[9]",
+   "desc": "B09 low level, Soliphant FTM20 (red-pepper)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 8,
+   "wire": "225-02-08",
+   "address": "%IX1.8",
+   "cable": "W-P19"
+  },
+  {
+   "tag": "DI_BinLow[10]",
+   "desc": "B10 low level, Soliphant FTM20 (spare position)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 9,
+   "wire": "225-02-09",
+   "address": "%IX1.9",
+   "cable": "W-P20"
+  },
+  {
+   "tag": "DI_BinLow[11]",
+   "desc": "B11 low level, Soliphant FTM20 (spare position)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 10,
+   "wire": "225-02-10",
+   "address": "%IX1.10",
+   "cable": "W-P21"
+  },
+  {
+   "tag": "DI_BinLow[12]",
+   "desc": "B12 low level, Soliphant FTM20 (spare position)",
+   "type": "DI",
+   "plc": "P1-225",
+   "device": "P1-213",
+   "signal": "24 V DC",
+   "slot": 2,
+   "channel": 11,
+   "wire": "225-02-11",
+   "address": "%IX1.11",
+   "cable": "W-P22"
+  },
+  {
+   "tag": "DO_ValveOpen",
+   "desc": "P1-223 actuator open command",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-223",
+   "signal": "24 V DC",
+   "slot": 3,
+   "channel": 0,
+   "wire": "225-03-00",
+   "address": "%QX0.0",
+   "cable": "W-P02"
+  },
+  {
+   "tag": "DO_ScrewRun",
+   "desc": "K-224 screw contactor coil (via SR-P1)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-224",
+   "signal": "24 V DC",
+   "slot": 3,
+   "channel": 1,
+   "wire": "225-03-01",
+   "address": "%QX0.1",
+   "cable": "panel MS-P1"
+  },
+  {
+   "tag": "DO_Horn",
+   "desc": "alarm horn",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "HN-P1",
+   "signal": "24 V DC",
+   "slot": 3,
+   "channel": 2,
+   "wire": "225-03-02",
+   "address": "%QX0.2",
+   "cable": "W-P06"
+  },
+  {
+   "tag": "DO_Beacon",
+   "desc": "alarm beacon",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "BC-P1",
+   "signal": "24 V DC",
+   "slot": 3,
+   "channel": 3,
+   "wire": "225-03-03",
+   "address": "%QX0.3",
+   "cable": "W-P06"
+  },
+  {
+   "tag": "DO_Agitator[1]",
+   "desc": "B01 agitator relay KA-01 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 0,
+   "wire": "225-04-00",
+   "address": "%QX1.0",
+   "cable": "W-P11"
+  },
+  {
+   "tag": "DO_Agitator[2]",
+   "desc": "B02 agitator relay KA-02 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 1,
+   "wire": "225-04-01",
+   "address": "%QX1.1",
+   "cable": "W-P12"
+  },
+  {
+   "tag": "DO_Agitator[3]",
+   "desc": "B03 agitator relay KA-03 (flow aid fitted)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 2,
+   "wire": "225-04-02",
+   "address": "%QX1.2",
+   "cable": "W-P13"
+  },
+  {
+   "tag": "DO_Agitator[4]",
+   "desc": "B04 agitator relay KA-04 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 3,
+   "wire": "225-04-03",
+   "address": "%QX1.3",
+   "cable": "W-P14"
+  },
+  {
+   "tag": "DO_Agitator[5]",
+   "desc": "B05 agitator relay KA-05 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 4,
+   "wire": "225-04-04",
+   "address": "%QX1.4",
+   "cable": "W-P15"
+  },
+  {
+   "tag": "DO_Agitator[6]",
+   "desc": "B06 agitator relay KA-06 (flow aid fitted)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 5,
+   "wire": "225-04-05",
+   "address": "%QX1.5",
+   "cable": "W-P16"
+  },
+  {
+   "tag": "DO_Agitator[7]",
+   "desc": "B07 agitator relay KA-07 (flow aid fitted)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 6,
+   "wire": "225-04-06",
+   "address": "%QX1.6",
+   "cable": "W-P17"
+  },
+  {
+   "tag": "DO_Agitator[8]",
+   "desc": "B08 agitator relay KA-08 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 7,
+   "wire": "225-04-07",
+   "address": "%QX1.7",
+   "cable": "W-P18"
+  },
+  {
+   "tag": "DO_Agitator[9]",
+   "desc": "B09 agitator relay KA-09 (flow aid fitted)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 8,
+   "wire": "225-04-08",
+   "address": "%QX1.8",
+   "cable": "W-P19"
+  },
+  {
+   "tag": "DO_Agitator[10]",
+   "desc": "B10 agitator relay KA-10 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 9,
+   "wire": "225-04-09",
+   "address": "%QX1.9",
+   "cable": "W-P20"
+  },
+  {
+   "tag": "DO_Agitator[11]",
+   "desc": "B11 agitator relay KA-11 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 10,
+   "wire": "225-04-10",
+   "address": "%QX1.10",
+   "cable": "W-P21"
+  },
+  {
+   "tag": "DO_Agitator[12]",
+   "desc": "B12 agitator relay KA-12 (no flow aid at launch)",
+   "type": "DO",
+   "plc": "P1-225",
+   "device": "P1-212",
+   "signal": "24 V DC",
+   "slot": 4,
+   "channel": 11,
+   "wire": "225-04-11",
+   "address": "%QX1.11",
+   "cable": "W-P22"
+  }
+ ],
+ "cables": [
+  {
+   "cable": "W-P02",
+   "plc": "P1-225",
+   "device": "P1-223",
+   "cores": 7,
+   "spec": "7C x 18 AWG [0.82 mm\u00b2] TC-ER, 600 V",
+   "from_": "P1-225 X2",
+   "to": "P1-223 actuator"
+  },
+  {
+   "cable": "W-P04",
+   "plc": "P1-225",
+   "device": "P1-301",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] TC-ER, 600 V",
+   "from_": "P1-225 X4",
+   "to": "P1-301 junction box"
+  },
+  {
+   "cable": "W-P05",
+   "plc": "P1-225",
+   "device": "P1-310",
+   "cores": 3,
+   "spec": "3C x 18 AWG [0.82 mm\u00b2] TC-ER, 600 V",
+   "from_": "P1-225 X5",
+   "to": "P1-310 starter aux"
+  },
+  {
+   "cable": "W-P06",
+   "plc": "P1-225",
+   "device": "HN/BC-P1",
+   "cores": 4,
+   "spec": "4C x 18 AWG [0.82 mm\u00b2] TC-ER",
+   "from_": "P1-225 X6",
+   "to": "horn + beacon on panel top"
+  },
+  {
+   "cable": "W-P11",
+   "plc": "P1-225",
+   "device": "B01",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X11",
+   "to": "bin B01 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P12",
+   "plc": "P1-225",
+   "device": "B02",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X12",
+   "to": "bin B02 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P13",
+   "plc": "P1-225",
+   "device": "B03",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X13",
+   "to": "bin B03 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P14",
+   "plc": "P1-225",
+   "device": "B04",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X14",
+   "to": "bin B04 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P15",
+   "plc": "P1-225",
+   "device": "B05",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X15",
+   "to": "bin B05 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P16",
+   "plc": "P1-225",
+   "device": "B06",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X16",
+   "to": "bin B06 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P17",
+   "plc": "P1-225",
+   "device": "B07",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X17",
+   "to": "bin B07 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P18",
+   "plc": "P1-225",
+   "device": "B08",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X18",
+   "to": "bin B08 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P19",
+   "plc": "P1-225",
+   "device": "B09",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X19",
+   "to": "bin B09 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P20",
+   "plc": "P1-225",
+   "device": "B10",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X20",
+   "to": "bin B10 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P21",
+   "plc": "P1-225",
+   "device": "B11",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X21",
+   "to": "bin B11 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P22",
+   "plc": "P1-225",
+   "device": "B12",
+   "cores": 5,
+   "spec": "5C x 18 AWG [0.82 mm\u00b2] shielded TC-ER",
+   "from_": "P1-225 X22",
+   "to": "bin B12 JB (probe + agitator)"
+  },
+  {
+   "cable": "W-P30",
+   "plc": "P1-225",
+   "device": "P1-226 x 9",
+   "cores": 3,
+   "spec": "RS-485 1 pair + drain, Belden 3105A, daisy chain",
+   "from_": "750-652",
+   "to": "GS21 #1 > #9, 120 ohm end"
+  },
+  {
+   "cable": "E-P31",
+   "plc": "P1-225",
+   "device": "P1-222",
+   "cores": 8,
+   "spec": "Cat 6 S/FTP, Modbus TCP",
+   "from_": "SW-P1 port 2",
+   "to": "Rice Lake 880"
+  },
+  {
+   "cable": "E-P32",
+   "plc": "P1-225",
+   "device": "P1-205",
+   "cores": 8,
+   "spec": "Cat 6 S/FTP, OPC UA",
+   "from_": "SW-P1 port 3",
+   "to": "MES PC"
+  }
+ ],
+ "modules": {
+  "P1-225-DI": {
+   "points": 19,
+   "modules": 2,
+   "catalog": "WAGO 750-1405 (16 DI)",
+   "spare_pct": 41
+  },
+  "P1-225-DO": {
+   "points": 16,
+   "modules": 2,
+   "catalog": "WAGO 750-1504 (16 DO)",
+   "spare_pct": 50
+  },
+  "P1-225-COM": {
+   "points": 9,
+   "modules": 1,
+   "catalog": "WAGO 750-652 RS-485 Modbus RTU",
+   "spare_pct": 25
+  }
+ },
+ "motors": [
+  {
+   "tag": "M-212-01..09",
+   "load": "P1-212 feeders, 0.5 HP each, via GS21 drives",
+   "hp": 0.5,
+   "fla": 2.4,
+   "qty": 9,
+   "supply": "208 V 1-ph in, 3-ph out",
+   "brk": "5 x 20 A 2-pole (2 drives each)"
+  },
+  {
+   "tag": "M-224",
+   "load": "P1-224 flexible screw",
+   "hp": 1,
+   "fla": 4.6,
+   "qty": 1,
+   "supply": "208 V 3-ph",
+   "brk": "MS-P1 MMS 4-6.3 A"
+  },
+  {
+   "tag": "M-301",
+   "load": "P1-301 ribbon blender",
+   "hp": 2,
+   "fla": 7.5,
+   "qty": 1,
+   "supply": "208 V 3-ph",
+   "brk": "MS-P1 MMS 6.3-10 A"
+  },
+  {
+   "tag": "M-320",
+   "load": "P1-320 hammer mill",
+   "hp": 2,
+   "fla": 7.5,
+   "qty": 1,
+   "supply": "208 V 3-ph",
+   "brk": "MS-P1 MMS 6.3-10 A"
+  },
+  {
+   "tag": "M-310",
+   "load": "P1-310 dust collector fan",
+   "hp": 2,
+   "fla": 13.2,
+   "qty": 1,
+   "supply": "208 V 1-ph",
+   "brk": "20 A 2-pole"
+  },
+  {
+   "tag": "M-306",
+   "load": "P1-306 sieve vibrator",
+   "hp": 0.25,
+   "fla": 2.9,
+   "qty": 1,
+   "supply": "120 V",
+   "brk": "15 A 1-pole"
+  },
+  {
+   "tag": "M-208",
+   "load": "P1-208 tumbler gearmotor (DC control)",
+   "hp": 0.125,
+   "fla": 2.0,
+   "qty": 1,
+   "supply": "120 V",
+   "brk": "15 A 1-pole"
+  }
+ ],
+ "loads": [
+  [
+   "P1-401 auger filler",
+   "208 V 1-ph",
+   10.0,
+   "20 A 2-pole"
+  ],
+  [
+   "P1-403 induction sealer",
+   "120 V",
+   9.0,
+   "15 A dedicated"
+  ],
+  [
+   "P1-404 + P1-405 labeler, printer",
+   "120 V",
+   4.0,
+   "15 A"
+  ],
+  [
+   "P1-406 metal detector",
+   "120 V",
+   3.0,
+   "15 A dedicated (clean power)"
+  ],
+  [
+   "P1-225 PLC panel, 24 V PSU, 880",
+   "120 V",
+   4.0,
+   "15 A dedicated"
+  ],
+  [
+   "P1-205 MES PC + UPS, SW-P1",
+   "120 V",
+   8.0,
+   "20 A dedicated"
+  ],
+  [
+   "Scales P1-201/202/407, P1-204 printer",
+   "120 V",
+   3.0,
+   "15 A"
+  ],
+  [
+   "Receptacles and lighting (by electrician)",
+   "120 V",
+   16.0,
+   "per NEC"
+  ]
+ ],
+ "network": [
+  [
+   "SW-P1",
+   "industrial unmanaged switch 8-port (WAGO 852-1111 class)"
+  ],
+  [
+   "P1-225",
+   "WAGO PFC200 750-8212: CODESYS, OPC UA server"
+  ],
+  [
+   "P1-222",
+   "Rice Lake 880: Modbus TCP gross/net/motion"
+  ],
+  [
+   "P1-205",
+   "MES PC: dhmes server :8080, OPC UA client"
+  ],
+  [
+   "P1-204",
+   "Zebra ZD421t: ZPL bag/case/pallet labels"
+  ],
+  [
+   "P1-201/202/407",
+   "Mettler ICS scales (Ethernet option) or USB to PC"
+  ],
+  [
+   "Office",
+   "router uplink: no internet path to the PLC (firewall)"
+  ]
+ ],
+ "service": {
+  "voltage": "208Y/120 V 3-ph 4-w",
+  "main_a": 100,
+  "src": "assumed for a small light-industrial unit; confirm with the landlord"
+ }
+}

@@ -4,7 +4,9 @@
    (P1-211) with 2 in volumetric screw feeders (P1-212, VFD P1-226) dosing
    one at a time into weigh hopper P1-220 (3 x 50 kg cells, Rice Lake 880
    indicator P1-222, 10 g division). When the list is done, butterfly valve
-   P1-223 opens and flexible screw P1-224 carries the charge to blender P1-301.
+   P1-223 opens and flexible screw P1-224 carries the charge to blender P1-301
+   (on riser stand P1-311). The hand-weighed lines and the premix are then
+   tipped into the screw's intake grate, so nobody lifts a pail above waist height.
 
    The MES owns the recipe and the lot genealogy:
      GET /api/batch/<id>/doselist  -> MES_DoseList (largest dose first)
@@ -93,7 +95,7 @@ VAR_GLOBAL
     MES_DoseList     : ST_DoseList;
     MES_Result       : ST_DoseResult;
     MES_Start        : BOOL;
-    MES_HandAddsDone : BOOL;            (* hand-weighed and premix lines tipped into P1-302 grate *)
+    MES_HandAddsDone : BOOL;            (* hand-weighed lines, then the premix, tipped into the P1-224 intake grate *)
     MES_Abort        : BOOL;
     HMI_Resume       : BOOL;
     HMI_Reset        : BOOL;
@@ -295,23 +297,30 @@ NEXT:
     IF Dose_Index < MES_DoseList.Count THEN
         Dose_Index := Dose_Index + 1;
         Dose_Step := TARE;
-    ELSIF MES_HandAddsDone AND DI_BlenderReady AND NOT DI_BlenderHigh THEN
-        (* hand adds go in first through the grate, then the bin charge, so the premix is never last in the screw *)
+    ELSIF DI_BlenderReady AND NOT DI_BlenderHigh THEN
         DO_ValveOpen := TRUE;
         Dose_Step := TRANSFER;
     END_IF
 
 TRANSFER:
+    (* the bin charge goes first; the screw keeps running for the hand adds *)
     IF DI_ValveOpen THEN DO_ScrewRun := TRUE; END_IF
-    IF AI_HopperKg < 0.2 AND AI_HopperStable THEN Dose_Step := TRANSFER_DRAIN; END_IF
+    IF AI_HopperKg < 0.2 AND AI_HopperStable THEN
+        DO_ValveOpen := FALSE;
+        Dose_Step := TRANSFER_DRAIN;
+    END_IF
 
 TRANSFER_DRAIN:
-    tTransfer(IN := TRUE, PT := DrainT);
-    IF tTransfer.Q THEN
-        tTransfer(IN := FALSE);
-        DO_ScrewRun := FALSE;
-        DO_ValveOpen := FALSE;
-        Dose_Step := COMPLETE;
+    (* operator tips the hand-weighed pails, then the premix last, into the P1-224 intake grate and
+       confirms on the MES; the screw then runs on DrainT to empty the tube into the blender *)
+    IF MES_HandAddsDone THEN
+        tTransfer(IN := TRUE, PT := DrainT);
+        IF tTransfer.Q THEN
+            tTransfer(IN := FALSE);
+            DO_ScrewRun := FALSE;
+            MES_HandAddsDone := FALSE;
+            Dose_Step := COMPLETE;
+        END_IF
     END_IF
 
 COMPLETE:

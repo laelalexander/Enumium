@@ -2,16 +2,16 @@
  "title": "Down Home Creole spice plant: Phase 1 prototype",
  "summary": "A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a used 6 cu ft ribbon blender, sieved, held for QC, then hand-packed on a semi-automatic bench with metal detection and checkweighing. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, chutes and tables are fabricated in house to save money; scales, feeders, the metal detector and the filler are bought.",
  "totals": {
-  "parts_cost": 184968.0,
+  "parts_cost": 201248.0,
   "currency": "USD",
-  "bought": 159148.0,
-  "fabricated": 25820.0,
-  "fabrication_hours": 124,
+  "bought": 172068.0,
+  "fabricated": 29180.0,
+  "fabrication_hours": 156,
   "print_hours": null,
   "filament_g": {
    "PETG": 857
   },
-  "build_hours": 244,
+  "build_hours": 276,
   "note": "build_hours = fabrication + about 120 h install and commissioning; excludes building fit-out and electrical service"
  },
  "tools": [
@@ -198,22 +198,22 @@
   },
   {
    "line": "P1-223",
-   "desc": "Sanitary butterfly valve 4 in Tri-Clamp, manual squeeze-trigger handle",
-   "mfr": "Central States Industrial (CSI)",
-   "mpn": "4 in butterfly valve, 316L, EPDM seat (confirm)",
+   "desc": "Sanitary butterfly valve 4 in Tri-Clamp with 24 V DC electric actuator and open/closed limit switches (PLC-operated)",
+   "mfr": "Valworx",
+   "mpn": "4 in sanitary butterfly valve 316L, EPDM seat, 24 V DC electric actuator with position switches (confirm model)",
    "qty": 1,
-   "supplier": "CSI",
-   "url": "https://www.csidesigns.com/",
-   "unit_price": 420.0,
+   "supplier": "Valworx",
+   "url": "https://www.valworx.com/",
+   "unit_price": 1400.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
   },
   {
    "line": "P1-224",
-   "desc": "Flexible screw conveyor, weigh hopper to blender inlet, sanitary",
+   "desc": "Flexible screw conveyor, weigh hopper to blender inlet, sanitary, with intake grate for hand adds",
    "mfr": "Flexicon",
-   "mpn": "Flexible screw conveyor, 2.5 in, low-profile floor hopper, SS (confirm)",
+   "mpn": "Flexible screw conveyor, 2.5 in, low-profile floor hopper with bag grate and dust collar, SS (confirm)",
    "qty": 1,
    "supplier": "Flexicon (Bethlehem PA)",
    "url": "https://flexicon.com/?p=14",
@@ -250,16 +250,16 @@
   },
   {
    "line": "P1-227",
-   "desc": "Rolling 2-step platform for loading bins",
+   "desc": "Rolling 4-step platform for loading bins (40 in top step, handrails both sides)",
    "mfr": "Cotterman",
-   "mpn": "2-step rolling ladder with handrails, OSHA (confirm)",
+   "mpn": "4-step rolling ladder, 40 in top step, 24 in wide, handrails, OSHA/ANSI A14.7 (confirm)",
    "qty": 1,
    "supplier": "Grainger",
    "url": "https://www.cotterman.com/",
-   "unit_price": 650.0,
+   "unit_price": 1100.0,
    "price_src": "estimate",
    "alt": "",
-   "notes": ""
+   "notes": "bags over 1.4 m: use the bag-rest grate on each bin lid, or add a vacuum bag lifter if lifting assessment requires"
   },
   {
    "line": "P1-301",
@@ -302,9 +302,9 @@
   },
   {
    "line": "P1-307",
-   "desc": "Grate magnet 12 x 12 in, rare earth, in sieve outlet",
+   "desc": "Grate magnet 12 x 12 in, rare earth, on brackets under the sieve screen",
    "mfr": "Industrial Magnetics, Inc.",
-   "mpn": "Grate-in-housing, 1 in tubes, 10,000 gauss class (confirm)",
+   "mpn": "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
    "qty": 1,
    "supplier": "IMI",
    "url": "https://www.magnetics.com/product.asp?ProductID=24",
@@ -315,26 +315,52 @@
   },
   {
    "line": "P1-308",
-   "desc": "Lidded food-grade blend drum 30 gal with liner (QC hold container)",
+   "desc": "Lidded food-grade blend drum 55 gal, open top, with liner (one batch per drum, QC hold container)",
    "mfr": "Uline",
-   "mpn": "30 gallon plastic drum, open top, with lever-lock lid (confirm SKU)",
-   "qty": 8,
+   "mpn": "55 gallon plastic drum, open top, with lever-lock lid, 23 x 36 in (confirm SKU)",
+   "qty": 6,
    "supplier": "Uline",
    "url": "https://www.uline.com/BL_1525/Plastic-Drums",
-   "unit_price": 85.0,
+   "unit_price": 120.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-320",
+   "desc": "Small sanitary hammer mill on stand: grinds whole peppercorns, chiles and leaf herbs to size in house",
+   "mfr": "Schutte-Buffalo Hammermill",
+   "mpn": "Mini Mill class lab/pilot hammer mill, 2 HP, stainless contact parts, interchangeable screens (confirm model and screen set)",
+   "qty": 1,
+   "supplier": "Schutte-Buffalo (Buffalo NY)",
+   "url": "https://www.hammermills.com/",
+   "unit_price": 9500.0,
+   "price_src": "estimate: new pilot-scale mill with stand",
+   "alt": "",
+   "notes": "grind trial with our peppercorns before ordering: particle size, heat rise, rate"
+  },
+  {
+   "line": "P1-321",
+   "desc": "Grate magnet in the mill feed throat (tramp metal ahead of the mill, NFPA 61 ignition control)",
+   "mfr": "Industrial Magnetics, Inc.",
+   "mpn": "Grate-in-housing 6 x 6 in, rare earth, 1 in tubes (confirm to mill inlet)",
+   "qty": 1,
+   "supplier": "IMI",
+   "url": "https://www.magnetics.com/",
+   "unit_price": 450.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
   },
   {
    "line": "P1-310",
-   "desc": "Portable cartridge dust collector (weigh hood, blender hood, sieve)",
+   "desc": "Portable cartridge dust collector (weigh hood, blender hood, sieve, mill)",
    "mfr": "Camfil APC",
-   "mpn": "Gold Series GS-Mini portable / small GSX (confirm >= 1,150 cfm model)",
+   "mpn": "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
    "qty": 1,
    "supplier": "Camfil APC",
    "url": "https://camfilapc.com/?p=3400",
-   "unit_price": 12500.0,
+   "unit_price": 14000.0,
    "price_src": "estimate",
    "alt": "",
    "notes": "DHA first"
@@ -678,11 +704,11 @@
     "phase1/drawings/parts/P1-210.svg",
     "phase1/drawings/png/P1-210.png"
    ],
-   "material": "304 SS 2 in sq tube 11 ga ~60 m, 12 foot plates",
+   "material": "304 SS 2 in sq tube 11 ga ~70 m, 12 foot plates, 3 load-cell mount plates",
    "qty": 1,
    "vendor": "local stainless fabricator",
-   "labor_h": 40,
-   "material_usd": 2400,
+   "labor_h": 48,
+   "material_usd": 2800,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
@@ -720,8 +746,25 @@
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
+   "part": "P1-311",
+   "title": "Blender riser stand: lifts the blender so its valve clears chute + sieve + 55 gal drum",
+   "process": "saw, TIG, ground, passivate",
+   "files": [
+    "phase1/dxf/P1-311_foot_mm.dxf",
+    "phase1/dxf/P1-311_foot_in.dxf",
+    "phase1/cad/step/P1-311.step",
+    "phase1/drawings/parts/P1-311.svg"
+   ],
+   "material": "304 SS 3 in sq tube 11 ga ~14 m, 4 x 12 mm foot plates, 4 leg pads",
+   "qty": 1,
+   "vendor": "local stainless fabricator",
+   "labor_h": 16,
+   "material_usd": 650,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
    "part": "P1-302",
-   "title": "Blender bag-dump grate and dust hood (sits on the blender cover opening)",
+   "title": "Blender cover grate and dust hood (vent pickup on the blender inlet)",
    "process": "laser cut, brake, TIG",
    "files": [
     "phase1/dxf/P1-302_grate_mm.dxf",
@@ -755,7 +798,7 @@
   },
   {
    "part": "P1-304",
-   "title": "Vibratory sieve deck with hopper (12 mesh screen, magnet grate in outlet)",
+   "title": "Vibratory sieve deck on leg frame (12 mesh screen, grate magnet under the screen)",
    "process": "laser cut, roll, TIG",
    "files": [
     "phase1/cad/step/P1-304.step",
@@ -784,6 +827,23 @@
    "vendor": "in-house",
    "labor_h": 3,
    "material_usd": 140,
+   "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
+  },
+  {
+   "part": "P1-322",
+   "title": "Mill feed hopper and discharge chute to a lined drum (stainless, fabricated)",
+   "process": "laser cut, brake, TIG, polish",
+   "files": [
+    "phase1/dxf/P1-322_flange_mm.dxf",
+    "phase1/dxf/P1-322_flange_in.dxf",
+    "phase1/cad/step/P1-322.step",
+    "phase1/drawings/parts/P1-322.svg"
+   ],
+   "material": "304 SS 14 ga + 4 in BPE ferrule",
+   "qty": 1,
+   "vendor": "local stainless fabricator",
+   "labor_h": 8,
+   "material_usd": 230,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
@@ -863,7 +923,7 @@
   {
    "step": 3,
    "title": "Anchor the bin ring frame",
-   "image": "phase1/drawings/png/P1-210.png",
+   "image": "phase1/drawings/png/ASM-P1-001.png",
    "parts": [
     {
      "line": "P1-210",
@@ -879,7 +939,7 @@
     "torque wrench",
     "laser level"
    ],
-   "text": "Stand the ring frame on its marks, shim the foot plates level and anchor each with 1/2 in wedge anchors, 3 in embed. Seal the foot plates to the floor with food-grade silicone.",
+   "text": "Stand the ring frame on its marks (ring top 2,235 mm [88.0 in], drawing ASM-P1-001), shim the foot plates level and anchor each with 1/2 in wedge anchors, 3 in embed. Seal the foot plates to the floor with food-grade silicone. Roll the 4-step platform to the bin side.",
    "torque": "1/2 in wedge anchors 60 N\u00b7m [45 lbf\u00b7ft]",
    "check": "ring top level within 2 mm across"
   },
@@ -941,9 +1001,13 @@
   },
   {
    "step": 6,
-   "title": "Flexible screw and blender",
-   "image": "phase1/drawings/png/P1-302.png",
+   "title": "Riser stand, flexible screw and blender",
+   "image": "phase1/drawings/png/ASM-P1-001.png",
    "parts": [
+    {
+     "line": "P1-311",
+     "qty": 1
+    },
     {
      "line": "P1-224",
      "qty": 1
@@ -965,14 +1029,14 @@
     "pallet truck",
     "torque wrench"
    ],
-   "text": "Set the used blender on its marks and level it. Fit the bag-dump grate in the cover opening and the discharge chute to the outlet valve. Run the flexible screw from under the hopper valve to the blender inlet, supported at its midpoint.",
-   "torque": "M8 chute flange 18 N\u00b7m",
+   "text": "Anchor the riser stand (top 1,150 mm [45.3 in]) and bolt the used blender onto it (valve outlet 1,690 mm [66.5 in]); level it. Fit the bag-dump grate in the cover opening and the discharge chute to the outlet valve. Run the flexible screw from the intake grate under the hopper valve (550 mm [21.7 in]) to the blender inlet, supported at its midpoint; hand adds and premix are tipped into this grate.",
+   "torque": "M12 blender feet 70 N\u00b7m; M8 chute flange 18 N\u00b7m",
    "check": "blender inspected: ribbons clear the trough by 3 to 6 mm, shaft seals tight, cover interlock works"
   },
   {
    "step": 7,
    "title": "Sieve deck, magnet and drum dollies",
-   "image": "phase1/drawings/png/P1-304.png",
+   "image": "phase1/drawings/png/ASM-P1-002.png",
    "parts": [
     {
      "line": "P1-304",
@@ -992,7 +1056,7 @@
     },
     {
      "line": "P1-308",
-     "qty": 8
+     "qty": 6
     },
     {
      "line": "P1-309",
@@ -1002,11 +1066,38 @@
    "tools": [
     "torque wrench"
    ],
-   "text": "Stand the sieve deck under the chute, seat the 12 mesh screen on its ledge with the 4 quick clamps, bolt the vibrator to the leg frame and drop the grate magnet into the outlet. Build the three drum dollies with their casters.",
+   "text": "Stand the sieve deck under the chute, seat the 12 mesh screen on its ledge with the 4 quick clamps, bolt the vibrator to the leg frame and drop the grate magnet under the screen. Build the three drum dollies; a 55 gal drum on its dolly must roll in under the 4 in outlet (1,080 mm [42.5 in]).",
    "check": "screen seals all round; magnet pull test card picks up"
   },
   {
    "step": 8,
+   "title": "Hammer mill, feed magnet and hopper",
+   "image": "phase1/drawings/png/ASM-P1-002.png",
+   "parts": [
+    {
+     "line": "P1-320",
+     "qty": 1
+    },
+    {
+     "line": "P1-321",
+     "qty": 1
+    },
+    {
+     "line": "P1-322",
+     "qty": 1
+    }
+   ],
+   "tools": [
+    "torque wrench",
+    "hammer drill 3/8 in",
+    "IR thermometer"
+   ],
+   "text": "Set the mill on its stand and anchor it. Bolt the feed hopper to the mill inlet with the FDA gasket, slide the grate magnet into the hopper slot, and fit the discharge transition with a sock into a lined 5 gal pail. Connect the 150 cfm dust pickup.",
+   "torque": "M8 hopper and discharge flanges 18 N\u00b7m; 3/8 in stand anchors 34 N\u00b7m",
+   "check": "a 1 kg peppercorn trial grinds through the 1/8 in screen with the product under 40 \u00b0C [104 \u00b0F]; magnet pull test passes"
+  },
+  {
+   "step": 9,
    "title": "Weigh bench, hood and premix tumbler",
    "image": "phase1/drawings/png/P1-206.png",
    "parts": [
@@ -1043,7 +1134,7 @@
    "check": "both scales level (bubble) and calibrated with test weights"
   },
   {
-   "step": 9,
+   "step": 10,
    "title": "Dust collection",
    "image": "phase1/drawings/png/P1-207.png",
    "parts": [
@@ -1056,13 +1147,13 @@
     "duct tools",
     "anemometer"
    ],
-   "text": "Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm) and sieve (200 cfm), with a blast gate at each.",
-   "check": "measured airflow at each pickup within 10 % of its design value; total under the collector's 1,150 cfm"
+   "text": "Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), sieve (200 cfm) and mill (150 cfm), with a blast gate at each.",
+   "check": "measured airflow at each pickup within 10 % of its design value; total under the collector's 1,400 cfm"
   },
   {
-   "step": 10,
+   "step": 11,
    "title": "Pack bench",
-   "image": "phase1/drawings/png/P1-408.png",
+   "image": "phase1/drawings/png/ASM-P1-003.png",
    "parts": [
     {
      "line": "P1-409",
@@ -1117,9 +1208,9 @@
    "check": "metal detector rejects the Fe 1.5, non-Fe 2.0 and SS 2.5 mm test pieces in the leading, middle and trailing position"
   },
   {
-   "step": 11,
+   "step": 12,
    "title": "Controls and wiring",
-   "image": "phase1/drawings/png/LAY-P1.png",
+   "image": "phase1/drawings/png/ELE-P1-003.png",
    "parts": [
     {
      "line": "P1-225",
@@ -1138,11 +1229,11 @@
     "electrician's tools",
     "multimeter"
    ],
-   "text": "Mount the WAGO panel and the nine GS20 drives, wire feeders, probes, valve, screw and the 880 indicator per DosingStation.st's I/O declaration. E-stops and the hopper and screw guards go through the safety relay, not the PLC. A licensed electrician does the power wiring.",
+   "text": "Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, valve actuator, screw, blender and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). E-stops and the hopper and screw guards go through the safety relay, not the PLC. A licensed electrician does the power wiring.",
    "check": "every I/O point toggles on the PLC watch list; e-stop drops all drives"
   },
   {
-   "step": 12,
+   "step": 13,
    "title": "MES computer and commissioning",
    "image": "phase1/drawings/png/LAY-P1.png",
    "parts": [

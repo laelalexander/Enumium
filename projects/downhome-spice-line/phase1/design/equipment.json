@@ -408,14 +408,14 @@
   "qty": 1,
   "qty_basis": "one dosing station",
   "price": {
-   "usd": 5000.0,
-   "src": "build: material $2400 + 40 h x $65",
+   "usd": 5920.0,
+   "src": "build: material $2800 + 48 h x $65",
    "per": "each"
   },
   "footprint_mm": [
    3330,
    3330,
-   1275
+   2235
   ],
   "footprint_src": "calculated",
   "power": null,
@@ -430,16 +430,16 @@
   "growth_equiv": "",
   "build": {
    "drawing": "P1-210",
-   "material": "304 SS 2 in sq tube 11 ga ~60 m, 12 foot plates",
-   "material_usd": 2400,
-   "labor_h": 40,
+   "material": "304 SS 2 in sq tube 11 ga ~70 m, 12 foot plates, 3 load-cell mount plates",
+   "material_usd": 2800,
+   "labor_h": 48,
    "process": "saw, TIG, passivate",
    "files": [
     "cad/step/P1-210"
    ]
   },
   "reuse_in_growth": false,
-  "ext_usd": 5000.0
+  "ext_usd": 5920.0
  },
  {
   "tag": "P1-211",
@@ -731,29 +731,30 @@
  {
   "tag": "P1-223",
   "area": "Dosing",
-  "name": "Sanitary butterfly valve 4 in Tri-Clamp, manual squeeze-trigger handle",
-  "maker": "Central States Industrial (CSI)",
-  "model": "4 in butterfly valve, 316L, EPDM seat (confirm)",
+  "name": "Sanitary butterfly valve 4 in Tri-Clamp with 24 V DC electric actuator and open/closed limit switches (PLC-operated)",
+  "maker": "Valworx",
+  "model": "4 in sanitary butterfly valve 316L, EPDM seat, 24 V DC electric actuator with position switches (confirm model)",
   "specs": {
-   "size": "4 in Tri-Clamp"
+   "size": "4 in Tri-Clamp",
+   "actuator": "24 V DC on/off, about 10 s stroke, 2 limit switches"
   },
-  "source": "https://www.csidesigns.com/",
-  "supplier": "CSI",
+  "source": "https://www.valworx.com/",
+  "supplier": "Valworx",
   "qty": 1,
   "qty_basis": "weigh hopper outlet",
   "price": {
-   "usd": 420,
+   "usd": 1400,
    "src": "estimate"
   },
   "footprint_mm": [
-   0,
-   0,
-   0
+   300,
+   200,
+   350
   ],
   "footprint_src": "estimate",
-  "power": null,
+  "power": "24 V DC from P1-225",
   "air_cfm": 0,
-  "sanitary": "FDA seat",
+  "sanitary": "FDA seat, Tri-Clamp both sides",
   "alternates": [],
   "rate": null,
   "kind": "buy",
@@ -763,17 +764,18 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 420
+  "ext_usd": 1400
  },
  {
   "tag": "P1-224",
   "area": "Dosing",
-  "name": "Flexible screw conveyor, weigh hopper to blender inlet, sanitary",
+  "name": "Flexible screw conveyor, weigh hopper to blender inlet, sanitary, with intake grate for hand adds",
   "maker": "Flexicon",
-  "model": "Flexible screw conveyor, 2.5 in, low-profile floor hopper, SS (confirm)",
+  "model": "Flexible screw conveyor, 2.5 in, low-profile floor hopper with bag grate and dust collar, SS (confirm)",
   "specs": {
    "rate": "~1,000 L/h class (estimate)",
-   "length": "~4 m to the blender cover"
+   "length": "~4.5 m, rising about 2.6 m to the blender inlet on P1-311",
+   "intake": "bin charge from the weigh hopper valve, then hand adds and premix tipped at about 600 mm [24 in]"
   },
   "source": "https://flexicon.com/?p=14",
   "supplier": "Flexicon (Bethlehem PA)",
@@ -882,22 +884,24 @@
  {
   "tag": "P1-227",
   "area": "Dosing",
-  "name": "Rolling 2-step platform for loading bins",
+  "name": "Rolling 4-step platform for loading bins (40 in top step, handrails both sides)",
   "maker": "Cotterman",
-  "model": "2-step rolling ladder with handrails, OSHA (confirm)",
-  "specs": {},
+  "model": "4-step rolling ladder, 40 in top step, 24 in wide, handrails, OSHA/ANSI A14.7 (confirm)",
+  "specs": {
+   "reach": "bin rim 2,392 mm is about 1.38 m above the top step"
+  },
   "source": "https://www.cotterman.com/",
   "supplier": "Grainger",
   "qty": 1,
   "qty_basis": "bin loading",
   "price": {
-   "usd": 650,
+   "usd": 1100,
    "src": "estimate"
   },
   "footprint_mm": [
-   900,
-   600,
-   1200
+   1300,
+   800,
+   1900
   ],
   "footprint_src": "estimate",
   "power": null,
@@ -908,11 +912,11 @@
   "kind": "buy",
   "product_contact": false,
   "dust_cfm": 0,
-  "confirm": "",
+  "confirm": "bags over 1.4 m: use the bag-rest grate on each bin lid, or add a vacuum bag lifter if lifting assessment requires",
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 650
+  "ext_usd": 1100
  },
  {
   "tag": "P1-301",
@@ -954,9 +958,57 @@
   "ext_usd": 9000
  },
  {
+  "tag": "P1-311",
+  "area": "Blending",
+  "name": "Blender riser stand: lifts the blender so its valve clears chute + sieve + 55 gal drum",
+  "maker": "fabricated",
+  "model": "drawing P1-311",
+  "specs": {
+   "height": "1,150 mm [45.3 in] to the blender's leg feet (VERIFY on the used unit)",
+   "load": "blender ~450 kg + 70 kg batch, x3 design factor"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one blender",
+  "price": {
+   "usd": 1690.0,
+   "src": "build: material $650 + 16 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1700,
+   860,
+   1150
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "304, all tube ends capped and seal-welded; not product contact",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-311",
+   "material": "304 SS 3 in sq tube 11 ga ~14 m, 4 x 12 mm foot plates, 4 leg pads",
+   "material_usd": 650,
+   "labor_h": 16,
+   "process": "saw, TIG, ground, passivate",
+   "files": [
+    "dxf/P1-311_foot"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1690.0
+ },
+ {
   "tag": "P1-302",
   "area": "Blending",
-  "name": "Blender bag-dump grate and dust hood (sits on the blender cover opening)",
+  "name": "Blender cover grate and dust hood (vent pickup on the blender inlet)",
   "maker": "fabricated",
   "model": "drawing P1-302",
   "specs": {
@@ -1051,7 +1103,7 @@
  {
   "tag": "P1-304",
   "area": "Blending",
-  "name": "Vibratory sieve deck with hopper (12 mesh screen, magnet grate in outlet)",
+  "name": "Vibratory sieve deck on leg frame (12 mesh screen, grate magnet under the screen)",
   "maker": "fabricated",
   "model": "drawing P1-304; bought screen, vibrator and magnet",
   "specs": {
@@ -1174,9 +1226,9 @@
  {
   "tag": "P1-307",
   "area": "Blending",
-  "name": "Grate magnet 12 x 12 in, rare earth, in sieve outlet",
+  "name": "Grate magnet 12 x 12 in, rare earth, on brackets under the sieve screen",
   "maker": "Industrial Magnetics, Inc.",
-  "model": "Grate-in-housing, 1 in tubes, 10,000 gauss class (confirm)",
+  "model": "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
   "specs": {
    "strength": "10,000 G class (estimate)"
   },
@@ -1211,25 +1263,25 @@
  {
   "tag": "P1-308",
   "area": "Blending",
-  "name": "Lidded food-grade blend drum 30 gal with liner (QC hold container)",
+  "name": "Lidded food-grade blend drum 55 gal, open top, with liner (one batch per drum, QC hold container)",
   "maker": "Uline",
-  "model": "30 gallon plastic drum, open top, with lever-lock lid (confirm SKU)",
+  "model": "55 gallon plastic drum, open top, with lever-lock lid, 23 x 36 in (confirm SKU)",
   "specs": {
-   "volume": "30 gal (113 L) holds one 100 lb batch at 0.42 g/mL"
+   "volume": "55 gal (208 L); a 147 lb [66.7 kg] batch at 0.51 g/mL is 131 L, 63 % full"
   },
   "source": "https://www.uline.com/BL_1525/Plastic-Drums",
   "supplier": "Uline",
-  "qty": 8,
-  "qty_basis": "17 batches/week, held 1 day for QC: 6 in use + 2 spare",
+  "qty": 6,
+  "qty_basis": "7 batches/week, one drum per batch, held up to 1 day for QC: 1 filling, 2 in hold, 1 at the filler, 2 spare",
   "price": {
-   "usd": 85,
+   "usd": 120,
    "src": "estimate",
    "per": "each"
   },
   "footprint_mm": [
-   500,
-   500,
-   750
+   584,
+   584,
+   914
   ],
   "footprint_src": "estimate",
   "power": null,
@@ -1244,7 +1296,7 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 680
+  "ext_usd": 720
  },
  {
   "tag": "P1-309",
@@ -1253,21 +1305,22 @@
   "maker": "fabricated",
   "model": "drawing P1-309",
   "specs": {
-   "load": "250 lb"
+   "load": "250 lb",
+   "fits": "55 gal drum \u00d8584 [23 in]"
   },
   "source": "cad/p1_parts.py",
   "supplier": "in-house",
   "qty": 3,
-  "qty_basis": "two drums moving + one at the filler",
+  "qty_basis": "one under the sieve, one in hold, one at the filler",
   "price": {
    "usd": 335.0,
    "src": "build: material $140 + 3 h x $65",
    "per": "each"
   },
   "footprint_mm": [
-   560,
-   560,
-   150
+   640,
+   640,
+   130
   ],
   "footprint_src": "calculated",
   "power": null,
@@ -1294,21 +1347,146 @@
   "ext_usd": 1005.0
  },
  {
+  "tag": "P1-320",
+  "area": "Grinding",
+  "name": "Small sanitary hammer mill on stand: grinds whole peppercorns, chiles and leaf herbs to size in house",
+  "maker": "Schutte-Buffalo Hammermill",
+  "model": "Mini Mill class lab/pilot hammer mill, 2 HP, stainless contact parts, interchangeable screens (confirm model and screen set)",
+  "specs": {
+   "rate": "50-150 lb/h on pepper at 1/8 in screen (maker class, estimate)",
+   "need": "coarse black pepper about 50 lb/week at launch, 1 h/week",
+   "screens": "1/16, 1/8 and 3/16 in perforated, SS",
+   "temperature": "batch under 20 min so the spice stays below 40 \u00b0C (volatile oils)"
+  },
+  "source": "https://www.hammermills.com/",
+  "supplier": "Schutte-Buffalo (Buffalo NY)",
+  "qty": 1,
+  "qty_basis": "one mill; whole spices are optional at launch (buy ground if deferred)",
+  "price": {
+   "usd": 9500,
+   "src": "estimate: new pilot-scale mill with stand"
+  },
+  "footprint_mm": [
+   900,
+   700,
+   1500
+  ],
+  "footprint_src": "estimate",
+  "power": "230 V 1-ph or 208 V 3-ph, 2 HP",
+  "air_cfm": 0,
+  "sanitary": "SS contact, tool-free screen and hammer access, dry clean between spices",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 150,
+  "confirm": "grind trial with our peppercorns before ordering: particle size, heat rise, rate",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 9500
+ },
+ {
+  "tag": "P1-321",
+  "area": "Grinding",
+  "name": "Grate magnet in the mill feed throat (tramp metal ahead of the mill, NFPA 61 ignition control)",
+  "maker": "Industrial Magnetics, Inc.",
+  "model": "Grate-in-housing 6 x 6 in, rare earth, 1 in tubes (confirm to mill inlet)",
+  "specs": {
+   "strength": "10,000 gauss class"
+  },
+  "source": "https://www.magnetics.com/",
+  "supplier": "IMI",
+  "qty": 1,
+  "qty_basis": "one mill",
+  "price": {
+   "usd": 450,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   200,
+   200,
+   120
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "pull-out tubes, wipe clean each run",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 450
+ },
+ {
+  "tag": "P1-322",
+  "area": "Grinding",
+  "name": "Mill feed hopper and discharge chute to a lined drum (stainless, fabricated)",
+  "maker": "fabricated",
+  "model": "drawing P1-322",
+  "specs": {
+   "feed": "10 L hopper with magnet slot",
+   "discharge": "4 in Tri-Clamp to a cotton sock into a lined 5 gal pail (about 10 kg), tipped into bin B06"
+  },
+  "source": "cad/p1_parts.py",
+  "supplier": "local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one mill",
+  "price": {
+   "usd": 750.0,
+   "src": "build: material $230 + 8 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   400,
+   400,
+   700
+  ],
+  "footprint_src": "calculated",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "304 #4, welds ground, opens without tools",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-322",
+   "material": "304 SS 14 ga + 4 in BPE ferrule",
+   "material_usd": 230,
+   "labor_h": 8,
+   "process": "laser cut, brake, TIG, polish",
+   "files": [
+    "dxf/P1-322_flange"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 750.0
+ },
+ {
   "tag": "P1-310",
   "area": "Utilities",
-  "name": "Portable cartridge dust collector (weigh hood, blender hood, sieve)",
+  "name": "Portable cartridge dust collector (weigh hood, blender hood, sieve, mill)",
   "maker": "Camfil APC",
-  "model": "Gold Series GS-Mini portable / small GSX (confirm >= 1,150 cfm model)",
+  "model": "Gold Series small cartridge collector (confirm >= 1,400 cfm model)",
   "specs": {
-   "airflow": "900 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150) + 25 % = 1,125 cfm, checked by foodsafety.py",
-   "design_cfm": 1150
+   "airflow": "1,050 cfm pickups (weigh hood 300, blender grate 250, sieve 200, weigh hopper vent 150, mill 150) + 25 % = 1,313 cfm, checked by foodsafety.py",
+   "design_cfm": 1400
   },
   "source": "https://camfilapc.com/?p=3400",
   "supplier": "Camfil APC",
   "qty": 1,
-  "qty_basis": "all three pickups",
+  "qty_basis": "all five pickups",
   "price": {
-   "usd": 12500,
+   "usd": 14000,
    "src": "estimate"
   },
   "footprint_mm": [
@@ -1329,7 +1507,7 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 12500
+  "ext_usd": 14000
  },
  {
   "tag": "P1-401",
