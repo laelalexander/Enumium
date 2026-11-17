@@ -195,7 +195,7 @@ if (-not $NoShortcut) {
     try { Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:4377/api/quit" -TimeoutSec 2 | Out-Null; Start-Sleep -Milliseconds 600 } catch { }
     $old = Join-Path $appDir "Anatomy.ps1"   # first-version launcher, no longer used
     if (Test-Path -LiteralPath $old) { Remove-Item -LiteralPath $old -Force }
-    foreach ($f in @("server.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
+    foreach ($f in @("server.js", "xometry.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
       Copy-Item -LiteralPath (Join-Path $appSrc $f) -Destination $appDir -Force
     }
     $pub = Join-Path $appDir "public"
