@@ -207,10 +207,13 @@ async function loadModel(p) {
   if (e === 'obj') return new OBJLoader().parse(await (await fetch(url)).text());
   if (e === 'glb' || e === 'gltf') {
     // glTF is Y-up by spec; this viewer is Z-up. CAD exporters (OCCT/cadquery) convert to Y-up, so turn the
-    // scene back. Raw trimesh exports keep the source Z-up axes with no root transform, so leave those as they are.
+    // scene back. Only a trimesh export with no root transform keeps the source Z-up axes as-is; leave just that case alone.
     const g = await new GLTFLoader().loadAsync(url);
-    const gen = String(g.parser?.json?.asset?.generator || '');
-    if (!/trimesh/i.test(gen)) { const wrap = new THREE.Group(); g.scene.rotation.x = Math.PI / 2; wrap.add(g.scene); wrap.updateMatrixWorld(true); return wrap; }
+    const js = g.parser?.json || {};
+    const gen = String(js.asset?.generator || '');
+    const roots = (js.scenes?.[js.scene || 0]?.nodes || []).map(i => js.nodes?.[i] || {});
+    const rootXf = roots.some(n => n.matrix || n.rotation);   // e.g. trimesh writes a Y-up root matrix for Z-up sources
+    if (!/trimesh/i.test(gen) || rootXf) { const wrap = new THREE.Group(); g.scene.rotation.x = Math.PI / 2; wrap.add(g.scene); wrap.updateMatrixWorld(true); return wrap; }
     return g.scene;
   }
   if (e === 'step' || e === 'stp') {
