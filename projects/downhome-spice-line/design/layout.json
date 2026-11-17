@@ -1,0 +1,990 @@
+{
+ "title": {
+  "title": "LAY-001 PLANT LAYOUT",
+  "project": "Down Home Creole \u00b7 dry blending and packing plant \u00b7 Growth option 6,000 lb/day",
+  "number": "DH-LAY-001",
+  "rev": "A",
+  "date": "2026-11-17",
+  "status": "FOR REVIEW"
+ },
+ "building": {
+  "w": 42672.0,
+  "h": 27432.0,
+  "clear_height_mm": 6705.6
+ },
+ "rules": {
+  "min_clear_mm": 900
+ },
+ "rooms": [
+  {
+   "name": "Raw material warehouse",
+   "x": 0,
+   "y": 0,
+   "w": 15000,
+   "h": 12000,
+   "zone": "Z1 warehouse",
+   "label_at": [
+    4000,
+    3800
+   ]
+  },
+  {
+   "name": "Packaging materials",
+   "x": 15000,
+   "y": 0,
+   "w": 12000,
+   "h": 12000,
+   "zone": "Z1 warehouse",
+   "label_at": [
+    15400,
+    3800
+   ]
+  },
+  {
+   "name": "Utilities & electrical",
+   "x": 27000,
+   "y": 0,
+   "w": 5000,
+   "h": 6000,
+   "zone": "support",
+   "label_at": [
+    27200,
+    5600
+   ]
+  },
+  {
+   "name": "Maintenance",
+   "x": 27000,
+   "y": 6000,
+   "w": 5000,
+   "h": 6000,
+   "zone": "support",
+   "label_at": [
+    27200,
+    11600
+   ]
+  },
+  {
+   "name": "Finished goods & shipping",
+   "x": 32000,
+   "y": 0,
+   "w": 10672.0,
+   "h": 12000,
+   "zone": "Z1 warehouse",
+   "label_at": [
+    32400,
+    3800
+   ]
+  },
+  {
+   "name": "Weigh & dispense",
+   "x": 0,
+   "y": 12000,
+   "w": 8000,
+   "h": 8000,
+   "zone": "Z3 high-care dry (exposed product)",
+   "label_at": [
+    300,
+    19600
+   ]
+  },
+  {
+   "name": "Hygiene vestibule & lockers",
+   "x": 0,
+   "y": 20000,
+   "w": 4000,
+   "h": 7432.0,
+   "zone": "support",
+   "label_at": [
+    200,
+    27032.0
+   ]
+  },
+  {
+   "name": "Offices, QC lab & IT",
+   "x": 4000,
+   "y": 20000,
+   "w": 4000,
+   "h": 7432.0,
+   "zone": "support",
+   "label_at": [
+    4200,
+    27032.0
+   ]
+  },
+  {
+   "name": "Blending room",
+   "x": 8000,
+   "y": 12000,
+   "w": 12000,
+   "h": 15432.0,
+   "zone": "Z3 high-care dry (exposed product)",
+   "label_at": [
+    8300,
+    27032.0
+   ]
+  },
+  {
+   "name": "Pack room B (wheat)",
+   "x": 20000,
+   "y": 12000,
+   "w": 11000,
+   "h": 5500,
+   "zone": "Z3A allergen (wheat) exposed",
+   "hatch": true,
+   "label_at": [
+    20300,
+    13700
+   ]
+  },
+  {
+   "name": "Case & pallet area",
+   "x": 31000,
+   "y": 12000,
+   "w": 11672.0,
+   "h": 5500,
+   "zone": "Z2 controlled (packaging, non-exposed)",
+   "label_at": [
+    31300,
+    17100
+   ]
+  },
+  {
+   "name": "Packing hall A",
+   "x": 20000,
+   "y": 17500,
+   "w": 22672.0,
+   "h": 9932.0,
+   "zone": "Z3 high-care dry (exposed product)",
+   "label_at": [
+    28000,
+    27032.0
+   ]
+  },
+  {
+   "name": "Allergen cage (wheat)",
+   "x": 300,
+   "y": 4800,
+   "w": 3048,
+   "h": 6096,
+   "zone": "Z1 warehouse",
+   "wall": false,
+   "hatch": true,
+   "label_at": [
+    400,
+    10700
+   ]
+  },
+  {
+   "name": "Dust collector pad (outside)",
+   "x": 12000,
+   "y": 27932.0,
+   "w": 3000,
+   "h": 2500,
+   "zone": "Z0 outside",
+   "wall": false,
+   "label_at": [
+    15200,
+    30332.0
+   ]
+  }
+ ],
+ "racks": [
+  {
+   "name": "R1 raw",
+   "x": 3800,
+   "y": 10900,
+   "bays": 4,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "R2 raw",
+   "x": 3800,
+   "y": 4800,
+   "bays": 3,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "R3 raw",
+   "x": 3800,
+   "y": 5867,
+   "bays": 3,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "P1 packaging",
+   "x": 15300,
+   "y": 10900,
+   "bays": 2,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "P2 packaging",
+   "x": 15300,
+   "y": 4800,
+   "bays": 2,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "P3 packaging",
+   "x": 15300,
+   "y": 5867,
+   "bays": 2,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "F1 finished",
+   "x": 32400,
+   "y": 10900,
+   "bays": 3,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  },
+  {
+   "name": "F2 finished",
+   "x": 32400,
+   "y": 5600,
+   "bays": 3,
+   "dir": "x",
+   "bay_mm": 2438,
+   "depth_mm": 1067,
+   "positions_per_bay": 8
+  }
+ ],
+ "equipment": [
+  {
+   "tag": "RCV-101",
+   "room": "Raw material warehouse",
+   "x": 11500,
+   "y": 1000
+  },
+  {
+   "tag": "WS-201",
+   "room": "Weigh & dispense",
+   "x": 600,
+   "y": 12700
+  },
+  {
+   "tag": "WS-202",
+   "room": "Weigh & dispense",
+   "x": 2300,
+   "y": 12700
+  },
+  {
+   "tag": "WS-203",
+   "room": "Weigh & dispense",
+   "x": 3600,
+   "y": 12700,
+   "size": [
+    1830,
+    760
+   ],
+   "name": "WS-203 micro scale on 72 x 30 in SS bench"
+  },
+  {
+   "tag": "WS-204",
+   "room": "Weigh & dispense",
+   "x": 2300,
+   "y": 14200,
+   "size": [
+    400,
+    400
+   ]
+  },
+  {
+   "tag": "PM-210",
+   "room": "Weigh & dispense",
+   "x": 4900,
+   "y": 16800
+  },
+  {
+   "tag": "BD-301",
+   "room": "Blending room",
+   "x": 9000,
+   "y": 23800
+  },
+  {
+   "tag": "BB-302",
+   "room": "Blending room",
+   "x": 9000,
+   "y": 19800
+  },
+  {
+   "tag": "RB-303",
+   "room": "Blending room",
+   "x": 12000,
+   "y": 22000
+  },
+  {
+   "tag": "SC-304",
+   "room": "Blending room",
+   "x": 15300,
+   "y": 21900
+  },
+  {
+   "tag": "MD-305",
+   "room": "Blending room",
+   "x": 15700,
+   "y": 22300
+  },
+  {
+   "tag": "FC-307",
+   "room": "Blending room",
+   "x": 17200,
+   "y": 22100
+  },
+  {
+   "tag": "BF-306",
+   "room": "Blending room",
+   "x": 17000,
+   "y": 18800
+  },
+  {
+   "tag": "HOLD-1",
+   "room": "Blending room",
+   "x": 15000,
+   "y": 12600,
+   "size": [
+    4500,
+    3200
+   ],
+   "name": "QC hold: 6 filled blend bags awaiting release"
+  },
+  {
+   "tag": "CP-300",
+   "room": "Blending room",
+   "x": 8150,
+   "y": 14200,
+   "size": [
+    762,
+    305
+   ]
+  },
+  {
+   "tag": "DC-310",
+   "room": "Dust collector pad (outside)",
+   "x": 12500,
+   "y": 28232.0
+  },
+  {
+   "tag": "AC-311",
+   "room": "Utilities & electrical",
+   "x": 27500,
+   "y": 500
+  },
+  {
+   "tag": "AF-312",
+   "room": "Utilities & electrical",
+   "x": 29000,
+   "y": 500
+  },
+  {
+   "tag": "SRV-611",
+   "room": "Offices, QC lab & IT",
+   "x": 7000,
+   "y": 20300,
+   "size": [
+    600,
+    1000
+   ]
+  },
+  {
+   "tag": "BU-401",
+   "room": "Packing hall A",
+   "x": 20600,
+   "y": 23300
+  },
+  {
+   "tag": "UN-402",
+   "room": "Packing hall A",
+   "x": 20800,
+   "y": 19700
+  },
+  {
+   "tag": "FL-403",
+   "room": "Packing hall A",
+   "x": 22700,
+   "y": 19300
+  },
+  {
+   "tag": "CP-404",
+   "room": "Packing hall A",
+   "x": 25600,
+   "y": 19800
+  },
+  {
+   "tag": "IS-405",
+   "room": "Packing hall A",
+   "x": 28100,
+   "y": 19980
+  },
+  {
+   "tag": "LB-406",
+   "room": "Packing hall A",
+   "x": 29200,
+   "y": 19780
+  },
+  {
+   "tag": "VS-408",
+   "room": "Packing hall A",
+   "x": 31400,
+   "y": 20080
+  },
+  {
+   "tag": "CW-409",
+   "room": "Packing hall A",
+   "x": 32200,
+   "y": 19880
+  },
+  {
+   "tag": "AT-410",
+   "room": "Packing hall A",
+   "x": 33900,
+   "y": 19650
+  },
+  {
+   "tag": "CK-412",
+   "room": "Packing hall A",
+   "x": 35500,
+   "y": 19300
+  },
+  {
+   "tag": "CE-411",
+   "room": "Packing hall A",
+   "x": 35400,
+   "y": 22200
+  },
+  {
+   "tag": "CS-413",
+   "room": "Packing hall A",
+   "x": 38200,
+   "y": 19850
+  },
+  {
+   "tag": "PA-414",
+   "room": "Packing hall A",
+   "x": 40250,
+   "y": 19950
+  },
+  {
+   "tag": "CP-400",
+   "room": "Packing hall A",
+   "x": 26200,
+   "y": 23000,
+   "size": [
+    762,
+    305
+   ]
+  },
+  {
+   "tag": "PL-415",
+   "room": "Case & pallet area",
+   "x": 40000,
+   "y": 12700,
+   "rot": 90
+  },
+  {
+   "tag": "SW-416",
+   "room": "Case & pallet area",
+   "x": 36000,
+   "y": 12800
+  },
+  {
+   "tag": "BU-502",
+   "room": "Pack room B (wheat)",
+   "x": 20500,
+   "y": 14300,
+   "allergen": "wheat"
+  },
+  {
+   "tag": "NW-501",
+   "room": "Pack room B (wheat)",
+   "x": 23300,
+   "y": 14700,
+   "allergen": "wheat"
+  },
+  {
+   "tag": "BS-503",
+   "room": "Pack room B (wheat)",
+   "x": 25700,
+   "y": 15100
+  },
+  {
+   "tag": "IM-504",
+   "room": "Pack room B (wheat)",
+   "x": 27000,
+   "y": 14900
+  },
+  {
+   "tag": "CW-506",
+   "room": "Pack room B (wheat)",
+   "x": 28000,
+   "y": 14900
+  },
+  {
+   "tag": "TBL-B",
+   "room": "Pack room B (wheat)",
+   "x": 28900,
+   "y": 14600,
+   "size": [
+    1830,
+    760
+   ],
+   "name": "Pack-off table, SS 72 x 30 in"
+  }
+ ],
+ "lines": [
+  [
+   "UN-402",
+   "FL-403",
+   "CP-404",
+   "IS-405",
+   "LB-406",
+   "VS-408",
+   "CW-409",
+   "AT-410",
+   "CK-412",
+   "CS-413",
+   "PA-414"
+  ],
+  [
+   "BU-502",
+   "NW-501",
+   "BS-503",
+   "IM-504",
+   "CW-506",
+   "TBL-B"
+  ],
+  [
+   "WS-201",
+   "WS-202",
+   "WS-203"
+  ]
+ ],
+ "linked": [
+  [
+   "WS-201",
+   "WS-204"
+  ],
+  [
+   "RB-303",
+   "MD-305"
+  ],
+  [
+   "AC-311",
+   "AF-312"
+  ],
+  [
+   "SC-304",
+   "MD-305"
+  ],
+  [
+   "MD-305",
+   "FC-307"
+  ],
+  [
+   "SC-304",
+   "FC-307"
+  ],
+  [
+   "RB-303",
+   "SC-304"
+  ],
+  [
+   "CE-411",
+   "CK-412"
+  ]
+ ],
+ "doors": [
+  {
+   "name": "DOCK 1 (receiving)",
+   "x": 1500,
+   "y": 0,
+   "w": 2700,
+   "side": "S"
+  },
+  {
+   "name": "DOCK 2 (receiving)",
+   "x": 6000,
+   "y": 0,
+   "w": 2700,
+   "side": "S"
+  },
+  {
+   "name": "DOCK 3 (shipping)",
+   "x": 34000,
+   "y": 0,
+   "w": 2700,
+   "side": "S"
+  },
+  {
+   "name": "DOCK 4 (shipping)",
+   "x": 38500,
+   "y": 0,
+   "w": 2700,
+   "side": "S"
+  },
+  {
+   "name": "Staff entry",
+   "x": 0,
+   "y": 22000,
+   "w": 1000,
+   "side": "W"
+  },
+  {
+   "name": "Airlock to weigh",
+   "x": 2500,
+   "y": 12000,
+   "w": 2400,
+   "side": "S"
+  },
+  {
+   "name": "Bag door",
+   "x": 8000,
+   "y": 13000,
+   "w": 2400,
+   "side": "E"
+  },
+  {
+   "name": "Bulk bag door",
+   "x": 20000,
+   "y": 21000,
+   "w": 3000,
+   "side": "E"
+  },
+  {
+   "name": "Bag door B",
+   "x": 20000,
+   "y": 13000,
+   "w": 2400,
+   "side": "E"
+  },
+  {
+   "name": "Pkg airlock A",
+   "x": 21000,
+   "y": 17500,
+   "w": 2400,
+   "side": "S"
+  },
+  {
+   "name": "Pkg airlock B",
+   "x": 22000,
+   "y": 12000,
+   "w": 2000,
+   "side": "S"
+  },
+  {
+   "name": "Cases out B",
+   "x": 31000,
+   "y": 14000,
+   "w": 1500,
+   "side": "E"
+  },
+  {
+   "name": "Pallets to FG",
+   "x": 36000,
+   "y": 12000,
+   "w": 3000,
+   "side": "S"
+  }
+ ],
+ "flows": [
+  {
+   "name": "raw in",
+   "type": "raw",
+   "pts": [
+    [
+     3000,
+     300
+    ],
+    [
+     3000,
+     3600
+    ],
+    [
+     14000,
+     3600
+    ],
+    [
+     14000,
+     9000
+    ],
+    [
+     14500,
+     11500
+    ],
+    [
+     3700,
+     11500
+    ],
+    [
+     3700,
+     12500
+    ]
+   ]
+  },
+  {
+   "name": "weighed kits to blending",
+   "type": "product",
+   "pts": [
+    [
+     6500,
+     13500
+    ],
+    [
+     9200,
+     13500
+    ],
+    [
+     9200,
+     23000
+    ]
+   ]
+  },
+  {
+   "name": "blend through sifter to bag",
+   "type": "product",
+   "pts": [
+    [
+     13400,
+     22600
+    ],
+    [
+     15900,
+     22600
+    ],
+    [
+     17600,
+     21000
+    ],
+    [
+     18000,
+     19900
+    ]
+   ]
+  },
+  {
+   "name": "filled bag to QC hold",
+   "type": "product",
+   "pts": [
+    [
+     18000,
+     18700
+    ],
+    [
+     18000,
+     16000
+    ]
+   ]
+  },
+  {
+   "name": "released bag to line A",
+   "type": "product",
+   "pts": [
+    [
+     19500,
+     15000
+    ],
+    [
+     19500,
+     21000
+    ],
+    [
+     21600,
+     24000
+    ]
+   ]
+  },
+  {
+   "name": "released bag to station B",
+   "type": "product",
+   "pts": [
+    [
+     19400,
+     14500
+    ],
+    [
+     21500,
+     15300
+    ]
+   ]
+  },
+  {
+   "name": "line A containers",
+   "type": "product",
+   "pts": [
+    [
+     21400,
+     20300
+    ],
+    [
+     41000,
+     20300
+    ],
+    [
+     41000,
+     17000
+    ],
+    [
+     40900,
+     15700
+    ]
+   ]
+  },
+  {
+   "name": "empty containers in",
+   "type": "packaging",
+   "pts": [
+    [
+     20500,
+     6500
+    ],
+    [
+     22200,
+     6500
+    ],
+    [
+     22200,
+     17000
+    ],
+    [
+     21400,
+     19700
+    ]
+   ]
+  },
+  {
+   "name": "pallets to FG",
+   "type": "finished",
+   "pts": [
+    [
+     40800,
+     12600
+    ],
+    [
+     40800,
+     9000
+    ],
+    [
+     37000,
+     9000
+    ],
+    [
+     37000,
+     600
+    ]
+   ]
+  },
+  {
+   "name": "station B cases",
+   "type": "finished",
+   "pts": [
+    [
+     30700,
+     15000
+    ],
+    [
+     32500,
+     15000
+    ],
+    [
+     34500,
+     13500
+    ],
+    [
+     34500,
+     9000
+    ]
+   ]
+  },
+  {
+   "name": "staff",
+   "type": "people",
+   "pts": [
+    [
+     500,
+     22500
+    ],
+    [
+     2000,
+     22500
+    ],
+    [
+     2000,
+     19000
+    ],
+    [
+     3500,
+     19000
+    ]
+   ]
+  },
+  {
+   "name": "dust + bag waste out",
+   "type": "waste",
+   "pts": [
+    [
+     10000,
+     25500
+    ],
+    [
+     10000,
+     26800
+    ],
+    [
+     13500,
+     26800
+    ],
+    [
+     13500,
+     28032.0
+    ]
+   ]
+  }
+ ],
+ "dims": [
+  {
+   "dir": "h",
+   "x1": 20800,
+   "x2": 41100,
+   "y": 26500,
+   "label": "LINE A  20,300 [66.6 ft]"
+  },
+  {
+   "dir": "v",
+   "x": 19800,
+   "y1": 12000,
+   "y2": 27432.0,
+   "label": "BLENDING ROOM 15,432 [50.6 ft]"
+  }
+ ],
+ "notes": [
+  "Clear height 22 ft [6,706 mm] minimum: bulk bag frames BB-302, BF-306, BU-401, BU-502 are 14 ft [4,270 mm] tall plus forklift lift.",
+  "Ribbon blender RB-303 stands on a 1,600 mm [63 in] leg extension so it discharges by gravity through SC-304 and MD-305.",
+  "Exposed-product rooms (Z3): sealed epoxy floor sloped 1% to dry-clean points, coved base 4 in, washable ceiling, no overhead ledges.",
+  "Wheat products are opened only in Pack room B (Z3A) and the blender on the Friday wheat campaign; room B is held at negative pressure.",
+  "Rack positions from storage.json: raw 2 weeks, packaging 1 week, finished goods 3 days (estimate of pallet loads).",
+  "Dust collector outside the north wall with explosion vent pointed away from walkways; return no air to the building.",
+  "Sizes from equipment.json; maker-documented footprints where published, otherwise estimates to be replaced by vendor GA drawings."
+ ]
+}

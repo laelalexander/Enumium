@@ -1,0 +1,2462 @@
+[
+ {
+  "tag": "RCV-101",
+  "area": "Receiving",
+  "name": "Receiving floor scale + terminal (verify inbound weights)",
+  "maker": "Mettler-Toledo",
+  "model": "PBA655 floor scale 48x48 in, 5,000 lb + IND570 terminal (material no. on quote)",
+  "specs": {
+   "capacity": "5,000 lb [2,268 kg] (estimate of size chosen)",
+   "terminal": "IND570, Ethernet/IP option (documented)"
+  },
+  "source": "https://www.mt.com/dam/ind/IND_PDF/2021/Brochures/44098288_B_MAR_BR_PBA655x_USA.pdf",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "one receiving dock",
+  "price": {
+   "usd": 9500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1219,
+   1219,
+   100
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "painted or SS platform outside the processing zone",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "platform size and capacity on quote"
+ },
+ {
+  "tag": "WH-102",
+  "area": "Storage",
+  "name": "Selective pallet rack, 3 beam levels + floor, 96 in beams",
+  "maker": "Steel King",
+  "model": "SK2000 boltless selective rack (frames 42 in deep, 96 in beams)",
+  "specs": {
+   "positions_per_bay": "8 (2 per level x 4 levels) (calculated)",
+   "beam_capacity": "per load chart (documented by maker)"
+  },
+  "source": "https://www.steelking.com/pallet-rack/",
+  "supplier": "Steel King dealer / local rack installer",
+  "qty": 22,
+  "qty_basis": "storage.json: raw 2 weeks + packaging 1 week + finished goods 3 days = 22 bays of 8 positions",
+  "price": {
+   "usd": 650,
+   "src": "estimate",
+   "per": "bay"
+  },
+  "footprint_mm": [
+   2438,
+   1067,
+   4877
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "keep 18 in [457 mm] from walls for inspection and pest control",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "WH-103",
+  "area": "Storage",
+  "name": "Allergen (wheat) segregation cage with lockable door",
+  "maker": "WireCrafters",
+  "model": "Style 840 woven wire partition, 10 ft high, sliding door",
+  "specs": {
+   "height": "10 ft [3,048 mm] (assumed)",
+   "use": "wheat flour, whole wheat flour stored apart (site: 2 ingredients carry wheat)"
+  },
+  "source": "https://www.wirecrafters.com/products/wire-partitions/",
+  "supplier": "WireCrafters dealer",
+  "qty": 1,
+  "qty_basis": "one allergen store",
+  "price": {
+   "usd": 7800,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   6096,
+   3048,
+   3048
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "yellow-coded tools stay inside the cage",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "FL-104",
+  "area": "Storage",
+  "name": "Electric counterbalance forklift (no LPG in food or dust zones)",
+  "maker": "Toyota Material Handling",
+  "model": "Core Electric 8FBE20U, 4,000 lb",
+  "specs": {
+   "capacity": "4,000 lb [1,814 kg] (documented)",
+   "fuel": "electric, no exhaust"
+  },
+  "source": "https://www.toyotaforklift.com/lifts/electric-motor-rider-forklifts/core-electric-forklift",
+  "supplier": "Toyota Material Handling dealer",
+  "qty": 1,
+  "qty_basis": "bulk bags 1,000-2,000 lb on and off discharger frames; one truck covers 6-8 bag moves per day",
+  "price": {
+   "usd": 38000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   3200,
+   1100,
+   2100
+  ],
+  "footprint_src": "estimate",
+  "power": "battery charger 208 V 3-ph",
+  "air_cfm": 0,
+  "sanitary": "electric only; charge outside the processing zone",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "PJ-105",
+  "area": "Storage",
+  "name": "Electric walkie pallet jack",
+  "maker": "Crown",
+  "model": "WP 3200 Series",
+  "specs": {
+   "capacity": "4,500 lb (documented)"
+  },
+  "source": "https://www.crown.com/en-us/forklifts/walkie-pallet-jack-wp-3200.html",
+  "supplier": "Crown dealer",
+  "qty": 2,
+  "qty_basis": "one in receiving / storage, one at the pack line end",
+  "price": {
+   "usd": 6500,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1900,
+   700,
+   1300
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "WS-201",
+  "area": "Weigh & dispense",
+  "name": "Major-ingredient floor scale + terminal (bags into batch tote)",
+  "maker": "Mettler-Toledo",
+  "model": "PBA655 washdown floor scale 36x36 in, 1,000 lb + IND570 terminal",
+  "specs": {
+   "capacity": "1,000 lb x 0.2 lb (estimate of build)",
+   "terminal": "IND570 with Ethernet; MES reads weight (calculated need)"
+  },
+  "source": "https://www.mt.com/IND570",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "major ingredients >= 2% of a batch are weighed bag-wise here (site premix rule)",
+  "price": {
+   "usd": 8200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   914,
+   914,
+   90
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "stainless washdown version",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "material no."
+ },
+ {
+  "tag": "WS-202",
+  "area": "Weigh & dispense",
+  "name": "Bench scale 60 kg for partial bags",
+  "maker": "Mettler-Toledo",
+  "model": "ICS685 bench scale, 60 kg (ICS685k-60LA/f, confirm)",
+  "specs": {
+   "capacity": "60 kg [132 lb]",
+   "readability": "2 g (estimate for class)",
+   "interfaces": "Ethernet/RS232 (documented for ICS685)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/bench-scales/checkweigher/ICS685/ICS685k-count-6SM-f.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "partial bags of majors",
+  "price": {
+   "usd": 3200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   600,
+   500,
+   900
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "stainless",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "exact 60 kg model"
+ },
+ {
+  "tag": "WS-203",
+  "area": "Weigh & dispense",
+  "name": "Micro-ingredient scale 6 kg x 0.1 g (minors under 2%)",
+  "maker": "Mettler-Toledo",
+  "model": "ICS685s-6SM/f, material no. 22023053",
+  "specs": {
+   "capacity": "6 kg [12 lb] (documented)",
+   "readability": "0.1 g; certified 1 g (documented)",
+   "interfaces": "RS232, Ethernet option (documented)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/bench-scales/bench-scale/compact-scale-ics685s-6sm-f-22023053.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "site scale resolution 0.1 g for minors; one premix weigh station",
+  "price": {
+   "usd": 2600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   240,
+   200,
+   95
+  ],
+  "footprint_src": "documented",
+  "power": "120 V",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "WS-204",
+  "area": "Weigh & dispense",
+  "name": "Dust extraction arm at weigh bench",
+  "maker": "Nederman",
+  "model": "FX2 extraction arm, 2 m reach, 100 mm",
+  "specs": {
+   "airflow": "350-450 cfm per arm at the hood (estimate)",
+   "reach": "2 m [6.6 ft] (documented range)"
+  },
+  "source": "https://www.nederman.com/en-us/products/extraction-arms",
+  "supplier": "Nederman distributor",
+  "qty": 2,
+  "qty_basis": "one per weigh bench (majors, minors)",
+  "price": {
+   "usd": 2400,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   300,
+   300,
+   2600
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "duct to DC-310",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 400,
+  "confirm": ""
+ },
+ {
+  "tag": "WS-205",
+  "area": "Weigh & dispense",
+  "name": "Cordless barcode scanner (lot scan of every ingredient bag)",
+  "maker": "Zebra",
+  "model": "DS3678-SR rugged cordless",
+  "specs": {
+   "drop": "rated for industrial use, IP65 (documented class)",
+   "codes": "1D/2D, GS1-128"
+  },
+  "source": "https://www.zebra.com/us/en/products/scanners/rugged-scanners/ds3600-series.html",
+  "supplier": "Zebra partner (e.g., CDW, Barcodes Inc.)",
+  "qty": 3,
+  "qty_basis": "weigh majors, weigh minors, pack line hopper charge",
+  "price": {
+   "usd": 600,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   200,
+   80,
+   120
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "WS-206",
+  "area": "Weigh & dispense",
+  "name": "Thermal transfer printer for bag, premix and tote labels",
+  "maker": "Zebra",
+  "model": "ZT411 203 dpi, ZT41142-T010000Z",
+  "specs": {
+   "print_width": "4.09 in [104 mm] (documented)",
+   "language": "ZPL"
+  },
+  "source": "https://www.zebra.com/us/en/products/printers/industrial/zt400-series.html",
+  "supplier": "Zebra partner",
+  "qty": 2,
+  "qty_basis": "weigh room + blending room",
+  "price": {
+   "usd": 1900,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   495,
+   269,
+   324
+  ],
+  "footprint_src": "documented",
+  "power": "120 V",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "WS-207",
+  "area": "Weigh & dispense",
+  "name": "Stainless all-in-one panel PC for weigh & dispense screens",
+  "maker": "Advantech",
+  "model": "UTC-520 21.5 in (IP65 front)",
+  "specs": {
+   "display": "21.5 in touch",
+   "front": "IP65 (documented, confirm)"
+  },
+  "source": "https://www.advantech.com/en-us/products/utc-500-series",
+  "supplier": "Advantech distributor",
+  "qty": 3,
+  "qty_basis": "weigh room, blending room, packing hall",
+  "price": {
+   "usd": 2100,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   540,
+   60,
+   340
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "stainless VESA mount and IP rating"
+ },
+ {
+  "tag": "PM-210",
+  "area": "Weigh & dispense",
+  "name": "Premix V-cone blender for minors (<2%) with carrier salt",
+  "maker": "Charles Ross & Son",
+  "model": "VCB-5 V-cone blender",
+  "specs": {
+   "working_capacity": "5 cu ft [142 L] (documented)",
+   "motor": "5 HP, 24 rpm (documented)"
+  },
+  "source": "https://cdn.mixers.com/Specifications/VCB%20Spec%20Sheet.pdf",
+  "supplier": "Charles Ross & Son (direct, Hauppauge NY)",
+  "qty": 1,
+  "qty_basis": "premix = minors + carrier salt to ~10% of the main batch: 1,100 lb x 10% / 31 lb per cu ft = 3.5 cu ft < 5 (line balance)",
+  "price": {
+   "usd": 42000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2413,
+   1600,
+   2489
+  ],
+  "footprint_src": "documented",
+  "power": "480 V 3-ph, 5 HP",
+  "air_cfm": 0,
+  "sanitary": "304/316 SS contact parts, polished; intensifier bar optional",
+  "alternates": [],
+  "rate": {
+   "cycle_min": 20
+  },
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "BD-301",
+  "area": "Blending",
+  "name": "Bag dump station with integral dust collector and flexible screw conveyor to blender",
+  "maker": "Flexicon",
+  "model": "TIP-TITE / Bag Dump Station with integral dust collector + FLEXI-DISC or flexible screw conveyor (configuration on quote)",
+  "specs": {
+   "dust": "integral cartridge collector, reverse-pulse (documented)",
+   "conveyor": "flexible screw to blender inlet"
+  },
+  "source": "https://flexicon.com/configurations/bag-dump-station/",
+  "supplier": "Flexicon Corp. (direct, Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "all bagged majors and the premix go in through one dump point",
+  "price": {
+   "usd": 46000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1520,
+   1220,
+   2440
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 4,
+  "sanitary": "sanitary 304 SS, 3-A/USDA options (documented)",
+  "alternates": [],
+  "rate": {
+   "lb_per_h": 6000,
+   "src": "assumed for 3.5 in screw on spices, confirm"
+  },
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "BB-302",
+  "area": "Blending",
+  "name": "Bulk bag discharger for salt with flexible screw conveyor to blender",
+  "maker": "Flexicon",
+  "model": "BULK-OUT BFC bulk bag discharger + flexible screw conveyor",
+  "specs": {
+   "bag": "up to 4,000 lb FIBC (documented class)",
+   "salt_share": "18-38% of seasonings (site)"
+  },
+  "source": "https://flexicon.com/products/bulk-bag-discharger/",
+  "supplier": "Flexicon Corp. (direct, Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "salt is the single biggest ingredient (site formulas); bulk bags avoid 50 lb bag dumping",
+  "price": {
+   "usd": 52000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2030,
+   2030,
+   4270
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 4,
+  "sanitary": "sanitary SS, spout access chamber with dust seal",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 300,
+  "confirm": ""
+ },
+ {
+  "tag": "RB-303",
+  "area": "Blending",
+  "name": "Ribbon blender, 36 cu ft working, sanitary",
+  "maker": "Charles Ross & Son",
+  "model": "42N-36 ribbon blender, 304 SS, sanitary finish",
+  "specs": {
+   "working_capacity": "36 cu ft [1,019 L] (documented)",
+   "full_capacity": "41 cu ft (documented)",
+   "motor": "15 HP, 40 rpm (documented)",
+   "dims_in": "115 x 49 x 92 (documented)"
+  },
+  "source": "https://cdn.mixers.com/Specifications/42N Spec Sheet 2022.pdf",
+  "supplier": "Charles Ross & Son (direct, Hauppauge NY)",
+  "qty": 1,
+  "qty_basis": "line balance (design/out/line-balance.md): 36 batches/week at 36 cu ft = 78% of blender time; 25 cu ft = 93%, over the 85% limit",
+  "price": {
+   "usd": 98000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2921,
+   1245,
+   2337
+  ],
+  "footprint_src": "documented",
+  "power": "480 V 3-ph, 15 HP",
+  "air_cfm": 2,
+  "sanitary": "clean-out door, flush discharge valve, load cells option (documented), Ra <= 0.8 um contact",
+  "alternates": [],
+  "rate": {
+   "working_cuft": 36,
+   "mix_min": 12
+  },
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 200,
+  "confirm": ""
+ },
+ {
+  "tag": "SC-304",
+  "area": "Blending",
+  "name": "Sanitary vibratory sifter (scalping 12 mesh) with discharge magnet",
+  "maker": "Kason",
+  "model": "Vibroscreen K48-1-SS (48 in) ultra-sanitary, same series as the documented K30-1-SS",
+  "specs": {
+   "diameter": "48 in [1,219 mm] (series documented at 30 in; 48 in size on quote)",
+   "magnet": "removable sanitary magnet at discharge (documented)",
+   "rate": "~6,000 lb/h on 12 mesh spice blends (estimate, confirm by test); sets blender discharge time"
+  },
+  "source": "https://www.petfoodindustry.com/production/product/15453212/kason-corp-vibroscreen-model-k30-1-ss-30-inch-screener",
+  "supplier": "Kason Corp. (direct, Millburn NJ)",
+  "qty": 1,
+  "qty_basis": "every batch is sifted once at blender discharge (site: Sift & Metal Detect station)",
+  "price": {
+   "usd": 24000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1450,
+   1450,
+   1250
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 0,
+  "sanitary": "gap-free screen frames, quick clamps, 3-A (documented)",
+  "alternates": [],
+  "rate": {
+   "lb_per_h": 6000
+  },
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 200,
+  "confirm": "48 in model and rate by test sift"
+ },
+ {
+  "tag": "MD-305",
+  "area": "Blending",
+  "name": "Gravity-fall metal detector with diverter reject",
+  "maker": "Mettler-Toledo Safeline",
+  "model": "Gravity Fall Profile, 150 mm aperture, Y-valve reject (material 2801546900 family)",
+  "specs": {
+   "aperture": "up to 300 mm (documented); 150 mm chosen",
+   "reject": "open diverter, Y-valve or Sealtite (documented)",
+   "ip": "IP65/IP66 (documented)"
+  },
+  "source": "https://ds-rgr.mt.com/us/en/home/products/Product-Inspection_1/safeline-metal-detection/Gravity-Fall-Profile-Metal-Detector.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "CCP-1 metal: one detector after the sifter, before the bulk bag",
+  "price": {
+   "usd": 38000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   600,
+   500,
+   900
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 2,
+  "sanitary": "stainless finish version; reject to locked container",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "BF-306",
+  "area": "Blending",
+  "name": "Bulk bag filler with load cells (one bag = one batch, held for QC release)",
+  "maker": "Flexicon",
+  "model": "BASIC bulk bag filler, sanitary SS, load cells, vibratory densification deck",
+  "specs": {
+   "scale": "load cells, weight-controlled fill (documented)",
+   "deck": "vibratory densification (documented)"
+  },
+  "source": "https://flexicon.com/products/bulk-bag-fillers/",
+  "supplier": "Flexicon Corp. (direct, Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "one blender, one discharge point",
+  "price": {
+   "usd": 48000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2130,
+   2130,
+   4270
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 3,
+  "sanitary": "inflatable spout seal, vent to DC-310",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 300,
+  "confirm": ""
+ },
+ {
+  "tag": "FC-307",
+  "area": "Blending",
+  "name": "Flexible screw conveyor: metal detector outlet hopper up to the bulk bag filler inlet",
+  "maker": "Flexicon",
+  "model": "Flexible screw conveyor, 4.5 in, sanitary floor hopper (model on quote)",
+  "specs": {
+   "lift": "about 4.5 m [15 ft] (layout ASM-001)",
+   "rate": "6,000 lb/h (assumed, matches SC-304)"
+  },
+  "source": "https://flexicon.com/products/flexible-screw-conveyors/",
+  "supplier": "Flexicon Corp. (direct, Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "one blender discharge path (ASM-001)",
+  "price": {
+   "usd": 21000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   900,
+   900,
+   4600
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph, 3 HP",
+  "air_cfm": 0,
+  "sanitary": "sanitary, full clean-out by removing the screw",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "DC-310",
+  "area": "Utilities",
+  "name": "Central cartridge dust collector, outdoor, explosion vented with isolation valve",
+  "maker": "Camfil APC",
+  "model": "Gold Series X-Flo GSX 12 (12 cartridges, about 3,600 cfm at 1.5:1 to 2:1 air-to-media, confirm), explosion vent + inlet isolation flap valve",
+  "specs": {
+   "airflow": "3,625 cfm design = 2,900 cfm sum of pickups (dust_cfm x qty, checked by foodsafety.py) + 25 % margin",
+   "design_cfm": 3625,
+   "dust": "spice dust treated as combustible until tested (NFPA 61/652)"
+  },
+  "source": "https://www.camfil.com/en-us/products/dust-fume-and-mist-collectors/dust-and-fume-collectors/gold-series-x-flo",
+  "supplier": "Camfil APC (direct, Jonesboro AR)",
+  "qty": 1,
+  "qty_basis": "all local pickups duct to one collector outside the north wall",
+  "price": {
+   "usd": 68000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1830,
+   1520,
+   4570
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph, 10 HP fan",
+  "air_cfm": 3,
+  "sanitary": "outdoor; dust hazard analysis (DHA) required before order",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "size after duct design"
+ },
+ {
+  "tag": "AC-311",
+  "area": "Utilities",
+  "name": "Rotary screw air compressor with integrated dryer",
+  "maker": "Kaeser",
+  "model": "SK 15 T (15 hp, refrigerated dryer)",
+  "specs": {
+   "flow": "about 55 cfm at 125 psi (documented class)",
+   "demand": "sum of air users (plant.py)"
+  },
+  "source": "https://us.kaeser.com/products/rotary-screw-compressors/sk/",
+  "supplier": "Kaeser (direct) or distributor",
+  "qty": 1,
+  "qty_basis": "plant air demand < 45 cfm",
+  "price": {
+   "usd": 17500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1100,
+   700,
+   1300
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph, 15 HP",
+  "air_cfm": 0,
+  "sanitary": "food-contact air: coalescing + activated carbon + 0.01 um sterile filter at each point of contact (SQF)",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "AF-312",
+  "area": "Utilities",
+  "name": "Compressed air filter train for product-contact air",
+  "maker": "Parker domnick hunter",
+  "model": "OIL-X grade AO + AA + ACS, BIO-X sterile filter",
+  "specs": {
+   "class": "ISO 8573-1 class 1.2.1 target (documented capability)"
+  },
+  "source": "https://www.parker.com/us/en/divisions/gas-separation-and-filtration-division/products/oil-x.html",
+  "supplier": "Parker distributor",
+  "qty": 1,
+  "qty_basis": "one train after the dryer",
+  "price": {
+   "usd": 3800,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   600,
+   300,
+   900
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "BU-401",
+  "area": "Pack line A",
+  "name": "Bulk bag discharger + flexible screw to filler hopper (QC-released bag)",
+  "maker": "Flexicon",
+  "model": "BULK-OUT BFC bulk bag discharger, sanitary, with flexible screw conveyor and hopper level control",
+  "specs": {
+   "bag": "the blend bag from BF-306",
+   "control": "high/low level probes at FL-403 hopper"
+  },
+  "source": "https://flexicon.com/products/bulk-bag-discharger/",
+  "supplier": "Flexicon Corp. (direct, Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "one filler",
+  "price": {
+   "usd": 52000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2030,
+   2030,
+   4270
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 4,
+  "sanitary": "sanitary SS",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 300,
+  "confirm": ""
+ },
+ {
+  "tag": "UN-402",
+  "area": "Pack line A",
+  "name": "Container unscrambling table",
+  "maker": "Kaps-All",
+  "model": "FS-U unscrambling table (stainless)",
+  "specs": {
+   "speed": "1-400 bottles/min class (documented)"
+  },
+  "source": "https://www.kapsall.com/solutions/bottle-unscramblers/fs-u-unscrambling-table",
+  "supplier": "Kaps-All Packaging Systems (direct, Riverhead NY)",
+  "qty": 1,
+  "qty_basis": "one line",
+  "price": {
+   "usd": 14000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1220,
+   1220,
+   1000
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "non-contact (outside of containers only)",
+  "alternates": [],
+  "rate": {
+   "upm": 120
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "FL-403",
+  "area": "Pack line A",
+  "name": "Rotary auger filler, twin servo augers, integrated weigh-check",
+  "maker": "Spee-Dee Packaging Machinery",
+  "model": "X-Series rotary filler with two Revolution servo auger fillers (speed confirmed on quote)",
+  "specs": {
+   "fill_range": "5 g to 5 lb per auger (documented for Revolution)",
+   "speed": "80 cpm on 2-4 oz, 45 cpm on 12 oz (assumed, confirm by run test)",
+   "changeover": "tool-less change parts (documented for rotary fillers)"
+  },
+  "source": "https://www.spee-dee.com/automatic-spice-packing-filling-machine",
+  "supplier": "Spee-Dee (direct, Sturtevant WI)",
+  "qty": 1,
+  "qty_basis": "line balance: line A 88% loaded at 80 cpm on one shift (limit 85%); filler sets line speed, all others >= 1.25x",
+  "price": {
+   "usd": 185000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2400,
+   1600,
+   2800
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 3,
+  "sanitary": "SS auger and funnel, magnetic funnel quick release (documented)",
+  "alternates": [],
+  "rate": {
+   "upm": {
+    "SHAKER": 80,
+    "JAR": 45
+   }
+  },
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 250,
+  "confirm": ""
+ },
+ {
+  "tag": "CP-404",
+  "area": "Pack line A",
+  "name": "Inline 6-spindle capper with cap sorter",
+  "maker": "Kaps-All",
+  "model": "A6 6-spindle auto capper",
+  "specs": {
+   "speed": "up to 200 bpm (documented)",
+   "caps": "8-120 mm (documented)",
+   "power": "220 V 3-ph (documented)"
+  },
+  "source": "https://kapsall.com/solutions/cappers/a6-6-spindle-auto-capper",
+  "supplier": "Kaps-All Packaging Systems",
+  "qty": 1,
+  "qty_basis": "one line",
+  "price": {
+   "usd": 52000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2286,
+   965,
+   1830
+  ],
+  "footprint_src": "documented",
+  "power": "220 V 3-ph",
+  "air_cfm": 3,
+  "sanitary": "SS enclosure, interlocked doors (documented)",
+  "alternates": [],
+  "rate": {
+   "upm": 200
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "IS-405",
+  "area": "Pack line A",
+  "name": "Induction cap sealer (tamper evident liner seal)",
+  "maker": "Enercon",
+  "model": "Super Seal 600 with all-in-one head (model by line speed, confirm)",
+  "specs": {
+   "supply": "240 V 1-ph (documented)",
+   "heads": "flat, tunnel, all-in-one (documented)"
+  },
+  "source": "https://www.enerconind.com/Sealing/Products/Super-Seal/",
+  "supplier": "Enercon Industries (direct, Menomonee Falls WI)",
+  "qty": 1,
+  "qty_basis": "one line",
+  "price": {
+   "usd": 19000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   900,
+   600,
+   1600
+  ],
+  "footprint_src": "estimate",
+  "power": "240 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "upm": 150
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "LB-406",
+  "area": "Pack line A",
+  "name": "Wrap-around pressure-sensitive labeler",
+  "maker": "Pack Leader USA",
+  "model": "PL-501",
+  "specs": {
+   "label_speed": "131.2 ft/min (documented)",
+   "conveyor": "72.2 ft/min (documented)",
+   "container_max_width": "4 in (documented)",
+   "label_max": "11.8 x 6 in (documented)",
+   "dims_in": "79 x 40 x 41 (documented)"
+  },
+  "source": "https://www.sigmaequipment.com/equipment/model/pack-leader-usa/pl-501/",
+  "supplier": "Pack Leader USA (direct, Pine Brook NJ)",
+  "qty": 1,
+  "qty_basis": "one line; largest container jar-12 is 3.4 in, under the 4 in limit",
+  "price": {
+   "usd": 28000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2007,
+   1016,
+   1041
+  ],
+  "footprint_src": "documented",
+  "power": "120/220 V 1-ph",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "upm": 150
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "TT-407",
+  "area": "Pack line A",
+  "name": "Thermal transfer overprinter on the labeler (lot + best-by on the label web)",
+  "maker": "Videojet",
+  "model": "DataFlex 6330 TTO, 32 mm",
+  "specs": {
+   "code": "DHyyjjj-B## + BEST BY MMM DD YYYY (site lot rule)",
+   "interface": "Ethernet, CLARiTY"
+  },
+  "source": "https://www.videojet.com/us/homepage/products/thermal-transfer-overprinting.html",
+  "supplier": "Videojet (direct)",
+  "qty": 1,
+  "qty_basis": "one labeler",
+  "price": {
+   "usd": 11500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   250,
+   200,
+   200
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0.5,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "VS-408",
+  "area": "Pack line A",
+  "name": "Vision: label present, UPC grade, lot code OCR",
+  "maker": "Cognex",
+  "model": "In-Sight 2800 with OCR",
+  "specs": {
+   "tools": "edge-learning classification + OCR (documented)"
+  },
+  "source": "https://www.cognex.com/products/machine-vision/vision-sensors/in-sight-2800-vision-system",
+  "supplier": "Cognex partner",
+  "qty": 1,
+  "qty_basis": "one inspection point after the labeler",
+  "price": {
+   "usd": 7800,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   600,
+   400,
+   600
+  ],
+  "footprint_src": "estimate",
+  "power": "24 V DC",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "CW-409",
+  "area": "Pack line A",
+  "name": "Checkweigher with pusher reject to locking bin, OPC UA data",
+  "maker": "Mettler-Toledo",
+  "model": "C33 PlusLine",
+  "specs": {
+   "speed": "up to 300-350 ppm (documented, page inconsistent)",
+   "accuracy": "from +/-0.05 g (documented)",
+   "max_weight": "7.5 kg (documented)",
+   "data": "Ethernet TCP/IP, OPC UA (documented)"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Product-Inspection_1/checkweighing/C33.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "site rule: reject any unit below declared net; lot average per NIST HB 133",
+  "price": {
+   "usd": 32000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1500,
+   800,
+   1500
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 1,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "upm": 300
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "AT-410",
+  "area": "Pack line A",
+  "name": "Rotary accumulation table before pack-off",
+  "maker": "Kaps-All",
+  "model": "Rotary table, 48 in (rotary tables line, confirm size)",
+  "specs": {
+   "buffer": "about 2 minutes at 80 upm (calculated)"
+  },
+  "source": "https://kapsall.com/solutions/rotary-tables",
+  "supplier": "Kaps-All Packaging Systems",
+  "qty": 1,
+  "qty_basis": "decouples the cobot case packer from the filler",
+  "price": {
+   "usd": 9500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1220,
+   1220,
+   1000
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "CE-411",
+  "area": "Pack line A",
+  "name": "Automatic case erector, tape bottom",
+  "maker": "Wexxar (ProMach)",
+  "model": "WF20T",
+  "specs": {
+   "speed": "up to 20 cases/min (documented)",
+   "case_range": "L 7.25-18, W 7.25-14, H 6-15 in (documented)",
+   "air": "90 psi (documented)"
+  },
+  "source": "https://www.sigmaequipment.com/equipment/used/wexxar-wf20-t-stainless-steel-fully-automatic-tape-bottom-case-erector-20-cases-per-minute-329528",
+  "supplier": "Wexxar / ProMach dealer",
+  "qty": 1,
+  "qty_basis": "6.7 cases/min peak needed",
+  "price": {
+   "usd": 46000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2540,
+   1730,
+   2030
+  ],
+  "footprint_src": "estimate",
+  "power": "240 V 1-ph",
+  "air_cfm": 6,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "cpm": 20
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "case sizes for 12 x shaker and 12 x jar fit the range"
+ },
+ {
+  "tag": "CK-412",
+  "area": "Pack line A",
+  "name": "Cobot case packing cell (UR10e), case-ready infeed",
+  "maker": "Omega Design (cobot by Xyntek)",
+  "model": "Intelli-Pac with Case Packing Cobot (UR10e)",
+  "specs": {
+   "payload": "case layers up to 12 kg (documented)",
+   "reach": "51 in (documented)",
+   "case_range": "6x4x3 to 24x15x21 in (documented)",
+   "speed": "about 8 cases/min for 12-count 2 x 6 layer picks (estimate, confirm)"
+  },
+  "source": "https://www.profoodworld.com/home/product/22485950/omega-design-corporation-case-packing-cobot",
+  "supplier": "Omega Design Corp. (direct, Exton PA)",
+  "qty": 1,
+  "qty_basis": "one line, 6.7 cases/min peak",
+  "price": {
+   "usd": 135000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2400,
+   2000,
+   2000
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 8,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "cpm": 8
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "CS-413",
+  "area": "Pack line A",
+  "name": "Uniform case sealer, top and bottom tape",
+  "maker": "Wexxar (BEL)",
+  "model": "BEL 505 (confirm)",
+  "specs": {
+   "speed": "up to 30 cases/min (estimate)"
+  },
+  "source": "https://www.wexxar.com/case-sealers/",
+  "supplier": "Wexxar / ProMach dealer",
+  "qty": 1,
+  "qty_basis": "one line",
+  "price": {
+   "usd": 14000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1800,
+   900,
+   1700
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "cpm": 25
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "model"
+ },
+ {
+  "tag": "PA-414",
+  "area": "Pack line A",
+  "name": "Print and apply case labeler (GS1-128 SSCC + case GTIN-14)",
+  "maker": "CTM Labeling Systems + Zebra",
+  "model": "CTM 360a with Zebra ZE511 print engine (ZE51142-R010000Z, confirm hand)",
+  "specs": {
+   "engine": "ZE511 4 in 203 dpi (documented)",
+   "label": "4 x 6 in GS1 logistic label"
+  },
+  "source": "https://www.zebra.com/us/en/products/spec-sheets/printers/print-engines/ze511-ze521.html",
+  "supplier": "CTM Labeling Systems (Salem OH) / Zebra partner",
+  "qty": 1,
+  "qty_basis": "one case line",
+  "price": {
+   "usd": 16500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   900,
+   700,
+   1700
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 2,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "cpm": 25
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "PL-415",
+  "area": "Pack line A",
+  "name": "Cobot palletizer, dual pallet stations",
+  "maker": "Robotiq",
+  "model": "PE20 Palletizing Solution, SOL-PAL-UR-VAC-PE20",
+  "specs": {
+   "payload": "18 kg [40 lb] (documented)",
+   "speed": "13 cycles/min (documented)",
+   "max_height": "2,150 mm [84 in] (documented)",
+   "footprint": "2,900 x 1,766 mm (documented)"
+  },
+  "source": "https://automationdistribution.com/robotiq-palletizing-solution-pe-series-for-ur20-with-vacuum-gripper",
+  "supplier": "Automation Distribution (online, in stock listing)",
+  "qty": 1,
+  "qty_basis": "6.7 cases/min peak < 13 cycles/min",
+  "price": {
+   "usd": 57712.5,
+   "src": "documented"
+  },
+  "footprint_mm": [
+   2900,
+   1766,
+   2300
+  ],
+  "footprint_src": "documented",
+  "power": "120 V",
+  "air_cfm": 10,
+  "sanitary": "",
+  "alternates": [],
+  "rate": {
+   "cpm": 13
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "SW-416",
+  "area": "Pack line A",
+  "name": "Semi-automatic turntable stretch wrapper",
+  "maker": "Lantech",
+  "model": "Q300",
+  "specs": {
+   "rate": "25-35 loads/h (documented class)"
+  },
+  "source": "https://www.lantech.com/product/q300/",
+  "supplier": "Lantech dealer",
+  "qty": 1,
+  "qty_basis": "about 2.5 pallets/h needed",
+  "price": {
+   "usd": 14500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2800,
+   1700,
+   2600
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "CV-417",
+  "area": "Pack line A",
+  "name": "Stainless tabletop chain conveyor, 3.25 in Rexnord 880 TAB chain, side guide rails",
+  "maker": "Nercon (custom conveyor)",
+  "model": "Sanitary tabletop conveyor, Rexnord 880 TAB-K325 chain, length per layout",
+  "specs": {
+   "length": "from layout (plant.py): about 22 m [72 ft] (calculated)",
+   "chain": "Rexnord 880 TAB 3.25 in (documented catalog chain)"
+  },
+  "source": "https://www.rexnord.com/products/880-series-tabletop-chains",
+  "supplier": "Nercon Engineering (Neenah WI)",
+  "qty": 22,
+  "qty_basis": "metres: line A length 20.5 m on ASM-002 / LAY-001 + 1.5 m transfers",
+  "price": {
+   "usd": 1350,
+   "src": "estimate",
+   "per": "m"
+  },
+  "footprint_mm": [
+   22000,
+   300,
+   900
+  ],
+  "footprint_src": "calculated",
+  "power": "480 V 3-ph, 4 x 0.5 HP",
+  "air_cfm": 0,
+  "sanitary": "open-frame, no hollow tubes; guide rail brackets DH-104",
+  "alternates": [],
+  "rate": {
+   "fpm": 72
+  },
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "NW-501",
+  "area": "Pack station B",
+  "name": "Net-weight auger filler for pouches, tubs and carton liners",
+  "maker": "Spee-Dee Packaging Machinery",
+  "model": "Net Weight Auger: 4800 servo auger + load cell + conveyor",
+  "specs": {
+   "accuracy": "< 0.25% variance (documented)",
+   "range": "up to 25 kg (documented)",
+   "speed": "10-14 fills/min on 12 oz-5 lb (estimate)"
+  },
+  "source": "https://www.spee-dee.com/automatic-spice-packing-filling-machine",
+  "supplier": "Spee-Dee (direct)",
+  "qty": 1,
+  "qty_basis": "pouch + tub + carton volumes fit one station (line balance)",
+  "price": {
+   "usd": 78000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   1800,
+   1200,
+   2700
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 2,
+  "sanitary": "SS contact parts",
+  "alternates": [],
+  "rate": {
+   "upm": 12
+  },
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 250,
+  "confirm": ""
+ },
+ {
+  "tag": "BU-502",
+  "area": "Pack station B",
+  "name": "Bulk bag discharger feeding NW-501",
+  "maker": "Flexicon",
+  "model": "BULK-OUT BFC with flexible screw conveyor",
+  "specs": {
+   "bag": "QC-released blend bag"
+  },
+  "source": "https://flexicon.com/products/bulk-bag-discharger/",
+  "supplier": "Flexicon Corp. (direct, Bethlehem PA)",
+  "qty": 1,
+  "qty_basis": "one station",
+  "price": {
+   "usd": 48000,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   2030,
+   2030,
+   4270
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 4,
+  "sanitary": "sanitary SS",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": true,
+  "dust_cfm": 300,
+  "confirm": ""
+ },
+ {
+  "tag": "BS-503",
+  "area": "Pack station B",
+  "name": "Continuous band sealer for stand-up zip pouches, stainless, with embossing coder",
+  "maker": "Hualian",
+  "model": "FR-900S stainless (confirm)",
+  "specs": {
+   "speed": "0-12 m/min (documented class)",
+   "seal_width": "10 mm (documented class)"
+  },
+  "source": "https://www.hualianmachinery.com/",
+  "supplier": "Hualian US distributor",
+  "qty": 1,
+  "qty_basis": "12 oz pouches only",
+  "price": {
+   "usd": 2600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   900,
+   450,
+   450
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "US distributor stock"
+ },
+ {
+  "tag": "IM-504",
+  "area": "Pack station B",
+  "name": "Foot-operated impulse sealer for carton poly liners",
+  "maker": "American International Electric",
+  "model": "AIE-305FD (12 in, 5 mm seal)",
+  "specs": {
+   "seal": "12 in x 5 mm (documented class)"
+  },
+  "source": "https://www.aiesealer.com/",
+  "supplier": "Uline / AIE distributor",
+  "qty": 1,
+  "qty_basis": "boxed dry mixes",
+  "price": {
+   "usd": 900,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   600,
+   500,
+   1100
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "TJ-505",
+  "area": "Pack station B",
+  "name": "Thermal inkjet coder for pouch, tub lid and carton (lot + best-by)",
+  "maker": "Videojet",
+  "model": "8610 TIJ",
+  "specs": {
+   "speed": "up to 102 m/min (documented)"
+  },
+  "source": "https://www.videojet.com/us/homepage/industry-solutions/cosmetic-personal-home-care-hub/ss-8610-lp.html",
+  "supplier": "Videojet (direct)",
+  "qty": 1,
+  "qty_basis": "one station",
+  "price": {
+   "usd": 6500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   300,
+   200,
+   300
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "CW-506",
+  "area": "Pack station B",
+  "name": "Verification bench scale 60 kg (NIST HB 133 lot sampling)",
+  "maker": "Mettler-Toledo",
+  "model": "ICS685 bench scale, 60 kg (confirm)",
+  "specs": {
+   "capacity": "60 kg"
+  },
+  "source": "https://www.mt.com/us/en/home/products/Industrial_Weighing_Solutions/bench-scales/checkweigher/ICS685/ICS685k-count-6SM-f.html",
+  "supplier": "Mettler-Toledo (direct, mt.com) or authorized dealer",
+  "qty": 1,
+  "qty_basis": "station B units are weighed by NW-501; this scale audits lots",
+  "price": {
+   "usd": 3200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   600,
+   500,
+   900
+  ],
+  "footprint_src": "estimate",
+  "power": "120 V",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "model"
+ },
+ {
+  "tag": "PLC-601",
+  "area": "Controls",
+  "name": "Blending-area controller (bag dump, salt, blender, sifter, MD, bag filler interlocks)",
+  "maker": "Allen-Bradley",
+  "model": "CompactLogix 5380, 5069-L320ER",
+  "specs": {
+   "memory": "2 MB, 16 local I/O modules, 40 EtherNet/IP nodes (documented)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/details.5069-l320er.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 1,
+  "qty_basis": "one per process area (ELE-001)",
+  "price": {
+   "usd": 5200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": "24 V DC",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "PLC-602",
+  "area": "Controls",
+  "name": "Pack line coordinator (line A state machine, recipe download, rejects, counts)",
+  "maker": "Allen-Bradley",
+  "model": "CompactLogix 5380, 5069-L320ER",
+  "specs": {
+   "memory": "2 MB (documented)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/details.5069-l320er.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 1,
+  "qty_basis": "one per process area (ELE-001)",
+  "price": {
+   "usd": 5200,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": "24 V DC",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "IO-603",
+  "area": "Controls",
+  "name": "Digital input module 16 ch 24 V DC",
+  "maker": "Allen-Bradley",
+  "model": "5069-IB16",
+  "specs": {
+   "channels": "16 sink (documented)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/io/chassis-based-io/5069-compact-5000-i-o-modules.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 7,
+  "qty_basis": "io.json: 78 DI points + 25% spare -> 7 modules",
+  "price": {
+   "usd": 420,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "IO-604",
+  "area": "Controls",
+  "name": "Digital output module 16 ch 24 V DC",
+  "maker": "Allen-Bradley",
+  "model": "5069-OB16",
+  "specs": {
+   "channels": "16 source (documented)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/io/chassis-based-io/5069-compact-5000-i-o-modules.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 4,
+  "qty_basis": "io.json: 35 DO points + 25% spare -> 4 modules",
+  "price": {
+   "usd": 460,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "IO-605",
+  "area": "Controls",
+  "name": "Analog input module 8 ch",
+  "maker": "Allen-Bradley",
+  "model": "5069-IF8",
+  "specs": {
+   "channels": "8 V/mA (documented)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/io/chassis-based-io/5069-compact-5000-i-o-modules.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 1,
+  "qty_basis": "io.json: 4 AI points + 25% spare -> 1 modules",
+  "price": {
+   "usd": 780,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "HMI-606",
+  "area": "Controls",
+  "name": "Operator HMI 10.1 in",
+  "maker": "Allen-Bradley",
+  "model": "PanelView 5510, 2715P-T10CD",
+  "specs": {
+   "display": "10.1 in touch (documented class)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/operator-interface/panelview-5510.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 2,
+  "qty_basis": "blending panel CP-300, line panel CP-400",
+  "price": {
+   "usd": 4300,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "panel door",
+  "power": "24 V DC",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "SR-607",
+  "area": "Controls",
+  "name": "Dual-channel safety relay for e-stop and guard circuits",
+  "maker": "Allen-Bradley Guardmaster",
+  "model": "440R-S12R2",
+  "specs": {
+   "category": "up to PLe / Cat 4 (documented class)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/safety-products/safety-relays.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 2,
+  "qty_basis": "one safety zone per area (ELE-001)",
+  "price": {
+   "usd": 330,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "PS-608",
+  "area": "Controls",
+  "name": "24 V DC power supply 10 A",
+  "maker": "Allen-Bradley",
+  "model": "1606-XLE240E",
+  "specs": {
+   "output": "24 V DC 10 A (documented class)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/power-supplies.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 2,
+  "qty_basis": "one per control panel",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "SWI-609",
+  "area": "Controls",
+  "name": "Managed Ethernet switch 8 port",
+  "maker": "Allen-Bradley",
+  "model": "Stratix 2500, 1783-LMS8",
+  "specs": {
+   "ports": "8 x 10/100 (documented class)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/network-security-and-infrastructure/ethernet-networks/stratix-2500.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 3,
+  "qty_basis": "one per panel + one at MES rack",
+  "price": {
+   "usd": 480,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "ENC-610",
+  "area": "Controls",
+  "name": "Stainless Type 4X control enclosure 36x30x12 in",
+  "maker": "nVent HOFFMAN",
+  "model": "CSD363012SS (confirm)",
+  "specs": {
+   "rating": "Type 4X 304 SS (documented class)"
+  },
+  "source": "https://hoffman.nvent.com/en-us/products/enclosures/wall-mount-enclosures",
+  "supplier": "Graybar / Rexel",
+  "qty": 2,
+  "qty_basis": "CP-300 blending, CP-400 line",
+  "price": {
+   "usd": 2100,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   762,
+   305,
+   914
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "part number"
+ },
+ {
+  "tag": "SRV-611",
+  "area": "Controls",
+  "name": "MES / line manager server (runs software/mes) + UPS",
+  "maker": "Dell + APC",
+  "model": "PowerEdge T160 + APC Smart-UPS SMT1500RM2UC",
+  "specs": {
+   "os": "Ubuntu 24.04 LTS or Windows Server",
+   "role": "recipes, batches, traceability, labels, OEE"
+  },
+  "source": "https://www.dell.com/en-us/shop/servers-storage-and-networking/sf/poweredge-tower-servers",
+  "supplier": "Dell / CDW",
+  "qty": 1,
+  "qty_basis": "one plant server; nightly backup off-site",
+  "price": {
+   "usd": 3600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "IT closet",
+  "power": "120 V",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "FS-701",
+  "area": "Food safety",
+  "name": "ATP hygiene monitoring system (pre-op swabs)",
+  "maker": "Hygiena",
+  "model": "EnSURE Touch + UltraSnap swabs",
+  "specs": {
+   "use": "pre-op verification of dry clean on contact surfaces"
+  },
+  "source": "https://www.hygiena.com/food-safety-solutions/atp-cleaning-verification/",
+  "supplier": "Hygiena (direct)",
+  "qty": 1,
+  "qty_basis": "one QC lab",
+  "price": {
+   "usd": 2400,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "QC lab",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "FS-702",
+  "area": "Food safety",
+  "name": "Gluten (wheat) allergen surface test",
+  "maker": "Neogen",
+  "model": "Reveal 3-D for Gluten",
+  "specs": {
+   "use": "verify wet clean after wheat campaign before gluten-free seasonings run"
+  },
+  "source": "https://www.neogen.com/categories/allergens/reveal-3-d-gluten/",
+  "supplier": "Neogen (direct)",
+  "qty": 1,
+  "qty_basis": "kit of 25 per month (consumable)",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "kit"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "QC lab",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "FS-703",
+  "area": "Food safety",
+  "name": "Combustible-dust rated industrial vacuum (dry clean, no compressed-air blow-down)",
+  "maker": "Nilfisk",
+  "model": "VHC 200 Class II Div 2 / combustible dust version (confirm)",
+  "specs": {
+   "rating": "Class II Div 2 (confirm on quote)"
+  },
+  "source": "https://www.nilfisk.com/en-us/products/industrial-vacuum-cleaners/",
+  "supplier": "Nilfisk distributor",
+  "qty": 2,
+  "qty_basis": "blending room + packing hall",
+  "price": {
+   "usd": 7800,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   1100,
+   700,
+   1500
+  ],
+  "footprint_src": "estimate",
+  "power": "480 V 3-ph",
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "model and certification"
+ },
+ {
+  "tag": "FS-704",
+  "area": "Food safety",
+  "name": "Color-coded hygienic hand tools (green = general, yellow = wheat area)",
+  "maker": "Vikan",
+  "model": "Hygienic brushes, scoops, scrapers, shadow boards",
+  "specs": {
+   "system": "color coded per allergen zone"
+  },
+  "source": "https://www.vikan.com/us/",
+  "supplier": "Vikan distributor",
+  "qty": 1,
+  "qty_basis": "one set per zone (4 zones)",
+  "price": {
+   "usd": 2600,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "wall boards",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "FS-705",
+  "area": "Food safety",
+  "name": "Hands-free stainless hand sink (knee valve) at each entry",
+  "maker": "Eagle Group",
+  "model": "HSA-10-FOW-LRS hand sink (confirm)",
+  "specs": {
+   "type": "hands-free"
+  },
+  "source": "https://www.eaglegrp.com/",
+  "supplier": "Restaurant/food-plant supply",
+  "qty": 3,
+  "qty_basis": "hygiene vestibule, weigh room, packing hall",
+  "price": {
+   "usd": 1100,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   500,
+   400,
+   1100
+  ],
+  "footprint_src": "estimate",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "model"
+ },
+ {
+  "tag": "VFD-620",
+  "area": "Controls",
+  "name": "AC drive 15 HP 480 V for RB-303 ribbon blender (soft start, EtherNet/IP)",
+  "maker": "Allen-Bradley",
+  "model": "PowerFlex 525, 25B-D024N114 (confirm rating)",
+  "specs": {
+   "rating": "15 HP normal duty 480 V (confirm)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/motion-control/low-voltage-ac-drives/powerflex-525.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 1,
+  "qty_basis": "io.json motor M-304",
+  "price": {
+   "usd": 2900,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "VFD-621",
+  "area": "Controls",
+  "name": "AC drive 5 HP 480 V for PM-210 V-cone blender",
+  "maker": "Allen-Bradley",
+  "model": "PowerFlex 525, 25B-D010N114 (confirm rating)",
+  "specs": {
+   "rating": "5 HP 480 V (confirm)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/motion-control/low-voltage-ac-drives/powerflex-525.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 1,
+  "qty_basis": "io.json motor M-307",
+  "price": {
+   "usd": 1500,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "VFD-622",
+  "area": "Controls",
+  "name": "AC drive 0.5 HP 480 V for CV-417 conveyor zones",
+  "maker": "Allen-Bradley",
+  "model": "PowerFlex 525, 25B-D1P4N114 (confirm rating)",
+  "specs": {
+   "rating": "0.5 HP 480 V (confirm)"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/motion-control/low-voltage-ac-drives/powerflex-525.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 4,
+  "qty_basis": "io.json motors M-402..M-405",
+  "price": {
+   "usd": 900,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "MS-623",
+  "area": "Controls",
+  "name": "Motor protection breaker + contactor (across-the-line starters)",
+  "maker": "Allen-Bradley",
+  "model": "140MT-C3E (range per FLA) + 100-C09D10, confirm ranges",
+  "specs": {
+   "use": "motors listed as 'starter' in io.json"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/circuit-and-load-protection/motor-circuit-protectors.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 8,
+  "qty_basis": "io.json: motors with across-the-line starters in CP-300/CP-400",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in panel",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "LS-624",
+  "area": "Controls",
+  "name": "Vibrating-fork level switch for powders (hopper high/low)",
+  "maker": "Endress+Hauser",
+  "model": "Soliphant FTM20",
+  "specs": {
+   "use": "bulk solids level detection (documented product family)"
+  },
+  "source": "https://www.endress.com/en/field-instruments-overview/level-measurement/point-level-vibronic-sensor-soliphant-ftm20",
+  "supplier": "Endress+Hauser (direct) or distributor",
+  "qty": 7,
+  "qty_basis": "io.json: one per HOPPER_HIGH / HOPPER_LOW point",
+  "price": {
+   "usd": 650,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "on hoppers",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "sanitary process connection on product-contact hoppers",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "PE-625",
+  "area": "Controls",
+  "name": "Polarized retroreflective photo-eye with reflector, 18 mm",
+  "maker": "Banner Engineering",
+  "model": "QS18VP6LP + BRT-32X20AM reflector",
+  "specs": {
+   "range": "polarized retro, ignores shiny PET (documented family)"
+  },
+  "source": "https://www.bannerengineering.com/us/en/products/sensors/photoelectric-sensors/world-beam-qs18-series.html",
+  "supplier": "Banner distributor",
+  "qty": 14,
+  "qty_basis": "io.json: one per PExxx point; mounted on DH-105",
+  "price": {
+   "usd": 110,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "on DH-105 brackets",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "ES-626",
+  "area": "Controls",
+  "name": "Emergency stop push button, 40 mm, 2 NC, with SS enclosure",
+  "maker": "Allen-Bradley",
+  "model": "800FP-MT44PX02 + 800F-1YP3 enclosure (confirm)",
+  "specs": {
+   "contacts": "2 NC to SR-607 dual channel"
+  },
+  "source": "https://www.rockwellautomation.com/en-us/products/hardware/allen-bradley/push-buttons-and-signaling-devices/22mm-push-buttons/800f-push-buttons.html",
+  "supplier": "Rockwell Automation distributor (e.g., Rexel / Werner Electric)",
+  "qty": 12,
+  "qty_basis": "4 in blending (bag dump, BBD, blender platform, bag filler) + 8 along line A and station B, spaced <= 10 m",
+  "price": {
+   "usd": 140,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "field",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "PT-627",
+  "area": "Controls",
+  "name": "Plant air pressure transmitter 0-200 psi 4-20 mA",
+  "maker": "Endress+Hauser",
+  "model": "Cerabar PMP21",
+  "specs": {
+   "output": "4-20 mA"
+  },
+  "source": "https://www.endress.com/en/field-instruments-overview/pressure-measurement/absolute-gauge-pmp21",
+  "supplier": "Endress+Hauser distributor",
+  "qty": 1,
+  "qty_basis": "io.json AC311_PRESS",
+  "price": {
+   "usd": 420,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "air header",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ },
+ {
+  "tag": "DP-628",
+  "area": "Controls",
+  "name": "Dust collector filter dP transmitter 0-10 in w.c.",
+  "maker": "Dwyer",
+  "model": "Series 616KD differential pressure transmitter",
+  "specs": {
+   "output": "4-20 mA"
+  },
+  "source": "https://www.dwyer-inst.com/en/products/pressure-transmitters",
+  "supplier": "Dwyer distributor",
+  "qty": 1,
+  "qty_basis": "io.json DC310_DP",
+  "price": {
+   "usd": 260,
+   "src": "estimate"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "DC-310",
+  "power": null,
+  "air_cfm": 0.0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": ""
+ }
+]

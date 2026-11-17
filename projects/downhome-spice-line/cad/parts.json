@@ -1,0 +1,67 @@
+[
+ {
+  "id": "DH-101",
+  "title": "Blender discharge transition chute",
+  "qty": "1",
+  "material": "SS 316L (contact), 304 flange",
+  "features": 9,
+  "size_mm": [
+   250.0,
+   250.0,
+   294.6
+  ],
+  "volume_cm3": 578.0
+ },
+ {
+  "id": "DH-102",
+  "title": "Metal detector inlet spool with magnet port",
+  "qty": "1",
+  "material": "SS 316L tube 6 in x 14 ga",
+  "features": 2,
+  "size_mm": [
+   219.6,
+   166.8,
+   300.1
+  ],
+  "volume_cm3": 546.1
+ },
+ {
+  "id": "DH-103",
+  "title": "Filler hopper dust pickup hood",
+  "qty": "2",
+  "material": "SS 304, 16 ga",
+  "features": 7,
+  "size_mm": [
+   450.0,
+   300.0,
+   201.5
+  ],
+  "volume_cm3": 539.4
+ },
+ {
+  "id": "DH-104",
+  "title": "Container guide-rail bracket",
+  "qty": "36",
+  "material": "SS 304, 3 mm [11 ga]",
+  "features": 3,
+  "size_mm": [
+   60.0,
+   53.0,
+   81.5
+  ],
+  "volume_cm3": 21.6
+ },
+ {
+  "id": "DH-105",
+  "title": "Photo-eye mounting bracket",
+  "qty": "14",
+  "material": "SS 304, 3 mm [11 ga]",
+  "features": 4,
+  "size_mm": [
+   120.0,
+   40.0,
+   3.0
+  ],
+  "volume_cm3": 13.4
+ }
+]
