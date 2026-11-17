@@ -204,7 +204,14 @@ async function loadModel(p) {
   if (e === 'stl') { const g = new STLLoader().parse(await (await fetch(url)).arrayBuffer()); g.computeVertexNormals(); return new THREE.Mesh(g, MAT()); }
   if (e === '3mf') return new ThreeMFLoader().parse(await (await fetch(url)).arrayBuffer());
   if (e === 'obj') return new OBJLoader().parse(await (await fetch(url)).text());
-  if (e === 'glb' || e === 'gltf') return (await new GLTFLoader().loadAsync(url)).scene;
+  if (e === 'glb' || e === 'gltf') {
+    // glTF is Y-up by spec; this viewer is Z-up. CAD exporters (OCCT/cadquery) convert to Y-up, so turn the
+    // scene back. Raw trimesh exports keep the source Z-up axes with no root transform, so leave those as they are.
+    const g = await new GLTFLoader().loadAsync(url);
+    const gen = String(g.parser?.json?.asset?.generator || '');
+    if (!/trimesh/i.test(gen)) { const wrap = new THREE.Group(); g.scene.rotation.x = Math.PI / 2; wrap.add(g.scene); wrap.updateMatrixWorld(true); return wrap; }
+    return g.scene;
+  }
   if (e === 'step' || e === 'stp') {
     const occt = await loadOcct();
     const r = occt.ReadStepFile(new Uint8Array(await (await fetch(url)).arrayBuffer()), null);
