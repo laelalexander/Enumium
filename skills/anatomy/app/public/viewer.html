@@ -78,7 +78,8 @@ const ext = p => p.toLowerCase().split('.').pop();
 const MESH = ['stl', '3mf', 'obj', 'glb'];
 // Print-ready copies (sliced plates, build/2-print, PR-* files) sit at the bed origin; prefer the design parts when there are any.
 const PRINTCOPY = /(^|\/)(build\/\d*-?print|print|prints|gcode|plates?|slic\w*)\/|\.gcode\.3mf$|(^|\/)PR-[^/]*$/i;
-const SKIP = /(^|\/)(\.venv|venv|\.tools|node_modules|\.anatomy|__pycache__)\//;
+// Also skip reference copies of other projects/revisions (work/revA-ref/, ref/, archive/, backup/ ...): their meshes are not this design.
+const SKIP = /(^|\/)(\.venv|venv|\.tools|node_modules|\.anatomy|__pycache__|refs?|references?|[^/]*[-_]ref|archive|backups?|old)\//i;
 
 // ---------------------------------------------------------------- scene
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });

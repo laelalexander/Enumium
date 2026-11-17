@@ -538,7 +538,8 @@ function handle(ev) {
     return;
   }
   if (ev.type === 'result') {
-    lastResult = ev.result || lastResult;
+    // A usage-limit notice is not the run's result: keep the last real summary for the Overview.
+    if (!/spend limit|usage limit|session limit|rate.?limit/i.test(ev.result || '')) lastResult = ev.result || lastResult;
     for (const el of pending.values()) el.classList.remove('pending'); pending.clear();
     const limited = /spend limit|usage limit|session limit|rate.?limit/i.test(ev.result || '');
     const ok = !ev.is_error && ev.subtype === 'success' && !limited;
@@ -554,6 +555,21 @@ function setPhase(n, mark) {
   phase = n; renderPhases();
   if (mark) add(div('phase-mark', `${n} · ${PHASES[n - 1]}`));
 }
+// True only when a command segment actually runs a build/CAD tool, not when it merely names one
+// (e.g. `which openscad`, `ls ... | grep pytest`, `pip list | grep pytest` while checking what is installed).
+const BUILD_TOOL = /^(?:[a-z_][a-z0-9_]*=\S*\s+)*(?:"[^"]*[\\/]|[^\s"]*[\\/])?(?:kicad-cli(?:\.exe)?"?\s+(?:sch|pcb)\b|openscad(?:\.exe)?"?\s|pio(?:\.exe)?"?\s+run\b|platformio(?:\.exe)?"?\s+run\b|arduino-cli(?:\.exe)?"?\s+compile\b|pytest(?:\s|$)|py(?:thon3?)?(?:\.exe)?"?(?:\s+-\w+)*\s+-m\s+pytest\b|npm\s+(?:run|test)\b)/;
+function runsBuildTool(cmd) {
+  // Split on ; | & and newlines, but not inside quotes (grep -E "a|pytest" is one argument, not a command).
+  const segs = []; let cur = '', q = '';
+  for (const ch of cmd) {
+    if (q) { if (ch === q) q = ''; cur += ch; }
+    else if (ch === '"' || ch === "'") { q = ch; cur += ch; }
+    else if (';|&\n'.includes(ch)) { segs.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  segs.push(cur);
+  return segs.some(seg => BUILD_TOOL.test(seg.trim()));
+}
 function inferPhase(t) {
   const i = t.input || {}; const f = rel(i.file_path || i.path || '').toLowerCase(); const cmd = (i.command || '').toLowerCase();
   let n = 0;
@@ -561,11 +577,13 @@ function inferPhase(t) {
   else if (['WebFetch', 'WebSearch'].includes(t.name) || (t.name === 'Read' && f.startsWith('inputs/'))) n = 2;
   else if (t.name === 'Write' || t.name === 'Edit' || t.name === 'MultiEdit') {
     if (/(^|\/)(9\d-|rebuild-spec)/.test(f)) n = 4;
-    else if (/(^|\/)(prototype|firmware|cad|mechanical|enclosure|pcb|kicad|electronics|src)\/|\.(kicad_\w+|scad|stl|step|ino|cpp|c|h|py|js|ts|html)$/.test(f)) n = 5;
+    // Code files only count inside a prototype folder; a helper script in work/ is not prototype work.
+    else if (/(^|\/)(prototype|firmware|cad|mechanical|enclosure|pcb|kicad|electronics|src)\/|\.(kicad_\w+|scad|stl|step|ino)$/.test(f)) n = 5;
     else if (/(^|\/)[0-8]\d-[^/]*\.md$/.test(f)) n = /0[3-8]-|architecture|data-model|stack/.test(f) ? 3 : 4;
   }
-  else if (t.name === 'Bash' && /kicad-cli (sch|pcb)|openscad |pio run|platformio run|arduino-cli compile|pytest|npm (run|test)/.test(cmd)) n = 5;
-  if (n) setPhase(n, true);
+  else if (t.name === 'Bash' && runsBuildTool(cmd)) n = 5;
+  // A guess never skips a step: it can only move to the next one. Claude's own [[phase:N]] markers can jump.
+  if (n) setPhase(Math.min(n, phase + 1), true);
 }
 function renderTodos(todos) {
   $('#planWrap').classList.toggle('hidden', !todos.length);
