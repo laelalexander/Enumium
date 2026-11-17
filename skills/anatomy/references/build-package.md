@@ -13,7 +13,8 @@ build/
                         supplier's BOM-upload format (Digi-Key, Mouser, LCSC, McMaster), order-checklist.md
   2-print/              print-list.csv, gcode/ (per plate and per part, Bambu .gcode.3mf when the printer is Bambu),
                         project/ (.3mf for the slicer), print-plan.md with plates, order, time and filament totals
-  3-fabricate/          cut/ DXF in mm and inch, pcb/ Gerber zip + BOM + centroid + order settings,
+  3-fabricate/          cut/ DXF in mm and inch, pcb/ <board>-PCBA-rev<rev>.zip from tools/pcba/pcba_export.py
+                        (references/pcba-export.md: Gerbers, Excel BOM, centroid, drawings, notes, quote sheet),
                         machined parts STEP + drawings, harness cut lists, vendor-notes.md (what to upload where, settings)
   4-assemble/           steps/ images, assembly-guide.html (self-contained) and .pdf, torque and tool lists
   5-firmware-test/      binaries and flash instructions, bring-up checklist, acceptance tests
@@ -36,8 +37,8 @@ build/
       "after": "set 6x M3 inserts", "checks": ["insert bore Ø4.0 +0.1/-0.05", "OD 210.0 ±0.3"] }
   ],
   "fabricate": [
-    { "part": "rcb1 PCB", "process": "PCB fab + assembly", "files": ["path/to/gerbers.zip", "path/bom.csv", "path/centroid.csv"],
-      "vendor": "JLCPCB or PCBWay", "settings": "2 layer, 1.6 mm, HASL lead-free, 1 oz", "qty": 5 },
+    { "part": "rcb1 PCBA", "process": "PCB fab + turnkey assembly", "files": ["build/3-fabricate/pcb/rcb1-PCBA-revA.zip"],
+      "vendor": "RushPCB (or any turnkey PCBA house)", "settings": "2 layer, 1.6 mm, 2 oz, HASL lead-free, 46 SMT + 9 THT, top only", "qty": 5 },
     { "part": "gasket", "process": "knife/laser cut", "files": ["cut/gasket_mm.dxf", "cut/gasket_in.dxf"], "material": "1.5 mm EPDM" }
   ],
   "assembly": [
@@ -53,9 +54,17 @@ build/
 ```
 All paths are relative to the project root. Every `purchase` line comes from a BUY line in `bom/bom.csv`; every `print` part and `fabricate` part from a BUILD line. Every part used in an `assembly` step exists in purchase, print or fabricate. Check this with a script (extend `bom/check_bom.py`) and report the result in `build/README.md`.
 
+## Parts sent to Xometry
+The Build tab's Xometry stage routes a print or fabricate part to Xometry (xometry.com/quoting) when it is larger than the printer bed in Settings, needs a material that is not in "Materials on hand", or is a metal or engineering-plastic part that is machined or cut by a service; the user can move any part either way. Their choices and quote notes are saved in `build/xometry.json` (`parts.<part>.route` = `xometry` | `home`, plus `material`, `process`, `finish`, `tolerance`, `qty`, `notes`). When you rebuild the package, keep those choices, and make sure every part that goes to Xometry has:
+- a STEP file (`print[].step` or `fabricate[].step`, or a `.step` with the same stem as the part or its STL). Xometry quotes CNC only from STEP, and it measures 3D-print quotes from CAD; never point it at a `.gcode.3mf`.
+- a PDF drawing in `drawing` (threads, inserts and tight tolerances go on that drawing; Xometry takes it as the technical drawing),
+- an exact material name in `material` for the intended service material (for example "PETG", "Nylon 12 (MJF)", "6061-T6 aluminium 6.35 mm").
+The app never submits anything to Xometry; "Prepare upload folder" copies the files to `build/xometry/` with `XOMETRY-ORDER.md` and `xometry-parts.csv`.
+
 ## Quality bar
 - The purchase list is orderable as written: exact SKUs, quantities rounded to pack sizes plus spares, links that go to the exact product.
 - Every print entry has G-code that exists, was sliced for the user's printer (see Settings), and has its time and weight from the slicer.
 - Every assembly step has a picture rendered from the CAD assembly, with the parts added in that step highlighted.
 - An `assembly.json` (see SKILL.md step 6) whose `steps` match these assembly steps one-to-one, so the 3D viewer's Assemble button plays the same build the guide describes.
+- Every custom board has a PCBA order package that `pcba_export.py` marks READY, or its blockers are listed in `build/README.md`.
 - Nothing in the package says "TBD", "generic" or "see above".
