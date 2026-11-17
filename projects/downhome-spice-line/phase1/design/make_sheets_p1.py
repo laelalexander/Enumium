@@ -611,6 +611,9 @@ def ele3(D):
 
 
 # ================================================================== G-P1-000 cover and index
+VIEWS_3D = [("3D-P1-001", "3D assembly: whole plant, every machine placed (cad/plant/DH-P1-plant.step)"),
+            ("3D-P1-002", "3D view: dosing and blending"), ("3D-P1-003", "3D view: blender, sifting and drum"),
+            ("3D-P1-004", "3D view: grinding, hand weighing and QC hold"), ("3D-P1-005", "3D view: pack bench")]
 SHEETS = [("G-P1-000", "Cover and sheet index", "cover"), ("DH-LAY-P1", "Plant layout 1:50, flows, zones, equipment schedule, checks", "LAY-P1_plant_layout"),
           ("DH-PFD-P1-001", "Process flow diagram and stream table", "PFD-P1-001_process_flow"),
           ("DH-ASM-P1-001", "Dosing station and blending train elevation 1:20, ring plan, height stack-up", "ASM-P1-001_dosing_and_blending"),
@@ -636,6 +639,7 @@ def cover(parts):
     for i, f in enumerate(facts):
         o.append(f'<text x="140" y="{400 + 34 * i}" font-size="20">• {escape(f)}</text>')
     rows = [[n, d] for n, d, _ in SHEETS] + [[p["id"], f"Part sheet: {p['title']}"] for p in parts]
+    rows[1:1] = [[n, d] for n, d in VIEWS_3D]
     t, h = es.table(120, 650, [("DRAWING", 260), ("TITLE", 1300)], rows, f"SHEET INDEX ({len(rows)} sheets)", fs=15, rh=26)
     o.append(t)
     o.append(es.notes(SW - 820, 1500, 796, ["Read with README.md and build/build.json (Anatomy Build wizard).",

@@ -34,7 +34,9 @@ lines under 2 % go to the hand-weighed premix; everything else is hand-weighed a
 | `design/dosing-config.json`, `design/out/dosing-plan.md` | bins, feeders, recipe routes per product, growth to 13 |
 | `design/equipment_p1.py` → `equipment.json` | 52 lines, buy vs build, Growth equivalent and carry-over |
 | `cad/p1_parts.py` | 13 fabricated stainless parts + 4 PETG fixtures: STEP, STL, drawings, DXF |
-| `drawings/DH-P1-drawing-set.pdf` | 22 sheets, dual units: cover, layout 1:50, process flow, assemblies (dosing and blending 1:20 with height stack-up, sifting and grinding 1:10, pack bench 1:15), electrical (power one-line and network, I/O list with wire numbers and cable schedule, typical wiring), 13 part sheets |
+| `drawings/DH-P1-drawing-set.pdf` | 27 sheets, dual units: cover, 5 3D views, layout 1:50, process flow, assemblies (dosing and blending 1:20 with height stack-up, sifting and grinding 1:10, pack bench 1:15), electrical (power one-line and network, I/O list with wire numbers and cable schedule, typical wiring), 13 part sheets |
+| `cad/plant_3d.py` → `cad/plant/DH-P1-plant.step`, `.glb` | full 3D plant assembly: every machine placed from the layout at the ASM heights (592 solids); bought machines are catalog-size models, fabricated parts are our STEP models |
+| `drawings/3d/` | rendered 3D views (whole plant, dosing and blending, blender and sieve, grinding and weighing, pack bench); also sheets 3D-P1-001 to 005 in the drawing set. Re-render with `cad/plant/render/` (three.js + Playwright) |
 | `design/make_sheets_p1.py` | writes the cover, PFD, ASM and ELE sheets and `io_p1.json` |
 | `dxf/` | cut files in mm and inch |
 | `design/plant_layout_p1.py`, `drawings/LAY-P1_*` | plant layout and check (all PASS) |
@@ -55,7 +57,7 @@ python3 equipment_p1.py && python3 plant_layout_p1.py
 python3 $T/layout.py layout.json equipment.json ../drawings     # then rename LAY-001_* to LAY-P1_*
 python3 $T/foodsafety.py design-basis.json equipment.json layout.json foodsafety-config.json out
 python3 make_sheets_p1.py
-cd ../cad && python3 p1_parts.py
+cd ../cad && python3 p1_parts.py && python3 plant_3d.py
 cd ../bom && python3 make_bom_p1.py
 cd ../build && python3 make_build.py
 ```
