@@ -12,11 +12,16 @@ const os = require('os');
 const crypto = require('crypto');
 const http = require('http');
 const https = require('https');
+const zlib = require('zlib');
 
 const META_DIR = '.anatomy';
 // Not synced: per-PC environments and caches (each PC rebuilds them), and the sync's own state.
 const SKIP_DIRS = new Set(['venv', 'env', '.venv', '.pio', '.mypy_cache', '.pytest_cache', 'node_modules', '__pycache__', '.git', '.tools', '.claude']);
 const SKIP_META = new Set(['sync.json', 'conflicts', 'events.jsonl.lock']);
+// Already-compressed formats go up as they are; everything else (STEP, STL, G-code, DXF, SVG, KiCad, JSON, text...)
+// is gzipped on the wire, which typically makes CAD and G-code 3-6x smaller. Needs hub version 2+.
+const PACKED = /\.(png|jpe?g|gif|webp|zip|7z|gz|tgz|bz2|xz|rar|3mf|glb|mp4|mov|mkv|avi|mp3|m4a|xlsx|docx|pptx|pdf|whl|exe|msi|jar)$/i;
+const PARALLEL = 4; // files in flight at once per project
 const SKIP_FILE = /(^|\/)(~\$[^/]*|[^/]*\.tmp|[^/]*\.anatomy-dl|Thumbs\.db|desktop\.ini|\.DS_Store)$/i;
 
 function create({ ROOT, readMeta, isRunning, onChange }) {
@@ -43,7 +48,7 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
     const mod = u.protocol === 'https:' ? https : http;
     return new Promise((resolve, reject) => {
       const req = mod.request(u, { method, timeout, headers: { Authorization: 'Bearer ' + c.token, 'X-Anatomy-PC': pcName(), ...headers } }, res => {
-        if (stream && res.statusCode === 200) return resolve(res);
+        if (stream && res.statusCode === 200) return resolve(res.headers['content-encoding'] === 'gzip' ? res.pipe(zlib.createGunzip()) : res);
         const chunks = []; res.on('data', d => chunks.push(d));
         res.on('end', () => {
           const txt = Buffer.concat(chunks).toString('utf8');
@@ -96,18 +101,27 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
   function writeBase(dir, b) { fs.mkdirSync(path.join(dir, META_DIR), { recursive: true }); fs.writeFileSync(basePath(dir), JSON.stringify(b)); }
 
   // ------------------------------------------------------------ transfers
+  let hubVersion = 0;
+  async function checkHub() {
+    const h = await request('GET', '/api/health', { timeout: 15000 }).catch(() => null);
+    hubVersion = (h && h.version) || 1;
+  }
+  const squeeze = (rel, size) => hubVersion >= 2 && size > 2048 && !PACKED.test(rel);
   async function upload(id, dir, rel, info, baseSha) {
     const f = path.join(dir, ...rel.split('/'));
+    const gz = squeeze(rel, info.size);
+    const headers = { 'Content-Type': 'application/octet-stream', 'X-Sha256': info.sha, 'X-Base-Sha': baseSha || '' };
+    if (gz) { headers['Content-Encoding'] = 'gzip'; headers['Transfer-Encoding'] = 'chunked'; } else headers['Content-Length'] = info.size;
+    const src = fs.createReadStream(f);
     return request('PUT', `/api/projects/${enc(id)}/file?path=${enc(rel)}&mtime=${info.mtime}`, {
-      body: fs.createReadStream(f), timeout: 30 * 60000,
-      headers: { 'Content-Type': 'application/octet-stream', 'Content-Length': info.size, 'X-Sha256': info.sha, 'X-Base-Sha': baseSha || '' },
+      body: gz ? src.pipe(zlib.createGzip({ level: 6 })) : src, timeout: 30 * 60000, headers,
     });
   }
   async function download(id, dir, rel, info, dest) {
     const f = dest || path.join(dir, ...rel.split('/'));
     fs.mkdirSync(path.dirname(f), { recursive: true });
     const tmp = f + '.anatomy-dl';
-    const res = await request('GET', `/api/projects/${enc(id)}/file?path=${enc(rel)}`, { stream: true, timeout: 30 * 60000 });
+    const res = await request('GET', `/api/projects/${enc(id)}/file?path=${enc(rel)}`, { stream: true, timeout: 30 * 60000, headers: hubVersion >= 2 ? { 'Accept-Encoding': 'gzip' } : {} });
     const h = crypto.createHash('sha256');
     await new Promise((resolve, reject) => {
       const ws = fs.createWriteStream(tmp);
@@ -136,6 +150,7 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
     if (state.busy.has(id)) return { skipped: 'busy' };
     if (isRunning(id)) return { skipped: 'running' };   // pushed when the run ends
     state.busy.add(id); onChange && onChange();
+    if (!hubVersion) await checkHub();
     const dir = path.join(ROOT, id);
     const report = { up: 0, down: 0, deleted: 0, conflicts: [], errors: [] };
     try {
@@ -160,16 +175,19 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
       const next = { ...base };
       const total = paths.size; let done = 0;
       state.progress[id] = { done, total };
-      for (const rel of [...paths].sort()) {
+      let sinceSave = 0;
+      const one = async rel => {
         done++; if (done % 20 === 0) { state.progress[id] = { done, total }; onChange && onChange(); }
-        if (!syncable(rel)) { delete next[rel]; continue; }
+        // Save progress now and then, so an interrupted first upload resumes without re-reading every file.
+        if (++sinceSave >= 50) { sinceSave = 0; try { writeBase(dir, { hub: config().url, at: new Date().toISOString(), files: next }); } catch {} }
+        if (!syncable(rel)) { delete next[rel]; return; }
         const L = local[rel], R = rfiles[rel], B = base[rel];
         const lCh = (L && L.sha) !== (B && B.sha), rCh = (R && R.sha) !== (B && B.sha);
         try {
-          if (L && R && L.sha === R.sha) { next[rel] = { sha: L.sha, size: L.size, mtime: L.mtime }; continue; }
-          if (!lCh && !rCh) continue;
+          if (L && R && L.sha === R.sha) { next[rel] = { sha: L.sha, size: L.size, mtime: L.mtime }; return; }
+          if (!lCh && !rCh) return;
           if (lCh && !rCh) {
-            if (pullOnly) continue;
+            if (pullOnly) return;
             if (L) { await upload(id, dir, rel, L, R ? R.sha : ''); next[rel] = L; report.up++; }
             else if (R) { await request('DELETE', `/api/projects/${enc(id)}/file?path=${enc(rel)}`, { headers: { 'X-Base-Sha': R.sha } }); delete next[rel]; report.deleted++; }
             else delete next[rel];
@@ -179,8 +197,8 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
             else delete next[rel];
           } else {
             // Changed on both sides.
-            if (!L) { next[rel] = await download(id, dir, rel, R); report.down++; continue; }      // deleted here, edited there: keep the edit
-            if (!R) { if (!pullOnly) { await upload(id, dir, rel, L, ''); next[rel] = L; report.up++; } continue; }
+            if (!L) { next[rel] = await download(id, dir, rel, R); report.down++; return; }      // deleted here, edited there: keep the edit
+            if (!R) { if (!pullOnly) { await upload(id, dir, rel, L, ''); next[rel] = L; report.up++; } return; }
             const remoteWins = (R.mtime || 0) > L.mtime;
             if (remoteWins || pullOnly) { keepConflict(dir, rel, pcName()); next[rel] = await download(id, dir, rel, R); }
             else { await download(id, dir, rel, R, conflictPath(dir, rel, R.by || 'hub')); await upload(id, dir, rel, L, R.sha); next[rel] = L; }
@@ -190,7 +208,9 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
           if (e.status === 409) report.errors.push(`${rel}: changed again on another PC, will retry`);
           else report.errors.push(`${rel}: ${e.message}`);
         }
-      }
+      };
+      const queue = [...paths].sort();
+      await Promise.all(Array.from({ length: PARALLEL }, async () => { while (queue.length) await one(queue.shift()); }));
       writeBase(dir, { hub: config().url, at: new Date().toISOString(), files: next });
       return report;
     } finally {
@@ -206,6 +226,7 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
     running = true; state.status = 'syncing'; onChange && onChange();
     const results = {};
     try {
+      await checkHub();
       const remote = await request('GET', '/api/projects');
       state.remote = remote;
       const ids = new Set(remote.map(p => p.id));

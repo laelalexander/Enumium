@@ -12,6 +12,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const zlib = require('zlib');
 
 const PORT = Number(process.env.HUB_PORT || 4380);
 const HOST = process.env.HUB_HOST || '127.0.0.1';
@@ -138,7 +139,7 @@ const server = http.createServer(async (req, res) => {
     const parts = url.pathname.replace(/^\/+/, '').split('/').filter(Boolean);
     // The hub has no pages of its own: a browser visiting it goes to the landing page's project browser.
     if (parts[0] !== 'api') { res.writeHead(302, { Location: '/#projects', 'Cache-Control': 'no-store' }); return res.end(); }
-    if (parts[1] === 'health') return send(res, 200, { ok: true, app: 'anatomy-hub', version: 1 });
+    if (parts[1] === 'health') return send(res, 200, { ok: true, app: 'anatomy-hub', version: 2 });
     if (!authed(req)) return send(res, 401, { error: 'bad or missing token' });
     const pc = String(req.headers['x-anatomy-pc'] || 'unknown').slice(0, 60);
 
@@ -174,8 +175,12 @@ const server = http.createServer(async (req, res) => {
           let st; try { st = fs.statSync(f); } catch { return send(res, 404, { error: 'not found' }); }
           if (!st.isFile()) return send(res, 404, { error: 'not found' });
           const idx = await loadIndex(id);
-          res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': st.size, 'Cache-Control': 'no-store',
-            'X-Sha256': (idx[rel] || {}).sha || '', 'X-Mtime': String((idx[rel] || {}).mtime || Math.round(st.mtimeMs)) });
+          const hdr = { 'Content-Type': 'application/octet-stream', 'Cache-Control': 'no-store',
+            'X-Sha256': (idx[rel] || {}).sha || '', 'X-Mtime': String((idx[rel] || {}).mtime || Math.round(st.mtimeMs)) };
+          const gz = /\bgzip\b/.test(req.headers['accept-encoding'] || '') && st.size > 2048 &&
+            !/\.(png|jpe?g|gif|webp|zip|7z|gz|tgz|bz2|xz|rar|3mf|glb|mp4|mov|mkv|avi|mp3|m4a|xlsx|docx|pptx|pdf|whl|exe|msi|jar)$/i.test(rel);
+          if (gz) { hdr['Content-Encoding'] = 'gzip'; res.writeHead(200, hdr); return fs.createReadStream(f).pipe(zlib.createGzip({ level: 6 })).pipe(res); }
+          hdr['Content-Length'] = st.size; res.writeHead(200, hdr);
           return fs.createReadStream(f).pipe(res);
         }
         if (req.method === 'PUT') {
@@ -184,13 +189,15 @@ const server = http.createServer(async (req, res) => {
           const mtime = Number(url.searchParams.get('mtime')) || Date.now();
           const len = Number(req.headers['content-length'] || 0);
           if (len > MAX_FILE) return send(res, 413, { error: 'file too large' });
+          // Clients send compressible files gzipped (Content-Encoding: gzip); the hub stores the original bytes.
+          const body = req.headers['content-encoding'] === 'gzip' ? req.pipe(zlib.createGunzip()) : req;
           const tmp = path.join(TMP, crypto.randomBytes(12).toString('hex'));
           const h = crypto.createHash('sha256'); let n = 0;
           await new Promise((resolve, reject) => {
             const ws = fs.createWriteStream(tmp);
-            req.on('data', d => { n += d.length; if (n > MAX_FILE) { req.destroy(); reject(httpErr(413, 'file too large')); } h.update(d); });
-            req.on('error', reject); ws.on('error', reject); ws.on('finish', resolve);
-            req.pipe(ws);
+            body.on('data', d => { n += d.length; if (n > MAX_FILE) { req.destroy(); reject(httpErr(413, 'file too large')); } h.update(d); });
+            req.on('error', reject); body.on('error', reject); ws.on('error', reject); ws.on('finish', resolve);
+            body.pipe(ws);
           }).catch(e => { fs.rmSync(tmp, { force: true }); throw e; });
           const sha = h.digest('hex');
           const want = req.headers['x-sha256'];
