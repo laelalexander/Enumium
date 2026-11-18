@@ -384,7 +384,7 @@ def asm3():
     drive = [R((131, 1850, 80, 150), fill="#ffe0b2", sw=2), T("servo 750 W", (171, 2030), 11), R((464, 1730, 80, 160), fill="#ffe0b2"),
              R((294.6, 1020, 50.8, 98.5), fill="#90a4ae"), R((480, 760, 140, 110), fill="#e1f5fe", sw=2), T("HMI", (550, 820), 11),
              R((-260, 0, 300, 60), fill="#90a4ae"), T("foot switch", (-110, 90), 11)]
-    nest = [R((200, 849, 240, 6), fill="#c5e1a5"), R((277, 855, 86, 155), fill="#fff", dash="4,3"), T("jar 86 x 155 on the indexed stage", (440, 1060), 10)]
+    nest = [R((200, 849, 240, 6), fill="#c5e1a5"), R((277, 855, 86, 155), fill="#fff", dash="4,3"), T("jar 86 x 155 on the indexed stage", (-170, 1000), 10)]
     tb1 = table_sh(750)
     CX = 1100.0                 # spindle capper P1-412 on TBL-1
     capper = [R((CX - 200, TT, 400, 12), fill=SS, sw=2), R((CX + 95, TT + 12, 51, 650), fill=SS), R((CX + 87, TT + 142, 8, 500), fill="#90a4ae"),
