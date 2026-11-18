@@ -351,6 +351,22 @@ function openWithDefault(p) {
 }
 
 // ---------------------------------------------------------------- routes
+// Serve a file without ever crashing the server: folders and missing files get 404,
+// a file another program has locked gets 500.
+function streamFile(res, p, cache) {
+  let st; try { st = fs.statSync(p); } catch { return send(res, 404, { error: 'not found' }); }
+  if (!st.isFile()) return send(res, 404, { error: 'not found' });
+  const rs = fs.createReadStream(p);
+  rs.on('error', e => { if (!res.headersSent) send(res, 500, { error: 'could not read file: ' + e.code }); else res.destroy(); });
+  rs.once('open', () => { res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': cache }); rs.pipe(res); });
+}
+
+// Last-resort guard: log anything unexpected and keep the app up.
+const ERR_LOG = path.join(__dirname, 'server.err.log');
+for (const ev of ['uncaughtException', 'unhandledRejection']) {
+  process.on(ev, e => { try { fs.appendFileSync(ERR_LOG, `${new Date().toISOString()} ${ev}: ${(e && e.stack) || e}\n`); } catch {} });
+}
+
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -365,9 +381,7 @@ const server = http.createServer(async (req, res) => {
     }
     if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
-      if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
-      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': parts[0] === 'vendor' ? 'max-age=3600' : 'no-store' });
-      return fs.createReadStream(p).pipe(res);
+      return streamFile(res, p, parts[0] === 'vendor' ? 'max-age=3600' : 'no-store');
     }
     // Raw project files at a stable URL, so HTML outputs (assembly guide, viewers) load their relative assets.
     if (req.method === 'GET' && parts[0] === 'p' && parts[1]) {
@@ -375,9 +389,7 @@ const server = http.createServer(async (req, res) => {
       const rel = decodeURIComponent(parts.slice(2).join('/'));
       let p = safeJoin(dir, rel);
       if (fs.existsSync(p) && fs.statSync(p).isDirectory()) p = path.join(p, 'index.html');
-      if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
-      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store' });
-      return fs.createReadStream(p).pipe(res);
+      return streamFile(res, p, 'no-store');
     }
     if (parts[0] !== 'api') return send(res, 404, { error: 'not found' });
 
