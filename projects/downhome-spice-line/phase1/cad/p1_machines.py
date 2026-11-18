@@ -280,25 +280,40 @@ def bought_conveyor():
 
 
 # =============================================================================================== spindle capper P1-412
+_CP = {}
+
+
+def _cp_model():
+    """rev B bench spindle capper from machines/P1-412 (design.py + model.py): the full drawing set P1-412-000..900 is drawn from the same model."""
+    if not _CP:
+        import importlib.util
+        d = P1 / "machines" / "P1-412"
+        saved = sys.modules.pop("design", None)
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("p1_412_model", d / "model.py")
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            _CP["parts"], _CP["bought"] = m.build(), m.bought()
+        finally:
+            sys.path.remove(str(d)); sys.modules.pop("design", None)
+            if saved is not None:
+                sys.modules["design"] = saved
+    return _CP
+
+
 def cp_frame():
-    """Bench capper weldment: 12 mm base plate with container V-nest slot, 50 sq column, carriage plate for an MGN15 rail block,
-    motor clamp, lever pivot; the chuck spins the cap down to a set slip torque."""
-    base = W().box(400, 350, 12).translate((0, 0, 6)).faces(">Z").workplane(centerOption="CenterOfBoundBox").rect(340, 290, forConstruction=True).vertices().hole(9)
-    base = base.cut(W().box(160, 24, 20).translate((0, -40, 6)))
-    col = sqt(50.8, 50.8, 650, 3.0).translate((0, 120, 12 + 325))
-    rail_plate = W().box(30, 8, 500).translate((0, 120 - 29, 12 + 380))
-    car = W().box(120, 10, 140).translate((0, 120 - 60, 12 + 520)).union(W().box(140, 120, 10).translate((0, 10, 12 + 470)))
-    car = car.cut(W().circle(26).extrude(20).translate((0, -20, 12 + 460)))
-    lever = rod((0, 150, 12 + 640), (0, -220, 12 + 590), 20)
-    return base.union(col).union(rail_plate).union(car).union(lever)
+    """Capper P1-412 rev B, all made parts (base weldment, carriage, spindle parts, nest and clamp, lever and stop) in the capper frame:
+    container axis at x 0, y 0; column at y +125; bench top z 0."""
+    out = None
+    for pid, s in _cp_model()["parts"].items():
+        out = s if out is None else out.union(s, clean=False)
+    return out
 
 
 def bought_capper():
-    gm = W().circle(45).extrude(220).translate((0, -20, 12 + 480))
-    clutch = W().circle(40).extrude(50).translate((0, -20, 12 + 420))
-    chuck = W().circle(55).circle(46).extrude(40).translate((0, -20, 12 + 375))
-    gas = rod((40, 150, 12 + 120), (40, 100, 12 + 470), 22)
-    return dict(gearmotor=gm, clutch=clutch, chuck=chuck, gas_spring=gas)
+    b = _cp_model()["bought"]
+    return {"gearmotor": b["P1-422"], "clutch": b["P1-423"], "gas_spring": b["P1-424"], "toggle": b["P1-450"], "controls": b["P1-451"],
+            "limit_switch": b["P1-452"], "knob": b["P1-453"]}
 
 
 # =============================================================================================== wrap labeler P1-404
@@ -485,20 +500,34 @@ MACHINES = [
              ("P1-421", "Reject pusher: 24 V linear actuator 100 mm stroke with the head's reject output", "Progressive Automations", "PA-15 class (confirm speed)",
               "https://www.progressiveautomations.com/", "Progressive Automations", 1, 180, "reject"),
          ]),
-    dict(id="P1-412", title="Bench spindle capper (built)", tag_name="Spindle capper", qty=1,
-         assy_note="Operator pulls the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips",
+    dict(id="P1-412", title="Bench spindle capper (built) rev B", tag_name="Spindle capper", qty=1,
+         full_set="machines/P1-412/drawings/P1-412-001_general_arrangement.svg",
+         assy_note="Container in the V-nest, toggle clamp, pull the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips. "
+                   "Full build set: machines/P1-412/drawings/P1-412-drawing-set.pdf (12 sheets)",
          parts=[
-             dict(id="P1-412-01", fn=cp_frame, title="Capper frame, column and carriage", material="SS 304 12 mm plate, 2 in sq tube, 10 mm plate",
-                  process="Laser cut, TIG, machine rail seat", mat_kg=14, labor_h=12, flat="base", contact=False, qty=1,
-                  notes=["Rail seat machined flat 0.05 mm over 500; MGN15 rail (P1-424) bolts to it", "V-nest slot takes printed container nests (never product contact)",
-                         "Clutch set to the cap torque table; checked hourly on the torque tester P1-402"],
-                  fasteners=lambda f: "M8 x 20 to bench" if f["dia"] < 10 else ("Ø52 chuck bore" if f["dia"] > 40 else "lever pivot")),
+             dict(id="P1-412-01", fn=cp_frame, title="Capper P1-412 rev B made parts (base weldment, carriage weldment, spindle parts, nest and clamp, lever, link and stop)",
+                  material="SS 304 12 / 10 / 6 mm plate, 2 in sq tube, bar; UHMW nest; polycarbonate guard",
+                  process="Laser, TIG, mill, lathe (see P1-412-100..500)", mat_kg=32, labor_h=26, flat=None, contact=False, qty=1,
+                  notes=["Detail drawings: P1-412-001..900 (GA, sections, assembly, base + carriage weldments, spindle parts, nest and clamp, lever and stop, bought, E01, ITP)",
+                         "Carriage on an MGN15 rail with a 200 N gas spring return; lever 400 long through a link; stop rod with a flip block for the jar height",
+                         "Slip clutch sets the cap torque (1.6 / 2.5 N·m), checked hourly on the torque tester P1-402"],
+                  fasteners=lambda f: "see P1-412-800"),
          ],
          bought=[
-             ("P1-422", "Gearmotor 1/8 HP 120 V, about 200 rpm", "Bodine Electric", "1/8 HP PMDC + speed control (confirm)", "https://www.bodine-electric.com/", "Bodine distributor", 1, 420, "gearmotor"),
-             ("P1-423", "Adjustable slip clutch 0.5-5 N·m with capping chucks for 53 mm and 89 mm caps", "Zero-Max / Resina-style chucks",
-              "Torq-Tender TT1 class + urethane chuck inserts (confirm)", "https://www.zero-max.com/", "Zero-Max distributor", 1, 520, "clutch"),
-             ("P1-424", "Linear rail MGN15 500 mm with block, and a gas spring counterbalance", "HIWIN", "MGN15H rail 500 + gas spring 100 N (confirm)", "https://www.hiwin.us/", "HIWIN distributor", 1, 160, "gas_spring"),
+             ("P1-422", "PMDC gearmotor 1/8 HP 130 V DC about 190 rpm, Ø1/2 in keyed shaft down, with KB SCR drive 115 V AC in, inhibit, 10 kΩ pot", "Bodine Electric + KB Electronics",
+              "42A-E series 1/8 HP (confirm ratio for 190 rpm) + KBMD-240D (9370)", "https://www.bodine-electric.com/", "Bodine distributor", 1, 520, "gearmotor"),
+             ("P1-423", "Slip clutch 0.5-5 N·m, Ø1/2 in bores, plus urethane cone chuck inserts for 53 and 89 mm caps and a 12 mm float spring", "Zero-Max + capping-chuck maker",
+              "Torq-Tender TT1 class (confirm range) + urethane inserts 53 / 89 mm (quote with caps)", "https://www.zero-max.com/", "Zero-Max distributor", 1, 520, "clutch"),
+             ("P1-424", "Linear guide MGN15H rail 500 + 1 block Z0; gas spring 200 N 330 / 120 stroke, M8 ball sockets", "HIWIN + Stabilus",
+              "MGN15H1R500Z0CM (confirm) + LIFT-O-MAT 200 N 330 / 120", "https://www.hiwin.us/", "HIWIN distributor", 1, 160, "gas_spring"),
+             ("P1-450", "Push-pull toggle clamp, base mount, holding 1,360 N, 32 stroke, M10 spindle", "De-Sta-Co", "603-M (confirm)",
+              "https://www.destaco.com/", "De-Sta-Co distributor", 1, 55, "toggle"),
+             ("P1-451", "Controls kit: PC enclosure 200 x 120 x 90 IP66, E-stop 2 NC, ON/OFF selector, green pilot 120 V, fuse 3 A T, terminals, glands, cord SJOOW 14/3 3 m + 5-15P",
+              "Hammond + AutomationDirect", "1554 class (confirm code) + GCX1131 + GCX1100 + GCX0101-120 + DN-F6 + DN-T12", "https://www.automationdirect.com/", "AutomationDirect", 1, 190, "controls"),
+             ("P1-452", "Limit switch roller plunger 1 NO + 1 NC IP67 M20 entry (carriage up: inhibits the drive)", "Omron", "D4N-4120 class (confirm)",
+              "https://automation.omron.com/", "Omron distributor", 1, 45, "limit_switch"),
+             ("P1-453", "Lever knob DIN 319 Ø40 M10; 2 rod ends M8 female (one LH); shoulder bolt Ø10 x 20 + nylon washers", "Elesa + igus", "DIN 319-40-M10 + KBRM-08 / KBLM-08 + ISO 7379 10x20",
+              "https://www.igus.com/", "igus", 1, 40, "knob"),
          ]),
     dict(id="P1-404", title="Wrap labeler for round containers (built)", tag_name="Wrap labeler", qty=1,
          assy_note="Container rolls on the two drive rollers under the idler; the label peels at the plate and wraps in one turn",

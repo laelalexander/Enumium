@@ -425,8 +425,8 @@ def asm3():
         item(12, "P1-413", drive, (700, 2150), (211, 1930), name="Filler servo 750 W + drive, agitator motor, tooling, HMI, foot switch (P1-413..417)", qty=1),
         item(2, "P1-410", nest, (700, 1250), (363, 930), name="3D-printed container nests (filler), PETG, no product contact", qty=8),
         item(3, "P1-409", tb1 + tb2 + tb3 + tb4, (1200, 400), (1300, TT - 20), name="Stainless tables 60 x 30 in (TBL-1 cap/seal, TBL-2 label, TBL-3, TBL-4)", qty=4),
-        item(4, "P1-412", capper, (1450, 1850), (CX + 120, TT + 600), name="Spindle capper, built (GA P1-412-GA): base, column, rail carriage"),
-        item(13, "P1-423", cdrive, (700, 1700), (CX - 45, TT + 600), name="Capper gearmotor, slip clutch + chucks, rail and gas spring (P1-422..424)", qty=1),
+        item(4, "P1-412", capper, (1450, 1850), (CX + 120, TT + 600), name="Spindle capper rev B, built (set P1-412-000..900): base, column, rail carriage, V-nest"),
+        item(13, "P1-423", cdrive, (700, 1700), (CX - 45, TT + 600), name="Capper gearmotor + KB drive, slip clutch + chucks, rail and gas spring, toggle, controls (P1-422..424, P1-450..453)", qty=1),
         item(5, "P1-403", sealer, (2050, 1700), (2005, TT + 450)),
         item(6, "P1-405", printer, (2650, 1550), (2650, TT + 270)),
         item(7, "P1-404", labeler, (3000, 1700), (LX - 200, TT + 200), name="Wrap labeler, built (GA P1-404-GA): base, roller blocks, spindle posts, peel plate"),
@@ -439,7 +439,7 @@ def asm3():
     ]
     items.sort(key=lambda d: d["n"])
     conn = [["S1", "P1-401 filler (built)", "servo auger by count, trimmed by weight, net + 1.5 %", "nest per container", "12 upm shaker / 8 jar"],
-            ["S2", "TBL-1 capping", "P1-412 spindle capper, slip clutch sets torque", "torque check hourly (P1-402)", "53 mm 12-16 lbf·in (VERIFY)"],
+            ["S2", "TBL-1 capping", "P1-412 spindle capper, slip clutch sets torque", "torque check hourly (P1-402)", "53 mm 14 lbf·in, 89 mm 22 lbf·in (set on the clutch)"],
             ["S3", "TBL-1 sealing", "P1-403 handheld over each cap", "pull test 1/hour", "per liner supplier"],
             ["S4", "TBL-2 labels", "P1-405 prints lot + best-by", "first-off check in MES", "label UPC scan"],
             ["S5", "TBL-2 apply", "P1-404 built wrap labeler, gap sensor stops feed", "position ±1.5 mm", "-"],
@@ -680,7 +680,7 @@ SHEETS = [("G-P1-000", "Cover and sheet index", "cover"), ("DH-LAY-P1", "Plant l
           ("P1-212-GA", "Bin screw feeder, built in house (x 9): general arrangement", "machines/P1-212-GA"),
           ("P1-401-GA", "Servo auger filler rev B, built in house: general arrangement (full set machines/P1-401, 18 sheets)", "machines/P1-401-GA"),
           ("P1-406-GA", "Metal detector conveyor, built in house (used head): general arrangement", "machines/P1-406-GA"),
-          ("P1-412-GA", "Bench spindle capper, built in house: general arrangement", "machines/P1-412-GA"),
+          ("P1-412-GA", "Bench spindle capper rev B, built in house: general arrangement (full set machines/P1-412, 12 sheets)", "machines/P1-412-GA"),
           ("P1-404-GA", "Wrap labeler, built in house: general arrangement", "machines/P1-404-GA"),
           ("DH-ELE-P1-001", "Power one-line and control network", "ELE-P1-001_power_and_network"),
           ("DH-ELE-P1-002", "I/O list, wire numbers and field cable schedule", "ELE-P1-002_io_list_and_cables"),

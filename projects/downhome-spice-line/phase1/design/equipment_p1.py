@@ -210,8 +210,8 @@ _M = {
     "P1-406": dict(area="Pack bench", name="Metal detector conveyor (CCP-1 on finished packs): built frame and belt run, bought search head and control",
                    basis="CCP-1 on every pack", footprint=[1510, 590, 1375], power="120 V", san="locked reject bin; validate with test wands per pack size",
                    contact=False, growth="MD-305 (Growth checks the blend; Phase 1 checks the pack)", dust=0),
-    "P1-412": dict(area="Pack bench", name="Bench spindle capper, built in house: chuck on a slip clutch sets the cap torque (replaces hand capping)",
-                   basis="one bench; torque checked hourly on P1-402", footprint=[400, 400, 712], power="120 V", san="no product contact (caps on)", contact=False, growth="", dust=0),
+    "P1-412": dict(area="Pack bench", name="Bench spindle capper rev B, built in house (full set P1-412-000..900, 12 sheets): rail carriage, slip clutch chuck, V-nest toggle clamp",
+                   basis="one bench; torque checked hourly on P1-402", footprint=[400, 350, 896], power="120 V", san="no product contact (caps on)", contact=False, growth="", dust=0),
     "P1-404": dict(area="Pack bench", name="Wrap labeler for round containers, built in house: roller bed, stepper label feed, peel plate",
                    basis="one bench", footprint=[550, 360, 340], power="24 V DC from a 120 V supply", san="no product contact (container closed)", contact=False, growth="", dust=0),
 }

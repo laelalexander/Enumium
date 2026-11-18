@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<defs><pattern id="hA" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hB" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hC" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#546e7a" stroke-width="0.9"/></pattern><pattern id="hS" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#546e7a" stroke-width="0.8"/><line x1="4" y1="0" x2="4" y2="14" stroke="#546e7a" stroke-width="0.8"/></pattern></defs>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<text x="237.0" y="18" font-size="14" text-anchor="middle">8</text><text x="237.0" y="2298" font-size="14" text-anchor="middle">8</text>
+<text x="663.0" y="18" font-size="14" text-anchor="middle">7</text><text x="663.0" y="2298" font-size="14" text-anchor="middle">7</text>
+<text x="1089.0" y="18" font-size="14" text-anchor="middle">6</text><text x="1089.0" y="2298" font-size="14" text-anchor="middle">6</text>
+<text x="1515.0" y="18" font-size="14" text-anchor="middle">5</text><text x="1515.0" y="2298" font-size="14" text-anchor="middle">5</text>
+<text x="1941.0" y="18" font-size="14" text-anchor="middle">4</text><text x="1941.0" y="2298" font-size="14" text-anchor="middle">4</text>
+<text x="2367.0" y="18" font-size="14" text-anchor="middle">3</text><text x="2367.0" y="2298" font-size="14" text-anchor="middle">3</text>
+<text x="2793.0" y="18" font-size="14" text-anchor="middle">2</text><text x="2793.0" y="2298" font-size="14" text-anchor="middle">2</text>
+<text x="3219.0" y="18" font-size="14" text-anchor="middle">1</text><text x="3219.0" y="2298" font-size="14" text-anchor="middle">1</text>
+<text x="12" y="212.0" font-size="14" text-anchor="middle">F</text><text x="3444" y="212.0" font-size="14" text-anchor="middle">F</text>
+<text x="12" y="588.0" font-size="14" text-anchor="middle">E</text><text x="3444" y="588.0" font-size="14" text-anchor="middle">E</text>
+<text x="12" y="964.0" font-size="14" text-anchor="middle">D</text><text x="3444" y="964.0" font-size="14" text-anchor="middle">D</text>
+<text x="12" y="1340.0" font-size="14" text-anchor="middle">C</text><text x="3444" y="1340.0" font-size="14" text-anchor="middle">C</text>
+<text x="12" y="1716.0" font-size="14" text-anchor="middle">B</text><text x="3444" y="1716.0" font-size="14" text-anchor="middle">B</text>
+<text x="12" y="2092.0" font-size="14" text-anchor="middle">A</text><text x="3444" y="2092.0" font-size="14" text-anchor="middle">A</text>
+<g><rect x="2556" y="1954" width="876" height="326" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="2568" y="1988" font-size="26" font-weight="bold">ELECTRICAL: SCHEMATIC, PANEL, WIRING</text>
+<text x="2568" y="2012" font-size="15">Down Home Creole · Phase 1 · P1-412 Bench spindle capper (built in house) · rev B</text>
+<line x1="2556" y1="2024" x2="3432" y2="2024" stroke="#111"/>
+<rect x="2556.0" y="2024" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2037" font-size="10.5" fill="#555">DRAWING NO.</text>
+<text x="2562.0" y="2059" font-size="17" font-weight="bold">P1-412-E01</text>
+<rect x="2994.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2037" font-size="10.5" fill="#555">REV</text>
+<text x="3000.0" y="2059" font-size="17" font-weight="bold">B</text>
+<rect x="3213.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2037" font-size="10.5" fill="#555">SCALE</text>
+<text x="3219.0" y="2059" font-size="17" font-weight="normal">NTS · 1:2 (enclosure)</text>
+<rect x="2556.0" y="2068" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2081" font-size="10.5" fill="#555">MATERIAL</text>
+<text x="2562.0" y="2103" font-size="17" font-weight="normal">see component list</text>
+<rect x="2556.0" y="2112" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2125" font-size="10.5" fill="#555">FINISH</text>
+<text x="2562.0" y="2147" font-size="17" font-weight="normal">NEC 430, UL 508A practice; 75 °C Cu; cord-and-plug</text>
+<rect x="2556.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2169" font-size="10.5" fill="#555">MASS (CALC.)</text>
+<text x="2562.0" y="2191" font-size="17" font-weight="normal">-</text>
+<rect x="2775.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2781.0" y="2169" font-size="10.5" fill="#555">QTY PER MACHINE</text>
+<text x="2781.0" y="2191" font-size="17" font-weight="normal">1</text>
+<rect x="2994.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2169" font-size="10.5" fill="#555">UNITS</text>
+<text x="3000.0" y="2191" font-size="17" font-weight="normal">mm [in]</text>
+<rect x="3213.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2169" font-size="10.5" fill="#555">SHEET</text>
+<text x="3219.0" y="2191" font-size="17" font-weight="normal">ARCH D · 11 of 12</text>
+<rect x="2556.0" y="2200" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2213" font-size="10.5" fill="#555">DRAWN</text>
+<text x="2562.0" y="2235" font-size="17" font-weight="normal">Anatomy plant/mechsheet.py</text>
+<rect x="2994.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2213" font-size="10.5" fill="#555">DATE</text>
+<text x="3000.0" y="2235" font-size="17" font-weight="normal">2026-11-18</text>
+<rect x="3213.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2213" font-size="10.5" fill="#555">STATUS</text>
+<text x="3219.0" y="2235" font-size="17" font-weight="normal">FOR REVIEW</text>
+<text x="2568" y="2270" font-size="10.5">UNLESS NOTED: LINEAR ±0.5 [±.02] · HOLES +0.2/-0 · ANGLES ±0.5° · MACHINED X.X ±0.1, X.XX ±0.05 · THIRD-ANGLE PROJECTION · BREAK EDGES 0.5 · ASME Y14.5</text>
+</g>
+<text x="120" y="110" font-size="20" text-anchor="start" fill="#111" font-weight="bold">SUPPLY 120 V 1-ph 60 Hz, cord and plug, 15/20 A receptacle on the bench (≈ 1.4 A full load)</text>
+<rect x="150" y="140" width="280" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="156" y="158" font-size="14" text-anchor="start" fill="#111" font-weight="bold">X0 CORD SJOOW 14/3 + 5-15P</text>
+<text x="156" y="176" font-size="11" text-anchor="start" fill="#607d8b">L black / N white / PE green</text>
+<line x1="250" y1="200" x2="250" y2="250" stroke="#111" stroke-width="1.6"/>
+<text x="244.0" y="225.0" font-size="12" text-anchor="end" fill="#0d47a1">1</text>
+<line x1="330" y1="200" x2="330" y2="230" stroke="#111" stroke-width="1.6"/>
+<line x1="330" y1="230" x2="1250" y2="230" stroke="#111" stroke-width="1.6"/>
+<text x="790.0" y="225.0" font-size="12" text-anchor="middle" fill="#0d47a1">N</text>
+<line x1="175" y1="200" x2="175" y2="1180" stroke="#2e7d32" stroke-width="1.6"/>
+<line x1="175" y1="1180" x2="400" y2="1180" stroke="#2e7d32" stroke-width="1.6"/>
+<text x="168" y="700" font-size="13" text-anchor="end" fill="#2e7d32" font-weight="bold">PE</text>
+<circle cx="250" cy="250" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="259" y="242" font-size="11" text-anchor="start" fill="#607d8b">TB1:1</text>
+<circle cx="1250" cy="230" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="1259" y="222" font-size="11" text-anchor="start" fill="#607d8b">TB1:N</text>
+<line x1="250" y1="255" x2="250" y2="267" stroke="#111" stroke-width="1.6"/>
+<rect x="243" y="267" width="14" height="26" fill="#fff" stroke="#111" stroke-width="1.4"/>
+<line x1="250" y1="267" x2="250" y2="293" stroke="#111" stroke-width="0.8"/>
+<line x1="250" y1="293" x2="250" y2="305" stroke="#111" stroke-width="1.6"/>
+<text x="262" y="285" font-size="12" text-anchor="start" fill="#111">F1  3 A T</text>
+<line x1="250" y1="305" x2="250" y2="340" stroke="#111" stroke-width="1.6"/>
+<text x="244.0" y="322.5" font-size="12" text-anchor="end" fill="#0d47a1">2</text>
+<line x1="250" y1="340" x2="250" y2="355" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="375" x2="250" y2="390" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="375" x2="260" y2="353" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="355" x2="262" y2="355" stroke="#111" stroke-width="1.6"/>
+<text x="264" y="370" font-size="12" text-anchor="start" fill="#111">S0 E-STOP NC-1 (11-12)</text>
+<line x1="250" y1="390" x2="250" y2="410" stroke="#111" stroke-width="1.6"/>
+<text x="244.0" y="400.0" font-size="12" text-anchor="end" fill="#0d47a1">3</text>
+<line x1="250" y1="410" x2="250" y2="425" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="445" x2="250" y2="460" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="445" x2="260" y2="423" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="425" x2="262" y2="425" stroke="#111" stroke-width="1.6"/>
+<text x="264" y="440" font-size="12" text-anchor="start" fill="#111">S0 E-STOP NC-2 (21-22)</text>
+<line x1="250" y1="460" x2="250" y2="490" stroke="#111" stroke-width="1.6"/>
+<text x="244.0" y="475.0" font-size="12" text-anchor="end" fill="#0d47a1">4</text>
+<line x1="250" y1="490" x2="250" y2="505" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="525" x2="250" y2="540" stroke="#111" stroke-width="1.6"/>
+<line x1="250" y1="525" x2="238" y2="505" stroke="#111" stroke-width="1.6"/>
+<text x="264" y="520" font-size="12" text-anchor="start" fill="#111">S1 OFF / ON (13-14)</text>
+<line x1="250" y1="540" x2="250" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="244.0" y="650.0" font-size="12" text-anchor="end" fill="#0d47a1">5</text>
+<line x1="1250" y1="230" x2="1250" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="150" y="600" font-size="12" text-anchor="start" fill="#0d47a1">L switched</text>
+<circle cx="250" cy="600" r="3.5" fill="#111"/>
+<line x1="250" y1="600" x2="720" y2="600" stroke="#111" stroke-width="1.6"/>
+<circle cx="740" cy="600" r="12" fill="#fff" stroke="#111" stroke-width="1.5"/>
+<line x1="732" y1="592" x2="748" y2="608" stroke="#111" stroke-width="1"/>
+<line x1="732" y1="608" x2="748" y2="592" stroke="#111" stroke-width="1"/>
+<text x="740" y="583" font-size="11" text-anchor="middle" fill="#111" font-weight="bold">H1 green</text>
+<line x1="752" y1="600" x2="1250" y2="600" stroke="#111" stroke-width="1.6"/>
+<circle cx="1250" cy="600" r="3.5" fill="#111"/>
+<text x="800" y="590" font-size="11" text-anchor="start" fill="#607d8b">ON = drive powered</text>
+<line x1="250" y1="760" x2="520" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="385.0" y="755.0" font-size="12" text-anchor="middle" fill="#0d47a1">5</text>
+<line x1="980" y1="760" x2="1250" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="1115.0" y="755.0" font-size="12" text-anchor="middle" fill="#0d47a1">N</text>
+<circle cx="1250" cy="760" r="3.5" fill="#111"/>
+<rect x="520" y="690" width="460" height="230" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="526" y="708" font-size="14" text-anchor="start" fill="#111" font-weight="bold">A1 KBMD-240D</text>
+<text x="526" y="726" font-size="11" text-anchor="start" fill="#607d8b">L1 ← 5 (left)   L2 ← N (right)</text>
+<text x="526" y="741" font-size="11" text-anchor="start" fill="#607d8b">J1 = 115 V line, J2 = 130 V armature (confirm in the manual)</text>
+<text x="526" y="756" font-size="11" text-anchor="start" fill="#607d8b">plug-in HP resistor for 1/8 HP 130 V</text>
+<text x="526" y="771" font-size="11" text-anchor="start" fill="#607d8b">A+ / A- → M1</text>
+<text x="526" y="786" font-size="11" text-anchor="start" fill="#607d8b">I1 / I2 inhibit: closed = motor stopped</text>
+<text x="526" y="801" font-size="11" text-anchor="start" fill="#607d8b">P1 / P2 / P3 → R1 10 kΩ</text>
+<text x="526" y="816" font-size="11" text-anchor="start" fill="#607d8b">trimpots MIN / MAX / IR / CL / ACC (see settings)</text>
+<line x1="600" y1="920" x2="600" y2="1010" stroke="#111" stroke-width="1.6"/>
+<text x="594.0" y="965.0" font-size="12" text-anchor="end" fill="#0d47a1">6 A+</text>
+<line x1="680" y1="920" x2="680" y2="1010" stroke="#111" stroke-width="1.6"/>
+<text x="686.0" y="965.0" font-size="12" text-anchor="start" fill="#0d47a1">7 A-</text>
+<circle cx="640" cy="1050" r="38" fill="#fff" stroke="#111" stroke-width="1.8"/>
+<text x="640" y="1048" font-size="18" text-anchor="middle" fill="#111" font-weight="bold">M1</text>
+<text x="640" y="1068" font-size="12" text-anchor="middle" fill="#111">DC</text>
+<line x1="600" y1="1010" x2="615" y2="1020" stroke="#111" stroke-width="1.6"/>
+<line x1="680" y1="1010" x2="665" y2="1020" stroke="#111" stroke-width="1.6"/>
+<text x="690" y="1110" font-size="12" text-anchor="start" fill="#111">1/8 HP 130 V DC 1.1 A, 190 rpm, 4.4 N·m; frame to PE (W1 green)</text>
+<line x1="800" y1="920" x2="800" y2="980" stroke="#111" stroke-width="1.6"/>
+<text x="794.0" y="950.0" font-size="12" text-anchor="end" fill="#0d47a1">8 I1</text>
+<line x1="880" y1="920" x2="880" y2="980" stroke="#111" stroke-width="1.6"/>
+<text x="886.0" y="950.0" font-size="12" text-anchor="start" fill="#0d47a1">9 I2</text>
+<line x1="800" y1="980" x2="820" y2="980" stroke="#111" stroke-width="1.6"/>
+<line x1="860" y1="980" x2="880" y2="980" stroke="#111" stroke-width="1.6"/>
+<line x1="820" y1="980" x2="834" y2="980" stroke="#111" stroke-width="1.6"/>
+<line x1="846" y1="980" x2="860" y2="980" stroke="#111" stroke-width="1.6"/>
+<line x1="834" y1="968" x2="834" y2="992" stroke="#111" stroke-width="1.6"/>
+<line x1="846" y1="968" x2="846" y2="992" stroke="#111" stroke-width="1.6"/>
+<text x="840" y="1015" font-size="11" text-anchor="middle" fill="#111" font-weight="bold">B1 NO 13-14 (closed with the carriage UP)</text>
+<text x="840" y="1032" font-size="11" text-anchor="middle" fill="#607d8b">roller struck by the carriage plate top</text>
+<line x1="960" y1="860" x2="1060" y2="860" stroke="#111" stroke-width="1.6"/>
+<text x="1010.0" y="855.0" font-size="12" text-anchor="middle" fill="#0d47a1">10-12</text>
+<rect x="1060" y="835" width="130" height="50" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1066" y="853" font-size="14" text-anchor="start" fill="#111" font-weight="bold">R1 10 kΩ</text>
+<text x="1066" y="871" font-size="11" text-anchor="start" fill="#607d8b">speed (lid)</text>
+<text x="410" y="1175" font-size="12" text-anchor="start" fill="#2e7d32">PE: cord green → TB1 PE → PE stud on the back plate → lid bond strap, M1 frame (W1), base via the bench bolts. Check &lt; 0.1 Ω PE stud to the column (ITP).</text>
+<text x="120" y="1240" font-size="15" text-anchor="start" fill="#111" font-weight="bold">HOW THE CIRCUIT WORKS</text>
+<text x="120" y="1270" font-size="12" text-anchor="start" fill="#111">S1 ON powers A1 (H1 lit). With the carriage UP, B1 NO is closed on I1-I2 so A1 is inhibited: the chuck does not turn while the operator loads the container.</text>
+<text x="120" y="1292" font-size="12" text-anchor="start" fill="#111">Pulling the lever lowers the carriage; B1 opens after ≈ 5 mm and A1 ramps the motor up (ACC ≈ 0.3 s) before the chuck reaches the cap (≈ 0.4 s at hand speed).</text>
+<text x="120" y="1314" font-size="12" text-anchor="start" fill="#111">The slip clutch limits the cap torque; the motor runs on while the clutch slips until the operator releases the lever; the gas spring lifts the carriage and B1 inhibits A1 at the top.</text>
+<text x="120" y="1336" font-size="12" text-anchor="start" fill="#111">E-stop S0 opens the AC line to A1 (two NC contacts in series, stop category 0); the motor coasts to rest in &lt; 1 s (low inertia, clutch). Twist to release, then the lever returns the cycle.</text>
+<text x="120" y="1358" font-size="12" text-anchor="start" fill="#111">The lever is hold-to-run by nature: releasing it lifts the chuck away from the hands. The polycarbonate guard P1-412-303 surrounds the chuck at all heights.</text>
+<text x="1500" y="160" font-size="20" font-weight="bold">LID (1:2), OPERATOR SIDE</text>
+<polygon points="1386.61,560.00 1613.39,560.00 1613.39,182.05 1386.61,182.05" stroke="#111" stroke-width="2" fill="#eceff1" fill-opacity="1.0" stroke-linejoin="round"/>
+<circle cx="1500.00" cy="238.74" r="37.80" stroke="#111" stroke-width="2" fill="#c62828"/>
+<circle cx="1500.00" cy="238.74" r="21.07" stroke="#7b8288" stroke-width="1.2" stroke-dasharray="8,4" fill="none"/>
+<text x="1500.0" y="299.2" font-size="10" text-anchor="middle" fill="#111">S0 E-STOP</text>
+<circle cx="1452.76" cy="352.13" r="20.79" stroke="#111" stroke-width="2" fill="#263238"/>
+<text x="1452.8" y="395.6" font-size="10" text-anchor="middle" fill="#111">S1 OFF/ON</text>
+<circle cx="1547.24" cy="352.13" r="20.79" stroke="#111" stroke-width="2" fill="#43a047"/>
+<text x="1547.2" y="395.6" font-size="10" text-anchor="middle" fill="#111">H1</text>
+<circle cx="1500.00" cy="456.06" r="15.12" stroke="#111" stroke-width="2" fill="#263238"/>
+<text x="1500.0" y="493.9" font-size="10" text-anchor="middle" fill="#111">R1 SPEED</text>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="1386.6" y1="563.0" x2="1386.6" y2="611.0" stroke-width="0.7"/><line x1="1613.4" y1="563.0" x2="1613.4" y2="611.0" stroke-width="0.7"/><line x1="1386.6" y1="605.0" x2="1613.4" y2="605.0"/><path d="M1386.6,605.0 L1397.6,608.5 L1397.6,601.5 z" stroke="none"/><path d="M1613.4,605.0 L1602.4,601.5 L1602.4,608.5 z" stroke="none"/><text transform="translate(1500.0,605.0) rotate(0.0)" y="-6" font-size="14" text-anchor="middle" stroke="none">120 [4.724]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="1616.4" y1="560.0" x2="1659.4" y2="560.0" stroke-width="0.7"/><line x1="1616.4" y1="182.0" x2="1659.4" y2="182.0" stroke-width="0.7"/><line x1="1653.4" y1="560.0" x2="1653.4" y2="182.0"/><path d="M1653.4,560.0 L1656.9,549.0 L1649.9,549.0 z" stroke="none"/><path d="M1653.4,182.0 L1649.9,193.0 L1656.9,193.0 z" stroke="none"/><text transform="translate(1653.4,371.0) rotate(-270.0)" y="-6" font-size="14" text-anchor="middle" stroke="none">200 [7.874]</text></g>
+<text x="1386.6" y="620.5" font-size="11" text-anchor="start" fill="#111">lid holes: 3 x Ø22.5 [.886] (S0, S1, H1), 1 x Ø9.5 + anti-rotation (R1)</text>
+<text x="1386.6" y="635.5" font-size="11" text-anchor="start" fill="#111">drill from the lid template; deburr; keep 20 from the lid screws</text>
+<text x="1900" y="160" font-size="20" font-weight="bold">INSIDE, BACK WALL (1:2)</text>
+<polygon points="1766.61,560.00 1993.39,560.00 1993.39,182.05 1766.61,182.05" stroke="#111" stroke-width="2" fill="#f4f6f8" fill-opacity="1.0" stroke-linejoin="round"/>
+<polygon points="1798.74,408.82 1961.26,408.82 1961.26,202.83 1798.74,202.83" stroke="#111" stroke-width="2" fill="#dfe7f1" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1880.0" y="295.4" font-size="10" text-anchor="middle" fill="#111">A1 KBMD-240D</text>
+<text x="1880.0" y="318.1" font-size="8" text-anchor="middle" fill="#111">109 x 86 on 4 x M3 x 10 standoffs</text>
+<polygon points="1781.73,518.43 1978.27,518.43 1978.27,452.28 1781.73,452.28" stroke="#607d8b" stroke-width="1.1" stroke-dasharray="20,4,4,4,4,4" fill="none" fill-opacity="1.0" stroke-linejoin="round"/>
+<polygon points="1789.29,512.76 1808.19,512.76 1808.19,457.95 1789.29,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1798.7" y="533.5" font-size="8" text-anchor="middle" fill="#111">F1</text>
+<polygon points="1811.97,512.76 1830.87,512.76 1830.87,457.95 1811.97,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1821.4" y="533.5" font-size="8" text-anchor="middle" fill="#111">1</text>
+<polygon points="1834.65,512.76 1853.54,512.76 1853.54,457.95 1834.65,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1844.1" y="533.5" font-size="8" text-anchor="middle" fill="#111">N</text>
+<polygon points="1857.32,512.76 1876.22,512.76 1876.22,457.95 1857.32,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1866.8" y="533.5" font-size="8" text-anchor="middle" fill="#111">6</text>
+<polygon points="1880.00,512.76 1898.90,512.76 1898.90,457.95 1880.00,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1889.4" y="533.5" font-size="8" text-anchor="middle" fill="#111">7</text>
+<polygon points="1902.68,512.76 1921.57,512.76 1921.57,457.95 1902.68,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1912.1" y="533.5" font-size="8" text-anchor="middle" fill="#111">8</text>
+<polygon points="1925.35,512.76 1944.25,512.76 1944.25,457.95 1925.35,457.95" stroke="#111" stroke-width="2" fill="#cfd8dc" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1934.8" y="533.5" font-size="8" text-anchor="middle" fill="#111">9</text>
+<polygon points="1948.03,512.76 1966.93,512.76 1966.93,457.95 1948.03,457.95" stroke="#111" stroke-width="2" fill="#c5e1a5" fill-opacity="1.0" stroke-linejoin="round"/>
+<text x="1957.5" y="533.5" font-size="8" text-anchor="middle" fill="#111">PE</text>
+<text x="1880.0" y="439.1" font-size="9" text-anchor="middle" fill="#111">DIN 35 rail, TB1 + F1</text>
+<circle cx="1755.28" cy="484.41" r="18.90" stroke="#111" stroke-width="2" fill="#90a4ae"/>
+<circle cx="1755.28" cy="352.13" r="18.90" stroke="#111" stroke-width="2" fill="#90a4ae"/>
+<circle cx="1755.28" cy="238.74" r="18.90" stroke="#111" stroke-width="2" fill="#90a4ae"/>
+<text x="1386.6" y="677.2" font-size="11" text-anchor="start" fill="#111">glands on the left wall: W0 cord (low), W1 motor (mid), W2 limit (high)</text>
+<text x="1386.6" y="692.2" font-size="11" text-anchor="start" fill="#111">2 x M6 + bonded washers down through the bottom wall into the base</text>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="1798.7" y1="411.8" x2="1798.7" y2="434.8" stroke-width="0.7"/><line x1="1961.3" y1="411.8" x2="1961.3" y2="434.8" stroke-width="0.7"/><line x1="1798.7" y1="428.8" x2="1961.3" y2="428.8"/><path d="M1798.7,428.8 L1809.7,432.3 L1809.7,425.3 z" stroke="none"/><path d="M1961.3,428.8 L1950.3,425.3 L1950.3,432.3 z" stroke="none"/><text transform="translate(1880.0,428.8) rotate(0.0)" y="-6" font-size="14" text-anchor="middle" stroke="none">86 [3.386]</text></g>
+<text x="2200" y="151" font-size="16" font-weight="bold">COMPONENTS</text><rect x="2200" y="160" width="910" height="20" fill="#eceff1" stroke="#111"/><text x="2205" y="173" font-size="10" font-weight="bold">TAG</text><text x="2275" y="173" font-size="10" font-weight="bold">DESCRIPTION</text><text x="2695" y="173" font-size="10" font-weight="bold">PART</text><text x="2995" y="173" font-size="10" font-weight="bold">WHERE</text><rect x="2200" y="180" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="193" font-size="10">X0</text><text x="2275" y="193" font-size="10">Cord SJOOW 14/3 3 m + NEMA 5-15P, gland M20 (P1-451)</text><text x="2695" y="193" font-size="10">plant receptacle on TBL-1, 20 A circuit</text><text x="2995" y="193" font-size="10">left wall</text><rect x="2200" y="200" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="213" font-size="10">TB1</text><text x="2275" y="213" font-size="10">DIN terminals 6 x 2.5 mm² + PE terminal (P1-451)</text><text x="2695" y="213" font-size="10">AutomationDirect DN-T12 + DN-G12 class</text><text x="2995" y="213" font-size="10">rail</text><rect x="2200" y="220" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="233" font-size="10">F1</text><text x="2275" y="233" font-size="10">Fuse holder 5 x 20 + 3 A time-delay (P1-451)</text><text x="2695" y="233" font-size="10">DN-F6 + 3 A T (Bussmann GDC-3A)</text><text x="2995" y="233" font-size="10">rail</text><rect x="2200" y="240" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="253" font-size="10">S0</text><text x="2275" y="253" font-size="10">E-stop 40 mm mushroom, twist release, 2 NC (P1-451)</text><text x="2695" y="253" font-size="10">AutomationDirect GCX1131 + 2 x NC</text><text x="2995" y="253" font-size="10">lid, top</text><rect x="2200" y="260" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="273" font-size="10">S1</text><text x="2275" y="273" font-size="10">Selector 2-pos maintained OFF / ON, 1 NO (P1-451)</text><text x="2695" y="273" font-size="10">GCX1100 class</text><text x="2995" y="273" font-size="10">lid, left</text><rect x="2200" y="280" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="293" font-size="10">H1</text><text x="2275" y="293" font-size="10">Pilot light green LED 120 V (P1-451)</text><text x="2695" y="293" font-size="10">GCX0101-120 class</text><text x="2995" y="293" font-size="10">lid, right</text><rect x="2200" y="300" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="313" font-size="10">R1</text><text x="2275" y="313" font-size="10">Speed pot 10 kΩ with knob (with A1, P1-422)</text><text x="2695" y="313" font-size="10">KB 9370 pot kit</text><text x="2995" y="313" font-size="10">lid, bottom</text><rect x="2200" y="320" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="333" font-size="10">A1</text><text x="2275" y="333" font-size="10">SCR DC drive 115 V AC in, 0-130 V DC out, inhibit (P1-422)</text><text x="2695" y="333" font-size="10">KB Electronics KBMD-240D</text><text x="2995" y="333" font-size="10">back wall</text><rect x="2200" y="340" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="353" font-size="10">M1</text><text x="2275" y="353" font-size="10">PMDC gearmotor 1/8 HP 130 V DC 1.1 A, 190 rpm (P1-422)</text><text x="2695" y="353" font-size="10">Bodine 42A-E class</text><text x="2995" y="353" font-size="10">carriage shelf</text><rect x="2200" y="360" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="373" font-size="10">B1</text><text x="2275" y="373" font-size="10">Limit switch roller plunger 1 NO + 1 NC (P1-452)</text><text x="2695" y="373" font-size="10">Omron D4N-4120 class</text><text x="2995" y="373" font-size="10">column left face</text>
+<text x="2200" y="411" font-size="16" font-weight="bold">WIRE LIST</text><rect x="2200" y="420" width="910" height="20" fill="#eceff1" stroke="#111"/><text x="2205" y="433" font-size="10" font-weight="bold">WIRE</text><text x="2265" y="433" font-size="10" font-weight="bold">FROM</text><text x="2435" y="433" font-size="10" font-weight="bold">TO</text><text x="2695" y="433" font-size="10" font-weight="bold">TYPE</text><text x="2865" y="433" font-size="10" font-weight="bold">NOTE</text><rect x="2200" y="440" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="453" font-size="10">1</text><text x="2265" y="453" font-size="10">X0 black (L)</text><text x="2435" y="453" font-size="10">TB1:1</text><text x="2695" y="453" font-size="10">cord 14 AWG</text><text x="2865" y="453" font-size="10"></text><rect x="2200" y="460" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="473" font-size="10">N</text><text x="2265" y="473" font-size="10">X0 white (N)</text><text x="2435" y="473" font-size="10">TB1:N</text><text x="2695" y="473" font-size="10">cord 14 AWG</text><text x="2865" y="473" font-size="10"></text><rect x="2200" y="480" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="493" font-size="10">PE</text><text x="2265" y="493" font-size="10">X0 green</text><text x="2435" y="493" font-size="10">TB1:PE</text><text x="2695" y="493" font-size="10">cord 14 AWG</text><text x="2865" y="493" font-size="10">PE stud on the back plate</text><rect x="2200" y="500" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="513" font-size="10">1</text><text x="2265" y="513" font-size="10">TB1:1</text><text x="2435" y="513" font-size="10">F1:in</text><text x="2695" y="513" font-size="10">16 AWG MTW black</text><text x="2865" y="513" font-size="10"></text><rect x="2200" y="520" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="533" font-size="10">2</text><text x="2265" y="533" font-size="10">F1:out</text><text x="2435" y="533" font-size="10">S0 NC-1 : 11</text><text x="2695" y="533" font-size="10">16 AWG black</text><text x="2865" y="533" font-size="10">to the lid: 300 loop</text><rect x="2200" y="540" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="553" font-size="10">3</text><text x="2265" y="553" font-size="10">S0 NC-1 : 12</text><text x="2435" y="553" font-size="10">S0 NC-2 : 21</text><text x="2695" y="553" font-size="10">16 AWG black</text><text x="2865" y="553" font-size="10">jumper on the operator</text><rect x="2200" y="560" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="573" font-size="10">4</text><text x="2265" y="573" font-size="10">S0 NC-2 : 22</text><text x="2435" y="573" font-size="10">S1 : 13</text><text x="2695" y="573" font-size="10">16 AWG black</text><text x="2865" y="573" font-size="10"></text><rect x="2200" y="580" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="593" font-size="10">5</text><text x="2265" y="593" font-size="10">S1 : 14</text><text x="2435" y="593" font-size="10">A1 : L1, H1 : X1</text><text x="2695" y="593" font-size="10">16 AWG black</text><text x="2865" y="593" font-size="10">L switched</text><rect x="2200" y="600" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="613" font-size="10">N</text><text x="2265" y="613" font-size="10">TB1:N</text><text x="2435" y="613" font-size="10">A1 : L2, H1 : X2</text><text x="2695" y="613" font-size="10">16 AWG white</text><text x="2865" y="613" font-size="10"></text><rect x="2200" y="620" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="633" font-size="10">6 / 7</text><text x="2265" y="633" font-size="10">A1 : A+ / A-</text><text x="2435" y="633" font-size="10">TB1:6 / 7 → W1 → M1</text><text x="2695" y="633" font-size="10">16 AWG red / black</text><text x="2865" y="633" font-size="10">armature</text><rect x="2200" y="640" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="653" font-size="10">8 / 9</text><text x="2265" y="653" font-size="10">A1 : I1 / I2</text><text x="2435" y="653" font-size="10">TB1:8 / 9 → W2 → B1 NO 13-14</text><text x="2695" y="653" font-size="10">18 AWG violet</text><text x="2865" y="653" font-size="10">inhibit (closed = stop)</text><rect x="2200" y="660" width="910" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="673" font-size="10">10-12</text><text x="2265" y="673" font-size="10">A1 : P1 / P2 / P3</text><text x="2435" y="673" font-size="10">R1 : 1 / 2 / 3</text><text x="2695" y="673" font-size="10">3C 22 AWG shielded</text><text x="2865" y="673" font-size="10">shield to A1 COM only</text><rect x="2200" y="680" width="910" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="2205" y="693" font-size="10">PE</text><text x="2265" y="693" font-size="10">PE stud</text><text x="2435" y="693" font-size="10">lid bond, M1 frame (W1 green), base (W0)</text><text x="2695" y="693" font-size="10">16 AWG green / yellow</text><text x="2865" y="693" font-size="10">base bonded via the shelf screws</text>
+<text x="1450" y="1171" font-size="16" font-weight="bold">CABLES</text><rect x="1450" y="1180" width="1200" height="20" fill="#eceff1" stroke="#111"/><text x="1455" y="1193" font-size="10" font-weight="bold">CABLE</text><text x="1525" y="1193" font-size="10" font-weight="bold">FROM</text><text x="1665" y="1193" font-size="10" font-weight="bold">TO</text><text x="1895" y="1193" font-size="10" font-weight="bold">SPEC</text><text x="2315" y="1193" font-size="10" font-weight="bold">GLAND / ROUTE</text><rect x="1450" y="1200" width="1200" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1213" font-size="10">W0</text><text x="1525" y="1213" font-size="10">TB1</text><text x="1665" y="1213" font-size="10">NEMA 5-15P (bench receptacle)</text><text x="1895" y="1213" font-size="10">SJOOW 14/3 600 V, 3 m (bought with P1-451)</text><text x="2315" y="1213" font-size="10">M20 left wall</text><rect x="1450" y="1220" width="1200" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1233" font-size="10">W1</text><text x="1525" y="1233" font-size="10">TB1:6 / 7 / PE</text><text x="1665" y="1233" font-size="10">M1 terminal box</text><text x="1895" y="1233" font-size="10">SJOOW 16/3, 1.2 m, 150 loop for the carriage stroke</text><text x="2315" y="1233" font-size="10">M20 left wall + strain relief on the shelf</text><rect x="1450" y="1240" width="1200" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1253" font-size="10">W2</text><text x="1525" y="1253" font-size="10">TB1:8 / 9</text><text x="1665" y="1253" font-size="10">B1 13-14</text><text x="1895" y="1253" font-size="10">2C 18 AWG shielded PUR, 1.0 m</text><text x="2315" y="1253" font-size="10">M20 left wall; M20 into B1</text>
+<text x="1450" y="1321" font-size="16" font-weight="bold">DRIVE SETTINGS</text><rect x="1450" y="1330" width="960" height="20" fill="#eceff1" stroke="#111"/><text x="1455" y="1343" font-size="10" font-weight="bold">SETTING (A1)</text><text x="1615" y="1343" font-size="10" font-weight="bold">VALUE</text><text x="1915" y="1343" font-size="10" font-weight="bold">HOW</text><rect x="1450" y="1350" width="960" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1363" font-size="10">J1 line</text><text x="1615" y="1363" font-size="10">115 V</text><text x="1915" y="1363" font-size="10">jumper on the board</text><rect x="1450" y="1370" width="960" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1383" font-size="10">J2 armature</text><text x="1615" y="1383" font-size="10">130 V</text><text x="1915" y="1383" font-size="10">jumper on the board (90 V position would cap the speed at ≈ 130 rpm)</text><rect x="1450" y="1390" width="960" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1403" font-size="10">HP resistor</text><text x="1615" y="1403" font-size="10">1/8 HP at 130 V</text><text x="1915" y="1403" font-size="10">KB plug-in resistor per the KBMD table (confirm value)</text><rect x="1450" y="1410" width="960" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1423" font-size="10">MAX</text><text x="1615" y="1423" font-size="10">190 rpm at the chuck</text><text x="1915" y="1423" font-size="10">R1 full CW; trim with a tach on the stub (ITP)</text><rect x="1450" y="1430" width="960" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1443" font-size="10">MIN</text><text x="1615" y="1443" font-size="10">0</text><text x="1915" y="1443" font-size="10">R1 full CCW = stop</text><rect x="1450" y="1450" width="960" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1463" font-size="10">CL</text><text x="1615" y="1463" font-size="10">≈ 1.6 A (150 %)</text><text x="1915" y="1463" font-size="10">the clutch, not CL, limits cap torque; CL protects the motor</text><rect x="1450" y="1470" width="960" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1483" font-size="10">ACC</text><text x="1615" y="1483" font-size="10">≈ 0.3 s</text><text x="1915" y="1483" font-size="10">smooth start before the chuck lands on the cap</text><rect x="1450" y="1490" width="960" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1455" y="1503" font-size="10">IR</text><text x="1615" y="1503" font-size="10">mid</text><text x="1915" y="1503" font-size="10">trim for steady speed while the clutch slips</text>
+<rect x="2200" y="720" width="1180" height="119" fill="#fff" stroke="#111"/><text x="2210" y="744" font-size="15" font-weight="bold">NOTES</text><text x="2210" y="766" font-size="12">1. Load: motor 1.1 A DC → ≈ 1.4 A AC (SCR form factor); F1 3 A time-delay protects the cord (14 AWG) and the drive; the bench circuit is 15/20 A.</text><text x="2210" y="783" font-size="12">2. Inhibit and pot leads are low-level signals: shielded, kept apart from the AC and armature wires; shield to A1 COM at the drive end only.</text><text x="2210" y="800" font-size="12">3. E-stop removes AC from A1 (two NC contacts). If a later risk assessment asks for a monitored stop, add a safety relay and contactor ahead of A1 (space on the rail).</text><text x="2210" y="817" font-size="12">4. B1 fails safe for the hands only with the guard: a broken I1-I2 wire lets the motor run with the carriage up, so the guard P1-412-303 is required (ITP checks both).</text><text x="2210" y="834" font-size="12">5. All lid devices bonded to PE via the lid strap; cord grip at the gland, 150 mm service loop for W1 at the carriage.</text>
+</svg>
