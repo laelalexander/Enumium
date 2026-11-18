@@ -450,9 +450,7 @@ def pack():
     # built detector conveyor P1-406 with the used detector head P1-418
     x0, y0, w, h, cx, cy = lay_box("P1-406")
     machine("P1-406", cx, cy)
-    add(cbox(cx + 400, cy - 330, 0, 400, 300, 550), RED, "locked reject bin")
-    add(cyl(cx - 300, cy - 230, 760, 25, 600), DARK, "beacon post")
-    add(cyl(cx - 300, cy - 230, 1360, 50, 120), YEL, "beacon")
+    # reject bin, pusher, stack light and controls are part of the rev B model (machines/P1-406)
     for i in range(3):
         jar(cx - 650 + i * 150, cy, PM.Z_BELT, label=True)
     anchor("P1-406", "Detector conveyor, built (used head, CCP-1)", cx, cy, 1500, "build")

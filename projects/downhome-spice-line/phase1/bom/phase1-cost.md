@@ -1,8 +1,8 @@
 # Phase 1 cost summary
 
-Phase 1 equipment comes to **$180,686**: $123,844 bought and $56,842 fabricated in house ($11,215 material and 379.0 labor hours at $65/h). That is 12% of the Growth plant's $1,512,682.
+Phase 1 equipment comes to **$185,753**: $126,014 bought and $59,739 fabricated in house ($11,642 material and 417.0 labor hours at $65/h). That is 12% of the Growth plant's $1,512,682.
 
-Buying the fabricated items from an equipment maker would cost roughly $142,105 (2.5 x shop cost, an estimate), so fabricating saves about **$85,263**.
+Buying the fabricated items from an equipment maker would cost roughly $149,348 (2.5 x shop cost, an estimate), so fabricating saves about **$89,608**.
 
 | Area | Buy | Build | Total |
 |---|---|---|---|
@@ -14,9 +14,9 @@ Buying the fabricated items from an equipment maker would cost roughly $142,105 
 | Blending | $7,925 | $13,968 | $21,893 |
 | Grinding | $9,950 | $750 | $10,700 |
 | Utilities | $14,000 | $0 | $14,000 |
-| Pack bench | $28,668 | $12,283 | $40,951 |
+| Pack bench | $30,838 | $15,180 | $46,018 |
 | Food safety | $10,100 | $0 | $10,100 |
-| TOTAL Phase 1 | $123,844 | $56,842 | $180,686 |
+| TOTAL Phase 1 | $126,014 | $59,739 | $185,753 |
 | Growth plant total |  |  | $1,512,682 |
 
 Items that carry over to Growth: P1-101 (RCV-101), P1-201 (WS-202), P1-202 (WS-203), P1-203 (WS-205), P1-701 (FS-701), P1-702 (FS-703), P1-703 (FS-704), P1-704 (FS-705).

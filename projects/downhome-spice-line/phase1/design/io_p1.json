@@ -821,16 +821,16 @@
    "15 A"
   ],
   [
-   "P1-404 built labeler (P1-426 stepper) + P1-405 printer",
+   "P1-404 built labeler (P1-426 ClearPath, 24 V supply) + P1-405 printer",
    "120 V",
    4.0,
    "15 A"
   ],
   [
-   "P1-406 conveyor (P1-420 1/6 HP) + P1-418 head + P1-421 pusher",
+   "P1-406 conveyor (P1-420 1/8 HP, CLICK PLC, pusher) + P1-418 head on its own receptacle",
    "120 V",
-   5.0,
-   "15 A dedicated (clean power)"
+   4.5,
+   "15 A dedicated (clean power) x 2"
   ],
   [
    "P1-225 PLC panel, 24 V PSU, 880",

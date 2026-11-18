@@ -407,8 +407,8 @@ def asm3():
           R((MX0 + 110, 0, 80, 8), fill=SS), R((MX0 + 1310, 0, 80, 8), fill=SS), R((MX0 + 130, 280, 1240, 40), fill=SS),
           R((5350, 0, 400, 550), fill="#ffcdd2", sw=2), T("locked reject bin", (5550, 600), 11)]
     mdrive = [R((MX0 + 30, ZB - 4, 1440, 4), fill="#455a64"), C((MX0 + 40, ZB - 32), 30, fill="#90a4ae"), C((MX0 + 1460, ZB - 32), 30, fill="#90a4ae"),
-              C((MX0 + 1460, ZB - 32), 50, fill="none", stroke="#e65100", sw=2), T("gearmotor 1/6 HP", (MX0 + 1460, ZB - 130), 10)]
-    head = [R((4390, ZB - 150, 420, 620), fill="#ffebee", sw=2.5), R((4390, ZB, 420, 152), fill="#fff"), T("aperture 254 x 152", (4600, ZB + 520), 11),
+              C((MX0 + 1460, ZB - 32), 50, fill="none", stroke="#e65100", sw=2), T("gearmotor 1/8 HP", (MX0 + 1460, ZB - 130), 10)]
+    head = [R((4390, ZB - 150, 420, 620), fill="#ffebee", sw=2.5), R((4390, ZB, 420, 152), fill="#fff"), T("aperture 300 x 250", (4600, ZB + 520), 11),
             R((4910, ZB, 80, 80), fill="#ffe0b2"), T("pusher", (4950, ZB + 110), 10), R((4950, ZB + 470, 60, 350), fill="#90a4ae"), C((4980, ZB + 860), 40, fill="#ffeb3b")]
     floor2 = [R((-200, Y2 - 20, 6300, 20), fill="url(#h45)", sw=0), P([(-200, Y2), (6100, Y2)], closed=False, sw=3)]
     turn = table_sh(0, Y2)[:0] + [R((0, Y2, 762, 40), fill="none"), R((30, Y2, 38, TT - 60), fill=SS), R((694, Y2, 38, TT - 60), fill=SS),
@@ -429,10 +429,10 @@ def asm3():
         item(13, "P1-423", cdrive, (700, 1700), (CX - 45, TT + 600), name="Capper gearmotor + KB drive, slip clutch + chucks, rail and gas spring, toggle, controls (P1-422..424, P1-450..453)", qty=1),
         item(5, "P1-403", sealer, (2050, 1700), (2005, TT + 450)),
         item(6, "P1-405", printer, (2650, 1550), (2650, TT + 270)),
-        item(7, "P1-404", labeler, (3000, 1700), (LX - 200, TT + 200), name="Wrap labeler, built (GA P1-404-GA): base, roller blocks, spindle posts, peel plate"),
-        item(14, "P1-426", ldrive, (3700, 1800), (LX + 200, TT + 300), name="Labeler rollers, stepper + controller, gap sensor, label rolls (P1-425..427)", qty=1),
-        item(8, "P1-406", md + mdrive, (4100, 1500), (MX0 + 150, 600), name="Detector conveyor, built (GA P1-406-GA): frame, 6 in belt, gearmotor"),
-        item(15, "P1-418", head, (4600, 2100), (4600, ZB + 470), name="Metal detector head + control (used, validated) and reject pusher P1-421", qty=1),
+        item(7, "P1-404", labeler, (3000, 1700), (LX - 200, TT + 200), name="Wrap labeler rev B, built (set P1-404-000..900): side plates, driven rollers, peel plate, idler arm"),
+        item(14, "P1-426", ldrive, (3700, 1800), (LX + 200, TT + 300), name="Labeler rollers, ClearPath + ClearCore, gap sensor, drive kit, controls (P1-425..427, P1-454..458)", qty=1),
+        item(8, "P1-406", md + mdrive, (4100, 1500), (MX0 + 150, 600), name="Detector conveyor rev B, built (set P1-406-000..900): end frames, FRP / UHMW metal-free zone, 6 in belt, locked bin"),
+        item(15, "P1-418", head, (4600, 2100), (4600, ZB + 470), name="Metal detector head (used, validated), belt, gearmotor, pusher, PLC controls, sensors, stack light (P1-418..421, P1-459..462)", qty=1),
         item(9, "P1-408", turn, (380, Y2 + 1500), (380, Y2 + TT + 26)),
         item(10, "P1-407", cw, (1450, Y2 + 1700), (1450, Y2 + TT + 150)),
         item(11, "P1-411", case + pal + floor2, (3400, Y2 + 1500), (3265, Y2 + TT + 220), name="Case pack: tape gun and stretch-wrap dispenser (Uline), case and pallet labels"),
@@ -514,7 +514,7 @@ def io_data():
               dict(tag="M-208", load="P1-208 tumbler gearmotor (DC control)", hp=0.125, fla=2.0, qty=1, supply="120 V", brk="15 A 1-pole")]
     loads = [("P1-401 built filler: P1-413 750 W servo, P1-414 agitator, P1-416 controls", "208 V 1-ph", 8.0, "20 A 2-pole"), ("P1-403 induction sealer", "120 V", 9.0, "15 A dedicated"),
              ("P1-412 spindle capper (P1-422 1/8 HP PMDC)", "120 V", 2.0, "15 A"),
-             ("P1-404 built labeler (P1-426 stepper) + P1-405 printer", "120 V", 4.0, "15 A"), ("P1-406 conveyor (P1-420 1/6 HP) + P1-418 head + P1-421 pusher", "120 V", 5.0, "15 A dedicated (clean power)"),
+             ("P1-404 built labeler (P1-426 ClearPath, 24 V supply) + P1-405 printer", "120 V", 4.0, "15 A"), ("P1-406 conveyor (P1-420 1/8 HP, CLICK PLC, pusher) + P1-418 head on its own receptacle", "120 V", 4.5, "15 A dedicated (clean power) x 2"),
              ("P1-225 PLC panel, 24 V PSU, 880", "120 V", 4.0, "15 A dedicated"), ("P1-205 MES PC + UPS, SW-P1", "120 V", 8.0, "20 A dedicated"),
              ("Scales P1-201/202/407, P1-204 printer", "120 V", 3.0, "15 A"), ("Receptacles and lighting (by electrician)", "120 V", 16.0, "per NEC")]
     network = [("SW-P1", "industrial unmanaged switch 8-port (WAGO 852-1111 class)"), ("P1-225", "WAGO PFC200 750-8212: CODESYS, OPC UA server"),
@@ -679,9 +679,9 @@ SHEETS = [("G-P1-000", "Cover and sheet index", "cover"), ("DH-LAY-P1", "Plant l
           ("P1-301-GA", "Ribbon blender 6 cu ft, built in house: general arrangement and item list", "machines/P1-301-GA"),
           ("P1-212-GA", "Bin screw feeder, built in house (x 9): general arrangement", "machines/P1-212-GA"),
           ("P1-401-GA", "Servo auger filler rev B, built in house: general arrangement (full set machines/P1-401, 18 sheets)", "machines/P1-401-GA"),
-          ("P1-406-GA", "Metal detector conveyor, built in house (used head): general arrangement", "machines/P1-406-GA"),
+          ("P1-406-GA", "Metal detector conveyor rev B, built in house (used head): general arrangement (full set machines/P1-406, 11 sheets)", "machines/P1-406-GA"),
           ("P1-412-GA", "Bench spindle capper rev B, built in house: general arrangement (full set machines/P1-412, 12 sheets)", "machines/P1-412-GA"),
-          ("P1-404-GA", "Wrap labeler, built in house: general arrangement", "machines/P1-404-GA"),
+          ("P1-404-GA", "Wrap labeler rev B, built in house: general arrangement (full set machines/P1-404, 11 sheets)", "machines/P1-404-GA"),
           ("DH-ELE-P1-001", "Power one-line and control network", "ELE-P1-001_power_and_network"),
           ("DH-ELE-P1-002", "I/O list, wire numbers and field cable schedule", "ELE-P1-002_io_list_and_cables"),
           ("DH-ELE-P1-003", "Typical control wiring: safety circuit, bin channel, valve and screw, feeder drive", "ELE-P1-003_typical_wiring")]

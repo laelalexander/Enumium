@@ -456,25 +456,25 @@
   },
   {
    "id": "P1-406",
-   "title": "Metal detector conveyor (built frame, bought head)",
+   "title": "Metal detector conveyor (built frame, used head) rev B",
    "qty": 1,
    "cost": {
-    "material": 250,
-    "labor_h": 16.0,
-    "labor": 1040,
-    "bought": 9810,
-    "total": 11100
+    "material": 355,
+    "labor_h": 30.0,
+    "labor": 1950,
+    "bought": 10880,
+    "total": 13185
    },
-   "assy_note": "Belt top 905 [35.6], level with the tables; the bought search head (CCP-1) bolts over the centre",
+   "assy_note": "Belt top 905 [35.6]; packs pass the used search head (CCP-1) on a UHMW bed carried by FRP rails through the metal-free zone; a detect stops the belt and the pusher puts the pack in the locked bin, confirmed by the bin-entry eye. Full build set: machines/P1-406/drawings/P1-406-drawing-set.pdf (11 sheets)",
    "parts": [
     "P1-406-01"
    ],
    "bought": [
     {
      "tag": "P1-418",
-     "name": "Metal detector search head about 10 x 6 in aperture with control (CCP-1), used, validated",
-     "maker": "Fortress Technology",
-     "model": "Stealth search head + control only (used, Sigma Equipment) (confirm)",
+     "name": "Metal detector search head, aperture 300 W x 250 H (12 x 10 in) or the nearest larger, integral control, relay outputs DETECT and FAULT, 120 V; used, refurbished, with test pieces Fe 1.5 / NFe 2.0 / SS 2.5 and the maker's validation",
+     "maker": "Fortress Technology (or Mettler-Toledo Safeline, Loma)",
+     "model": "Stealth / Phantom head + control (used, Sigma Equipment) (confirm aperture, housing and lug positions before cutting P1-406-104)",
      "source": "https://www.sigmaequipment.com/",
      "supplier": "Sigma Equipment",
      "qty": 1,
@@ -482,9 +482,9 @@
     },
     {
      "tag": "P1-419",
-     "name": "Endless belt 6 in, FDA polyurethane, plus 2 crowned SS pulleys \u00d860 with bearings",
-     "maker": "Ammeraal Beltech",
-     "model": "Ropanyl FDA 6 in endless + pulley set (quote)",
+     "name": "Belt: PU 2 mm FDA white, 152 [6 in] wide, 3,035 + splice allowance, open ended, finger-spliced in place (the belt passes through the closed head aperture); 4 x flange bearing UCFL204 stainless, \u00d820 bore, 4-bolt",
+     "maker": "Ammeraal Beltech / Habasit + NTN or SKF",
+     "model": "Ropanyl FDA 2 mm 152 wide, on-site finger splice by the supplier or hot-press kit (quote) + SUCFL204 (confirm)",
      "source": "https://www.ammeraalbeltech.com/",
      "supplier": "Ammeraal distributor",
      "qty": 1,
@@ -492,23 +492,63 @@
     },
     {
      "tag": "P1-420",
-     "name": "Conveyor gearmotor 1/6 HP shaft-mount, 60 rpm",
-     "maker": "Bodine Electric",
-     "model": "1/6 HP parallel-shaft (confirm)",
-     "source": "https://www.bodine-electric.com/",
-     "supplier": "Bodine distributor",
+     "name": "Right-angle hollow-shaft gearmotor 1/8 HP 115 V 1-ph, \u2248 85 rpm, \u00d820 mm bore with key, torque arm mount, IP55",
+     "maker": "Bison / Nord / Bodine",
+     "model": "Bison 017-656 class or Nord SK 1SI31 + 1-ph motor (confirm bore 20 mm and speed)",
+     "source": "https://www.bisongear.com/",
+     "supplier": "Bison distributor",
      "qty": 1,
-     "usd": 480
+     "usd": 520
     },
     {
      "tag": "P1-421",
-     "name": "Reject pusher: 24 V linear actuator 100 mm stroke with the head's reject output",
-     "maker": "Progressive Automations",
-     "model": "PA-15 class (confirm speed)",
+     "name": "Reject pusher: linear actuator 24 V DC, 150 stroke, \u2248 38 mm/s at 100 N, internal limits; 2 relays 24 V DPDT for run and reverse",
+     "maker": "Progressive Automations + Omron",
+     "model": "PA-14-6-35 (150 mm, 35 lb high speed, 24 V option) + G2R-2-SND-24 x 2 with sockets (confirm)",
      "source": "https://www.progressiveautomations.com/",
      "supplier": "Progressive Automations",
      "qty": 1,
      "usd": 180
+    },
+    {
+     "tag": "P1-459",
+     "name": "Controls kit: PC enclosure \u2248 250 x 200 x 130 IP66; CLICK PLC 8 DC in / 6 DC out 24 V; Mean Well LRS-75-24; motor contactor 24 V DC coil 9 A; E-stop 40 mm 2 NC; START green, STOP red, RESET key switch (supervisor), fuse 6 A T, terminals, M20 glands x 5, cord SJOOW 14/3 3 m + 5-15P",
+     "maker": "AutomationDirect + Mean Well",
+     "model": "C0-00DD2-D + C0-08ND3 (confirm I/O) + LRS-75-24 + DC1-09-10-24 class + GCX1131 + GCX1101 / GCX1103 + GCX1300-key + DN-F6 + DN-T12",
+     "source": "https://www.automationdirect.com/",
+     "supplier": "AutomationDirect",
+     "qty": 1,
+     "usd": 520
+    },
+    {
+     "tag": "P1-460",
+     "name": "Sensors: 2 x retro-reflective photo eye M18 PNP polarised with reflectors (pack at reject, bin entry), lid reed switch NC, M12 cables 2 m",
+     "maker": "Banner / AutomationDirect",
+     "model": "QS18VP6LP + BRT-32X20AM x 2 + reed switch SR class (confirm)",
+     "source": "https://www.bannerengineering.com/",
+     "supplier": "Banner distributor",
+     "qty": 1,
+     "usd": 210
+    },
+    {
+     "tag": "P1-461",
+     "name": "Stack light 3 colour red / amber / green + buzzer 24 V DC, \u00d840, pole mount",
+     "maker": "Patlite / AutomationDirect",
+     "model": "LR4-302QJBW class (confirm)",
+     "source": "https://www.automationdirect.com/",
+     "supplier": "AutomationDirect",
+     "qty": 1,
+     "usd": 160
+    },
+    {
+     "tag": "P1-462",
+     "name": "Hardware kit: 4 levelling feet M16 \u00d880 pad; padlock hasp + 2 padlocks keyed alike (QA holds the key); G10 pad 80 x 70 x 6 + 4 nylon shoulder bushes; nylon screws M5 x 16 (20); rubber bush for the torque arm",
+     "maker": "Elesa + McMaster",
+     "model": "LV.F-80-M16 class + hasp + 2 padlocks + G10 + nylon (confirm)",
+     "source": "https://www.mcmaster.com/",
+     "supplier": "McMaster-Carr",
+     "qty": 1,
+     "usd": 140
     }
    ],
    "ga": "drawings/machines/P1-406-GA.svg",
@@ -516,35 +556,35 @@
   },
   {
    "id": "P1-412",
-   "title": "Bench spindle capper (built)",
+   "title": "Bench spindle capper (built) rev B",
    "qty": 1,
    "cost": {
-    "material": 138,
-    "labor_h": 12.0,
-    "labor": 780,
-    "bought": 1100,
-    "total": 2018
+    "material": 264,
+    "labor_h": 26.0,
+    "labor": 1690,
+    "bought": 1530,
+    "total": 3484
    },
-   "assy_note": "Operator pulls the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips",
+   "assy_note": "Container in the V-nest, toggle clamp, pull the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips. Full build set: machines/P1-412/drawings/P1-412-drawing-set.pdf (12 sheets)",
    "parts": [
     "P1-412-01"
    ],
    "bought": [
     {
      "tag": "P1-422",
-     "name": "Gearmotor 1/8 HP 120 V, about 200 rpm",
-     "maker": "Bodine Electric",
-     "model": "1/8 HP PMDC + speed control (confirm)",
+     "name": "PMDC gearmotor 1/8 HP 130 V DC about 190 rpm, \u00d81/2 in keyed shaft down, with KB SCR drive 115 V AC in, inhibit, 10 k\u03a9 pot",
+     "maker": "Bodine Electric + KB Electronics",
+     "model": "42A-E series 1/8 HP (confirm ratio for 190 rpm) + KBMD-240D (9370)",
      "source": "https://www.bodine-electric.com/",
      "supplier": "Bodine distributor",
      "qty": 1,
-     "usd": 420
+     "usd": 520
     },
     {
      "tag": "P1-423",
-     "name": "Adjustable slip clutch 0.5-5 N\u00b7m with capping chucks for 53 mm and 89 mm caps",
-     "maker": "Zero-Max / Resina-style chucks",
-     "model": "Torq-Tender TT1 class + urethane chuck inserts (confirm)",
+     "name": "Slip clutch 0.5-5 N\u00b7m, \u00d81/2 in bores, plus urethane cone chuck inserts for 53 and 89 mm caps and a 12 mm float spring",
+     "maker": "Zero-Max + capping-chuck maker",
+     "model": "Torq-Tender TT1 class (confirm range) + urethane inserts 53 / 89 mm (quote with caps)",
      "source": "https://www.zero-max.com/",
      "supplier": "Zero-Max distributor",
      "qty": 1,
@@ -552,13 +592,53 @@
     },
     {
      "tag": "P1-424",
-     "name": "Linear rail MGN15 500 mm with block, and a gas spring counterbalance",
-     "maker": "HIWIN",
-     "model": "MGN15H rail 500 + gas spring 100 N (confirm)",
+     "name": "Linear guide MGN15H rail 500 + 1 block Z0; gas spring 200 N 330 / 120 stroke, M8 ball sockets",
+     "maker": "HIWIN + Stabilus",
+     "model": "MGN15H1R500Z0CM (confirm) + LIFT-O-MAT 200 N 330 / 120",
      "source": "https://www.hiwin.us/",
      "supplier": "HIWIN distributor",
      "qty": 1,
      "usd": 160
+    },
+    {
+     "tag": "P1-450",
+     "name": "Push-pull toggle clamp, base mount, holding 1,360 N, 32 stroke, M10 spindle",
+     "maker": "De-Sta-Co",
+     "model": "603-M (confirm)",
+     "source": "https://www.destaco.com/",
+     "supplier": "De-Sta-Co distributor",
+     "qty": 1,
+     "usd": 55
+    },
+    {
+     "tag": "P1-451",
+     "name": "Controls kit: PC enclosure 200 x 120 x 90 IP66, E-stop 2 NC, ON/OFF selector, green pilot 120 V, fuse 3 A T, terminals, glands, cord SJOOW 14/3 3 m + 5-15P",
+     "maker": "Hammond + AutomationDirect",
+     "model": "1554 class (confirm code) + GCX1131 + GCX1100 + GCX0101-120 + DN-F6 + DN-T12",
+     "source": "https://www.automationdirect.com/",
+     "supplier": "AutomationDirect",
+     "qty": 1,
+     "usd": 190
+    },
+    {
+     "tag": "P1-452",
+     "name": "Limit switch roller plunger 1 NO + 1 NC IP67 M20 entry (carriage up: inhibits the drive)",
+     "maker": "Omron",
+     "model": "D4N-4120 class (confirm)",
+     "source": "https://automation.omron.com/",
+     "supplier": "Omron distributor",
+     "qty": 1,
+     "usd": 45
+    },
+    {
+     "tag": "P1-453",
+     "name": "Lever knob DIN 319 \u00d840 M10; 2 rod ends M8 female (one LH); shoulder bolt \u00d810 x 20 + nylon washers",
+     "maker": "Elesa + igus",
+     "model": "DIN 319-40-M10 + KBRM-08 / KBLM-08 + ISO 7379 10x20",
+     "source": "https://www.igus.com/",
+     "supplier": "igus",
+     "qty": 1,
+     "usd": 40
     }
    ],
    "ga": "drawings/machines/P1-412-GA.svg",
@@ -566,49 +646,99 @@
   },
   {
    "id": "P1-404",
-   "title": "Wrap labeler for round containers (built)",
+   "title": "Wrap labeler for round containers (built) rev B",
    "qty": 1,
    "cost": {
-    "material": 110,
-    "labor_h": 14.0,
-    "labor": 910,
-    "bought": 1240,
-    "total": 2260
+    "material": 306,
+    "labor_h": 24.0,
+    "labor": 1560,
+    "bought": 1910,
+    "total": 3776
    },
-   "assy_note": "Container rolls on the two drive rollers under the idler; the label peels at the plate and wraps in one turn",
+   "assy_note": "Container lies on two driven rollers against the fence; lowering the idler arm starts one label, which peels at the plate tip and wraps as the container turns; the drive stops at the next label gap. Full build set: machines/P1-404/drawings/P1-404-drawing-set.pdf (11 sheets)",
    "parts": [
     "P1-404-01"
    ],
    "bought": [
     {
      "tag": "P1-425",
-     "name": "Drive rollers 50 x 240 mm urethane-covered, with shafts, bearings and timing pulleys (set of 3)",
-     "maker": "Misumi",
-     "model": "custom urethane rollers (quote)",
+     "name": "Drive rollers \u00d850 x 240 face, urethane 70A on a 304 core, \u00d812 h6 shaft ends, matched pair \u00b10.05",
+     "maker": "Misumi (or a roller recoverer)",
+     "model": "custom urethane-covered roller to P1-404-200 view R (quote)",
      "source": "https://us.misumi-ec.com/",
      "supplier": "Misumi",
-     "qty": 1,
-     "usd": 420
+     "qty": 2,
+     "usd": 180
     },
     {
      "tag": "P1-426",
-     "name": "NEMA 23 stepper with integrated driver and controller (label feed + roller drive)",
-     "maker": "Teknic",
-     "model": "ClearPath-SD or ClearCore + NEMA 23 (confirm)",
+     "name": "ClearPath-SDSK NEMA 23 servo-stepper + ClearCore controller + M-0 and power cables + Mean Well LRS-150-24",
+     "maker": "Teknic + Mean Well",
+     "model": "CPM-SDSK-2311S-RLN + CLCR-4-13 + CPM-CABLE-M0P6-120 + CPM-CABLE-PWR-MS120 + LRS-150-24 (confirm)",
      "source": "https://teknic.com/",
      "supplier": "Teknic",
      "qty": 1,
-     "usd": 560
+     "usd": 640
     },
     {
      "tag": "P1-427",
-     "name": "Label gap sensor, fork type",
+     "name": "Label gap sensor fork 40 x 40, PNP, teach-in, M8 + 2 m cable",
      "maker": "SICK",
-     "model": "WFS3 class (confirm)",
+     "model": "WFS3-40P415 + DOL-0804-G02M (confirm)",
      "source": "https://www.sick.com/",
      "supplier": "SICK distributor",
      "qty": 1,
      "usd": 260
+    },
+    {
+     "tag": "P1-454",
+     "name": "Drive kit: 8 x 6001-2RS, HTD 3M 9 wide pulleys (3 x 30T \u00d812, 15T \u00d88, 18T \u00d812), belts 375-3M-9 + 261-3M-9, O-ring pulleys + \u00d85 PU belt",
+     "maker": "SKF / B&B Manufacturing / Misumi",
+     "model": "6001-2RSH + 30-3M-09 / 15-3M-09 / 18-3M-09 + 375-3M-09 + 261-3M-09 (confirm)",
+     "source": "https://www.bbman.com/",
+     "supplier": "B&B Manufacturing",
+     "qty": 1,
+     "usd": 210
+    },
+    {
+     "tag": "P1-455",
+     "name": "Idler roller silicone 40A on aluminium, \u00d830 x 220, 2 x 6001-2RS, \u00d812 shaft",
+     "maker": "Misumi (or a roller recoverer)",
+     "model": "custom silicone idler (quote)",
+     "source": "https://us.misumi-ec.com/",
+     "supplier": "Misumi",
+     "qty": 1,
+     "usd": 120
+    },
+    {
+     "tag": "P1-456",
+     "name": "Controls kit: PC box \u2248 250 x 200 x 130 IP66, E-stop 2 NC, OFF/ON and S/J selectors, FEED illuminated button 24 V, fuse 3 A T, terminals, glands, cord 14/3 + 5-15P",
+     "maker": "Fibox / Spelsberg + AutomationDirect",
+     "model": "PC box class (confirm) + GCX1131 + GCX1100 x2 + GCX3101-24 + DN-F6 + DN-T12",
+     "source": "https://www.automationdirect.com/",
+     "supplier": "AutomationDirect",
+     "qty": 1,
+     "usd": 230
+    },
+    {
+     "tag": "P1-457",
+     "name": "Start sensor inductive M12 PNP NO 4 mm, M12 connector + 2 m cable (idler arm down)",
+     "maker": "Turck / Banner",
+     "model": "Bi4U-M12-AP6X-H1141 class (confirm)",
+     "source": "https://www.turck.us/",
+     "supplier": "Turck distributor",
+     "qty": 1,
+     "usd": 55
+    },
+    {
+     "tag": "P1-458",
+     "name": "Knob \u00d828 M8, extension spring 20 N, nylon washers, felt pad",
+     "maker": "Elesa + Lee Spring + McMaster",
+     "model": "VB.639-28-M8 + LE 038E 04 S class (confirm)",
+     "source": "https://www.elesa.com/",
+     "supplier": "Elesa distributor",
+     "qty": 1,
+     "usd": 35
     }
    ],
    "ga": "drawings/machines/P1-404-GA.svg",
@@ -768,68 +898,62 @@
   {
    "machine": "P1-406",
    "id": "P1-406-01",
-   "title": "Detector conveyor frame 1,500 x 6 in belt",
+   "title": "Detector conveyor P1-406 rev B made parts (end frames, spine, head stand; pulleys, take-up, FRP rails, UHMW bed, guides; pusher bracket, paddle, locked bin, eye brackets; torque arm, box bracket, beacon pole)",
    "qty": 1,
-   "material": "SS 304 2.5 mm channels, 3 mm bed, 40 sq legs",
-   "features": 0,
+   "material": "SS 304 4 mm plate, 40 sq / 80 x 40 tube, 2 in pipe; FRP rails; UHMW bed, guides, paddle",
+   "features": 13,
    "contact": false,
-   "mass_kg": 25.4,
+   "mass_kg": 75.4,
    "size_mm": [
-    1500,
-    304,
-    905
+    1545,
+    760,
+    1353
    ],
    "step": "cad/step/P1-406-01.step",
    "drawing": "drawings/parts/P1-406-01.svg",
    "dxf": [],
-   "labor_h": 16,
-   "mat_kg": 30
+   "labor_h": 30,
+   "mat_kg": 45
   },
   {
    "machine": "P1-412",
    "id": "P1-412-01",
-   "title": "Capper frame, column and carriage",
+   "title": "Capper P1-412 rev B made parts (base weldment, carriage weldment, spindle parts, nest and clamp, lever, link and stop)",
    "qty": 1,
-   "material": "SS 304 12 mm plate, 2 in sq tube, 10 mm plate",
-   "features": 5,
+   "material": "SS 304 12 / 10 / 6 mm plate, 2 in sq tube, bar; UHMW nest; polycarbonate guard",
+   "features": 45,
    "contact": false,
-   "mass_kg": 20.3,
+   "mass_kg": 33.5,
    "size_mm": [
     400,
-    396,
-    662
+    423,
+    891
    ],
    "step": "cad/step/P1-412-01.step",
    "drawing": "drawings/parts/P1-412-01.svg",
-   "dxf": [
-    "dxf/P1-412-01_base_mm.dxf",
-    "dxf/P1-412-01_base_in.dxf"
-   ],
-   "labor_h": 12,
-   "mat_kg": 14
+   "dxf": [],
+   "labor_h": 26,
+   "mat_kg": 32
   },
   {
    "machine": "P1-404",
    "id": "P1-404-01",
-   "title": "Labeler base, roller blocks, spindle posts and peel plate",
+   "title": "Labeler P1-404 rev B made parts (base, side plates, tie rod, fence; drive housings, liner drive, pinch, guard; spindles, hubs, brake, rewind, guide; peel plate, bracket, idler arms and shafts)",
    "qty": 1,
-   "material": "SS 304 8 mm plate, 3 mm peel plate, 20 sq bar",
-   "features": 6,
+   "material": "SS 304 8 / 10 / 6 mm plate, 1.5-3 mm sheet, bar; UHMW hubs and fence",
+   "features": 2,
    "contact": false,
-   "mass_kg": 15.9,
+   "mass_kg": 11.9,
    "size_mm": [
-    520,
-    360,
-    248
+    316,
+    221,
+    418
    ],
    "step": "cad/step/P1-404-01.step",
    "drawing": "drawings/parts/P1-404-01.svg",
-   "dxf": [
-    "dxf/P1-404-01_base_mm.dxf",
-    "dxf/P1-404-01_base_in.dxf"
-   ],
-   "labor_h": 14,
-   "mat_kg": 10
+   "dxf": [],
+   "labor_h": 24,
+   "mat_kg": 38
   }
  ]
 }

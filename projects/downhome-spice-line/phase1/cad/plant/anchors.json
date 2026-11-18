@@ -210,8 +210,8 @@
  {
   "tag": "P1-401",
   "name": "Servo auger filler, built",
-  "x": 9865,
-  "y": 10800,
+  "x": 9720,
+  "y": 10820,
   "z": 1900,
   "kind": "build"
  },

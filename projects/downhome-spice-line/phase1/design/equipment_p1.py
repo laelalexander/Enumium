@@ -207,13 +207,13 @@ _M = {
     "P1-401": dict(area="Pack bench", name="Servo auger filler rev B, built in house (full set P1-401-000..900, 18 sheets): cabinet, column, 42 L 316L hopper, belt-driven spindle cartridge, indexed stage",
                    basis="line balance: 80 % at peak, 42 % of the week", footprint=[640, 1040, 2000], power="208 V 1-ph 20 A",
                    san="316L hopper, tool-free hopper and auger", contact=True, growth="NW-501 (moves to station B in Growth)", dust=0),
-    "P1-406": dict(area="Pack bench", name="Metal detector conveyor (CCP-1 on finished packs): built frame and belt run, bought search head and control",
-                   basis="CCP-1 on every pack", footprint=[1510, 590, 1375], power="120 V", san="locked reject bin; validate with test wands per pack size",
+    "P1-406": dict(area="Pack bench", name="Metal detector conveyor rev B (CCP-1 on finished packs), built in house (full set P1-406-000..900, 11 sheets): FRP / UHMW metal-free zone, used search head, locked reject bin",
+                   basis="CCP-1 on every pack", footprint=[1520, 780, 1445], power="120 V (24 V DC inside); head on its own receptacle", san="locked reject bin; validate with test wands per pack size",
                    contact=False, growth="MD-305 (Growth checks the blend; Phase 1 checks the pack)", dust=0),
     "P1-412": dict(area="Pack bench", name="Bench spindle capper rev B, built in house (full set P1-412-000..900, 12 sheets): rail carriage, slip clutch chuck, V-nest toggle clamp",
                    basis="one bench; torque checked hourly on P1-402", footprint=[400, 350, 896], power="120 V", san="no product contact (caps on)", contact=False, growth="", dust=0),
-    "P1-404": dict(area="Pack bench", name="Wrap labeler for round containers, built in house: roller bed, stepper label feed, peel plate",
-                   basis="one bench", footprint=[550, 360, 340], power="24 V DC from a 120 V supply", san="no product contact (container closed)", contact=False, growth="", dust=0),
+    "P1-404": dict(area="Pack bench", name="Wrap labeler rev B, built in house (full set P1-404-000..900, 11 sheets): driven roller bed, liner speed locked to the rollers, peel plate, gap stop",
+                   basis="one bench; 14 per min", footprint=[640, 445, 480], power="120 V (24 V DC inside)", san="no product contact (container closed)", contact=False, growth="", dust=0),
 }
 for _m in MACH:
     d = _M[_m["id"]]; c = _m["cost"]

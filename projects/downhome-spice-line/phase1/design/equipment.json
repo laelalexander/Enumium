@@ -3297,29 +3297,29 @@
  {
   "tag": "P1-406",
   "area": "Pack bench",
-  "name": "Metal detector conveyor (CCP-1 on finished packs): built frame and belt run, bought search head and control",
+  "name": "Metal detector conveyor rev B (CCP-1 on finished packs), built in house (full set P1-406-000..900, 11 sheets): FRP / UHMW metal-free zone, used search head, locked reject bin",
   "maker": "fabricated",
   "model": "drawing P1-406-GA + part sheets P1-406-01",
   "specs": {
-   "assembly": "Belt top 905 [35.6], level with the tables; the bought search head (CCP-1) bolts over the centre",
-   "bought_parts": "P1-418, P1-419, P1-420, P1-421"
+   "assembly": "Belt top 905 [35.6]; packs pass the used search head (CCP-1) on a UHMW bed carried by FRP rails through the metal-free zone; a detect stops the belt and the pusher puts the pack in the locked bin, confirmed by the bin-entry eye. Full build set: machines/P1-406/drawings/P1-406-drawing-set.pdf (11 sheets)",
+   "bought_parts": "P1-418, P1-419, P1-420, P1-421, P1-459, P1-460, P1-461, P1-462"
   },
   "source": "cad/p1_machines.py",
   "supplier": "in-house / local stainless fabricator",
   "qty": 1,
   "qty_basis": "CCP-1 on every pack",
   "price": {
-   "usd": 1290.0,
-   "src": "build: material $250 + 16.0 h x $65",
+   "usd": 2305.0,
+   "src": "build: material $355 + 30.0 h x $65",
    "per": "each"
   },
   "footprint_mm": [
-   1510,
-   590,
-   1375
+   1520,
+   780,
+   1445
   ],
   "footprint_src": "calculated (CAD)",
-  "power": "120 V",
+  "power": "120 V (24 V DC inside); head on its own receptacle",
   "air_cfm": 0,
   "sanitary": "locked reject bin; validate with test wands per pack size",
   "alternates": [],
@@ -3332,24 +3332,24 @@
   "build": {
    "drawing": "P1-406-GA",
    "material": "SS 304/316L sheet, tube and bar per part sheets",
-   "material_usd": 250,
-   "labor_h": 16.0,
+   "material_usd": 355,
+   "labor_h": 30.0,
    "process": "laser cut, roll, TIG, machine, polish, assemble",
    "files": [
     "cad/step/P1-406-01"
    ]
   },
   "reuse_in_growth": false,
-  "ext_usd": 1290.0
+  "ext_usd": 2305.0
  },
  {
   "tag": "P1-418",
   "area": "Pack bench",
-  "name": "Metal detector search head about 10 x 6 in aperture with control (CCP-1), used, validated",
-  "maker": "Fortress Technology",
-  "model": "Stealth search head + control only (used, Sigma Equipment) (confirm)",
+  "name": "Metal detector search head, aperture 300 W x 250 H (12 x 10 in) or the nearest larger, integral control, relay outputs DETECT and FAULT, 120 V; used, refurbished, with test pieces Fe 1.5 / NFe 2.0 / SS 2.5 and the maker's validation",
+  "maker": "Fortress Technology (or Mettler-Toledo Safeline, Loma)",
+  "model": "Stealth / Phantom head + control (used, Sigma Equipment) (confirm aperture, housing and lug positions before cutting P1-406-104)",
   "specs": {
-   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
   },
   "source": "https://www.sigmaequipment.com/",
   "supplier": "Sigma Equipment",
@@ -3383,11 +3383,11 @@
  {
   "tag": "P1-419",
   "area": "Pack bench",
-  "name": "Endless belt 6 in, FDA polyurethane, plus 2 crowned SS pulleys \u00d860 with bearings",
-  "maker": "Ammeraal Beltech",
-  "model": "Ropanyl FDA 6 in endless + pulley set (quote)",
+  "name": "Belt: PU 2 mm FDA white, 152 [6 in] wide, 3,035 + splice allowance, open ended, finger-spliced in place (the belt passes through the closed head aperture); 4 x flange bearing UCFL204 stainless, \u00d820 bore, 4-bolt",
+  "maker": "Ammeraal Beltech / Habasit + NTN or SKF",
+  "model": "Ropanyl FDA 2 mm 152 wide, on-site finger splice by the supplier or hot-press kit (quote) + SUCFL204 (confirm)",
   "specs": {
-   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
   },
   "source": "https://www.ammeraalbeltech.com/",
   "supplier": "Ammeraal distributor",
@@ -3421,18 +3421,18 @@
  {
   "tag": "P1-420",
   "area": "Pack bench",
-  "name": "Conveyor gearmotor 1/6 HP shaft-mount, 60 rpm",
-  "maker": "Bodine Electric",
-  "model": "1/6 HP parallel-shaft (confirm)",
+  "name": "Right-angle hollow-shaft gearmotor 1/8 HP 115 V 1-ph, \u2248 85 rpm, \u00d820 mm bore with key, torque arm mount, IP55",
+  "maker": "Bison / Nord / Bodine",
+  "model": "Bison 017-656 class or Nord SK 1SI31 + 1-ph motor (confirm bore 20 mm and speed)",
   "specs": {
-   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
   },
-  "source": "https://www.bodine-electric.com/",
-  "supplier": "Bodine distributor",
+  "source": "https://www.bisongear.com/",
+  "supplier": "Bison distributor",
   "qty": 1,
   "qty_basis": "1 for 1 x P1-406",
   "price": {
-   "usd": 480,
+   "usd": 520,
    "src": "estimate",
    "per": "each"
   },
@@ -3454,16 +3454,16 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 480
+  "ext_usd": 520
  },
  {
   "tag": "P1-421",
   "area": "Pack bench",
-  "name": "Reject pusher: 24 V linear actuator 100 mm stroke with the head's reject output",
-  "maker": "Progressive Automations",
-  "model": "PA-15 class (confirm speed)",
+  "name": "Reject pusher: linear actuator 24 V DC, 150 stroke, \u2248 38 mm/s at 100 N, internal limits; 2 relays 24 V DPDT for run and reverse",
+  "maker": "Progressive Automations + Omron",
+  "model": "PA-14-6-35 (150 mm, 35 lb high speed, 24 V option) + G2R-2-SND-24 x 2 with sockets (confirm)",
   "specs": {
-   "for": "P1-406 Metal detector conveyor (built frame, bought head)"
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
   },
   "source": "https://www.progressiveautomations.com/",
   "supplier": "Progressive Automations",
@@ -3495,68 +3495,20 @@
   "ext_usd": 180
  },
  {
-  "tag": "P1-412",
+  "tag": "P1-459",
   "area": "Pack bench",
-  "name": "Bench spindle capper, built in house: chuck on a slip clutch sets the cap torque (replaces hand capping)",
-  "maker": "fabricated",
-  "model": "drawing P1-412-GA + part sheets P1-412-01",
+  "name": "Controls kit: PC enclosure \u2248 250 x 200 x 130 IP66; CLICK PLC 8 DC in / 6 DC out 24 V; Mean Well LRS-75-24; motor contactor 24 V DC coil 9 A; E-stop 40 mm 2 NC; START green, STOP red, RESET key switch (supervisor), fuse 6 A T, terminals, M20 glands x 5, cord SJOOW 14/3 3 m + 5-15P",
+  "maker": "AutomationDirect + Mean Well",
+  "model": "C0-00DD2-D + C0-08ND3 (confirm I/O) + LRS-75-24 + DC1-09-10-24 class + GCX1131 + GCX1101 / GCX1103 + GCX1300-key + DN-F6 + DN-T12",
   "specs": {
-   "assembly": "Operator pulls the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips",
-   "bought_parts": "P1-422, P1-423, P1-424"
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
   },
-  "source": "cad/p1_machines.py",
-  "supplier": "in-house / local stainless fabricator",
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
   "qty": 1,
-  "qty_basis": "one bench; torque checked hourly on P1-402",
+  "qty_basis": "1 for 1 x P1-406",
   "price": {
-   "usd": 918.0,
-   "src": "build: material $138 + 12.0 h x $65",
-   "per": "each"
-  },
-  "footprint_mm": [
-   400,
-   400,
-   712
-  ],
-  "footprint_src": "calculated (CAD)",
-  "power": "120 V",
-  "air_cfm": 0,
-  "sanitary": "no product contact (caps on)",
-  "alternates": [],
-  "rate": null,
-  "kind": "build",
-  "product_contact": false,
-  "dust_cfm": 0,
-  "confirm": "",
-  "growth_equiv": "",
-  "build": {
-   "drawing": "P1-412-GA",
-   "material": "SS 304/316L sheet, tube and bar per part sheets",
-   "material_usd": 138,
-   "labor_h": 12.0,
-   "process": "laser cut, roll, TIG, machine, polish, assemble",
-   "files": [
-    "cad/step/P1-412-01"
-   ]
-  },
-  "reuse_in_growth": false,
-  "ext_usd": 918.0
- },
- {
-  "tag": "P1-422",
-  "area": "Pack bench",
-  "name": "Gearmotor 1/8 HP 120 V, about 200 rpm",
-  "maker": "Bodine Electric",
-  "model": "1/8 HP PMDC + speed control (confirm)",
-  "specs": {
-   "for": "P1-412 Bench spindle capper (built)"
-  },
-  "source": "https://www.bodine-electric.com/",
-  "supplier": "Bodine distributor",
-  "qty": 1,
-  "qty_basis": "1 for 1 x P1-412",
-  "price": {
-   "usd": 420,
+   "usd": 520,
    "src": "estimate",
    "per": "each"
   },
@@ -3578,16 +3530,216 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 420
+  "ext_usd": 520
+ },
+ {
+  "tag": "P1-460",
+  "area": "Pack bench",
+  "name": "Sensors: 2 x retro-reflective photo eye M18 PNP polarised with reflectors (pack at reject, bin entry), lid reed switch NC, M12 cables 2 m",
+  "maker": "Banner / AutomationDirect",
+  "model": "QS18VP6LP + BRT-32X20AM x 2 + reed switch SR class (confirm)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
+  },
+  "source": "https://www.bannerengineering.com/",
+  "supplier": "Banner distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 210,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 210
+ },
+ {
+  "tag": "P1-461",
+  "area": "Pack bench",
+  "name": "Stack light 3 colour red / amber / green + buzzer 24 V DC, \u00d840, pole mount",
+  "maker": "Patlite / AutomationDirect",
+  "model": "LR4-302QJBW class (confirm)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 160,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 160
+ },
+ {
+  "tag": "P1-462",
+  "area": "Pack bench",
+  "name": "Hardware kit: 4 levelling feet M16 \u00d880 pad; padlock hasp + 2 padlocks keyed alike (QA holds the key); G10 pad 80 x 70 x 6 + 4 nylon shoulder bushes; nylon screws M5 x 16 (20); rubber bush for the torque arm",
+  "maker": "Elesa + McMaster",
+  "model": "LV.F-80-M16 class + hasp + 2 padlocks + G10 + nylon (confirm)",
+  "specs": {
+   "for": "P1-406 Metal detector conveyor (built frame, used head) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "McMaster-Carr",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-406",
+  "price": {
+   "usd": 140,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 140
+ },
+ {
+  "tag": "P1-412",
+  "area": "Pack bench",
+  "name": "Bench spindle capper rev B, built in house (full set P1-412-000..900, 12 sheets): rail carriage, slip clutch chuck, V-nest toggle clamp",
+  "maker": "fabricated",
+  "model": "drawing P1-412-GA + part sheets P1-412-01",
+  "specs": {
+   "assembly": "Container in the V-nest, toggle clamp, pull the lever: the chuck lowers onto the cap and spins it down to the clutch torque, then slips. Full build set: machines/P1-412/drawings/P1-412-drawing-set.pdf (12 sheets)",
+   "bought_parts": "P1-422, P1-423, P1-424, P1-450, P1-451, P1-452, P1-453"
+  },
+  "source": "cad/p1_machines.py",
+  "supplier": "in-house / local stainless fabricator",
+  "qty": 1,
+  "qty_basis": "one bench; torque checked hourly on P1-402",
+  "price": {
+   "usd": 1954.0,
+   "src": "build: material $264 + 26.0 h x $65",
+   "per": "each"
+  },
+  "footprint_mm": [
+   400,
+   350,
+   896
+  ],
+  "footprint_src": "calculated (CAD)",
+  "power": "120 V",
+  "air_cfm": 0,
+  "sanitary": "no product contact (caps on)",
+  "alternates": [],
+  "rate": null,
+  "kind": "build",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": {
+   "drawing": "P1-412-GA",
+   "material": "SS 304/316L sheet, tube and bar per part sheets",
+   "material_usd": 264,
+   "labor_h": 26.0,
+   "process": "laser cut, roll, TIG, machine, polish, assemble",
+   "files": [
+    "cad/step/P1-412-01"
+   ]
+  },
+  "reuse_in_growth": false,
+  "ext_usd": 1954.0
+ },
+ {
+  "tag": "P1-422",
+  "area": "Pack bench",
+  "name": "PMDC gearmotor 1/8 HP 130 V DC about 190 rpm, \u00d81/2 in keyed shaft down, with KB SCR drive 115 V AC in, inhibit, 10 k\u03a9 pot",
+  "maker": "Bodine Electric + KB Electronics",
+  "model": "42A-E series 1/8 HP (confirm ratio for 190 rpm) + KBMD-240D (9370)",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built) rev B"
+  },
+  "source": "https://www.bodine-electric.com/",
+  "supplier": "Bodine distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 520,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 520
  },
  {
   "tag": "P1-423",
   "area": "Pack bench",
-  "name": "Adjustable slip clutch 0.5-5 N\u00b7m with capping chucks for 53 mm and 89 mm caps",
-  "maker": "Zero-Max / Resina-style chucks",
-  "model": "Torq-Tender TT1 class + urethane chuck inserts (confirm)",
+  "name": "Slip clutch 0.5-5 N\u00b7m, \u00d81/2 in bores, plus urethane cone chuck inserts for 53 and 89 mm caps and a 12 mm float spring",
+  "maker": "Zero-Max + capping-chuck maker",
+  "model": "Torq-Tender TT1 class (confirm range) + urethane inserts 53 / 89 mm (quote with caps)",
   "specs": {
-   "for": "P1-412 Bench spindle capper (built)"
+   "for": "P1-412 Bench spindle capper (built) rev B"
   },
   "source": "https://www.zero-max.com/",
   "supplier": "Zero-Max distributor",
@@ -3621,11 +3773,11 @@
  {
   "tag": "P1-424",
   "area": "Pack bench",
-  "name": "Linear rail MGN15 500 mm with block, and a gas spring counterbalance",
-  "maker": "HIWIN",
-  "model": "MGN15H rail 500 + gas spring 100 N (confirm)",
+  "name": "Linear guide MGN15H rail 500 + 1 block Z0; gas spring 200 N 330 / 120 stroke, M8 ball sockets",
+  "maker": "HIWIN + Stabilus",
+  "model": "MGN15H1R500Z0CM (confirm) + LIFT-O-MAT 200 N 330 / 120",
   "specs": {
-   "for": "P1-412 Bench spindle capper (built)"
+   "for": "P1-412 Bench spindle capper (built) rev B"
   },
   "source": "https://www.hiwin.us/",
   "supplier": "HIWIN distributor",
@@ -3657,31 +3809,183 @@
   "ext_usd": 160
  },
  {
+  "tag": "P1-450",
+  "area": "Pack bench",
+  "name": "Push-pull toggle clamp, base mount, holding 1,360 N, 32 stroke, M10 spindle",
+  "maker": "De-Sta-Co",
+  "model": "603-M (confirm)",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built) rev B"
+  },
+  "source": "https://www.destaco.com/",
+  "supplier": "De-Sta-Co distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 55,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 55
+ },
+ {
+  "tag": "P1-451",
+  "area": "Pack bench",
+  "name": "Controls kit: PC enclosure 200 x 120 x 90 IP66, E-stop 2 NC, ON/OFF selector, green pilot 120 V, fuse 3 A T, terminals, glands, cord SJOOW 14/3 3 m + 5-15P",
+  "maker": "Hammond + AutomationDirect",
+  "model": "1554 class (confirm code) + GCX1131 + GCX1100 + GCX0101-120 + DN-F6 + DN-T12",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built) rev B"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 190,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 190
+ },
+ {
+  "tag": "P1-452",
+  "area": "Pack bench",
+  "name": "Limit switch roller plunger 1 NO + 1 NC IP67 M20 entry (carriage up: inhibits the drive)",
+  "maker": "Omron",
+  "model": "D4N-4120 class (confirm)",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built) rev B"
+  },
+  "source": "https://automation.omron.com/",
+  "supplier": "Omron distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 45,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 45
+ },
+ {
+  "tag": "P1-453",
+  "area": "Pack bench",
+  "name": "Lever knob DIN 319 \u00d840 M10; 2 rod ends M8 female (one LH); shoulder bolt \u00d810 x 20 + nylon washers",
+  "maker": "Elesa + igus",
+  "model": "DIN 319-40-M10 + KBRM-08 / KBLM-08 + ISO 7379 10x20",
+  "specs": {
+   "for": "P1-412 Bench spindle capper (built) rev B"
+  },
+  "source": "https://www.igus.com/",
+  "supplier": "igus",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-412",
+  "price": {
+   "usd": 40,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 40
+ },
+ {
   "tag": "P1-404",
   "area": "Pack bench",
-  "name": "Wrap labeler for round containers, built in house: roller bed, stepper label feed, peel plate",
+  "name": "Wrap labeler rev B, built in house (full set P1-404-000..900, 11 sheets): driven roller bed, liner speed locked to the rollers, peel plate, gap stop",
   "maker": "fabricated",
   "model": "drawing P1-404-GA + part sheets P1-404-01",
   "specs": {
-   "assembly": "Container rolls on the two drive rollers under the idler; the label peels at the plate and wraps in one turn",
-   "bought_parts": "P1-425, P1-426, P1-427"
+   "assembly": "Container lies on two driven rollers against the fence; lowering the idler arm starts one label, which peels at the plate tip and wraps as the container turns; the drive stops at the next label gap. Full build set: machines/P1-404/drawings/P1-404-drawing-set.pdf (11 sheets)",
+   "bought_parts": "P1-425, P1-426, P1-427, P1-454, P1-455, P1-456, P1-457, P1-458"
   },
   "source": "cad/p1_machines.py",
   "supplier": "in-house / local stainless fabricator",
   "qty": 1,
-  "qty_basis": "one bench",
+  "qty_basis": "one bench; 14 per min",
   "price": {
-   "usd": 1020.0,
-   "src": "build: material $110 + 14.0 h x $65",
+   "usd": 1866.0,
+   "src": "build: material $306 + 24.0 h x $65",
    "per": "each"
   },
   "footprint_mm": [
-   550,
-   360,
-   340
+   640,
+   445,
+   480
   ],
   "footprint_src": "calculated (CAD)",
-  "power": "24 V DC from a 120 V supply",
+  "power": "120 V (24 V DC inside)",
   "air_cfm": 0,
   "sanitary": "no product contact (container closed)",
   "alternates": [],
@@ -3694,31 +3998,31 @@
   "build": {
    "drawing": "P1-404-GA",
    "material": "SS 304/316L sheet, tube and bar per part sheets",
-   "material_usd": 110,
-   "labor_h": 14.0,
+   "material_usd": 306,
+   "labor_h": 24.0,
    "process": "laser cut, roll, TIG, machine, polish, assemble",
    "files": [
     "cad/step/P1-404-01"
    ]
   },
   "reuse_in_growth": false,
-  "ext_usd": 1020.0
+  "ext_usd": 1866.0
  },
  {
   "tag": "P1-425",
   "area": "Pack bench",
-  "name": "Drive rollers 50 x 240 mm urethane-covered, with shafts, bearings and timing pulleys (set of 3)",
-  "maker": "Misumi",
-  "model": "custom urethane rollers (quote)",
+  "name": "Drive rollers \u00d850 x 240 face, urethane 70A on a 304 core, \u00d812 h6 shaft ends, matched pair \u00b10.05",
+  "maker": "Misumi (or a roller recoverer)",
+  "model": "custom urethane-covered roller to P1-404-200 view R (quote)",
   "specs": {
-   "for": "P1-404 Wrap labeler for round containers (built)"
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
   },
   "source": "https://us.misumi-ec.com/",
   "supplier": "Misumi",
-  "qty": 1,
-  "qty_basis": "1 for 1 x P1-404",
+  "qty": 2,
+  "qty_basis": "2 for 1 x P1-404",
   "price": {
-   "usd": 420,
+   "usd": 180,
    "src": "estimate",
    "per": "each"
   },
@@ -3740,23 +4044,23 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 420
+  "ext_usd": 360
  },
  {
   "tag": "P1-426",
   "area": "Pack bench",
-  "name": "NEMA 23 stepper with integrated driver and controller (label feed + roller drive)",
-  "maker": "Teknic",
-  "model": "ClearPath-SD or ClearCore + NEMA 23 (confirm)",
+  "name": "ClearPath-SDSK NEMA 23 servo-stepper + ClearCore controller + M-0 and power cables + Mean Well LRS-150-24",
+  "maker": "Teknic + Mean Well",
+  "model": "CPM-SDSK-2311S-RLN + CLCR-4-13 + CPM-CABLE-M0P6-120 + CPM-CABLE-PWR-MS120 + LRS-150-24 (confirm)",
   "specs": {
-   "for": "P1-404 Wrap labeler for round containers (built)"
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
   },
   "source": "https://teknic.com/",
   "supplier": "Teknic",
   "qty": 1,
   "qty_basis": "1 for 1 x P1-404",
   "price": {
-   "usd": 560,
+   "usd": 640,
    "src": "estimate",
    "per": "each"
   },
@@ -3778,16 +4082,16 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 560
+  "ext_usd": 640
  },
  {
   "tag": "P1-427",
   "area": "Pack bench",
-  "name": "Label gap sensor, fork type",
+  "name": "Label gap sensor fork 40 x 40, PNP, teach-in, M8 + 2 m cable",
   "maker": "SICK",
-  "model": "WFS3 class (confirm)",
+  "model": "WFS3-40P415 + DOL-0804-G02M (confirm)",
   "specs": {
-   "for": "P1-404 Wrap labeler for round containers (built)"
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
   },
   "source": "https://www.sick.com/",
   "supplier": "SICK distributor",
@@ -3817,6 +4121,196 @@
   "build": null,
   "reuse_in_growth": false,
   "ext_usd": 260
+ },
+ {
+  "tag": "P1-454",
+  "area": "Pack bench",
+  "name": "Drive kit: 8 x 6001-2RS, HTD 3M 9 wide pulleys (3 x 30T \u00d812, 15T \u00d88, 18T \u00d812), belts 375-3M-9 + 261-3M-9, O-ring pulleys + \u00d85 PU belt",
+  "maker": "SKF / B&B Manufacturing / Misumi",
+  "model": "6001-2RSH + 30-3M-09 / 15-3M-09 / 18-3M-09 + 375-3M-09 + 261-3M-09 (confirm)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
+  },
+  "source": "https://www.bbman.com/",
+  "supplier": "B&B Manufacturing",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 210,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 210
+ },
+ {
+  "tag": "P1-455",
+  "area": "Pack bench",
+  "name": "Idler roller silicone 40A on aluminium, \u00d830 x 220, 2 x 6001-2RS, \u00d812 shaft",
+  "maker": "Misumi (or a roller recoverer)",
+  "model": "custom silicone idler (quote)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
+  },
+  "source": "https://us.misumi-ec.com/",
+  "supplier": "Misumi",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 120,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 120
+ },
+ {
+  "tag": "P1-456",
+  "area": "Pack bench",
+  "name": "Controls kit: PC box \u2248 250 x 200 x 130 IP66, E-stop 2 NC, OFF/ON and S/J selectors, FEED illuminated button 24 V, fuse 3 A T, terminals, glands, cord 14/3 + 5-15P",
+  "maker": "Fibox / Spelsberg + AutomationDirect",
+  "model": "PC box class (confirm) + GCX1131 + GCX1100 x2 + GCX3101-24 + DN-F6 + DN-T12",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 230,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 230
+ },
+ {
+  "tag": "P1-457",
+  "area": "Pack bench",
+  "name": "Start sensor inductive M12 PNP NO 4 mm, M12 connector + 2 m cable (idler arm down)",
+  "maker": "Turck / Banner",
+  "model": "Bi4U-M12-AP6X-H1141 class (confirm)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
+  },
+  "source": "https://www.turck.us/",
+  "supplier": "Turck distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 55,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 55
+ },
+ {
+  "tag": "P1-458",
+  "area": "Pack bench",
+  "name": "Knob \u00d828 M8, extension spring 20 N, nylon washers, felt pad",
+  "maker": "Elesa + Lee Spring + McMaster",
+  "model": "VB.639-28-M8 + LE 038E 04 S class (confirm)",
+  "specs": {
+   "for": "P1-404 Wrap labeler for round containers (built) rev B"
+  },
+  "source": "https://www.elesa.com/",
+  "supplier": "Elesa distributor",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-404",
+  "price": {
+   "usd": 35,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 35
  },
  {
   "tag": "P1-701",

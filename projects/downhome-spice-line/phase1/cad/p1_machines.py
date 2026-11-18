@@ -249,34 +249,41 @@ def bought_filler():
 
 
 # =============================================================================================== detector conveyor P1-406
-C_L, C_W, Z_BELT = 1500.0, 160.0, 905.0
+Z_BELT = 905.0
+_CV = {}
+
+
+def _cv_model():
+    """rev B detector conveyor from machines/P1-406 (design.py + model.py): the full drawing set P1-406-000..900 is drawn from the same model."""
+    if not _CV:
+        import importlib.util
+        d = P1 / "machines" / "P1-406"
+        saved = sys.modules.pop("design", None)
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("p1_406_model", d / "model.py")
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            _CV["parts"], _CV["bought"] = m.build(), m.bought()
+        finally:
+            sys.path.remove(str(d)); sys.modules.pop("design", None)
+            if saved is not None:
+                sys.modules["design"] = saved
+    return _CV
 
 
 def cv_frame():
-    """Conveyor weldment: 2 bent side channels 120 x 40 x 2.5, slider bed 3 mm, 4 legs 40 sq with feet, pulley bearing slots, reject-arm boss."""
-    f = W()
-    for sy in (-1, 1):
-        ch = W().box(C_L, 2.5, 120).translate((0, sy * (C_W / 2 + 12), Z_BELT - 60))
-        ch = ch.union(W().box(C_L, 40, 2.5).translate((0, sy * (C_W / 2 + 12 + 18.75), Z_BELT - 118)))
-        for x in (-C_L / 2 + 40, C_L / 2 - 40):
-            ch = ch.cut(W().box(50, 20, 22).translate((x, sy * (C_W / 2 + 12), Z_BELT - 30)))          # take-up slot for the pulley shaft
-        f = f.union(ch)
-        for x in (-C_L / 2 + 150, C_L / 2 - 150):
-            f = f.union(sqt(40, 40, Z_BELT - 120, 2.0).translate((x, sy * (C_W / 2 + 12 + 20), (Z_BELT - 120) / 2)))
-            f = f.union(W().box(80, 80, 8).translate((x, sy * (C_W / 2 + 32), 4)))
-    f = f.union(W().box(C_L - 160, C_W + 22, 3).translate((0, 0, Z_BELT - 12)))
-    for x in (-C_L / 2 + 150, C_L / 2 - 150):
-        f = f.union(sqt(40, C_W + 64, 40, 2.0).translate((x, 0, 300)))
-    return f
+    """Detector conveyor P1-406 rev B, all made parts (end frames, spine, head stand, pulleys, FRP rails, UHMW bed, guides, reject, brackets):
+    head centre x 0, belt centre y 0, floor z 0; flow +x, operator -y."""
+    out = None
+    for pid, s in _cv_model()["parts"].items():
+        out = s if out is None else out.union(s, clean=False)
+    return out
 
 
 def bought_conveyor():
-    belt = W().box(C_L - 60, 152, 4).translate((0, 0, Z_BELT - 2)).union(W().box(C_L - 60, 152, 4).translate((0, 0, Z_BELT - 64)))
-    pul = rod((-C_L / 2 + 40, -90, Z_BELT - 32), (-C_L / 2 + 40, 90, Z_BELT - 32), 60).union(rod((C_L / 2 - 40, -90, Z_BELT - 32), (C_L / 2 - 40, 90, Z_BELT - 32), 60))
-    gm = rod((C_L / 2 - 40, 100, Z_BELT - 32), (C_L / 2 - 40, 330, Z_BELT - 32), 100)
-    head = W().box(420, 520, 620).translate((0, 0, Z_BELT - 150 + 310)).cut(W().box(440, 254, 152).translate((0, 0, Z_BELT + 76)))
-    rej = W().box(80, 120, 80).translate((350, 170, Z_BELT + 40))
-    return dict(belt=belt, pulleys=pul, gearmotor=gm, detector_head=head, reject=rej)
+    b = _cv_model()["bought"]
+    return {"detector_head": b["P1-418"], "belt": b["P1-419"], "gearmotor": b["P1-420"], "reject": b["P1-421"], "controls": b["P1-459"],
+            "sensors": b["P1-460"], "stack_light": b["P1-461"], "feet_locks": b["P1-462"]}
 
 
 # =============================================================================================== spindle capper P1-412
@@ -317,25 +324,40 @@ def bought_capper():
 
 
 # =============================================================================================== wrap labeler P1-404
+_LB = {}
+
+
+def _lb_model():
+    """rev B wrap labeler from machines/P1-404 (design.py + model.py): the full drawing set P1-404-000..900 is drawn from the same model."""
+    if not _LB:
+        import importlib.util
+        d = P1 / "machines" / "P1-404"
+        saved = sys.modules.pop("design", None)
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("p1_404_model", d / "model.py")
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            _LB["parts"], _LB["bought"] = m.build(), m.bought()
+        finally:
+            sys.path.remove(str(d)); sys.modules.pop("design", None)
+            if saved is not None:
+                sys.modules["design"] = saved
+    return _LB
+
+
 def lb_frame():
-    """Labeler weldment: 8 mm base, 2 drive-roller bearing blocks, idler arm pivot, unwind and rewind spindle posts, peel-plate bracket."""
-    b = W().box(520, 360, 8).translate((0, 0, 4)).faces(">Z").workplane(centerOption="CenterOfBoundBox").rect(460, 300, forConstruction=True).vertices().hole(7)
-    for x in (-60, 60):
-        for y in (-110, 110):
-            b = b.union(W().box(40, 30, 60).translate((x, y, 38)).cut(rod((x, y - 30, 50), (x, y + 30, 50), 13)))
-    b = b.union(W().box(20, 20, 160).translate((0, 150, 88)))                         # idler arm post
-    b = b.union(W().box(16, 16, 240).translate((-200, 140, 128))).union(W().box(16, 16, 240).translate((200, 140, 128)))   # spindle posts
-    peel = W().box(160, 3, 70).translate((140, 120, 140)).rotate((140, 120, 140), (0, 0, 1), -30)
-    return b.union(peel)
+    """Labeler P1-404 rev B, all made parts (frame, drive, web path, peel plate and idler arm) in the labeler frame:
+    label centre at x 0, roller mid y 0, bench top z 0; drive side -x."""
+    out = None
+    for pid, s in _lb_model()["parts"].items():
+        out = s if out is None else out.union(s, clean=False)
+    return out
 
 
 def bought_labeler():
-    rol = rod((-60, -120, 50), (-60, 120, 50), 50).union(rod((60, -120, 50), (60, 120, 50), 50))
-    idl = rod((0, 130, 190), (0, -100, 190), 40)
-    step = W().box(57, 57, 80).translate((-160, -150, 40))
-    rolls = rod((-200, 120, 250), (-200, 40, 250), 180).union(rod((200, 120, 250), (200, 60, 250), 120))
-    sens = W().box(60, 30, 40).translate((130, 160, 170))
-    return dict(rollers=rol, idler=idl, stepper=step, label_rolls=rolls, gap_sensor=sens)
+    b = _lb_model()["bought"]
+    return {"rollers": b["P1-425"], "stepper": b["P1-426"], "gap_sensor": b["P1-427"], "drive_kit": b["P1-454"], "idler": b["P1-455"],
+            "controls": b["P1-456"], "start_sensor": b["P1-457"], "knob": b["P1-458"], "label_rolls": b["LABELS"]}
 
 
 # =============================================================================================== registry
@@ -482,23 +504,37 @@ MACHINES = [
              ('P1-446', 'Cable glands M25 + 2 x M20 nylon IP68, 2 m DIN rail 35, wire duct, terminals', 'Phoenix Contact', 'UT 4 terminals + glands (confirm)',
               'https://www.phoenixcontact.com/', 'Phoenix Contact', 1, 90, None),
          ]),
-    dict(id="P1-406", title="Metal detector conveyor (built frame, bought head)", tag_name="Detector conveyor", qty=1,
-         assy_note="Belt top 905 [35.6], level with the tables; the bought search head (CCP-1) bolts over the centre",
+    dict(id="P1-406", title="Metal detector conveyor (built frame, used head) rev B", tag_name="Detector conveyor", qty=1,
+         full_set="machines/P1-406/drawings/P1-406-001_general_arrangement.svg",
+         assy_note="Belt top 905 [35.6]; packs pass the used search head (CCP-1) on a UHMW bed carried by FRP rails through the metal-free zone; a detect stops the belt "
+                   "and the pusher puts the pack in the locked bin, confirmed by the bin-entry eye. Full build set: machines/P1-406/drawings/P1-406-drawing-set.pdf (11 sheets)",
          parts=[
-             dict(id="P1-406-01", fn=cv_frame, title="Detector conveyor frame 1,500 x 6 in belt", material="SS 304 2.5 mm channels, 3 mm bed, 40 sq legs",
-                  process="Laser cut, brake, TIG", mat_kg=30, labor_h=16, flat=None, contact=False, qty=1,
-                  notes=["Non-metallic zone: no frame metal within 1.5 x aperture height of the head (head maker's rule: VERIFY)",
-                         "Take-up slots for the tail pulley; belt tracks on crowned pulleys", "Reject arm pushes failed packs into the locked bin"],
-                  fasteners=lambda f: "pulley shaft take-up"),
+             dict(id="P1-406-01", fn=cv_frame, title="Detector conveyor P1-406 rev B made parts (end frames, spine, head stand; pulleys, take-up, FRP rails, UHMW bed, guides; "
+                                                     "pusher bracket, paddle, locked bin, eye brackets; torque arm, box bracket, beacon pole)",
+                  material="SS 304 4 mm plate, 40 sq / 80 x 40 tube, 2 in pipe; FRP rails; UHMW bed, guides, paddle",
+                  process="Laser, TIG, lathe (pulleys), saw (see P1-406-100..400)", mat_kg=45, labor_h=30, flat=None, contact=False, qty=1,
+                  notes=["Detail drawings: P1-406-001..900 (GA, sections + MFZ, assembly + splice, frame, belt run, reject, drive, bought, E01, ITP)",
+                         "No metal within 1.5 x aperture height (static) / 2 x (moving) of the head faces: |x| < 475 / 600; FRP + UHMW + nylon screws only",
+                         "Detect → tracked stop and push into the locked bin, B2 confirms; fail-safe head relays; QA reset key"],
+                  fasteners=lambda f: "see P1-406-800"),
          ],
          bought=[
-             ("P1-418", "Metal detector search head about 10 x 6 in aperture with control (CCP-1), used, validated", "Fortress Technology",
-              "Stealth search head + control only (used, Sigma Equipment) (confirm)", "https://www.sigmaequipment.com/", "Sigma Equipment", 1, 8500, "detector_head"),
-             ("P1-419", "Endless belt 6 in, FDA polyurethane, plus 2 crowned SS pulleys Ø60 with bearings", "Ammeraal Beltech", "Ropanyl FDA 6 in endless + pulley set (quote)",
-              "https://www.ammeraalbeltech.com/", "Ammeraal distributor", 1, 650, "belt"),
-             ("P1-420", "Conveyor gearmotor 1/6 HP shaft-mount, 60 rpm", "Bodine Electric", "1/6 HP parallel-shaft (confirm)", "https://www.bodine-electric.com/", "Bodine distributor", 1, 480, "gearmotor"),
-             ("P1-421", "Reject pusher: 24 V linear actuator 100 mm stroke with the head's reject output", "Progressive Automations", "PA-15 class (confirm speed)",
-              "https://www.progressiveautomations.com/", "Progressive Automations", 1, 180, "reject"),
+             ('P1-418', "Metal detector search head, aperture 300 W x 250 H (12 x 10 in) or the nearest larger, integral control, relay outputs DETECT and FAULT, 120 V; used, refurbished, with test pieces Fe 1.5 / NFe 2.0 / SS 2.5 and the maker's validation",
+              'Fortress Technology (or Mettler-Toledo Safeline, Loma)', 'Stealth / Phantom head + control (used, Sigma Equipment) (confirm aperture, housing and lug positions before cutting P1-406-104)', 'https://www.sigmaequipment.com/', 'Sigma Equipment', 1, 8500, 'detector_head'),
+             ('P1-419', 'Belt: PU 2 mm FDA white, 152 [6 in] wide, 3,035 + splice allowance, open ended, finger-spliced in place (the belt passes through the closed head aperture); 4 x flange bearing UCFL204 stainless, Ø20 bore, 4-bolt',
+              'Ammeraal Beltech / Habasit + NTN or SKF', 'Ropanyl FDA 2 mm 152 wide, on-site finger splice by the supplier or hot-press kit (quote) + SUCFL204 (confirm)', 'https://www.ammeraalbeltech.com/', 'Ammeraal distributor', 1, 650, 'belt'),
+             ('P1-420', 'Right-angle hollow-shaft gearmotor 1/8 HP 115 V 1-ph, ≈ 85 rpm, Ø20 mm bore with key, torque arm mount, IP55',
+              'Bison / Nord / Bodine', 'Bison 017-656 class or Nord SK 1SI31 + 1-ph motor (confirm bore 20 mm and speed)', 'https://www.bisongear.com/', 'Bison distributor', 1, 520, 'gearmotor'),
+             ('P1-421', 'Reject pusher: linear actuator 24 V DC, 150 stroke, ≈ 38 mm/s at 100 N, internal limits; 2 relays 24 V DPDT for run and reverse',
+              'Progressive Automations + Omron', 'PA-14-6-35 (150 mm, 35 lb high speed, 24 V option) + G2R-2-SND-24 x 2 with sockets (confirm)', 'https://www.progressiveautomations.com/', 'Progressive Automations', 1, 180, 'reject'),
+             ('P1-459', 'Controls kit: PC enclosure ≈ 250 x 200 x 130 IP66; CLICK PLC 8 DC in / 6 DC out 24 V; Mean Well LRS-75-24; motor contactor 24 V DC coil 9 A; E-stop 40 mm 2 NC; START green, STOP red, RESET key switch (supervisor), fuse 6 A T, terminals, M20 glands x 5, cord SJOOW 14/3 3 m + 5-15P',
+              'AutomationDirect + Mean Well', 'C0-00DD2-D + C0-08ND3 (confirm I/O) + LRS-75-24 + DC1-09-10-24 class + GCX1131 + GCX1101 / GCX1103 + GCX1300-key + DN-F6 + DN-T12', 'https://www.automationdirect.com/', 'AutomationDirect', 1, 520, 'controls'),
+             ('P1-460', 'Sensors: 2 x retro-reflective photo eye M18 PNP polarised with reflectors (pack at reject, bin entry), lid reed switch NC, M12 cables 2 m',
+              'Banner / AutomationDirect', 'QS18VP6LP + BRT-32X20AM x 2 + reed switch SR class (confirm)', 'https://www.bannerengineering.com/', 'Banner distributor', 1, 210, 'sensors'),
+             ('P1-461', 'Stack light 3 colour red / amber / green + buzzer 24 V DC, Ø40, pole mount',
+              'Patlite / AutomationDirect', 'LR4-302QJBW class (confirm)', 'https://www.automationdirect.com/', 'AutomationDirect', 1, 160, 'stack_light'),
+             ('P1-462', 'Hardware kit: 4 levelling feet M16 Ø80 pad; padlock hasp + 2 padlocks keyed alike (QA holds the key); G10 pad 80 x 70 x 6 + 4 nylon shoulder bushes; nylon screws M5 x 16 (20); rubber bush for the torque arm',
+              'Elesa + McMaster', 'LV.F-80-M16 class + hasp + 2 padlocks + G10 + nylon (confirm)', 'https://www.mcmaster.com/', 'McMaster-Carr', 1, 140, 'feet_locks'),
          ]),
     dict(id="P1-412", title="Bench spindle capper (built) rev B", tag_name="Spindle capper", qty=1,
          full_set="machines/P1-412/drawings/P1-412-001_general_arrangement.svg",
@@ -529,23 +565,40 @@ MACHINES = [
              ("P1-453", "Lever knob DIN 319 Ø40 M10; 2 rod ends M8 female (one LH); shoulder bolt Ø10 x 20 + nylon washers", "Elesa + igus", "DIN 319-40-M10 + KBRM-08 / KBLM-08 + ISO 7379 10x20",
               "https://www.igus.com/", "igus", 1, 40, "knob"),
          ]),
-    dict(id="P1-404", title="Wrap labeler for round containers (built)", tag_name="Wrap labeler", qty=1,
-         assy_note="Container rolls on the two drive rollers under the idler; the label peels at the plate and wraps in one turn",
+    dict(id="P1-404", title="Wrap labeler for round containers (built) rev B", tag_name="Wrap labeler", qty=1,
+         full_set="machines/P1-404/drawings/P1-404-001_general_arrangement.svg",
+         assy_note="Container lies on two driven rollers against the fence; lowering the idler arm starts one label, which peels at the plate tip and wraps as the container turns; "
+                   "the drive stops at the next label gap. Full build set: machines/P1-404/drawings/P1-404-drawing-set.pdf (11 sheets)",
          parts=[
-             dict(id="P1-404-01", fn=lb_frame, title="Labeler base, roller blocks, spindle posts and peel plate", material="SS 304 8 mm plate, 3 mm peel plate, 20 sq bar",
-                  process="Laser cut, TIG, machine bores", mat_kg=10, labor_h=14, flat="base", contact=False, qty=1,
-                  notes=["Roller bores line-reamed Ø12 H7 for the drive roller shafts; parallel within 0.05 mm", "Peel plate at 30 deg, edge radius 1 mm, label gap sensor just upstream",
-                         "Stepper advances one label per wrap at the container surface speed"],
-                  fasteners=lambda f: "M6 to bench" if f["dia"] < 8 else "Ø12 H7 roller shaft"),
+             dict(id="P1-404-01", fn=lb_frame, title="Labeler P1-404 rev B made parts (base, side plates, tie rod, fence; drive housings, liner drive, pinch, guard; "
+                                                     "spindles, hubs, brake, rewind, guide; peel plate, bracket, idler arms and shafts)",
+                  material="SS 304 8 / 10 / 6 mm plate, 1.5-3 mm sheet, bar; UHMW hubs and fence",
+                  process="Laser, mill (side plates bored together), lathe, brake (see P1-404-100..400)", mat_kg=38, labor_h=24, flat=None, contact=False, qty=1,
+                  notes=["Detail drawings: P1-404-001..900 (GA, sections + belt drive, assembly + thread-up, frame, drive, web path, peel + idler, bought, E01, ITP)",
+                         "One ClearPath drives both Ø50 rollers (belt 1) and the Ø30 liner drive (belt 2): liner speed = container surface speed for any diameter",
+                         "Changeover S / J: fence and peel bracket hole pairs, selector S2; 14 per min"],
+                  fasteners=lambda f: "see P1-404-800"),
          ],
          bought=[
-             ("P1-425", "Drive rollers 50 x 240 mm urethane-covered, with shafts, bearings and timing pulleys (set of 3)", "Misumi", "custom urethane rollers (quote)",
-              "https://us.misumi-ec.com/", "Misumi", 1, 420, "rollers"),
-             ("P1-426", "NEMA 23 stepper with integrated driver and controller (label feed + roller drive)", "Teknic", "ClearPath-SD or ClearCore + NEMA 23 (confirm)",
-              "https://teknic.com/", "Teknic", 1, 560, "stepper"),
-             ("P1-427", "Label gap sensor, fork type", "SICK", "WFS3 class (confirm)", "https://www.sick.com/", "SICK distributor", 1, 260, "gap_sensor"),
+             ("P1-425", "Drive rollers Ø50 x 240 face, urethane 70A on a 304 core, Ø12 h6 shaft ends, matched pair ±0.05", "Misumi (or a roller recoverer)",
+              "custom urethane-covered roller to P1-404-200 view R (quote)", "https://us.misumi-ec.com/", "Misumi", 2, 180, "rollers"),
+             ("P1-426", "ClearPath-SDSK NEMA 23 servo-stepper + ClearCore controller + M-0 and power cables + Mean Well LRS-150-24", "Teknic + Mean Well",
+              "CPM-SDSK-2311S-RLN + CLCR-4-13 + CPM-CABLE-M0P6-120 + CPM-CABLE-PWR-MS120 + LRS-150-24 (confirm)", "https://teknic.com/", "Teknic", 1, 640, "stepper"),
+             ("P1-427", "Label gap sensor fork 40 x 40, PNP, teach-in, M8 + 2 m cable", "SICK", "WFS3-40P415 + DOL-0804-G02M (confirm)",
+              "https://www.sick.com/", "SICK distributor", 1, 260, "gap_sensor"),
+             ("P1-454", "Drive kit: 8 x 6001-2RS, HTD 3M 9 wide pulleys (3 x 30T Ø12, 15T Ø8, 18T Ø12), belts 375-3M-9 + 261-3M-9, O-ring pulleys + Ø5 PU belt",
+              "SKF / B&B Manufacturing / Misumi", "6001-2RSH + 30-3M-09 / 15-3M-09 / 18-3M-09 + 375-3M-09 + 261-3M-09 (confirm)", "https://www.bbman.com/", "B&B Manufacturing", 1, 210, "drive_kit"),
+             ("P1-455", "Idler roller silicone 40A on aluminium, Ø30 x 220, 2 x 6001-2RS, Ø12 shaft", "Misumi (or a roller recoverer)", "custom silicone idler (quote)",
+              "https://us.misumi-ec.com/", "Misumi", 1, 120, "idler"),
+             ("P1-456", "Controls kit: PC box ≈ 250 x 200 x 130 IP66, E-stop 2 NC, OFF/ON and S/J selectors, FEED illuminated button 24 V, fuse 3 A T, terminals, glands, cord 14/3 + 5-15P",
+              "Fibox / Spelsberg + AutomationDirect", "PC box class (confirm) + GCX1131 + GCX1100 x2 + GCX3101-24 + DN-F6 + DN-T12", "https://www.automationdirect.com/", "AutomationDirect", 1, 230, "controls"),
+             ("P1-457", "Start sensor inductive M12 PNP NO 4 mm, M12 connector + 2 m cable (idler arm down)", "Turck / Banner", "Bi4U-M12-AP6X-H1141 class (confirm)",
+              "https://www.turck.us/", "Turck distributor", 1, 55, "start_sensor"),
+             ("P1-458", "Knob Ø28 M8, extension spring 20 N, nylon washers, felt pad", "Elesa + Lee Spring + McMaster", "VB.639-28-M8 + LE 038E 04 S class (confirm)",
+              "https://www.elesa.com/", "Elesa distributor", 1, 35, "knob"),
          ]),
 ]
+
 BOUGHT_FN = {"P1-301": bought_blender, "P1-212": bought_feeder, "P1-401": bought_filler, "P1-406": bought_conveyor, "P1-412": bought_capper, "P1-404": bought_labeler}
 
 
