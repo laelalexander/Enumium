@@ -1,0 +1,19 @@
+{
+ "name": "AON-1 3U CubeSat",
+ "kind": "hardware",
+ "assembly": "assembly.json",
+ "model": "cad/AON-1-ASM.glb",
+ "drawings": "drawings/AON-1-drawing-set.pdf",
+ "bom": "bom/bom.xlsx",
+ "build": "build/build.json",
+ "apps": [
+  {"name": "AON-1 ground script", "description": "Build EOR-1 telecommands and decode housekeeping/ACK frames", "cwd": "firmware/ground",
+   "run": ["python aon_ground.py --help"]}
+ ],
+ "tests": [
+  {"name": "EOR-1 flight software", "cwd": "firmware/eor1", "run": "make test"},
+  {"name": "Ground script", "cwd": "firmware/ground", "run": "python -m unittest test_ground -v"},
+  {"name": "BOM check", "cwd": "bom", "run": "python make_bom.py"},
+  {"name": "Build package check", "cwd": ".", "run": "python build/make_build.py"}
+ ]
+}

@@ -1,0 +1,2 @@
+[{"out":"iso.png","eye":[520,-620,560],"target":[0,0,165],"fov":30},
+ {"out":"cutaway.png","eye":[520,-620,560],"target":[0,0,165],"fov":30,"hide":"E06|AON-10[12]"}]

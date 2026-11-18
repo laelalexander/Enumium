@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<defs><pattern id="hA" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hB" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hC" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#546e7a" stroke-width="0.9"/></pattern><pattern id="hS" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#546e7a" stroke-width="0.8"/><line x1="4" y1="0" x2="4" y2="14" stroke="#546e7a" stroke-width="0.8"/></pattern></defs>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<text x="237.0" y="18" font-size="14" text-anchor="middle">8</text><text x="237.0" y="2298" font-size="14" text-anchor="middle">8</text>
+<text x="663.0" y="18" font-size="14" text-anchor="middle">7</text><text x="663.0" y="2298" font-size="14" text-anchor="middle">7</text>
+<text x="1089.0" y="18" font-size="14" text-anchor="middle">6</text><text x="1089.0" y="2298" font-size="14" text-anchor="middle">6</text>
+<text x="1515.0" y="18" font-size="14" text-anchor="middle">5</text><text x="1515.0" y="2298" font-size="14" text-anchor="middle">5</text>
+<text x="1941.0" y="18" font-size="14" text-anchor="middle">4</text><text x="1941.0" y="2298" font-size="14" text-anchor="middle">4</text>
+<text x="2367.0" y="18" font-size="14" text-anchor="middle">3</text><text x="2367.0" y="2298" font-size="14" text-anchor="middle">3</text>
+<text x="2793.0" y="18" font-size="14" text-anchor="middle">2</text><text x="2793.0" y="2298" font-size="14" text-anchor="middle">2</text>
+<text x="3219.0" y="18" font-size="14" text-anchor="middle">1</text><text x="3219.0" y="2298" font-size="14" text-anchor="middle">1</text>
+<text x="12" y="212.0" font-size="14" text-anchor="middle">F</text><text x="3444" y="212.0" font-size="14" text-anchor="middle">F</text>
+<text x="12" y="588.0" font-size="14" text-anchor="middle">E</text><text x="3444" y="588.0" font-size="14" text-anchor="middle">E</text>
+<text x="12" y="964.0" font-size="14" text-anchor="middle">D</text><text x="3444" y="964.0" font-size="14" text-anchor="middle">D</text>
+<text x="12" y="1340.0" font-size="14" text-anchor="middle">C</text><text x="3444" y="1340.0" font-size="14" text-anchor="middle">C</text>
+<text x="12" y="1716.0" font-size="14" text-anchor="middle">B</text><text x="3444" y="1716.0" font-size="14" text-anchor="middle">B</text>
+<text x="12" y="2092.0" font-size="14" text-anchor="middle">A</text><text x="3444" y="2092.0" font-size="14" text-anchor="middle">A</text>
+<g><rect x="2556" y="1954" width="876" height="326" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="2568" y="1988" font-size="26" font-weight="bold">POWER, INHIBITS AND STACK BUS (SYSTEM SCHEMATIC)</text>
+<text x="2568" y="2012" font-size="15">Ambient · AON-1 (Ambient Orbital Node 1) 3U CubeSat · rev A</text>
+<line x1="2556" y1="2024" x2="3432" y2="2024" stroke="#111"/>
+<rect x="2556.0" y="2024" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2037" font-size="10.5" fill="#555">DRAWING NO.</text>
+<text x="2562.0" y="2059" font-size="17" font-weight="bold">AON-E01</text>
+<rect x="2994.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2037" font-size="10.5" fill="#555">REV</text>
+<text x="3000.0" y="2059" font-size="17" font-weight="bold">A</text>
+<rect x="3213.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2037" font-size="10.5" fill="#555">SCALE</text>
+<text x="3219.0" y="2059" font-size="17" font-weight="normal">NTS</text>
+<rect x="2556.0" y="2068" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2081" font-size="10.5" fill="#555">MATERIAL</text>
+<text x="2562.0" y="2103" font-size="17" font-weight="normal">-</text>
+<rect x="2556.0" y="2112" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2125" font-size="10.5" fill="#555">FINISH</text>
+<text x="2562.0" y="2147" font-size="17" font-weight="normal">-</text>
+<rect x="2556.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2169" font-size="10.5" fill="#555">MASS (CALC.)</text>
+<text x="2562.0" y="2191" font-size="17" font-weight="normal">-</text>
+<rect x="2775.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2781.0" y="2169" font-size="10.5" fill="#555">QTY PER MACHINE</text>
+<text x="2781.0" y="2191" font-size="17" font-weight="normal">1</text>
+<rect x="2994.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2169" font-size="10.5" fill="#555">UNITS</text>
+<text x="3000.0" y="2191" font-size="17" font-weight="normal">mm [in]</text>
+<rect x="3213.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2169" font-size="10.5" fill="#555">SHEET</text>
+<text x="3219.0" y="2191" font-size="17" font-weight="normal">ARCH D · 13 of 15</text>
+<rect x="2556.0" y="2200" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2213" font-size="10.5" fill="#555">DRAWN</text>
+<text x="2562.0" y="2235" font-size="17" font-weight="normal">Anatomy · aon-1/drawings</text>
+<rect x="2994.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2213" font-size="10.5" fill="#555">DATE</text>
+<text x="3000.0" y="2235" font-size="17" font-weight="normal">2026-11-18</text>
+<rect x="3213.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2213" font-size="10.5" fill="#555">STATUS</text>
+<text x="3219.0" y="2235" font-size="17" font-weight="normal">FOR REVIEW</text>
+<text x="2568" y="2270" font-size="10.5">UNLESS NOTED: LINEAR X.X ±0.1 [±.004] · X.XX ±0.05 [±.002] · HOLES +0.1/-0 · ANGLES ±0.5° · THREADS ISO 965 6H · THIRD-ANGLE PROJECTION · BREAK EDGES 0.5 · ASME Y14.5</text>
+</g>
+<rect x="100" y="220" width="230" height="100" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="106" y="238" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E06 +X STRING</text>
+<text x="106" y="256" font-size="11" text-anchor="start" fill="#607d8b">7S CIC, Vmp 16.9 V</text>
+<text x="106" y="271" font-size="11" text-anchor="start" fill="#607d8b">Isc 0.52 A, NTC</text>
+<line x1="330" y1="255" x2="520" y2="255" stroke="#111" stroke-width="1.6"/>
+<text x="425.0" y="250.0" font-size="12" text-anchor="middle" fill="#0d47a1">W001/002 J101→J1</text>
+<line x1="330" y1="290" x2="470" y2="290" stroke="#b00020" stroke-width="1.6"/>
+<text x="400.0" y="285.0" font-size="12" text-anchor="middle" fill="#0d47a1">W003/004 (−)</text>
+<text x="470" y="294" font-size="12" text-anchor="start" fill="#607d8b">→ GND</text>
+<rect x="100" y="370" width="230" height="100" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="106" y="388" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E06 -X STRING</text>
+<text x="106" y="406" font-size="11" text-anchor="start" fill="#607d8b">7S CIC, Vmp 16.9 V</text>
+<text x="106" y="421" font-size="11" text-anchor="start" fill="#607d8b">Isc 0.52 A, NTC</text>
+<line x1="330" y1="405" x2="520" y2="405" stroke="#111" stroke-width="1.6"/>
+<text x="425.0" y="400.0" font-size="12" text-anchor="middle" fill="#0d47a1">W011/012 J102→J2</text>
+<line x1="330" y1="440" x2="470" y2="440" stroke="#b00020" stroke-width="1.6"/>
+<text x="400.0" y="435.0" font-size="12" text-anchor="middle" fill="#0d47a1">W013/014 (−)</text>
+<text x="470" y="444" font-size="12" text-anchor="start" fill="#607d8b">→ GND</text>
+<rect x="100" y="520" width="230" height="100" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="106" y="538" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E06 +Y STRING</text>
+<text x="106" y="556" font-size="11" text-anchor="start" fill="#607d8b">7S CIC, Vmp 16.9 V</text>
+<text x="106" y="571" font-size="11" text-anchor="start" fill="#607d8b">Isc 0.52 A, NTC</text>
+<line x1="330" y1="555" x2="520" y2="555" stroke="#111" stroke-width="1.6"/>
+<text x="425.0" y="550.0" font-size="12" text-anchor="middle" fill="#0d47a1">W021/022 J103→J3</text>
+<line x1="330" y1="590" x2="470" y2="590" stroke="#b00020" stroke-width="1.6"/>
+<text x="400.0" y="585.0" font-size="12" text-anchor="middle" fill="#0d47a1">W023/024 (−)</text>
+<text x="470" y="594" font-size="12" text-anchor="start" fill="#607d8b">→ GND</text>
+<rect x="100" y="670" width="230" height="100" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="106" y="688" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E06 -Y STRING</text>
+<text x="106" y="706" font-size="11" text-anchor="start" fill="#607d8b">7S CIC, Vmp 16.9 V</text>
+<text x="106" y="721" font-size="11" text-anchor="start" fill="#607d8b">Isc 0.52 A, NTC</text>
+<line x1="330" y1="705" x2="520" y2="705" stroke="#111" stroke-width="1.6"/>
+<text x="425.0" y="700.0" font-size="12" text-anchor="middle" fill="#0d47a1">W031/032 J104→J4</text>
+<line x1="330" y1="740" x2="470" y2="740" stroke="#b00020" stroke-width="1.6"/>
+<text x="400.0" y="735.0" font-size="12" text-anchor="middle" fill="#0d47a1">W033/034 (−)</text>
+<text x="470" y="744" font-size="12" text-anchor="start" fill="#607d8b">→ GND</text>
+<rect x="520" y="235" width="180" height="190" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="526" y="253" font-size="14" text-anchor="start" fill="#111" font-weight="bold">OR A</text>
+<text x="526" y="271" font-size="11" text-anchor="start" fill="#607d8b">LM66100 ideal</text>
+<text x="526" y="286" font-size="11" text-anchor="start" fill="#607d8b">diode x 2</text>
+<line x1="520" y1="405" x2="520" y2="405" stroke="#111" stroke-width="1.6"/>
+<line x1="700" y1="330" x2="800" y2="330" stroke="#111" stroke-width="1.6"/>
+<rect x="800" y="255" width="260" height="150" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="806" y="273" font-size="14" text-anchor="start" fill="#111" font-weight="bold">MPPT A (E01)</text>
+<text x="806" y="291" font-size="11" text-anchor="start" fill="#607d8b">TI BQ24650 sync buck</text>
+<text x="806" y="306" font-size="11" text-anchor="start" fill="#607d8b">8.40 V float, MPPT 14.9 V</text>
+<text x="806" y="321" font-size="11" text-anchor="start" fill="#607d8b">INA226 on the input</text>
+<line x1="1060" y1="330" x2="1200" y2="330" stroke="#111" stroke-width="1.6"/>
+<rect x="520" y="535" width="180" height="190" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="526" y="553" font-size="14" text-anchor="start" fill="#111" font-weight="bold">OR B</text>
+<text x="526" y="571" font-size="11" text-anchor="start" fill="#607d8b">LM66100 ideal</text>
+<text x="526" y="586" font-size="11" text-anchor="start" fill="#607d8b">diode x 2</text>
+<line x1="520" y1="705" x2="520" y2="705" stroke="#111" stroke-width="1.6"/>
+<line x1="700" y1="630" x2="800" y2="630" stroke="#111" stroke-width="1.6"/>
+<rect x="800" y="555" width="260" height="150" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="806" y="573" font-size="14" text-anchor="start" fill="#111" font-weight="bold">MPPT B (E01)</text>
+<text x="806" y="591" font-size="11" text-anchor="start" fill="#607d8b">TI BQ24650 sync buck</text>
+<text x="806" y="606" font-size="11" text-anchor="start" fill="#607d8b">8.40 V float, MPPT 14.9 V</text>
+<text x="806" y="621" font-size="11" text-anchor="start" fill="#607d8b">INA226 on the input</text>
+<line x1="1060" y1="630" x2="1200" y2="630" stroke="#111" stroke-width="1.6"/>
+<line x1="520" y1="405" x2="520" y2="405" stroke="#111" stroke-width="1.6"/>
+<line x1="1200" y1="330" x2="1200" y2="630" stroke="#111" stroke-width="1.6"/>
+<circle cx="1200" cy="330" r="3.5" fill="#111"/>
+<circle cx="1200" cy="630" r="3.5" fill="#111"/>
+<text x="1210" y="480" font-size="13" text-anchor="start" fill="#111" font-weight="bold">CHARGE NODE</text>
+<line x1="1200" y1="480" x2="1320" y2="480" stroke="#111" stroke-width="1.6"/>
+<line x1="1320" y1="480" x2="1320" y2="495" stroke="#111" stroke-width="1.6"/>
+<line x1="1320" y1="515" x2="1320" y2="530" stroke="#111" stroke-width="1.6"/>
+<line x1="1320" y1="515" x2="1308" y2="495" stroke="#111" stroke-width="1.6"/>
+<text x="1334" y="510" font-size="12" text-anchor="start" fill="#111">SW1 (NC, open when stowed)</text>
+<text x="1340" y="470" font-size="12" text-anchor="start" fill="#0d47a1">W048/W047</text>
+<rect x="1250" y="550" width="320" height="210" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1256" y="568" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E02 BATTERY 2S2P</text>
+<text x="1256" y="586" font-size="11" text-anchor="start" fill="#607d8b">LG INR18650 MJ1 x 4, 7.0 Ah, 51 Wh</text>
+<text x="1256" y="601" font-size="11" text-anchor="start" fill="#607d8b">BQ7718 OV + BQ771807 2nd level</text>
+<text x="1256" y="616" font-size="11" text-anchor="start" fill="#607d8b">NTC, 2 W heater (HEATER rail)</text>
+<text x="1256" y="631" font-size="11" text-anchor="start" fill="#607d8b">fuse 5 A (F1) in the + lead</text>
+<line x1="1320" y1="530" x2="1320" y2="550" stroke="#111" stroke-width="1.6"/>
+<line x1="1420" y1="760" x2="1420" y2="775" stroke="#111" stroke-width="1.6"/>
+<line x1="1420" y1="795" x2="1420" y2="810" stroke="#111" stroke-width="1.6"/>
+<line x1="1420" y1="795" x2="1408" y2="775" stroke="#111" stroke-width="1.6"/>
+<text x="1434" y="790" font-size="12" text-anchor="start" fill="#111">SW2 (in V−)</text>
+<text x="1440" y="820" font-size="12" text-anchor="start" fill="#0d47a1">W050/W049</text>
+<line x1="1420" y1="810" x2="1420" y2="860" stroke="#111" stroke-width="1.6"/>
+<text x="1430" y="880" font-size="12" text-anchor="start" fill="#607d8b">GND (single point, E01)</text>
+<line x1="1570" y1="620" x2="1760" y2="620" stroke="#111" stroke-width="1.6"/>
+<rect x="1760" y="550" width="300" height="150" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1766" y="568" font-size="14" text-anchor="start" fill="#111" font-weight="bold">INHIBIT FET Q1 (E01)</text>
+<text x="1766" y="586" font-size="11" text-anchor="start" fill="#607d8b">P-ch high side, gate held off</text>
+<text x="1766" y="601" font-size="11" text-anchor="start" fill="#607d8b">while RBF1 is fitted</text>
+<text x="1766" y="616" font-size="11" text-anchor="start" fill="#607d8b">(INHIBIT stack pin 35)</text>
+<rect x="1760" y="780" width="300" height="110" fill="#fff" stroke="#111" stroke-width="1.6" stroke-dasharray="10,5"/>
+<text x="1766" y="798" font-size="14" text-anchor="start" fill="#111" font-weight="bold">RBF1 / UMBILICAL (E06A J106/J105)</text>
+<text x="1766" y="816" font-size="11" text-anchor="start" fill="#607d8b">wires W055, W052..</text>
+<text x="1766" y="831" font-size="11" text-anchor="start" fill="#607d8b">plug fitted = inhibit</text>
+<line x1="1910" y1="700" x2="1910" y2="780" stroke="#b00020" stroke-width="1.6"/>
+<line x1="2060" y1="620" x2="2200" y2="620" stroke="#111" stroke-width="1.6"/>
+<text x="2070" y="610" font-size="13" text-anchor="start" fill="#111" font-weight="bold">VBATT BUS 6.0-8.4 V (stack 1-6)</text>
+<line x1="2200" y1="180" x2="2200" y2="1320" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="620" r="3.5" fill="#111"/>
+<line x1="2200" y1="230" x2="2280" y2="230" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="230" r="3.5" fill="#111"/>
+<rect x="2280" y="180" width="420" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2286" y="198" font-size="14" text-anchor="start" fill="#111" font-weight="bold">3V3_OBC</text>
+<text x="2286" y="216" font-size="11" text-anchor="start" fill="#607d8b">TPS62130 buck, always on</text>
+<text x="2286" y="231" font-size="11" text-anchor="start" fill="#607d8b">INA226 telemetry</text>
+<line x1="2700" y1="230" x2="2820" y2="230" stroke="#111" stroke-width="1.6"/>
+<rect x="2820" y="190" width="560" height="80" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2826" y="208" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E03 OBC/ADCS, FRAM, NOR</text>
+<line x1="2200" y1="420" x2="2280" y2="420" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="420" r="3.5" fill="#111"/>
+<rect x="2280" y="370" width="420" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2286" y="388" font-size="14" text-anchor="start" fill="#111" font-weight="bold">5V_SW</text>
+<text x="2286" y="406" font-size="11" text-anchor="start" fill="#607d8b">TPS62130 + TPS2553 1.5 A</text>
+<text x="2286" y="421" font-size="11" text-anchor="start" fill="#607d8b">INA226 telemetry</text>
+<line x1="2700" y1="420" x2="2820" y2="420" stroke="#111" stroke-width="1.6"/>
+<rect x="2820" y="380" width="560" height="80" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2826" y="398" font-size="14" text-anchor="start" fill="#111" font-weight="bold">ADCS drivers, payload</text>
+<line x1="2200" y1="610" x2="2280" y2="610" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="610" r="3.5" fill="#111"/>
+<rect x="2280" y="560" width="420" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2286" y="578" font-size="14" text-anchor="start" fill="#111" font-weight="bold">VBATT_COM</text>
+<text x="2286" y="596" font-size="11" text-anchor="start" fill="#607d8b">eFuse 2 A, LOAD_COM_EN</text>
+<text x="2286" y="611" font-size="11" text-anchor="start" fill="#607d8b">INA226 telemetry</text>
+<line x1="2700" y1="610" x2="2820" y2="610" stroke="#111" stroke-width="1.6"/>
+<rect x="2820" y="570" width="560" height="80" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2826" y="588" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E04 COM (PA_EN AND 45-min timer)</text>
+<line x1="2200" y1="800" x2="2280" y2="800" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="800" r="3.5" fill="#111"/>
+<rect x="2280" y="750" width="420" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2286" y="768" font-size="14" text-anchor="start" fill="#111" font-weight="bold">BURN</text>
+<text x="2286" y="786" font-size="11" text-anchor="start" fill="#607d8b">TPS2553 1.5 A; BURN_EN AND 30-min timer</text>
+<text x="2286" y="801" font-size="11" text-anchor="start" fill="#607d8b">INA226 telemetry</text>
+<line x1="2700" y1="800" x2="2820" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="2820" y="760" width="560" height="80" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2826" y="778" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E05 R1/R2 via W061/W062</text>
+<line x1="2200" y1="990" x2="2280" y2="990" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="990" r="3.5" fill="#111"/>
+<rect x="2280" y="940" width="420" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2286" y="958" font-size="14" text-anchor="start" fill="#111" font-weight="bold">VBATT_PAY</text>
+<text x="2286" y="976" font-size="11" text-anchor="start" fill="#607d8b">eFuse 1 A, LOAD_PAY_EN</text>
+<text x="2286" y="991" font-size="11" text-anchor="start" fill="#607d8b">INA226 telemetry</text>
+<line x1="2700" y1="990" x2="2820" y2="990" stroke="#111" stroke-width="1.6"/>
+<rect x="2820" y="950" width="560" height="80" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2826" y="968" font-size="14" text-anchor="start" fill="#111" font-weight="bold">payload bay</text>
+<line x1="2200" y1="1180" x2="2280" y2="1180" stroke="#111" stroke-width="1.6"/>
+<circle cx="2200" cy="1180" r="3.5" fill="#111"/>
+<rect x="2280" y="1130" width="420" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2286" y="1148" font-size="14" text-anchor="start" fill="#111" font-weight="bold">HEATER</text>
+<text x="2286" y="1166" font-size="11" text-anchor="start" fill="#607d8b">N-FET, thermostat in EOR-1</text>
+<text x="2286" y="1181" font-size="11" text-anchor="start" fill="#607d8b">INA226 telemetry</text>
+<line x1="2700" y1="1180" x2="2820" y2="1180" stroke="#111" stroke-width="1.6"/>
+<rect x="2820" y="1140" width="560" height="80" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2826" y="1158" font-size="14" text-anchor="start" fill="#111" font-weight="bold">E02 Kapton heater 2 W</text>
+<text x="100" y="991" font-size="17" font-weight="bold">POWER CHAIN</text><rect x="100" y="1000" width="1720" height="24" fill="#eceff1" stroke="#111"/><text x="105" y="1017" font-size="11" font-weight="bold">BLOCK</text><text x="365" y="1017" font-size="11" font-weight="bold">WHAT</text><text x="1265" y="1017" font-size="11" font-weight="bold">NEXT</text><rect x="100" y="1024" width="1720" height="24" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1041" font-size="11">String +X / -X</text><text x="365" y="1041" font-size="11">7S CIC, Vmp 16.9 V, Isc 0.52 A</text><text x="1265" y="1041" font-size="11">ideal-diode OR (LM66100 x 2) → MPPT A</text><rect x="100" y="1048" width="1720" height="24" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1065" font-size="11">String +Y / -Y</text><text x="365" y="1065" font-size="11">same</text><text x="1265" y="1065" font-size="11">ideal-diode OR → MPPT B</text><rect x="100" y="1072" width="1720" height="24" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1089" font-size="11">MPPT A, B</text><text x="365" y="1089" font-size="11">TI BQ24650 synchronous buck, 8.4 V charge, MPPT set 80 % Voc (14.9 V)</text><text x="1265" y="1089" font-size="11">→ battery node through SW1 (+) and SW2 (−)</text><rect x="100" y="1096" width="1720" height="24" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1113" font-size="11">Battery E02</text><text x="365" y="1113" font-size="11">2S2P LG MJ1, 7.0 Ah, 51 Wh; TI BQ7718 2S over-voltage + BQ771807 secondary; NTC, 2 W Kapton heater</text><text x="1265" y="1113" font-size="11">→ VBATT bus</text><rect x="100" y="1120" width="1720" height="24" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1137" font-size="11">Inhibits</text><text x="365" y="1137" font-size="11">SW1 (V+), SW2 (V−) open while stowed; RBF1 holds the E01 output FET gate low; 30-min hardware timer gates the burn rail</text><text x="1265" y="1137" font-size="11">3 independent inhibits</text><rect x="100" y="1144" width="1720" height="24" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1161" font-size="11">3V3_OBC</text><text x="365" y="1161" font-size="11">TI TPS62130 buck, always on after the inhibits release</text><text x="1265" y="1161" font-size="11">OBC, FRAM, sensors</text><rect x="100" y="1168" width="1720" height="24" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1185" font-size="11">5V_SW</text><text x="365" y="1185" font-size="11">TPS62130 buck + TPS2553 limit 1.5 A</text><text x="1265" y="1185" font-size="11">ADCS drivers, payload</text><rect x="100" y="1192" width="1720" height="24" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1209" font-size="11">VBATT_COM</text><text x="365" y="1209" font-size="11">TPS2553-style eFuse 2 A, OBC enable</text><text x="1265" y="1209" font-size="11">E04 PA + radio</text><rect x="100" y="1216" width="1720" height="24" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1233" font-size="11">BURN</text><text x="365" y="1233" font-size="11">TPS2553 limit 1.5 A, enabled only by OBC BURN_EN AND the 30-min timer</text><text x="1265" y="1233" font-size="11">E05 R1/R2 via MOSFETs</text><rect x="100" y="1240" width="1720" height="24" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="105" y="1257" font-size="11">Telemetry</text><text x="365" y="1257" font-size="11">INA226 on each string, battery and every switched rail; I2C1</text><text x="1265" y="1257" font-size="11">EOR-1 hk</text>
+<text x="1900" y="1291" font-size="16" font-weight="bold">STACK BUS ALLOCATION</text><rect x="1900" y="1300" width="800" height="20" fill="#eceff1" stroke="#111"/><text x="1905" y="1313" font-size="10" font-weight="bold">STACK PINS</text><text x="2025" y="1313" font-size="10" font-weight="bold">NET (ESQ-126, same position on E01-E04)</text><rect x="1900" y="1320" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1333" font-size="10">1-6</text><text x="2025" y="1333" font-size="10">VBATT (protected battery bus, 6.0-8.4 V)</text><rect x="1900" y="1340" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1353" font-size="10">7-12</text><text x="2025" y="1353" font-size="10">GND (power return)</text><rect x="1900" y="1360" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1373" font-size="10">13-14</text><text x="2025" y="1373" font-size="10">3V3_OBC (always-on, from E01 buck, 1 A)</text><rect x="1900" y="1380" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1393" font-size="10">15-16</text><text x="2025" y="1393" font-size="10">5V_SW (switched, ADCS + payload, 1.5 A)</text><rect x="1900" y="1400" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1413" font-size="10">17-18</text><text x="2025" y="1413" font-size="10">VBATT_COM (switched + current-limited 2 A, to E04)</text><rect x="1900" y="1420" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1433" font-size="10">19</text><text x="2025" y="1433" font-size="10">VBATT_PAY (switched, payload bay)</text><rect x="1900" y="1440" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1453" font-size="10">20</text><text x="2025" y="1453" font-size="10">HEATER (E01 switch to the E02 heater)</text><rect x="1900" y="1460" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1473" font-size="10">21</text><text x="2025" y="1473" font-size="10">BURN_EN (OBC → E01 burn-rail enable)</text><rect x="1900" y="1480" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1493" font-size="10">22-23</text><text x="2025" y="1493" font-size="10">I2C1 SCL/SDA (EPS + battery telemetry: INA226 x 6, BQ gauge, TMP)</text><rect x="1900" y="1500" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1513" font-size="10">24-25</text><text x="2025" y="1513" font-size="10">I2C2 SCL/SDA (COM housekeeping)</text><rect x="1900" y="1520" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1533" font-size="10">26-29</text><text x="2025" y="1533" font-size="10">SPI2 SCK/MISO/MOSI/CS (OBC ↔ COM AX5043)</text><rect x="1900" y="1540" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1553" font-size="10">30</text><text x="2025" y="1553" font-size="10">COM_IRQ</text><rect x="1900" y="1560" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1573" font-size="10">31</text><text x="2025" y="1573" font-size="10">PA_EN (OBC → E04, AND-ed with the E04 45-min timer)</text><rect x="1900" y="1580" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1593" font-size="10">32-33</text><text x="2025" y="1593" font-size="10">UART1 TX/RX (GSE umbilical → OBC)</text><rect x="1900" y="1600" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1613" font-size="10">34</text><text x="2025" y="1613" font-size="10">OBC_NRST (GSE / watchdog)</text><rect x="1900" y="1620" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1633" font-size="10">35</text><text x="2025" y="1633" font-size="10">INHIBIT (RBF fitted = low: EPS output off)</text><rect x="1900" y="1640" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1653" font-size="10">36</text><text x="2025" y="1653" font-size="10">LOAD_COM_EN</text><rect x="1900" y="1660" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1673" font-size="10">37</text><text x="2025" y="1673" font-size="10">LOAD_ADCS_EN</text><rect x="1900" y="1680" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1693" font-size="10">38</text><text x="2025" y="1693" font-size="10">LOAD_PAY_EN</text><rect x="1900" y="1700" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1713" font-size="10">39</text><text x="2025" y="1713" font-size="10">WDT_KICK</text><rect x="1900" y="1720" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1733" font-size="10">40</text><text x="2025" y="1733" font-size="10">SEP_TIMER_DONE (E01 hardware 30-min timer)</text><rect x="1900" y="1740" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1753" font-size="10">41-44</text><text x="2025" y="1753" font-size="10">spare (payload SPI)</text><rect x="1900" y="1760" width="800" height="20" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1773" font-size="10">45-48</text><text x="2025" y="1773" font-size="10">GND (signal)</text><rect x="1900" y="1780" width="800" height="20" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1905" y="1793" font-size="10">49-52</text><text x="2025" y="1793" font-size="10">chassis bond (through the spacer rings, not power GND)</text>
+<rect x="100" y="1348" width="1700" height="119" fill="#fff" stroke="#111"/><text x="110" y="1372" font-size="15" font-weight="bold">NOTES</text><text x="110" y="1394" font-size="12">1. Three independent inhibits between the battery and every load (CDS rev 14.1 + range safety): SW1 in V+, SW2 in V−, RBF/INHIBIT FET Q1. Deployables need a 4th: the 30-min hardware timer on the burn rail.</text><text x="110" y="1411" font-size="12">2. RF needs: the inhibits released, LOAD_COM_EN from EOR-1 after 45 min, PA_EN from EOR-1, and the independent 45-min TPL5111 timer on E04 (two of them hardware).</text><text x="110" y="1428" font-size="12">3. Charging through the umbilical bypasses SW1/SW2 only with the GSE charger connected (CHG+ on J105) and RBF fitted; the charger has its own 2S CC/CV and a 1 A limit.</text><text x="110" y="1445" font-size="12">4. One-point ground at E01; chassis ground through the board mounting rings and spacers to the frames and rails (bond &lt; 10 mΩ).</text><text x="110" y="1462" font-size="12">5. Wire numbers (blue) are the AON-E02 harness numbers. Board-level schematics are the KiCad projects E01-E07 (next phase).</text>
+</svg>

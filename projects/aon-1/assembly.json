@@ -1,0 +1,225 @@
+{
+ "units": "mm",
+ "in_place": true,
+ "parts": [
+  {
+   "file": "cad/stl/asm_AON-103_-Z_frame.stl",
+   "name": "AON-103 -Z frame"
+  },
+  {
+   "file": "cad/stl/asm_SW1-SW2_deployment_switches.stl",
+   "name": "SW1-SW2 deployment switches"
+  },
+  {
+   "file": "cad/stl/asm_E07_-Z_end_board.stl",
+   "name": "E07 -Z end board"
+  },
+  {
+   "file": "cad/stl/asm_E07_Z_torquer_coil.stl",
+   "name": "E07 Z torquer coil"
+  },
+  {
+   "file": "cad/stl/asm_E07_nuts_M3_thin_(4).stl",
+   "name": "E07 nuts M3 thin (4)"
+  },
+  {
+   "file": "cad/stl/asm_AON-106_switch_brackets_(2).stl",
+   "name": "AON-106 switch brackets (2)"
+  },
+  {
+   "file": "cad/stl/asm_AON-101_rail_+X+Y.stl",
+   "name": "AON-101 rail +X+Y"
+  },
+  {
+   "file": "cad/stl/asm_AON-102_rail_-X+Y.stl",
+   "name": "AON-102 rail -X+Y"
+  },
+  {
+   "file": "cad/stl/asm_AON-101_rail_-X-Y.stl",
+   "name": "AON-101 rail -X-Y"
+  },
+  {
+   "file": "cad/stl/asm_AON-102_rail_+X-Y.stl",
+   "name": "AON-102 rail +X-Y"
+  },
+  {
+   "file": "cad/stl/asm_E02_battery_board.stl",
+   "name": "E02 battery board"
+  },
+  {
+   "file": "cad/stl/asm_E02_18650_cells_(4).stl",
+   "name": "E02 18650 cells (4)"
+  },
+  {
+   "file": "cad/stl/asm_E02_cell_holder.stl",
+   "name": "E02 cell holder"
+  },
+  {
+   "file": "cad/stl/asm_E01_EPS_board.stl",
+   "name": "E01 EPS board"
+  },
+  {
+   "file": "cad/stl/asm_E01_EPS_parts.stl",
+   "name": "E01 EPS parts"
+  },
+  {
+   "file": "cad/stl/asm_E03_OBC_board.stl",
+   "name": "E03 OBC board"
+  },
+  {
+   "file": "cad/stl/asm_E03_OBC_parts.stl",
+   "name": "E03 OBC parts"
+  },
+  {
+   "file": "cad/stl/asm_AON-104_mid_frame.stl",
+   "name": "AON-104 mid frame"
+  },
+  {
+   "file": "cad/stl/asm_E04_COM_board.stl",
+   "name": "E04 COM board"
+  },
+  {
+   "file": "cad/stl/asm_E04_COM_shield_can.stl",
+   "name": "E04 COM shield can"
+  },
+  {
+   "file": "cad/stl/asm_Stack_rods_M3_Ti_(4).stl",
+   "name": "Stack rods M3 Ti (4)"
+  },
+  {
+   "file": "cad/stl/asm_Stack_spacers.stl",
+   "name": "Stack spacers"
+  },
+  {
+   "file": "cad/stl/asm_AON-105_+Z_frame.stl",
+   "name": "AON-105 +Z frame"
+  },
+  {
+   "file": "cad/stl/asm_E05_antenna_board.stl",
+   "name": "E05 antenna board"
+  },
+  {
+   "file": "cad/stl/asm_E05_UHF_tape_elements_(stowed).stl",
+   "name": "E05 UHF tape elements (stowed)"
+  },
+  {
+   "file": "cad/stl/asm_E05_standoffs.stl",
+   "name": "E05 standoffs"
+  },
+  {
+   "file": "cad/stl/asm_Separation_spring_plungers_(2).stl",
+   "name": "Separation spring plungers (2)"
+  },
+  {
+   "file": "cad/stl/asm_E06_solar_panel_+X.stl",
+   "name": "E06 solar panel +X"
+  },
+  {
+   "file": "cad/stl/asm_E06_cells_+X.stl",
+   "name": "E06 cells +X"
+  },
+  {
+   "file": "cad/stl/asm_E06_solar_panel_-Y.stl",
+   "name": "E06 solar panel -Y"
+  },
+  {
+   "file": "cad/stl/asm_E06_cells_-Y.stl",
+   "name": "E06 cells -Y"
+  },
+  {
+   "file": "cad/stl/asm_E06_solar_panel_-X.stl",
+   "name": "E06 solar panel -X"
+  },
+  {
+   "file": "cad/stl/asm_E06_cells_-X.stl",
+   "name": "E06 cells -X"
+  },
+  {
+   "file": "cad/stl/asm_E06_solar_panel_+Y.stl",
+   "name": "E06 solar panel +Y"
+  },
+  {
+   "file": "cad/stl/asm_E06_cells_+Y.stl",
+   "name": "E06 cells +Y"
+  }
+ ],
+ "steps": [
+  {
+   "n": 1,
+   "title": "-Z frame, switch brackets and deployment switches",
+   "add": [
+    "AON-103 -Z frame",
+    "SW1-SW2 deployment switches",
+    "AON-106 switch brackets (2)"
+   ]
+  },
+  {
+   "n": 2,
+   "title": "Four rails screwed to the -Z frame",
+   "add": [
+    "AON-101 rail +X+Y",
+    "AON-102 rail -X+Y",
+    "AON-101 rail -X-Y",
+    "AON-102 rail +X-Y"
+   ]
+  },
+  {
+   "n": 3,
+   "title": "Stack rods, -Z end board, spacers and the lower stack: battery, EPS, OBC",
+   "add": [
+    "E07 -Z end board",
+    "E07 Z torquer coil",
+    "E07 nuts M3 thin (4)",
+    "E02 battery board",
+    "E02 18650 cells (4)",
+    "E02 cell holder",
+    "E01 EPS board",
+    "E01 EPS parts",
+    "E03 OBC board",
+    "E03 OBC parts",
+    "Stack rods M3 Ti (4)",
+    "Stack spacers"
+   ]
+  },
+  {
+   "n": 4,
+   "title": "Mid frame onto the rails",
+   "add": [
+    "AON-104 mid frame"
+   ]
+  },
+  {
+   "n": 5,
+   "title": "Upper stack: COM board",
+   "add": [
+    "E04 COM board",
+    "E04 COM shield can"
+   ]
+  },
+  {
+   "n": 6,
+   "title": "+Z frame, antenna board, spring plungers",
+   "add": [
+    "AON-105 +Z frame",
+    "E05 antenna board",
+    "E05 UHF tape elements (stowed)",
+    "E05 standoffs",
+    "Separation spring plungers (2)"
+   ]
+  },
+  {
+   "n": 7,
+   "title": "Four solar panels",
+   "add": [
+    "E06 solar panel +X",
+    "E06 cells +X",
+    "E06 solar panel -Y",
+    "E06 cells -Y",
+    "E06 solar panel -X",
+    "E06 cells -X",
+    "E06 solar panel +Y",
+    "E06 cells +Y"
+   ]
+  }
+ ]
+}
