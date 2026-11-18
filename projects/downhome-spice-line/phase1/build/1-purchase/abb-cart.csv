@@ -1,2 +1,4 @@
 Manufacturer,Part / model,Quantity,Description,Line
 ABB,"OTP16T3M + OA1G10 aux, IP66 (confirm enclosure code)",9,"Motor isolator, 3-pole 16 A, lockable OFF, stainless or polycarbonate IP66 enclosure, 1 early-break NO aux contact",P1-248
+ABB,OT25F3 + OHB45J6 handle + OXP6X shaft (confirm),1,"Disconnect switch 25 A 2-pole, lockable OFF, side-mount handle",P1-439
+ABB,"S202-C10, S202-D8, S201-C8, MS116-4.0, HKF1-11, AF09-30-10-13",1,"Breakers and motor protection: F1 S202-C10 (servo drive), F2 S202-D8 (T1 primary), F3 S201-C8 (120 V), Q2 MS116-4.0 + HKF1-11 (agitator), KM1 AF09-30-10-13 24 V DC coil",P1-441

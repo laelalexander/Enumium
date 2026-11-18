@@ -210,52 +210,42 @@ def bought_feeder():
 
 
 # =============================================================================================== auger filler P1-401
-Z_NEST = 850.0                   # cabinet top: container on the printed nest
-Z_HOP = 1130.0                   # hopper cone bottom (auger clamp)
+Z_NEST = 855.0                   # jar-12 stage top (stage plate at 89 above the 760 cabinet top + 6): container on the printed nest
+Z_HOP = 1118.5                   # hopper outlet TC clamp face (machines/P1-401 design.py Z_TC)
+_FL = {}
 
 
-def fl_cabinet():
-    """Base cabinet 600 x 500 x 850, 1.5 mm 304, hinged front door, top plate with nest slots and a drip lip; levelling feet."""
-    c = W().box(600, 500, 850).translate((0, 0, 425)).faces("<Y").shell(-1.5)
-    c = c.union(W().box(640, 540, 3).translate((0, 0, Z_NEST + 1.5)))
-    c = c.cut(W().box(120, 120, 10).translate((0, -60, Z_NEST)))
-    c = c.cut(W().rect(140, 30).extrude(10).translate((0, 80, Z_NEST - 2)))
-    for sx in (-1, 1):
-        for sy in (-1, 1):
-            c = c.union(W().circle(20).extrude(40).translate((sx * 260, sy * 210, -40)))
-    return c
+def _fl_model():
+    """rev B servo auger filler from machines/P1-401 (design.py + model.py): the full drawing set P1-401-000..900 is drawn from the same model."""
+    if not _FL:
+        import importlib.util
+        d = P1 / "machines" / "P1-401"
+        saved = sys.modules.pop("design", None)
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("p1_401_model", d / "model.py")
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            _FL["parts"], _FL["bought"] = m.build(), m.bought()
+        finally:
+            sys.path.remove(str(d)); sys.modules.pop("design", None)
+            if saved is not None:
+                sys.modules["design"] = saved
+    return _FL
 
 
-def fl_column():
-    """Column 100 sq x 3 mm, head plate 12 mm for the servo and agitator motor, and hopper bracket ring."""
-    col = sqt(101.6, 101.6, 1000, 3.0).translate((0, 200, Z_NEST + 500))
-    head = W().box(300, 360, 12).translate((0, 60, Z_HOP + 560)).cut(W().circle(30).extrude(20).translate((0, 0, Z_HOP + 550)))
-    head = head.faces(">Z").workplane(centerOption="CenterOfBoundBox").pushPoints([(-55, -115), (55, -115), (-55, 5), (55, 5)]).hole(9)
-    ring = W().circle(250).circle(232).extrude(12).translate((0, 0, Z_HOP + 190)).union(W().box(60, 230, 12).translate((0, 130, Z_HOP + 196)))
-    return col.union(head).union(ring)
-
-
-def fl_hopper():
-    """Hopper 316L: Ø450 x 200 cylinder over a 60 deg cone to the 2.5 in TC auger tube clamp; split lid with servo bore and a
-    scoop port with a hinged flap; about 42 L (21 kg of blend)."""
-    R = 225.0
-    cyl = W().circle(R + GA14).circle(R).extrude(200).translate((0, 0, Z_HOP + 220))
-    cone = (W().circle(R + GA14).workplane(offset=-220).circle(40 + GA14).loft()
-            .cut(W().workplane(offset=0.01).circle(R).workplane(offset=-220.02).circle(40).loft()).translate((0, 0, Z_HOP + 220)))
-    fer = W().circle(77.5 / 2).circle(40).extrude(21.5).translate((0, 0, Z_HOP - 21.5))
-    lid = W().circle(R + 10).extrude(3).translate((0, 0, Z_HOP + 420)).cut(W().circle(30).extrude(10).translate((0, 0, Z_HOP + 415)))
-    lid = lid.cut(W().box(170, 300, 10).translate((-130, 0, Z_HOP + 415)))                    # scoop port with hinged flap
-    lid = lid.union(W().rect(182, 312).rect(170, 300).extrude(40).translate((-130, 0, Z_HOP + 423)))
-    return cyl.union(cone).union(fer).union(lid)
+def fl_all():
+    """Filler P1-401 rev B, all made parts (cabinet, column, drive head, hopper, agitator, stage) in the filler frame:
+    auger axis at x 0, y 0; column at y +300; floor z 0."""
+    out = None
+    for pid, s in _fl_model()["parts"].items():
+        out = s if out is None else out.union(s, clean=False)
+    return out
 
 
 def bought_filler():
-    servo = W().box(130, 130, 220).translate((0, 0, Z_HOP + 676))
-    ag = W().box(110, 110, 160).translate((0, -120, Z_HOP + 646))
-    tool = W().circle(19).extrude(160).translate((0, 0, Z_HOP - 160))
-    hmi = W().box(200, 40, 150).translate((-200, -260, Z_HOP + 300))
-    pedal = W().box(300, 200, 60).translate((0, -500, 30))
-    return dict(servo=servo, agitator=ag, auger_tooling=tool, hmi=hmi, pedal=pedal)
+    b = _fl_model()["bought"]
+    return {"servo": b["P1-413"], "belt drive": b["P1-431"], "agitator": b["P1-414"], "chain drive": b["P1-432"], "index plunger": b["P1-434"],
+            "hmi": b["P1-416"], "container sensor": b["P1-435"], "pedal": b["P1-417"], "feet": b["P1-443"], "auger_tooling": b["P1-415J"].union(b["P1-415A"])}
 
 
 # =============================================================================================== detector conveyor P1-406
@@ -418,31 +408,64 @@ MACHINES = [
              ("P1-217", "Inlet agitator gearmotor kit for herb and peel bins (slow paddle)", "Bodine Electric", "1/17 HP 30 rpm gearmotor + SS paddle (confirm)",
               "https://www.bodine-electric.com/", "Bodine distributor", 3, 380, None),
          ]),
-    dict(id="P1-401", title="Servo auger filler (built)", tag_name="Auger filler", qty=1,
-         assy_note="Container on the printed nest at 850 [33.5]; blend scooped from the drum into the lid port at 1,553 [61.1]",
+    dict(id="P1-401", title="Servo auger filler (built) rev B", tag_name="Auger filler", qty=1,
+         full_set="machines/P1-401/drawings/P1-401-001_general_arrangement.svg",
+         assy_note="Container on the indexed stage under the tooling outlet at 1,020 [40.2]; blend scooped into the interlocked lid port. "
+                   "Full build set: machines/P1-401/drawings/P1-401-drawing-set.pdf (18 sheets)",
          parts=[
-             dict(id="P1-401-01", fn=fl_cabinet, title="Filler base cabinet", material="SS 304 #4, 1.5 mm; top 3 mm", process="Laser cut, brake, TIG",
-                  mat_kg=28, labor_h=12, flat=None, contact=False, qty=1,
-                  notes=["Servo drive, PLC and 24 V supply inside on a back panel; door gasket FDA silicone", "Nest slot takes the printed nests P1-410a/b"],
-                  fasteners=lambda f: "M10 levelling foot"),
-             dict(id="P1-401-02", fn=fl_column, title="Filler column, head plate and hopper ring", material="SS 304 4 in sq tube 11 ga, 2 in sq tube, 12 mm plate",
-                  process="Saw, laser, TIG, ground", mat_kg=32, labor_h=14, flat=None, contact=False, qty=1,
-                  notes=["Head plate carries the servo (P1-413) on the auger axis and the agitator motor (P1-414)", "Hopper ring bracket holds the hopper concentric to the auger within 1 mm"],
-                  fasteners=lambda f: "M8 x 25 A2-70 motor flange, 20 N·m"),
-             dict(id="P1-401-03", fn=fl_hopper, title="Filler hopper 42 L with scoop port", material="SS 316L #4, 14 ga; BPE ferrules", process="Laser cut, roll, TIG, polish",
-                  mat_kg=12, labor_h=10, flat=None, contact=True, qty=1,
-                  notes=["60 deg cone to a 2.5 in TC clamp for the auger tube (tooling P1-415)", "Lid: servo bore Ø60, 170 x 300 scoop port with hinged flap, split for tool-free removal"],
-                  fasteners=lambda f: "4 in TC" if f["dia"] > 80 else "auger shaft bore"),
+             dict(id="P1-401-01", fn=fl_all, title="Filler P1-401 rev B made parts (cabinet, column, drive head, hopper, agitator, container stage)",
+                  material="SS 304 1.5 / 3 / 10 / 12 mm, 4 in sq tube; 316L 1.5 mm hopper and agitator; 17-4PH spindle",
+                  process="Laser, brake, roll, TIG, lathe, mill, polish (see P1-401-100..700)", mat_kg=135, labor_h=60, flat=None, contact=True, qty=1,
+                  notes=["Detail drawings: P1-401-001..900 (GA, sections, assembly, cabinet + flats, column, drive head + machined parts, hopper, agitator, tooling, stage, bought, E01-E03, ITP)",
+                         "Spindle on 2 x 6205 in a top-loaded cartridge, belt 2:1 from the 750 W servo; agitator hub on 2 x 6008 around it, #40 SS chain from a 1/4 HP gearmotor",
+                         "PNOZ s4 safety relay: E-stop and the lid flap switch remove servo torque (STO) and drop the agitator"],
+                  fasteners=lambda f: "see P1-401-800"),
          ],
          bought=[
-             ("P1-413", "AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)", "AutomationDirect", "SureServo2 SV2L-207B + SV2A-2075 (confirm)",
-              "https://www.automationdirect.com/", "AutomationDirect", 1, 1350, "servo"),
-             ("P1-414", "Hopper agitator gearmotor 1/4 HP about 60 rpm", "Bison Gear", "011-xxx parallel-shaft 1/4 HP (confirm)", "https://www.bisongear.com/", "Bison distributor", 1, 420, "agitator"),
-             ("P1-415", "Auger tooling sets: auger, tube and funnel for the 53 mm shaker and 89 mm jar", "All-Fill", "auger tooling to size (quote with our blend samples)",
-              "https://www.all-fill.com/", "All-Fill (Exton PA)", 2, 650, "auger_tooling"),
-             ("P1-416", "Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply", "AutomationDirect", "C2-03CPU-2 + EA3-S3ML (confirm)", "https://www.automationdirect.com/",
-              "AutomationDirect", 1, 620, "hmi"),
-             ("P1-417", "Foot switch, guarded, IP67", "Linemaster", "632-S class", "https://www.linemaster.com/", "Grainger", 1, 90, "pedal"),
+             ('P1-413', 'AC servo 750 W, 80 mm flange (Ø70 pilot, 4 x M6 on Ø90), Ø19 keyed shaft, 2.39 N·m rated / 7.16 peak, 3,000 rpm, with drive 200-230 V 1-ph, STO, RS-485 Modbus, 3 m motor + encoder cables', 'AutomationDirect', 'SureServo2 SV2L-207B motor + SV2A-2075 drive + SVC2 cables (confirm shaft and flange before machining the bridge)',
+              'https://www.automationdirect.com/', 'AutomationDirect', 1, 1350, 'servo'),
+             ('P1-414', 'Agitator gearmotor 1/4 HP 115 V 1-ph, about 60 rpm, face-mount, output shaft Ø5/8 in keyed, 4 x 1/4-20 on Ø3.75 in (confirm)', 'Bison Gear & Engineering', '011-series parallel shaft 1/4 HP 60 rpm (confirm flange; head plate slots are 9 x 19 on 90 sq)',
+              'https://www.bisongear.com/', 'Bison Gear & Engineering', 1, 420, 'agitator'),
+             ('P1-415', 'Auger tooling, 2 sets to drawing P1-401-600: S (shaker) 27 OD auger + 1.25 in tube, J (jar/pouch/tub) 46 OD auger + 2 in tube; 316, M16 x 1.5 LH top thread', 'All-Fill Inc.', 'custom auger + funnel tube to P1-401-600 (quote with blend samples)',
+              'https://www.all-fill.com/', 'All-Fill Inc.', 2, 650, 'auger_tooling'),
+             ('P1-416', 'Filler controls: CLICK PLUS PLC C2-03CPU-2 + 8 in / 8 out DC module + C-more Micro 3 in HMI', 'AutomationDirect', 'C2-03CPU-2 + C0-16CDD2 + EA3-S3ML (confirm I/O module)',
+              'https://www.automationdirect.com/', 'AutomationDirect', 1, 620, 'hmi'),
+             ('P1-417', 'Foot switch, guarded, 1 NO + 1 NC, IP68, 3 m cord', 'Linemaster', '632-S class (confirm)',
+              'https://www.linemaster.com/', 'Linemaster', 1, 90, 'pedal'),
+             ('P1-430', 'Ball bearings: 2 x 6205-2RS (spindle), 2 x 6008-2RS (agitator hub), food-grade grease', 'SKF', '6205-2RSH/C3GJN + 6008-2RS1 (H1 grease)',
+              'https://www.skf.com/', 'SKF', 1, 85, None),
+             ('P1-431', 'Timing drive HTD 5M 15 wide: pulley 20T bore Ø19 key 6 (servo), pulley 40T bore Ø20 key 6 (spindle), belt 450-5M-15', 'Gates / B&B Manufacturing', '20-5M-15 + 40-5M-15 (finished bore) + 450-5M-15 belt',
+              'https://www.bbman.com/', 'Gates', 1, 95, None),
+             ('P1-432', 'Roller chain drive #40 stainless: sprocket 15T (bore 5/8 in key), sprocket 30T plate (bored Ø81 H7, 4 x Ø6.5 on Ø100), chain #40 SS 52 links + connecting link', 'Tsubaki / Martin Sprocket', '40SS 15T B-hub + 40SS 30T A-plate (bore to drawing) + RS40-SS x 52L',
+              'https://www.martinsprocket.com/', 'Tsubaki', 1, 140, None),
+             ('P1-433', 'Lip seals 25 x 40 x 7, FKM or PTFE, FDA', 'SKF / Trelleborg', '25x40x7 HMSA10 V (FDA) or PTFE lip',
+              'https://www.skf.com/', 'SKF', 2, 18, None),
+             ('P1-434', 'Index plunger M16 x 1.5, pin Ø10, pull knob with rest position, stainless', 'Elesa-Ganter', 'GN 617-10-AK-NI (confirm)',
+              'https://www.elesa-ganter.com/', 'Elesa-Ganter', 1, 38, None),
+             ('P1-435', 'Container sensor: diffuse photoelectric 18 mm, 24 V DC PNP, IP69K, 2 m M12 cable', 'Banner Engineering', 'QS18VP6D + MQDEC2-506 (confirm range ≈ 100 mm)',
+              'https://www.bannerengineering.com/', 'Banner Engineering', 1, 95, None),
+             ('P1-436', 'Safety relay 24 V DC, dual channel, 3 NO safety + 1 NC aux, monitored manual reset', 'Pilz', 'PNOZ s4 24VDC 3 n/o 1 n/c (750104)',
+              'https://www.pilz.com/', 'Pilz', 1, 230, None),
+             ('P1-437', '22 mm operators: E-stop 40 mm mushroom 2 NC, blue reset 1 NO, green and red LED pilot lights 24 V', 'AutomationDirect', 'GCX1131-24 (E-stop) + GCX1102 + GCX0102 x2 (confirm)',
+              'https://www.automationdirect.com/', 'AutomationDirect', 1, 85, None),
+             ('P1-438', 'Coded magnetic safety switch 2 NC, M12 connector, IP69K, for the scoop flap', 'Schmersal', 'BNS 260-02z-ST + BPS 260-1 actuator (confirm)',
+              'https://www.schmersal.com/', 'Schmersal', 1, 120, None),
+             ('P1-439', 'Disconnect switch 25 A 2-pole, lockable OFF, side-mount handle', 'ABB', 'OT25F3 + OHB45J6 handle + OXP6X shaft (confirm)',
+              'https://new.abb.com/low-voltage', 'ABB', 1, 75, None),
+             ('P1-440', 'Control transformer 750 VA 208 V / 120 V', 'Hammond', 'PH750MQMJ (confirm)',
+              'https://www.hammondpowersolutions.com/', 'Hammond', 1, 160, None),
+             ('P1-441', 'Breakers and motor protection: F1 S202-C10 (servo drive), F2 S202-D8 (T1 primary), F3 S201-C8 (120 V), Q2 MS116-4.0 + HKF1-11 (agitator), KM1 AF09-30-10-13 24 V DC coil', 'ABB', 'S202-C10, S202-D8, S201-C8, MS116-4.0, HKF1-11, AF09-30-10-13',
+              'https://new.abb.com/low-voltage', 'ABB', 1, 260, None),
+             ('P1-442', 'Power supply 24 V DC 2.5 A, DIN rail', 'AutomationDirect', 'PSB24-060S (confirm)',
+              'https://www.automationdirect.com/', 'AutomationDirect', 1, 45, None),
+             ('P1-443', 'Levelling feet M12, Ø60 pad, stainless, 100 mm thread', 'Elesa-Ganter', 'LMT-60-M12x100 inox (confirm)',
+              'https://www.elesa-ganter.com/', 'Elesa-Ganter', 4, 22, None),
+             ('P1-444', 'Cabinet hardware: 2 lift-off hinges SS, 1 quarter-turn latch SS with handle, door gasket FDA silicone 2 m', 'Southco', 'C6-1-1 hinges + E3-5 latch + FDA gasket (confirm)',
+              'https://www.southco.com/', 'Southco', 1, 70, None),
+             ('P1-445', 'TC clamps 2.5 in heavy-duty wing nut 304 + EPDM FDA gaskets (tooling and agitator)', 'generic sanitary', '13MHHM-2.5 + 40MP-U250 (confirm)',
+              'https://www.mcmaster.com/', 'generic sanitary', 2, 18, None),
+             ('P1-446', 'Cable glands M25 + 2 x M20 nylon IP68, 2 m DIN rail 35, wire duct, terminals', 'Phoenix Contact', 'UT 4 terminals + glands (confirm)',
+              'https://www.phoenixcontact.com/', 'Phoenix Contact', 1, 90, None),
          ]),
     dict(id="P1-406", title="Metal detector conveyor (built frame, bought head)", tag_name="Detector conveyor", qty=1,
          assy_note="Belt top 905 [35.6], level with the tables; the bought search head (CCP-1) bolts over the centre",

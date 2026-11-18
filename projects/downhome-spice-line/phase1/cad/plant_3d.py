@@ -424,11 +424,10 @@ def table(tag):
 
 
 def pack():
-    # built servo auger filler P1-401 (P1-401-GA): column at the back (+y), foot switch at the front
+    # built servo auger filler P1-401 rev B (full set machines/P1-401): column at the back (+y), foot switch at the front
     x0, y0, w, h, cx, cy = lay_box("P1-401")
     machine("P1-401", cx, cy)
-    add(cbox(cx, cy - 60, PM.Z_NEST + 3, 120, 120, 15), (0.95, 0.95, 0.95), "P1-410 printed nest")
-    jar(cx, cy - 60, PM.Z_NEST + 18, cap=False)
+    jar(cx, cy, PM.Z_NEST, cap=False)                        # jar-12 on the indexed stage, 10 under the tooling outlet
     anchor("P1-401", "Servo auger filler, built", cx + 300, cy, 1900, "build")
     # capping + seal table: built spindle capper P1-412, induction sealer
     x0, y0, w, h, cx, cy, z = table("TBL-1")

@@ -1,5 +1,7 @@
 Manufacturer,Part / model,Quantity,Description,Line
 AutomationDirect,"DURApulse GS20, 0.5 HP (GS21-20P5, confirm)",9,Feeder drives: AC drive 0.5 HP for each feeder (fast/slow dosing),P1-226
 AutomationDirect,GS21-22P0 (confirm),1,"VFD 2 HP for the blender (soft start, 40 rpm trim)",P1-336
-AutomationDirect,SureServo2 SV2L-207B + SV2A-2075 (confirm),1,"AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",P1-413
-AutomationDirect,C2-03CPU-2 + EA3-S3ML (confirm),1,Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply,P1-416
+AutomationDirect,SureServo2 SV2L-207B motor + SV2A-2075 drive + SVC2 cables (confirm shaft and flange before machining the bridge),1,"AC servo 750 W, 80 mm flange (Ø70 pilot, 4 x M6 on Ø90), Ø19 keyed shaft, 2.39 N·m rated / 7.16 peak, 3,000 rpm, with drive 200-230 V 1-ph, STO, RS-485 Modbus, 3 m motor + encoder cables",P1-413
+AutomationDirect,C2-03CPU-2 + C0-16CDD2 + EA3-S3ML (confirm I/O module),1,Filler controls: CLICK PLUS PLC C2-03CPU-2 + 8 in / 8 out DC module + C-more Micro 3 in HMI,P1-416
+AutomationDirect,GCX1131-24 (E-stop) + GCX1102 + GCX0102 x2 (confirm),1,"22 mm operators: E-stop 40 mm mushroom 2 NC, blue reset 1 NO, green and red LED pilot lights 24 V",P1-437
+AutomationDirect,PSB24-060S (confirm),1,"Power supply 24 V DC 2.5 A, DIN rail",P1-442

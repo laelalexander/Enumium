@@ -216,27 +216,25 @@
   },
   {
    "id": "P1-401",
-   "title": "Servo auger filler (built)",
+   "title": "Servo auger filler (built) rev B",
    "qty": 1,
    "cost": {
-    "material": 624,
-    "labor_h": 36.0,
-    "labor": 2340,
-    "bought": 3780,
-    "total": 6744
+    "material": 985,
+    "labor_h": 60.0,
+    "labor": 3900,
+    "bought": 5528,
+    "total": 10413
    },
-   "assy_note": "Container on the printed nest at 850 [33.5]; blend scooped from the drum into the lid port at 1,553 [61.1]",
+   "assy_note": "Container on the indexed stage under the tooling outlet at 1,020 [40.2]; blend scooped into the interlocked lid port. Full build set: machines/P1-401/drawings/P1-401-drawing-set.pdf (18 sheets)",
    "parts": [
-    "P1-401-01",
-    "P1-401-02",
-    "P1-401-03"
+    "P1-401-01"
    ],
    "bought": [
     {
      "tag": "P1-413",
-     "name": "AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",
+     "name": "AC servo 750 W, 80 mm flange (\u00d870 pilot, 4 x M6 on \u00d890), \u00d819 keyed shaft, 2.39 N\u00b7m rated / 7.16 peak, 3,000 rpm, with drive 200-230 V 1-ph, STO, RS-485 Modbus, 3 m motor + encoder cables",
      "maker": "AutomationDirect",
-     "model": "SureServo2 SV2L-207B + SV2A-2075 (confirm)",
+     "model": "SureServo2 SV2L-207B motor + SV2A-2075 drive + SVC2 cables (confirm shaft and flange before machining the bridge)",
      "source": "https://www.automationdirect.com/",
      "supplier": "AutomationDirect",
      "qty": 1,
@@ -244,29 +242,29 @@
     },
     {
      "tag": "P1-414",
-     "name": "Hopper agitator gearmotor 1/4 HP about 60 rpm",
-     "maker": "Bison Gear",
-     "model": "011-xxx parallel-shaft 1/4 HP (confirm)",
+     "name": "Agitator gearmotor 1/4 HP 115 V 1-ph, about 60 rpm, face-mount, output shaft \u00d85/8 in keyed, 4 x 1/4-20 on \u00d83.75 in (confirm)",
+     "maker": "Bison Gear & Engineering",
+     "model": "011-series parallel shaft 1/4 HP 60 rpm (confirm flange; head plate slots are 9 x 19 on 90 sq)",
      "source": "https://www.bisongear.com/",
-     "supplier": "Bison distributor",
+     "supplier": "Bison Gear & Engineering",
      "qty": 1,
      "usd": 420
     },
     {
      "tag": "P1-415",
-     "name": "Auger tooling sets: auger, tube and funnel for the 53 mm shaker and 89 mm jar",
-     "maker": "All-Fill",
-     "model": "auger tooling to size (quote with our blend samples)",
+     "name": "Auger tooling, 2 sets to drawing P1-401-600: S (shaker) 27 OD auger + 1.25 in tube, J (jar/pouch/tub) 46 OD auger + 2 in tube; 316, M16 x 1.5 LH top thread",
+     "maker": "All-Fill Inc.",
+     "model": "custom auger + funnel tube to P1-401-600 (quote with blend samples)",
      "source": "https://www.all-fill.com/",
-     "supplier": "All-Fill (Exton PA)",
+     "supplier": "All-Fill Inc.",
      "qty": 2,
      "usd": 650
     },
     {
      "tag": "P1-416",
-     "name": "Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply",
+     "name": "Filler controls: CLICK PLUS PLC C2-03CPU-2 + 8 in / 8 out DC module + C-more Micro 3 in HMI",
      "maker": "AutomationDirect",
-     "model": "C2-03CPU-2 + EA3-S3ML (confirm)",
+     "model": "C2-03CPU-2 + C0-16CDD2 + EA3-S3ML (confirm I/O module)",
      "source": "https://www.automationdirect.com/",
      "supplier": "AutomationDirect",
      "qty": 1,
@@ -274,11 +272,181 @@
     },
     {
      "tag": "P1-417",
-     "name": "Foot switch, guarded, IP67",
+     "name": "Foot switch, guarded, 1 NO + 1 NC, IP68, 3 m cord",
      "maker": "Linemaster",
-     "model": "632-S class",
+     "model": "632-S class (confirm)",
      "source": "https://www.linemaster.com/",
-     "supplier": "Grainger",
+     "supplier": "Linemaster",
+     "qty": 1,
+     "usd": 90
+    },
+    {
+     "tag": "P1-430",
+     "name": "Ball bearings: 2 x 6205-2RS (spindle), 2 x 6008-2RS (agitator hub), food-grade grease",
+     "maker": "SKF",
+     "model": "6205-2RSH/C3GJN + 6008-2RS1 (H1 grease)",
+     "source": "https://www.skf.com/",
+     "supplier": "SKF",
+     "qty": 1,
+     "usd": 85
+    },
+    {
+     "tag": "P1-431",
+     "name": "Timing drive HTD 5M 15 wide: pulley 20T bore \u00d819 key 6 (servo), pulley 40T bore \u00d820 key 6 (spindle), belt 450-5M-15",
+     "maker": "Gates / B&B Manufacturing",
+     "model": "20-5M-15 + 40-5M-15 (finished bore) + 450-5M-15 belt",
+     "source": "https://www.bbman.com/",
+     "supplier": "Gates",
+     "qty": 1,
+     "usd": 95
+    },
+    {
+     "tag": "P1-432",
+     "name": "Roller chain drive #40 stainless: sprocket 15T (bore 5/8 in key), sprocket 30T plate (bored \u00d881 H7, 4 x \u00d86.5 on \u00d8100), chain #40 SS 52 links + connecting link",
+     "maker": "Tsubaki / Martin Sprocket",
+     "model": "40SS 15T B-hub + 40SS 30T A-plate (bore to drawing) + RS40-SS x 52L",
+     "source": "https://www.martinsprocket.com/",
+     "supplier": "Tsubaki",
+     "qty": 1,
+     "usd": 140
+    },
+    {
+     "tag": "P1-433",
+     "name": "Lip seals 25 x 40 x 7, FKM or PTFE, FDA",
+     "maker": "SKF / Trelleborg",
+     "model": "25x40x7 HMSA10 V (FDA) or PTFE lip",
+     "source": "https://www.skf.com/",
+     "supplier": "SKF",
+     "qty": 2,
+     "usd": 18
+    },
+    {
+     "tag": "P1-434",
+     "name": "Index plunger M16 x 1.5, pin \u00d810, pull knob with rest position, stainless",
+     "maker": "Elesa-Ganter",
+     "model": "GN 617-10-AK-NI (confirm)",
+     "source": "https://www.elesa-ganter.com/",
+     "supplier": "Elesa-Ganter",
+     "qty": 1,
+     "usd": 38
+    },
+    {
+     "tag": "P1-435",
+     "name": "Container sensor: diffuse photoelectric 18 mm, 24 V DC PNP, IP69K, 2 m M12 cable",
+     "maker": "Banner Engineering",
+     "model": "QS18VP6D + MQDEC2-506 (confirm range \u2248 100 mm)",
+     "source": "https://www.bannerengineering.com/",
+     "supplier": "Banner Engineering",
+     "qty": 1,
+     "usd": 95
+    },
+    {
+     "tag": "P1-436",
+     "name": "Safety relay 24 V DC, dual channel, 3 NO safety + 1 NC aux, monitored manual reset",
+     "maker": "Pilz",
+     "model": "PNOZ s4 24VDC 3 n/o 1 n/c (750104)",
+     "source": "https://www.pilz.com/",
+     "supplier": "Pilz",
+     "qty": 1,
+     "usd": 230
+    },
+    {
+     "tag": "P1-437",
+     "name": "22 mm operators: E-stop 40 mm mushroom 2 NC, blue reset 1 NO, green and red LED pilot lights 24 V",
+     "maker": "AutomationDirect",
+     "model": "GCX1131-24 (E-stop) + GCX1102 + GCX0102 x2 (confirm)",
+     "source": "https://www.automationdirect.com/",
+     "supplier": "AutomationDirect",
+     "qty": 1,
+     "usd": 85
+    },
+    {
+     "tag": "P1-438",
+     "name": "Coded magnetic safety switch 2 NC, M12 connector, IP69K, for the scoop flap",
+     "maker": "Schmersal",
+     "model": "BNS 260-02z-ST + BPS 260-1 actuator (confirm)",
+     "source": "https://www.schmersal.com/",
+     "supplier": "Schmersal",
+     "qty": 1,
+     "usd": 120
+    },
+    {
+     "tag": "P1-439",
+     "name": "Disconnect switch 25 A 2-pole, lockable OFF, side-mount handle",
+     "maker": "ABB",
+     "model": "OT25F3 + OHB45J6 handle + OXP6X shaft (confirm)",
+     "source": "https://new.abb.com/low-voltage",
+     "supplier": "ABB",
+     "qty": 1,
+     "usd": 75
+    },
+    {
+     "tag": "P1-440",
+     "name": "Control transformer 750 VA 208 V / 120 V",
+     "maker": "Hammond",
+     "model": "PH750MQMJ (confirm)",
+     "source": "https://www.hammondpowersolutions.com/",
+     "supplier": "Hammond",
+     "qty": 1,
+     "usd": 160
+    },
+    {
+     "tag": "P1-441",
+     "name": "Breakers and motor protection: F1 S202-C10 (servo drive), F2 S202-D8 (T1 primary), F3 S201-C8 (120 V), Q2 MS116-4.0 + HKF1-11 (agitator), KM1 AF09-30-10-13 24 V DC coil",
+     "maker": "ABB",
+     "model": "S202-C10, S202-D8, S201-C8, MS116-4.0, HKF1-11, AF09-30-10-13",
+     "source": "https://new.abb.com/low-voltage",
+     "supplier": "ABB",
+     "qty": 1,
+     "usd": 260
+    },
+    {
+     "tag": "P1-442",
+     "name": "Power supply 24 V DC 2.5 A, DIN rail",
+     "maker": "AutomationDirect",
+     "model": "PSB24-060S (confirm)",
+     "source": "https://www.automationdirect.com/",
+     "supplier": "AutomationDirect",
+     "qty": 1,
+     "usd": 45
+    },
+    {
+     "tag": "P1-443",
+     "name": "Levelling feet M12, \u00d860 pad, stainless, 100 mm thread",
+     "maker": "Elesa-Ganter",
+     "model": "LMT-60-M12x100 inox (confirm)",
+     "source": "https://www.elesa-ganter.com/",
+     "supplier": "Elesa-Ganter",
+     "qty": 4,
+     "usd": 22
+    },
+    {
+     "tag": "P1-444",
+     "name": "Cabinet hardware: 2 lift-off hinges SS, 1 quarter-turn latch SS with handle, door gasket FDA silicone 2 m",
+     "maker": "Southco",
+     "model": "C6-1-1 hinges + E3-5 latch + FDA gasket (confirm)",
+     "source": "https://www.southco.com/",
+     "supplier": "Southco",
+     "qty": 1,
+     "usd": 70
+    },
+    {
+     "tag": "P1-445",
+     "name": "TC clamps 2.5 in heavy-duty wing nut 304 + EPDM FDA gaskets (tooling and agitator)",
+     "maker": "generic sanitary",
+     "model": "13MHHM-2.5 + 40MP-U250 (confirm)",
+     "source": "https://www.mcmaster.com/",
+     "supplier": "generic sanitary",
+     "qty": 2,
+     "usd": 18
+    },
+    {
+     "tag": "P1-446",
+     "name": "Cable glands M25 + 2 x M20 nylon IP68, 2 m DIN rail 35, wire duct, terminals",
+     "maker": "Phoenix Contact",
+     "model": "UT 4 terminals + glands (confirm)",
+     "source": "https://www.phoenixcontact.com/",
+     "supplier": "Phoenix Contact",
      "qty": 1,
      "usd": 90
     }
@@ -580,62 +748,22 @@
   {
    "machine": "P1-401",
    "id": "P1-401-01",
-   "title": "Filler base cabinet",
+   "title": "Filler P1-401 rev B made parts (cabinet, column, drive head, hopper, agitator, container stage)",
    "qty": 1,
-   "material": "SS 304 #4, 1.5 mm; top 3 mm",
-   "features": 0,
-   "contact": false,
-   "mass_kg": 32.7,
+   "material": "SS 304 1.5 / 3 / 10 / 12 mm, 4 in sq tube; 316L 1.5 mm hopper and agitator; 17-4PH spindle",
+   "features": 82,
+   "contact": true,
+   "mass_kg": 121.2,
    "size_mm": [
     640,
-    540,
-    893
+    682,
+    1799
    ],
    "step": "cad/step/P1-401-01.step",
    "drawing": "drawings/parts/P1-401-01.svg",
    "dxf": [],
-   "labor_h": 12,
-   "mat_kg": 28
-  },
-  {
-   "machine": "P1-401",
-   "id": "P1-401-02",
-   "title": "Filler column, head plate and hopper ring",
-   "qty": 1,
-   "material": "SS 304 4 in sq tube 11 ga, 2 in sq tube, 12 mm plate",
-   "features": 6,
-   "contact": false,
-   "mass_kg": 23.3,
-   "size_mm": [
-    501,
-    501,
-    1000
-   ],
-   "step": "cad/step/P1-401-02.step",
-   "drawing": "drawings/parts/P1-401-02.svg",
-   "dxf": [],
-   "labor_h": 14,
-   "mat_kg": 32
-  },
-  {
-   "machine": "P1-401",
-   "id": "P1-401-03",
-   "title": "Filler hopper 42 L with scoop port",
-   "qty": 1,
-   "material": "SS 316L #4, 14 ga; BPE ferrules",
-   "features": 2,
-   "contact": true,
-   "mass_kg": 13.1,
-   "size_mm": [
-    471,
-    471,
-    485
-   ],
-   "step": "cad/step/P1-401-03.step",
-   "drawing": "drawings/parts/P1-401-03.svg",
-   "dxf": [],
-   "labor_h": 10,
-   "mat_kg": 12
+   "labor_h": 60,
+   "mat_kg": 135
   },
   {
    "machine": "P1-406",

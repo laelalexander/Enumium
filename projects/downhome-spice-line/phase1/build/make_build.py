@@ -153,15 +153,15 @@ ASSEMBLY = [
          text="Set the collector on its outside pad and run 4 in ducts to the weigh hood (300 cfm), weigh hopper vent (150 cfm), blender grate (250 cfm), drum-top sifter drum vent (200 cfm) and mill (150 cfm), with a blast gate at each.",
          check="measured airflow at each pickup within 10 % of its design value; total under the collector's 1,400 cfm"),
     dict(step=11, title="Build the pack machines", image=PNG("P1-401-GA"),
-         parts=A("P1-401", "P1-413", "P1-414", "P1-415", "P1-416", "P1-417", "P1-412", "P1-422", "P1-423", "P1-424", "P1-404", "P1-425", "P1-426", "P1-427",
+         parts=A("P1-401", "P1-413", "P1-414", "P1-415", "P1-416", "P1-417", "P1-430", "P1-431", "P1-432", "P1-433", "P1-434", "P1-435", "P1-436", "P1-437", "P1-438", "P1-439", "P1-440", "P1-441", "P1-442", "P1-443", "P1-444", "P1-445", "P1-446", "P1-412", "P1-422", "P1-423", "P1-424", "P1-404", "P1-425", "P1-426", "P1-427",
                  "P1-406", "P1-418", "P1-419", "P1-420", "P1-421"), tools=["torque wrench", "hex keys", "dial indicator"],
-         text="In the shop, per the GA sheets. Filler P1-401-GA: cabinet, column and hopper ring; servo and agitator motor on the head plate; auger tooling on the 2.5 in clamp; CLICK PLC and HMI in the cabinet. "
+         text="In the shop, per the GA sheets. Filler P1-401 rev B per its own set P1-401-000..900 (assembly sheet P1-401-003, 14 steps): cabinet and back panel, column, stage, spindle cartridge and hub, drives and guards, hopper, agitator, tooling, HMI. "
               "Capper P1-412-GA: rail and carriage on the column, gearmotor, slip clutch and chuck, gas spring. Labeler P1-404-GA: rollers in their blocks, stepper and belt, spindles, peel plate, gap sensor. "
               "Detector conveyor P1-406-GA: frame, pulleys and belt, gearmotor; mount the used detector head over the belt with nothing metal within 1.5 x the aperture height, and the reject pusher after it.",
-         torque="M8 to frames 18 N·m; auger tube clamp hand tight", check="auger runs true within 0.5 mm TIR; capper clutch slips at the set torque on a torque tester; detector conveyor belt tracks centred"),
+         torque="filler column M12 70 N·m, head plate M10 45 N·m, servo M6 8 N·m (full list P1-401-800); M8 to frames 18 N·m; auger tube clamp hand tight", check="filler ITP P1-401-900 T9-T18 (auger 0.25 TIR in the tube);  capper clutch slips at the set torque on a torque tester; detector conveyor belt tracks centred"),
     dict(step=12, title="Pack bench", image=PNG("ASM-P1-003"), parts=A("P1-409", "P1-402", "P1-403", "P1-405", "P1-407", "P1-408", "P1-410", "P1-411"),
          tools=["hex keys", "level"], text="Set the filler, then line up the four stainless tables: capper and sealer, printer and labeler, the detector conveyor, checkweigh and case pack, with the turntable at the end. "
-         "Fit the printed container nests on the filler.",
+         "Set the filler stage to the container (index plunger) and fit the printed nests on the capper.",
          check="metal detector rejects the Fe 1.5, non-Fe 2.0 and SS 2.5 mm test pieces in the leading, middle and trailing position"),
     dict(step=13, title="Controls and wiring", image=PNG("ELE-P1-003"), parts=A("P1-225", "P1-226", "P1-222"), tools=["electrician's tools", "multimeter"],
          text="Mount the WAGO panel and the nine GS21 drives, wire feeders, probes, both valve actuators, screw, blender VFD and cover interlock, sifter vibrator and mill per drawings ELE-P1-001 to 003 (every wire numbered slot-channel). "

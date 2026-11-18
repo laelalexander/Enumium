@@ -374,17 +374,17 @@ def asm3():
     def table_sh(x0, y0=0.0):
         return [R((x0, y0 + TT - 40, 1524, 40), fill=SS, sw=2), R((x0 + 40, y0, 38, TT - 40), fill=SS), R((x0 + 1446, y0, 38, TT - 40), fill=SS),
                 R((x0 + 40, y0 + 200, 1444, 25), fill=SS)]
-    ZH = 1130.0                 # built filler P1-401: hopper cone bottom (auger clamp), see P1-401-GA
-    filler = [R((20, 0, 600, 850), fill=STEEL, sw=2), R((0, 850, 640, 3), fill=SS), R((40, 40, 560, 790), fill="none", dash="6,4"), T("door", (320, 420), 11),
-              R((60, -40, 40, 40), fill="#90a4ae"), R((540, -40, 40, 40), fill="#90a4ae"),
-              R((269, 853, 102, 1000), fill=SS, dash="6,3"), R((170, ZH + 554, 300, 12), fill=SS, sw=2), R((95, ZH + 190, 450, 12), fill=SS),
-              P([(280, ZH), (360, ZH), (545, ZH + 220), (95, ZH + 220)], fill=STEEL, sw=2), R((95, ZH + 220, 450, 200), fill=STEEL, sw=2),
-              R((85, ZH + 420, 470, 3), fill=SS), R((105, ZH + 423, 170, 40), fill="none", sw=1.5), T("scoop port", (190, ZH + 490), 10),
-              R((281, ZH - 22, 78, 22), hatch="h135", fill="none")]
-    drive = [R((255, ZH + 566, 130, 220), fill="#ffe0b2", sw=2), T("servo 750 W", (320, ZH + 810), 11), R((365, ZH + 566, 110, 160), fill="#ffe0b2"),
-             R((301, ZH - 182, 38, 160), fill="#90a4ae"), R((20, ZH + 225, 200, 150), fill="#e1f5fe", sw=2), T("HMI", (120, ZH + 300), 11),
+    ZH = 1118.5                 # built filler P1-401 rev B: hopper outlet TC face (machines/P1-401 design.py); cabinet top 760, outlet 1,020
+    filler = [R((20, 60, 600, 697), fill=STEEL, sw=2), R((0, 757, 640, 3), fill=SS), R((40, 80, 560, 650), fill="none", dash="6,4"), T("door", (320, 420), 11),
+              R((60, 0, 40, 60), fill="#90a4ae"), R((540, 0, 40, 60), fill="#90a4ae"),
+              R((269, 772, 102, 936), fill=SS, dash="6,3"), R((85, 1720, 485, 10), fill=SS, sw=2), R((48, 1570, 544, 20), fill=SS),
+              P([(290, 1140), (350, 1140), (545, 1440), (95, 1440)], fill=STEEL, sw=2), R((95, 1440, 450, 150), fill=STEEL, sw=2),
+              R((85, 1590, 470, 3), fill=SS), R((105, 1593, 170, 40), fill="none", sw=1.5), T("scoop port", (190, 1660), 10),
+              R((288, ZH, 64, 21.5), hatch="h135", fill="none")]
+    drive = [R((131, 1850, 80, 150), fill="#ffe0b2", sw=2), T("servo 750 W", (171, 2030), 11), R((464, 1730, 80, 160), fill="#ffe0b2"),
+             R((294.6, 1020, 50.8, 98.5), fill="#90a4ae"), R((480, 760, 140, 110), fill="#e1f5fe", sw=2), T("HMI", (550, 820), 11),
              R((-260, 0, 300, 60), fill="#90a4ae"), T("foot switch", (-110, 90), 11)]
-    nest = [R((260, 853, 120, 30), fill="#c5e1a5"), R((287, 883, 66, 120), fill="#fff", dash="4,3"), T("shaker 66 x 120", (440, 1040), 10)]
+    nest = [R((200, 849, 240, 6), fill="#c5e1a5"), R((277, 855, 86, 155), fill="#fff", dash="4,3"), T("jar 86 x 155 on the indexed stage", (440, 1060), 10)]
     tb1 = table_sh(750)
     CX = 1100.0                 # spindle capper P1-412 on TBL-1
     capper = [R((CX - 200, TT, 400, 12), fill=SS, sw=2), R((CX + 95, TT + 12, 51, 650), fill=SS), R((CX + 87, TT + 142, 8, 500), fill="#90a4ae"),
@@ -421,9 +421,9 @@ def asm3():
     case = [R((3100, Y2 + TT, 330, 220), fill="#fff3e0", sw=2), T("12-ct RSC", (3265, Y2 + TT + 260), 11), R((3700, Y2 + TT, 200, 180), fill="#e1f5fe"), T("case label", (3800, Y2 + TT + 220), 11)]
     pal = [R((4700, Y2, 1219, 140), fill="#d7ccc8"), R((4750, Y2 + 140, 1100, 900), fill="#fff3e0", dash="8,4"), T("pallet being built (PAL-FG)", (5300, Y2 + 600), 12)]
     items = [
-        item(1, "P1-401", filler, (-450, 1500), (95, ZH + 300), name="Auger filler, built (GA P1-401-GA): cabinet, column, 42 L hopper"),
-        item(12, "P1-413", drive, (700, 2150), (385, ZH + 700), name="Filler servo 750 W + drive, agitator motor, tooling, HMI, foot switch (P1-413..417)", qty=1),
-        item(2, "P1-410", nest, (700, 1250), (380, 900), name="3D-printed container nests (filler), PETG, no product contact", qty=8),
+        item(1, "P1-401", filler, (-450, 1500), (95, 1500), name="Auger filler rev B, built (set P1-401-000..900): cabinet, column, drive head, 42 L hopper, stage"),
+        item(12, "P1-413", drive, (700, 2150), (211, 1930), name="Filler servo 750 W + drive, agitator motor, tooling, HMI, foot switch (P1-413..417)", qty=1),
+        item(2, "P1-410", nest, (700, 1250), (363, 930), name="3D-printed container nests (filler), PETG, no product contact", qty=8),
         item(3, "P1-409", tb1 + tb2 + tb3 + tb4, (1200, 400), (1300, TT - 20), name="Stainless tables 60 x 30 in (TBL-1 cap/seal, TBL-2 label, TBL-3, TBL-4)", qty=4),
         item(4, "P1-412", capper, (1450, 1850), (CX + 120, TT + 600), name="Spindle capper, built (GA P1-412-GA): base, column, rail carriage"),
         item(13, "P1-423", cdrive, (700, 1700), (CX - 45, TT + 600), name="Capper gearmotor, slip clutch + chucks, rail and gas spring (P1-422..424)", qty=1),
@@ -449,8 +449,8 @@ def asm3():
     det = []
     spec = dict(scale=1 / 15, origin=(140 + 600 * (1 / 15) * 96 / IN, 1960), floor_from=-600, floor_to=5900, items=items, conn=conn, details=det,
                 conn_title="STATIONS, SETTINGS AND CHECKS", conn_cols=[("STN", 60), ("STATION", 230), ("METHOD / SETTING", 420), ("CHECK", 300), ("RATE / VALUE", 250)],
-                dims=[dict(dir="v", x=-450, y1=0, y2=ZH + 786, label=f"FILLER {mm_in(ZH + 786)}", ext=255),
-                      dict(dir="v", x=-300, y1=0, y2=853, label=f"NEST {mm_in(853)}", ext=0),
+                dims=[dict(dir="v", x=-450, y1=0, y2=2000, label=f"FILLER {mm_in(2000)}", ext=131),
+                      dict(dir="v", x=-300, y1=0, y2=855, label=f"STAGE {mm_in(855)}", ext=0),
                       dict(dir="v", x=2200, y1=0, y2=TT, label=f"TABLE {mm_in(TT)}", ext=2274),
                       dict(dir="v", x=6150, y1=0, y2=ZB, label=f"BELT {mm_in(ZB)}", ext=5350),
                       dict(dir="h", x1=0, x2=5350, y=-250, label="RUN 1: FILL > CAP > SEAL > LABEL > DETECT 5,350 [210.6]", ext=0),
@@ -678,7 +678,7 @@ SHEETS = [("G-P1-000", "Cover and sheet index", "cover"), ("DH-LAY-P1", "Plant l
           ("DH-ASM-P1-003", "Pack bench 1:15: fill, cap, seal, label, metal detect, checkweigh, case pack", "ASM-P1-003_pack_bench"),
           ("P1-301-GA", "Ribbon blender 6 cu ft, built in house: general arrangement and item list", "machines/P1-301-GA"),
           ("P1-212-GA", "Bin screw feeder, built in house (x 9): general arrangement", "machines/P1-212-GA"),
-          ("P1-401-GA", "Servo auger filler, built in house: general arrangement", "machines/P1-401-GA"),
+          ("P1-401-GA", "Servo auger filler rev B, built in house: general arrangement (full set machines/P1-401, 18 sheets)", "machines/P1-401-GA"),
           ("P1-406-GA", "Metal detector conveyor, built in house (used head): general arrangement", "machines/P1-406-GA"),
           ("P1-412-GA", "Bench spindle capper, built in house: general arrangement", "machines/P1-412-GA"),
           ("P1-404-GA", "Wrap labeler, built in house: general arrangement", "machines/P1-404-GA"),

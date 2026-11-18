@@ -2413,29 +2413,29 @@
  {
   "tag": "P1-401",
   "area": "Pack bench",
-  "name": "Servo auger filler, built in house: cabinet, column, 42 L 316L hopper; bought servo and auger tooling",
+  "name": "Servo auger filler rev B, built in house (full set P1-401-000..900, 18 sheets): cabinet, column, 42 L 316L hopper, belt-driven spindle cartridge, indexed stage",
   "maker": "fabricated",
-  "model": "drawing P1-401-GA + part sheets P1-401-01, P1-401-02, P1-401-03",
+  "model": "drawing P1-401-GA + part sheets P1-401-01",
   "specs": {
-   "assembly": "Container on the printed nest at 850 [33.5]; blend scooped from the drum into the lid port at 1,553 [61.1]",
-   "bought_parts": "P1-413, P1-414, P1-415, P1-416, P1-417"
+   "assembly": "Container on the indexed stage under the tooling outlet at 1,020 [40.2]; blend scooped into the interlocked lid port. Full build set: machines/P1-401/drawings/P1-401-drawing-set.pdf (18 sheets)",
+   "bought_parts": "P1-413, P1-414, P1-415, P1-416, P1-417, P1-430, P1-431, P1-432, P1-433, P1-434, P1-435, P1-436, P1-437, P1-438, P1-439, P1-440, P1-441, P1-442, P1-443, P1-444, P1-445, P1-446"
   },
   "source": "cad/p1_machines.py",
   "supplier": "in-house / local stainless fabricator",
   "qty": 1,
   "qty_basis": "line balance: 80 % at peak, 42 % of the week",
   "price": {
-   "usd": 2964.0,
-   "src": "build: material $624 + 36.0 h x $65",
+   "usd": 4885.0,
+   "src": "build: material $985 + 60.0 h x $65",
    "per": "each"
   },
   "footprint_mm": [
-   930,
-   1000,
-   1960
+   640,
+   1040,
+   2000
   ],
   "footprint_src": "calculated (CAD)",
-  "power": "120/240 V 1-ph",
+  "power": "208 V 1-ph 20 A",
   "air_cfm": 0,
   "sanitary": "316L hopper, tool-free hopper and auger",
   "alternates": [],
@@ -2448,26 +2448,24 @@
   "build": {
    "drawing": "P1-401-GA",
    "material": "SS 304/316L sheet, tube and bar per part sheets",
-   "material_usd": 624,
-   "labor_h": 36.0,
+   "material_usd": 985,
+   "labor_h": 60.0,
    "process": "laser cut, roll, TIG, machine, polish, assemble",
    "files": [
-    "cad/step/P1-401-01",
-    "cad/step/P1-401-02",
-    "cad/step/P1-401-03"
+    "cad/step/P1-401-01"
    ]
   },
   "reuse_in_growth": false,
-  "ext_usd": 2964.0
+  "ext_usd": 4885.0
  },
  {
   "tag": "P1-413",
   "area": "Pack bench",
-  "name": "AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",
+  "name": "AC servo 750 W, 80 mm flange (\u00d870 pilot, 4 x M6 on \u00d890), \u00d819 keyed shaft, 2.39 N\u00b7m rated / 7.16 peak, 3,000 rpm, with drive 200-230 V 1-ph, STO, RS-485 Modbus, 3 m motor + encoder cables",
   "maker": "AutomationDirect",
-  "model": "SureServo2 SV2L-207B + SV2A-2075 (confirm)",
+  "model": "SureServo2 SV2L-207B motor + SV2A-2075 drive + SVC2 cables (confirm shaft and flange before machining the bridge)",
   "specs": {
-   "for": "P1-401 Servo auger filler (built)"
+   "for": "P1-401 Servo auger filler (built) rev B"
   },
   "source": "https://www.automationdirect.com/",
   "supplier": "AutomationDirect",
@@ -2501,14 +2499,14 @@
  {
   "tag": "P1-414",
   "area": "Pack bench",
-  "name": "Hopper agitator gearmotor 1/4 HP about 60 rpm",
-  "maker": "Bison Gear",
-  "model": "011-xxx parallel-shaft 1/4 HP (confirm)",
+  "name": "Agitator gearmotor 1/4 HP 115 V 1-ph, about 60 rpm, face-mount, output shaft \u00d85/8 in keyed, 4 x 1/4-20 on \u00d83.75 in (confirm)",
+  "maker": "Bison Gear & Engineering",
+  "model": "011-series parallel shaft 1/4 HP 60 rpm (confirm flange; head plate slots are 9 x 19 on 90 sq)",
   "specs": {
-   "for": "P1-401 Servo auger filler (built)"
+   "for": "P1-401 Servo auger filler (built) rev B"
   },
   "source": "https://www.bisongear.com/",
-  "supplier": "Bison distributor",
+  "supplier": "Bison Gear & Engineering",
   "qty": 1,
   "qty_basis": "1 for 1 x P1-401",
   "price": {
@@ -2539,14 +2537,14 @@
  {
   "tag": "P1-415",
   "area": "Pack bench",
-  "name": "Auger tooling sets: auger, tube and funnel for the 53 mm shaker and 89 mm jar",
-  "maker": "All-Fill",
-  "model": "auger tooling to size (quote with our blend samples)",
+  "name": "Auger tooling, 2 sets to drawing P1-401-600: S (shaker) 27 OD auger + 1.25 in tube, J (jar/pouch/tub) 46 OD auger + 2 in tube; 316, M16 x 1.5 LH top thread",
+  "maker": "All-Fill Inc.",
+  "model": "custom auger + funnel tube to P1-401-600 (quote with blend samples)",
   "specs": {
-   "for": "P1-401 Servo auger filler (built)"
+   "for": "P1-401 Servo auger filler (built) rev B"
   },
   "source": "https://www.all-fill.com/",
-  "supplier": "All-Fill (Exton PA)",
+  "supplier": "All-Fill Inc.",
   "qty": 2,
   "qty_basis": "2 for 1 x P1-401",
   "price": {
@@ -2577,11 +2575,11 @@
  {
   "tag": "P1-416",
   "area": "Pack bench",
-  "name": "Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply",
+  "name": "Filler controls: CLICK PLUS PLC C2-03CPU-2 + 8 in / 8 out DC module + C-more Micro 3 in HMI",
   "maker": "AutomationDirect",
-  "model": "C2-03CPU-2 + EA3-S3ML (confirm)",
+  "model": "C2-03CPU-2 + C0-16CDD2 + EA3-S3ML (confirm I/O module)",
   "specs": {
-   "for": "P1-401 Servo auger filler (built)"
+   "for": "P1-401 Servo auger filler (built) rev B"
   },
   "source": "https://www.automationdirect.com/",
   "supplier": "AutomationDirect",
@@ -2615,14 +2613,660 @@
  {
   "tag": "P1-417",
   "area": "Pack bench",
-  "name": "Foot switch, guarded, IP67",
+  "name": "Foot switch, guarded, 1 NO + 1 NC, IP68, 3 m cord",
   "maker": "Linemaster",
-  "model": "632-S class",
+  "model": "632-S class (confirm)",
   "specs": {
-   "for": "P1-401 Servo auger filler (built)"
+   "for": "P1-401 Servo auger filler (built) rev B"
   },
   "source": "https://www.linemaster.com/",
-  "supplier": "Grainger",
+  "supplier": "Linemaster",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 90,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 90
+ },
+ {
+  "tag": "P1-430",
+  "area": "Pack bench",
+  "name": "Ball bearings: 2 x 6205-2RS (spindle), 2 x 6008-2RS (agitator hub), food-grade grease",
+  "maker": "SKF",
+  "model": "6205-2RSH/C3GJN + 6008-2RS1 (H1 grease)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.skf.com/",
+  "supplier": "SKF",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 85,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 85
+ },
+ {
+  "tag": "P1-431",
+  "area": "Pack bench",
+  "name": "Timing drive HTD 5M 15 wide: pulley 20T bore \u00d819 key 6 (servo), pulley 40T bore \u00d820 key 6 (spindle), belt 450-5M-15",
+  "maker": "Gates / B&B Manufacturing",
+  "model": "20-5M-15 + 40-5M-15 (finished bore) + 450-5M-15 belt",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.bbman.com/",
+  "supplier": "Gates",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 95,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 95
+ },
+ {
+  "tag": "P1-432",
+  "area": "Pack bench",
+  "name": "Roller chain drive #40 stainless: sprocket 15T (bore 5/8 in key), sprocket 30T plate (bored \u00d881 H7, 4 x \u00d86.5 on \u00d8100), chain #40 SS 52 links + connecting link",
+  "maker": "Tsubaki / Martin Sprocket",
+  "model": "40SS 15T B-hub + 40SS 30T A-plate (bore to drawing) + RS40-SS x 52L",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.martinsprocket.com/",
+  "supplier": "Tsubaki",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 140,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 140
+ },
+ {
+  "tag": "P1-433",
+  "area": "Pack bench",
+  "name": "Lip seals 25 x 40 x 7, FKM or PTFE, FDA",
+  "maker": "SKF / Trelleborg",
+  "model": "25x40x7 HMSA10 V (FDA) or PTFE lip",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.skf.com/",
+  "supplier": "SKF",
+  "qty": 2,
+  "qty_basis": "2 for 1 x P1-401",
+  "price": {
+   "usd": 18,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 36
+ },
+ {
+  "tag": "P1-434",
+  "area": "Pack bench",
+  "name": "Index plunger M16 x 1.5, pin \u00d810, pull knob with rest position, stainless",
+  "maker": "Elesa-Ganter",
+  "model": "GN 617-10-AK-NI (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.elesa-ganter.com/",
+  "supplier": "Elesa-Ganter",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 38,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 38
+ },
+ {
+  "tag": "P1-435",
+  "area": "Pack bench",
+  "name": "Container sensor: diffuse photoelectric 18 mm, 24 V DC PNP, IP69K, 2 m M12 cable",
+  "maker": "Banner Engineering",
+  "model": "QS18VP6D + MQDEC2-506 (confirm range \u2248 100 mm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.bannerengineering.com/",
+  "supplier": "Banner Engineering",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 95,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 95
+ },
+ {
+  "tag": "P1-436",
+  "area": "Pack bench",
+  "name": "Safety relay 24 V DC, dual channel, 3 NO safety + 1 NC aux, monitored manual reset",
+  "maker": "Pilz",
+  "model": "PNOZ s4 24VDC 3 n/o 1 n/c (750104)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.pilz.com/",
+  "supplier": "Pilz",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 230,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 230
+ },
+ {
+  "tag": "P1-437",
+  "area": "Pack bench",
+  "name": "22 mm operators: E-stop 40 mm mushroom 2 NC, blue reset 1 NO, green and red LED pilot lights 24 V",
+  "maker": "AutomationDirect",
+  "model": "GCX1131-24 (E-stop) + GCX1102 + GCX0102 x2 (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 85,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 85
+ },
+ {
+  "tag": "P1-438",
+  "area": "Pack bench",
+  "name": "Coded magnetic safety switch 2 NC, M12 connector, IP69K, for the scoop flap",
+  "maker": "Schmersal",
+  "model": "BNS 260-02z-ST + BPS 260-1 actuator (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.schmersal.com/",
+  "supplier": "Schmersal",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 120,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 120
+ },
+ {
+  "tag": "P1-439",
+  "area": "Pack bench",
+  "name": "Disconnect switch 25 A 2-pole, lockable OFF, side-mount handle",
+  "maker": "ABB",
+  "model": "OT25F3 + OHB45J6 handle + OXP6X shaft (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://new.abb.com/low-voltage",
+  "supplier": "ABB",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 75,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 75
+ },
+ {
+  "tag": "P1-440",
+  "area": "Pack bench",
+  "name": "Control transformer 750 VA 208 V / 120 V",
+  "maker": "Hammond",
+  "model": "PH750MQMJ (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.hammondpowersolutions.com/",
+  "supplier": "Hammond",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 160,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 160
+ },
+ {
+  "tag": "P1-441",
+  "area": "Pack bench",
+  "name": "Breakers and motor protection: F1 S202-C10 (servo drive), F2 S202-D8 (T1 primary), F3 S201-C8 (120 V), Q2 MS116-4.0 + HKF1-11 (agitator), KM1 AF09-30-10-13 24 V DC coil",
+  "maker": "ABB",
+  "model": "S202-C10, S202-D8, S201-C8, MS116-4.0, HKF1-11, AF09-30-10-13",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://new.abb.com/low-voltage",
+  "supplier": "ABB",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 260,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 260
+ },
+ {
+  "tag": "P1-442",
+  "area": "Pack bench",
+  "name": "Power supply 24 V DC 2.5 A, DIN rail",
+  "maker": "AutomationDirect",
+  "model": "PSB24-060S (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.automationdirect.com/",
+  "supplier": "AutomationDirect",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 45,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 45
+ },
+ {
+  "tag": "P1-443",
+  "area": "Pack bench",
+  "name": "Levelling feet M12, \u00d860 pad, stainless, 100 mm thread",
+  "maker": "Elesa-Ganter",
+  "model": "LMT-60-M12x100 inox (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.elesa-ganter.com/",
+  "supplier": "Elesa-Ganter",
+  "qty": 4,
+  "qty_basis": "4 for 1 x P1-401",
+  "price": {
+   "usd": 22,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 88
+ },
+ {
+  "tag": "P1-444",
+  "area": "Pack bench",
+  "name": "Cabinet hardware: 2 lift-off hinges SS, 1 quarter-turn latch SS with handle, door gasket FDA silicone 2 m",
+  "maker": "Southco",
+  "model": "C6-1-1 hinges + E3-5 latch + FDA gasket (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.southco.com/",
+  "supplier": "Southco",
+  "qty": 1,
+  "qty_basis": "1 for 1 x P1-401",
+  "price": {
+   "usd": 70,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 70
+ },
+ {
+  "tag": "P1-445",
+  "area": "Pack bench",
+  "name": "TC clamps 2.5 in heavy-duty wing nut 304 + EPDM FDA gaskets (tooling and agitator)",
+  "maker": "generic sanitary",
+  "model": "13MHHM-2.5 + 40MP-U250 (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "generic sanitary",
+  "qty": 2,
+  "qty_basis": "2 for 1 x P1-401",
+  "price": {
+   "usd": 18,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 36
+ },
+ {
+  "tag": "P1-446",
+  "area": "Pack bench",
+  "name": "Cable glands M25 + 2 x M20 nylon IP68, 2 m DIN rail 35, wire duct, terminals",
+  "maker": "Phoenix Contact",
+  "model": "UT 4 terminals + glands (confirm)",
+  "specs": {
+   "for": "P1-401 Servo auger filler (built) rev B"
+  },
+  "source": "https://www.phoenixcontact.com/",
+  "supplier": "Phoenix Contact",
   "qty": 1,
   "qty_basis": "1 for 1 x P1-401",
   "price": {

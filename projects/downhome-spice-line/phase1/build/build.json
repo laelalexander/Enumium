@@ -2,16 +2,16 @@
  "title": "Down Home Creole spice plant: Phase 1 prototype",
  "summary": "A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a 6 cu ft ribbon blender we build, sifted on the drum, held for QC, then packed on a bench of machines we build: servo auger filler, spindle capper, wrap labeler and a detector conveyor. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, tables and most machines are fabricated in house to save money; scales, motors, drives, valves and a used metal detector head are bought.",
  "totals": {
-  "parts_cost": 178085.0,
+  "parts_cost": 181754.0,
   "currency": "USD",
-  "bought": 123164.0,
-  "fabricated": 54921.0,
-  "fabrication_hours": 354.0,
+  "bought": 124912.0,
+  "fabricated": 56842.0,
+  "fabrication_hours": 378.0,
   "print_hours": null,
   "filament_g": {
    "PETG": 857
   },
-  "build_hours": 474.0,
+  "build_hours": 498.0,
   "note": "build_hours = fabrication + about 120 h install and commissioning; excludes building fit-out and electrical service"
  },
  "tools": [
@@ -627,9 +627,9 @@
   },
   {
    "line": "P1-413",
-   "desc": "AC servo 750 W with drive and cable (auger, pulse/dir from the PLC)",
+   "desc": "AC servo 750 W, 80 mm flange (\u00d870 pilot, 4 x M6 on \u00d890), \u00d819 keyed shaft, 2.39 N\u00b7m rated / 7.16 peak, 3,000 rpm, with drive 200-230 V 1-ph, STO, RS-485 Modbus, 3 m motor + encoder cables",
    "mfr": "AutomationDirect",
-   "mpn": "SureServo2 SV2L-207B + SV2A-2075 (confirm)",
+   "mpn": "SureServo2 SV2L-207B motor + SV2A-2075 drive + SVC2 cables (confirm shaft and flange before machining the bridge)",
    "qty": 1,
    "supplier": "AutomationDirect",
    "url": "https://www.automationdirect.com/",
@@ -640,11 +640,11 @@
   },
   {
    "line": "P1-414",
-   "desc": "Hopper agitator gearmotor 1/4 HP about 60 rpm",
-   "mfr": "Bison Gear",
-   "mpn": "011-xxx parallel-shaft 1/4 HP (confirm)",
+   "desc": "Agitator gearmotor 1/4 HP 115 V 1-ph, about 60 rpm, face-mount, output shaft \u00d85/8 in keyed, 4 x 1/4-20 on \u00d83.75 in (confirm)",
+   "mfr": "Bison Gear & Engineering",
+   "mpn": "011-series parallel shaft 1/4 HP 60 rpm (confirm flange; head plate slots are 9 x 19 on 90 sq)",
    "qty": 1,
-   "supplier": "Bison distributor",
+   "supplier": "Bison Gear & Engineering",
    "url": "https://www.bisongear.com/",
    "unit_price": 420.0,
    "price_src": "estimate",
@@ -653,11 +653,11 @@
   },
   {
    "line": "P1-415",
-   "desc": "Auger tooling sets: auger, tube and funnel for the 53 mm shaker and 89 mm jar",
-   "mfr": "All-Fill",
-   "mpn": "auger tooling to size (quote with our blend samples)",
+   "desc": "Auger tooling, 2 sets to drawing P1-401-600: S (shaker) 27 OD auger + 1.25 in tube, J (jar/pouch/tub) 46 OD auger + 2 in tube; 316, M16 x 1.5 LH top thread",
+   "mfr": "All-Fill Inc.",
+   "mpn": "custom auger + funnel tube to P1-401-600 (quote with blend samples)",
    "qty": 2,
-   "supplier": "All-Fill (Exton PA)",
+   "supplier": "All-Fill Inc.",
    "url": "https://www.all-fill.com/",
    "unit_price": 650.0,
    "price_src": "estimate",
@@ -666,9 +666,9 @@
   },
   {
    "line": "P1-416",
-   "desc": "Filler controller: CLICK PLUS PLC + C-more Micro HMI + 24 V supply",
+   "desc": "Filler controls: CLICK PLUS PLC C2-03CPU-2 + 8 in / 8 out DC module + C-more Micro 3 in HMI",
    "mfr": "AutomationDirect",
-   "mpn": "C2-03CPU-2 + EA3-S3ML (confirm)",
+   "mpn": "C2-03CPU-2 + C0-16CDD2 + EA3-S3ML (confirm I/O module)",
    "qty": 1,
    "supplier": "AutomationDirect",
    "url": "https://www.automationdirect.com/",
@@ -679,12 +679,233 @@
   },
   {
    "line": "P1-417",
-   "desc": "Foot switch, guarded, IP67",
+   "desc": "Foot switch, guarded, 1 NO + 1 NC, IP68, 3 m cord",
    "mfr": "Linemaster",
-   "mpn": "632-S class",
+   "mpn": "632-S class (confirm)",
    "qty": 1,
-   "supplier": "Grainger",
+   "supplier": "Linemaster",
    "url": "https://www.linemaster.com/",
+   "unit_price": 90.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-430",
+   "desc": "Ball bearings: 2 x 6205-2RS (spindle), 2 x 6008-2RS (agitator hub), food-grade grease",
+   "mfr": "SKF",
+   "mpn": "6205-2RSH/C3GJN + 6008-2RS1 (H1 grease)",
+   "qty": 1,
+   "supplier": "SKF",
+   "url": "https://www.skf.com/",
+   "unit_price": 85.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-431",
+   "desc": "Timing drive HTD 5M 15 wide: pulley 20T bore \u00d819 key 6 (servo), pulley 40T bore \u00d820 key 6 (spindle), belt 450-5M-15",
+   "mfr": "Gates / B&B Manufacturing",
+   "mpn": "20-5M-15 + 40-5M-15 (finished bore) + 450-5M-15 belt",
+   "qty": 1,
+   "supplier": "Gates",
+   "url": "https://www.bbman.com/",
+   "unit_price": 95.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-432",
+   "desc": "Roller chain drive #40 stainless: sprocket 15T (bore 5/8 in key), sprocket 30T plate (bored \u00d881 H7, 4 x \u00d86.5 on \u00d8100), chain #40 SS 52 links + connecting link",
+   "mfr": "Tsubaki / Martin Sprocket",
+   "mpn": "40SS 15T B-hub + 40SS 30T A-plate (bore to drawing) + RS40-SS x 52L",
+   "qty": 1,
+   "supplier": "Tsubaki",
+   "url": "https://www.martinsprocket.com/",
+   "unit_price": 140.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-433",
+   "desc": "Lip seals 25 x 40 x 7, FKM or PTFE, FDA",
+   "mfr": "SKF / Trelleborg",
+   "mpn": "25x40x7 HMSA10 V (FDA) or PTFE lip",
+   "qty": 2,
+   "supplier": "SKF",
+   "url": "https://www.skf.com/",
+   "unit_price": 18.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-434",
+   "desc": "Index plunger M16 x 1.5, pin \u00d810, pull knob with rest position, stainless",
+   "mfr": "Elesa-Ganter",
+   "mpn": "GN 617-10-AK-NI (confirm)",
+   "qty": 1,
+   "supplier": "Elesa-Ganter",
+   "url": "https://www.elesa-ganter.com/",
+   "unit_price": 38.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-435",
+   "desc": "Container sensor: diffuse photoelectric 18 mm, 24 V DC PNP, IP69K, 2 m M12 cable",
+   "mfr": "Banner Engineering",
+   "mpn": "QS18VP6D + MQDEC2-506 (confirm range \u2248 100 mm)",
+   "qty": 1,
+   "supplier": "Banner Engineering",
+   "url": "https://www.bannerengineering.com/",
+   "unit_price": 95.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-436",
+   "desc": "Safety relay 24 V DC, dual channel, 3 NO safety + 1 NC aux, monitored manual reset",
+   "mfr": "Pilz",
+   "mpn": "PNOZ s4 24VDC 3 n/o 1 n/c (750104)",
+   "qty": 1,
+   "supplier": "Pilz",
+   "url": "https://www.pilz.com/",
+   "unit_price": 230.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-437",
+   "desc": "22 mm operators: E-stop 40 mm mushroom 2 NC, blue reset 1 NO, green and red LED pilot lights 24 V",
+   "mfr": "AutomationDirect",
+   "mpn": "GCX1131-24 (E-stop) + GCX1102 + GCX0102 x2 (confirm)",
+   "qty": 1,
+   "supplier": "AutomationDirect",
+   "url": "https://www.automationdirect.com/",
+   "unit_price": 85.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-438",
+   "desc": "Coded magnetic safety switch 2 NC, M12 connector, IP69K, for the scoop flap",
+   "mfr": "Schmersal",
+   "mpn": "BNS 260-02z-ST + BPS 260-1 actuator (confirm)",
+   "qty": 1,
+   "supplier": "Schmersal",
+   "url": "https://www.schmersal.com/",
+   "unit_price": 120.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-439",
+   "desc": "Disconnect switch 25 A 2-pole, lockable OFF, side-mount handle",
+   "mfr": "ABB",
+   "mpn": "OT25F3 + OHB45J6 handle + OXP6X shaft (confirm)",
+   "qty": 1,
+   "supplier": "ABB",
+   "url": "https://new.abb.com/low-voltage",
+   "unit_price": 75.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-440",
+   "desc": "Control transformer 750 VA 208 V / 120 V",
+   "mfr": "Hammond",
+   "mpn": "PH750MQMJ (confirm)",
+   "qty": 1,
+   "supplier": "Hammond",
+   "url": "https://www.hammondpowersolutions.com/",
+   "unit_price": 160.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-441",
+   "desc": "Breakers and motor protection: F1 S202-C10 (servo drive), F2 S202-D8 (T1 primary), F3 S201-C8 (120 V), Q2 MS116-4.0 + HKF1-11 (agitator), KM1 AF09-30-10-13 24 V DC coil",
+   "mfr": "ABB",
+   "mpn": "S202-C10, S202-D8, S201-C8, MS116-4.0, HKF1-11, AF09-30-10-13",
+   "qty": 1,
+   "supplier": "ABB",
+   "url": "https://new.abb.com/low-voltage",
+   "unit_price": 260.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-442",
+   "desc": "Power supply 24 V DC 2.5 A, DIN rail",
+   "mfr": "AutomationDirect",
+   "mpn": "PSB24-060S (confirm)",
+   "qty": 1,
+   "supplier": "AutomationDirect",
+   "url": "https://www.automationdirect.com/",
+   "unit_price": 45.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-443",
+   "desc": "Levelling feet M12, \u00d860 pad, stainless, 100 mm thread",
+   "mfr": "Elesa-Ganter",
+   "mpn": "LMT-60-M12x100 inox (confirm)",
+   "qty": 4,
+   "supplier": "Elesa-Ganter",
+   "url": "https://www.elesa-ganter.com/",
+   "unit_price": 22.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-444",
+   "desc": "Cabinet hardware: 2 lift-off hinges SS, 1 quarter-turn latch SS with handle, door gasket FDA silicone 2 m",
+   "mfr": "Southco",
+   "mpn": "C6-1-1 hinges + E3-5 latch + FDA gasket (confirm)",
+   "qty": 1,
+   "supplier": "Southco",
+   "url": "https://www.southco.com/",
+   "unit_price": 70.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-445",
+   "desc": "TC clamps 2.5 in heavy-duty wing nut 304 + EPDM FDA gaskets (tooling and agitator)",
+   "mfr": "generic sanitary",
+   "mpn": "13MHHM-2.5 + 40MP-U250 (confirm)",
+   "qty": 2,
+   "supplier": "generic sanitary",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 18.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-446",
+   "desc": "Cable glands M25 + 2 x M20 nylon IP68, 2 m DIN rail 35, wire duct, terminals",
+   "mfr": "Phoenix Contact",
+   "mpn": "UT 4 terminals + glands (confirm)",
+   "qty": 1,
+   "supplier": "Phoenix Contact",
+   "url": "https://www.phoenixcontact.com/",
    "unit_price": 90.0,
    "price_src": "estimate",
    "alt": "",
@@ -1248,18 +1469,12 @@
   },
   {
    "part": "P1-401",
-   "title": "Servo auger filler, built in house: cabinet, column, 42 L 316L hopper; bought servo and auger tooling",
+   "title": "Servo auger filler rev B, built in house (full set P1-401-000..900, 18 sheets): cabinet, column, 42 L 316L hopper, belt-driven spindle cartridge, indexed stage",
    "process": "laser cut, roll, TIG, machine, polish, assemble",
    "files": [
     "phase1/cad/step/P1-401-01.step",
     "phase1/drawings/parts/P1-401-01.svg",
     "phase1/drawings/png/P1-401-01.png",
-    "phase1/cad/step/P1-401-02.step",
-    "phase1/drawings/parts/P1-401-02.svg",
-    "phase1/drawings/png/P1-401-02.png",
-    "phase1/cad/step/P1-401-03.step",
-    "phase1/drawings/parts/P1-401-03.svg",
-    "phase1/drawings/png/P1-401-03.png",
     "phase1/drawings/machines/P1-401-GA.svg",
     "phase1/drawings/png/P1-401-GA.png",
     "phase1/cad/step/P1-401-ASM.step"
@@ -1267,8 +1482,8 @@
    "material": "SS 304/316L sheet, tube and bar per part sheets",
    "qty": 1,
    "vendor": "in-house / local stainless fabricator",
-   "labor_h": 36.0,
-   "material_usd": 624,
+   "labor_h": 60.0,
+   "material_usd": 985,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
@@ -1690,6 +1905,74 @@
      "qty": 1
     },
     {
+     "line": "P1-430",
+     "qty": 1
+    },
+    {
+     "line": "P1-431",
+     "qty": 1
+    },
+    {
+     "line": "P1-432",
+     "qty": 1
+    },
+    {
+     "line": "P1-433",
+     "qty": 2
+    },
+    {
+     "line": "P1-434",
+     "qty": 1
+    },
+    {
+     "line": "P1-435",
+     "qty": 1
+    },
+    {
+     "line": "P1-436",
+     "qty": 1
+    },
+    {
+     "line": "P1-437",
+     "qty": 1
+    },
+    {
+     "line": "P1-438",
+     "qty": 1
+    },
+    {
+     "line": "P1-439",
+     "qty": 1
+    },
+    {
+     "line": "P1-440",
+     "qty": 1
+    },
+    {
+     "line": "P1-441",
+     "qty": 1
+    },
+    {
+     "line": "P1-442",
+     "qty": 1
+    },
+    {
+     "line": "P1-443",
+     "qty": 4
+    },
+    {
+     "line": "P1-444",
+     "qty": 1
+    },
+    {
+     "line": "P1-445",
+     "qty": 2
+    },
+    {
+     "line": "P1-446",
+     "qty": 1
+    },
+    {
      "line": "P1-412",
      "qty": 1
     },
@@ -1747,9 +2030,9 @@
     "hex keys",
     "dial indicator"
    ],
-   "text": "In the shop, per the GA sheets. Filler P1-401-GA: cabinet, column and hopper ring; servo and agitator motor on the head plate; auger tooling on the 2.5 in clamp; CLICK PLC and HMI in the cabinet. Capper P1-412-GA: rail and carriage on the column, gearmotor, slip clutch and chuck, gas spring. Labeler P1-404-GA: rollers in their blocks, stepper and belt, spindles, peel plate, gap sensor. Detector conveyor P1-406-GA: frame, pulleys and belt, gearmotor; mount the used detector head over the belt with nothing metal within 1.5 x the aperture height, and the reject pusher after it.",
-   "torque": "M8 to frames 18 N\u00b7m; auger tube clamp hand tight",
-   "check": "auger runs true within 0.5 mm TIR; capper clutch slips at the set torque on a torque tester; detector conveyor belt tracks centred"
+   "text": "In the shop, per the GA sheets. Filler P1-401 rev B per its own set P1-401-000..900 (assembly sheet P1-401-003, 14 steps): cabinet and back panel, column, stage, spindle cartridge and hub, drives and guards, hopper, agitator, tooling, HMI. Capper P1-412-GA: rail and carriage on the column, gearmotor, slip clutch and chuck, gas spring. Labeler P1-404-GA: rollers in their blocks, stepper and belt, spindles, peel plate, gap sensor. Detector conveyor P1-406-GA: frame, pulleys and belt, gearmotor; mount the used detector head over the belt with nothing metal within 1.5 x the aperture height, and the reject pusher after it.",
+   "torque": "filler column M12 70 N\u00b7m, head plate M10 45 N\u00b7m, servo M6 8 N\u00b7m (full list P1-401-800); M8 to frames 18 N\u00b7m; auger tube clamp hand tight",
+   "check": "filler ITP P1-401-900 T9-T18 (auger 0.25 TIR in the tube);  capper clutch slips at the set torque on a torque tester; detector conveyor belt tracks centred"
   },
   {
    "step": 12,
@@ -1793,7 +2076,7 @@
     "hex keys",
     "level"
    ],
-   "text": "Set the filler, then line up the four stainless tables: capper and sealer, printer and labeler, the detector conveyor, checkweigh and case pack, with the turntable at the end. Fit the printed container nests on the filler.",
+   "text": "Set the filler, then line up the four stainless tables: capper and sealer, printer and labeler, the detector conveyor, checkweigh and case pack, with the turntable at the end. Set the filler stage to the container (index plunger) and fit the printed nests on the capper.",
    "check": "metal detector rejects the Fe 1.5, non-Fe 2.0 and SS 2.5 mm test pieces in the leading, middle and trailing position"
   },
   {
