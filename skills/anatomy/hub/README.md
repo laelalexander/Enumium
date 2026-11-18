@@ -36,3 +36,9 @@ and prints the hub address and the access key once.
 
 In the Anatomy app, click **Hub**, enter the hub address (`https://<host>/anatomy-hub`) and the access key,
 and click Connect. Existing projects upload in the background.
+
+## pyrails.com
+
+pyrails.com is the Anatomy landing page (`site/index.html`). Its Projects section signs in with the same
+access key and lets you browse and download every project's files from any browser. The earlier Nero
+Downloads page stays available at `/downloads/`, and its old file links keep working.

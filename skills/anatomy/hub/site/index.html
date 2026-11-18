@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy · Pyrails</title>
+<meta name="description" content="Anatomy takes a product apart, writes the blueprint, and builds it back up: CAD, drawings, PCBA, G-code, purchase lists and assembly guides.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Ccircle cx='16' cy='16' r='13' stroke='%237aa2ff' stroke-width='2.4'/%3E%3Cpath d='M8 16h16M16 8v16M10.5 10.5l11 11' stroke='%23a98bff' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #0e1013; --panel: #15181d; --panel2: #1b1f26; --line: #262b34; --text: #e7e9ee; --muted: #8b93a1;
+  --faint: #5d6574; --accent: #7aa2ff; --accent2: #a98bff; --ok: #4fd18b; --warn: #f2c94c; --err: #ff6b6b;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif; }
+a { color: var(--accent); }
+button, input { font: inherit; color: inherit; }
+.wrap { width: min(1080px, 100%); margin: 0 auto; padding: 0 20px; }
+.hidden { display: none !important; }
+
+nav { display: flex; align-items: center; gap: 12px; padding: 18px 0; }
+nav .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; color: var(--text); }
+nav .logo svg { width: 26px; height: 26px; }
+nav .sp { flex: 1; }
+nav a.lnk { color: var(--muted); text-decoration: none; font-size: 14px; }
+nav a.lnk:hover { color: var(--text); }
+
+.hero { padding: 10vh 0 8vh; text-align: center; }
+.hero svg { width: 64px; height: 64px; }
+.hero h1 { font-size: clamp(36px, 7vw, 64px); letter-spacing: -0.03em; line-height: 1.05; margin: 18px 0 10px; }
+.hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p { color: var(--muted); font-size: clamp(16px, 2.2vw, 19px); max-width: 640px; margin: 0 auto; }
+.hero .by { color: var(--faint); font-size: 13px; margin-top: 14px; }
+.cta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 10px 18px; text-decoration: none; color: var(--text); cursor: pointer; }
+.btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0b0d12; border: 0; font-weight: 600; }
+
+h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 16px; }
+section { padding: 48px 0; border-top: 1px solid var(--line); }
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.phase { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.phase b { display: block; margin-bottom: 4px; }
+.phase .n { font: 12px var(--mono); color: var(--accent); }
+.phase p { margin: 0; color: var(--muted); font-size: 13px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.feat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.feat b { display: block; margin-bottom: 4px; }
+.feat p { margin: 0; color: var(--muted); font-size: 14px; }
+
+/* projects */
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.key { display: flex; gap: 8px; flex-wrap: wrap; }
+.key input { flex: 1; min-width: 200px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; outline: 0; }
+.msg { color: var(--muted); font-size: 13px; margin-top: 8px; min-height: 1em; }
+.msg.err { color: var(--err); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-top: 12px; }
+.card { text-align: left; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; cursor: pointer; }
+.card:hover { border-color: var(--accent); }
+.card .t { font-weight: 600; }
+.card .m { font-size: 12px; color: var(--muted); margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.pill.running::before { background: var(--accent); } .pill.done::before { background: var(--ok); } .pill.failed::before { background: var(--err); }
+.files { margin-top: 12px; }
+.files .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.files .bar b { flex: 1; min-width: 200px; }
+.files input { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; outline: 0; width: min(280px, 100%); }
+.tree { max-height: 60vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+.row { display: flex; gap: 10px; padding: 7px 12px; border-bottom: 1px solid var(--line); font-size: 13px; align-items: center; }
+.row:last-child { border-bottom: 0; }
+.row .p { flex: 1; font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+.row .s { color: var(--muted); white-space: nowrap; font-size: 12px; }
+.row button { background: none; border: 1px solid var(--line); border-radius: 7px; padding: 3px 9px; cursor: pointer; font-size: 12px; }
+footer { color: var(--faint); font-size: 13px; padding: 32px 0 48px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7aa2ff"/><stop offset="1" stop-color="#a98bff"/></linearGradient></defs><circle cx="16" cy="16" r="13" stroke="url(#g)" stroke-width="2.2"/><path d="M8 16h16M16 8v16M10.5 10.5l11 11" stroke="url(#g)" stroke-width="2" stroke-linecap="round"/></svg>Anatomy</a>
+    <span class="sp"></span>
+    <a class="lnk" href="#how">How it works</a>
+    <a class="lnk" href="#projects">Projects</a>
+    <a class="lnk" href="#downloads">Downloads</a>
+  </nav>
+
+  <div class="hero">
+    <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="url(#g)" stroke-width="2.2"/><path d="M8 16h16M16 8v16M10.5 10.5l11 11" stroke="url(#g)" stroke-width="2" stroke-linecap="round"/></svg>
+    <h1>Take it apart.<br><span>Build it back better.</span></h1>
+    <p>Describe a product. Anatomy dissects it, writes the blueprint, and rebuilds it as a complete, buildable package: CAD, shop drawings, circuit boards, G-code, purchase lists and step-by-step assembly.</p>
+    <div class="by">By Lael Alexander · Pyrails</div>
+    <div class="cta"><a class="btn primary" href="#projects">Open projects</a><a class="btn" href="#how">How it works</a></div>
+  </div>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <div class="phases">
+      <div class="phase"><span class="n">01</span><b>Scope</b><p>The brief, requirements and what "done" means.</p></div>
+      <div class="phase"><span class="n">02</span><b>Gather evidence</b><p>Datasheets, teardown photos, real market parts.</p></div>
+      <div class="phase"><span class="n">03</span><b>Analyze</b><p>How it works, what it costs, where it fails.</p></div>
+      <div class="phase"><span class="n">04</span><b>Blueprint</b><p>Detailed drawings in mm and inches, schematics, wire lists.</p></div>
+      <div class="phase"><span class="n">05</span><b>Prototype</b><p>3D models, print plates with G-code, PCBA, firmware.</p></div>
+      <div class="phase"><span class="n">06</span><b>Verify</b><p>Simulation, digital twin and tests with margins.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What every project ends with</h2>
+    <div class="grid">
+      <div class="feat"><b>Shop-ready drawings</b><p>Every part, weldment and assembly, with full hole callouts and DXF cut files.</p></div>
+      <div class="feat"><b>Turnkey PCBA</b><p>Gerbers, drill, BOM with MPNs and centroid, ready for the board house.</p></div>
+      <div class="feat"><b>Print and buy lists</b><p>Sliced plates for the printer, and every purchase line traced to the design with live stock.</p></div>
+      <div class="feat"><b>Build wizard</b><p>Illustrated assembly steps and a 3D twin, so anyone can build it.</p></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="panel">
+      <div id="signin">
+        <div class="key"><input id="key" type="password" placeholder="Access key" autocomplete="current-password"><button class="btn primary" id="go">Open</button></div>
+        <div class="msg" id="msg">Every Anatomy project from every PC lives here. Enter your access key to browse and download them.</div>
+      </div>
+      <div id="list" class="hidden">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="msg" id="sum" style="flex:1;margin:0"></span><button class="btn" id="out">Sign out</button></div>
+        <div class="cards" id="cards"></div>
+        <div class="files hidden" id="files">
+          <div class="bar"><b id="ptitle"></b><input id="filter" placeholder="Filter files"><button class="btn" id="back">All projects</button></div>
+          <div class="tree" id="tree"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="downloads">
+    <h2>Downloads</h2>
+    <div class="grid">
+      <div class="feat"><b>Nero Print Studio</b><p>The Windows installer for Nero Print Studio. <a href="/downloads/">Go to downloads</a></p></div>
+    </div>
+  </section>
+
+  <footer>Anatomy runs on your own PCs. This site keeps the shared copy of every project.</footer>
+</div>
+
+<script>
+const API = '/anatomy-hub/api';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const size = n => n > 1e9 ? (n / 1e9).toFixed(1) + ' GB' : n > 1e6 ? (n / 1e6).toFixed(1) + ' MB' : n > 1e3 ? Math.round(n / 1e3) + ' KB' : n + ' B';
+let key = ''; try { key = sessionStorage.getItem('anatomyKey') || localStorage.getItem('anatomyKey') || ''; } catch {}
+const call = (p, o = {}) => fetch(API + p, { ...o, headers: { Authorization: 'Bearer ' + key, 'X-Anatomy-PC': 'web' } });
+
+async function load() {
+  const r = await call('/projects').catch(() => null);
+  if (!r || !r.ok) {
+    $('#signin').classList.remove('hidden'); $('#list').classList.add('hidden');
+    if (key) { $('#msg').textContent = r && r.status === 401 ? 'That key did not work.' : 'The hub is not answering right now.'; $('#msg').classList.add('err'); }
+    return;
+  }
+  try { localStorage.setItem('anatomyKey', key); } catch {}
+  const ps = await r.json();
+  $('#signin').classList.add('hidden'); $('#list').classList.remove('hidden');
+  const total = ps.reduce((a, p) => a + (p.size || 0), 0);
+  $('#sum').textContent = `${ps.length} project${ps.length === 1 ? '' : 's'}, ${size(total)}`;
+  $('#cards').innerHTML = ps.map(p => `<button class="card" data-id="${esc(p.id)}" data-t="${esc(p.title)}"><div class="t">${esc(p.title)}</div>
+    <div class="m"><span class="pill ${esc(p.lock ? 'running' : p.status)}">${esc(p.lock ? 'running on ' + p.lock.pc : p.status)}</span>
+    <span>${esc(new Date(p.updated || p.created).toLocaleDateString())}</span><span>${size(p.size || 0)}</span>${p.changedBy ? `<span>from ${esc(p.changedBy)}</span>` : ''}</div></button>`).join('')
+    || '<div class="msg">No projects yet. Connect a PC from Anatomy &gt; Hub and they will upload.</div>';
+  [...document.querySelectorAll('.card')].forEach(c => c.onclick = () => openProject(c.dataset.id, c.dataset.t));
+}
+let files = [], curId = '';
+async function openProject(id, title) {
+  curId = id; $('#ptitle').textContent = title; $('#cards').classList.add('hidden'); $('#files').classList.remove('hidden');
+  $('#tree').innerHTML = '<div class="row">Loading…</div>';
+  const m = await (await call(`/projects/${encodeURIComponent(id)}/manifest`)).json();
+  files = Object.entries(m.files || {}).filter(([p]) => !p.startsWith('.anatomy/')).map(([p, v]) => ({ p, ...v })).sort((a, b) => a.p.localeCompare(b.p));
+  $('#filter').value = ''; renderFiles();
+}
+function renderFiles() {
+  const q = $('#filter').value.toLowerCase();
+  const list = files.filter(f => f.p.toLowerCase().includes(q)).slice(0, 1500);
+  $('#tree').innerHTML = list.map(f => `<div class="row"><span class="p">${esc(f.p)}</span><span class="s">${size(f.size)}</span>
+    ${/\.(png|jpe?g|svg|pdf|txt|md|json|csv|html?)$/i.test(f.p) ? `<button data-v="${esc(f.p)}">View</button>` : ''}<button data-d="${esc(f.p)}">Download</button></div>`).join('') || '<div class="row">No files match.</div>';
+  $('#tree').querySelectorAll('button').forEach(b => b.onclick = () => get(b.dataset.v || b.dataset.d, !!b.dataset.v));
+}
+const TYPES = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', svg: 'image/svg+xml', pdf: 'application/pdf', txt: 'text/plain', md: 'text/plain', json: 'text/plain', csv: 'text/plain', html: 'text/plain', htm: 'text/plain' };
+async function get(p, view) {
+  const r = await call(`/projects/${encodeURIComponent(curId)}/file?path=${encodeURIComponent(p)}`);
+  if (!r.ok) return alert('Could not get that file.');
+  const blob = new Blob([await r.arrayBuffer()], { type: view ? TYPES[p.split('.').pop().toLowerCase()] || 'application/octet-stream' : 'application/octet-stream' });
+  const u = URL.createObjectURL(blob);
+  if (view) window.open(u, '_blank', 'noopener');
+  else { const a = document.createElement('a'); a.href = u; a.download = p.split('/').pop(); a.click(); }
+  setTimeout(() => URL.revokeObjectURL(u), 60000);
+}
+$('#go').onclick = () => { key = $('#key').value.trim(); load(); };
+$('#key').onkeydown = e => { if (e.key === 'Enter') $('#go').click(); };
+$('#out').onclick = () => { key = ''; try { localStorage.removeItem('anatomyKey'); } catch {} $('#msg').textContent = 'Signed out.'; $('#msg').classList.remove('err'); load(); };
+$('#back').onclick = () => { $('#files').classList.add('hidden'); $('#cards').classList.remove('hidden'); };
+$('#filter').oninput = renderFiles;
+if (key) load();
+</script>
+</body>
+</html>
