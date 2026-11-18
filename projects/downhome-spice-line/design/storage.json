@@ -1,0 +1,320 @@
+{
+ "raw": {
+  "weeks": 2,
+  "positions": 77,
+  "rows": [
+   {
+    "ingredient": "salt",
+    "lb": 13861,
+    "pallet_lb": 2000,
+    "positions": 7
+   },
+   {
+    "ingredient": "garlic",
+    "lb": 7063,
+    "pallet_lb": 1798,
+    "positions": 4
+   },
+   {
+    "ingredient": "paprika",
+    "lb": 5614,
+    "pallet_lb": 1124,
+    "positions": 5
+   },
+   {
+    "ingredient": "onion",
+    "lb": 4355,
+    "pallet_lb": 1373,
+    "positions": 4
+   },
+   {
+    "ingredient": "black-pepper",
+    "lb": 2861,
+    "pallet_lb": 1249,
+    "positions": 3
+   },
+   {
+    "ingredient": "corn-flour",
+    "lb": 2220,
+    "pallet_lb": 1748,
+    "positions": 2
+   },
+   {
+    "ingredient": "wheat-flour",
+    "lb": 2220,
+    "pallet_lb": 1373,
+    "positions": 2
+   },
+   {
+    "ingredient": "cayenne",
+    "lb": 1613,
+    "pallet_lb": 1124,
+    "positions": 2
+   },
+   {
+    "ingredient": "red-pepper",
+    "lb": 1460,
+    "pallet_lb": 874,
+    "positions": 2
+   },
+   {
+    "ingredient": "black-pepper-coarse",
+    "lb": 1411,
+    "pallet_lb": 1124,
+    "positions": 2
+   },
+   {
+    "ingredient": "oregano",
+    "lb": 1350,
+    "pallet_lb": 499,
+    "positions": 3
+   },
+   {
+    "ingredient": "ww-flour",
+    "lb": 1140,
+    "pallet_lb": 1373,
+    "positions": 1
+   },
+   {
+    "ingredient": "parsley",
+    "lb": 1098,
+    "pallet_lb": 200,
+    "positions": 6
+   },
+   {
+    "ingredient": "spinach-powder",
+    "lb": 1050,
+    "pallet_lb": 1124,
+    "positions": 1
+   },
+   {
+    "ingredient": "lemon-peel",
+    "lb": 1031,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "thyme",
+    "lb": 1002,
+    "pallet_lb": 749,
+    "positions": 2
+   },
+   {
+    "ingredient": "tomato-powder",
+    "lb": 975,
+    "pallet_lb": 1548,
+    "positions": 1
+   },
+   {
+    "ingredient": "bell-pepper",
+    "lb": 864,
+    "pallet_lb": 749,
+    "positions": 2
+   },
+   {
+    "ingredient": "basil",
+    "lb": 695,
+    "pallet_lb": 375,
+    "positions": 2
+   },
+   {
+    "ingredient": "oat-flour",
+    "lb": 660,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "celery-seed",
+    "lb": 638,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "cinnamon",
+    "lb": 608,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "turmeric",
+    "lb": 600,
+    "pallet_lb": 1373,
+    "positions": 1
+   },
+   {
+    "ingredient": "pea-protein",
+    "lb": 600,
+    "pallet_lb": 1049,
+    "positions": 1
+   },
+   {
+    "ingredient": "red-bell-pepper",
+    "lb": 525,
+    "pallet_lb": 949,
+    "positions": 1
+   },
+   {
+    "ingredient": "sugar",
+    "lb": 525,
+    "pallet_lb": 2000,
+    "positions": 1
+   },
+   {
+    "ingredient": "smoked-paprika",
+    "lb": 412,
+    "pallet_lb": 1124,
+    "positions": 1
+   },
+   {
+    "ingredient": "blueberry-powder",
+    "lb": 375,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "rice-flour",
+    "lb": 360,
+    "pallet_lb": 1748,
+    "positions": 1
+   },
+   {
+    "ingredient": "kale-powder",
+    "lb": 338,
+    "pallet_lb": 1049,
+    "positions": 1
+   },
+   {
+    "ingredient": "ginger",
+    "lb": 338,
+    "pallet_lb": 1124,
+    "positions": 1
+   },
+   {
+    "ingredient": "baking-powder",
+    "lb": 255,
+    "pallet_lb": 2000,
+    "positions": 1
+   },
+   {
+    "ingredient": "citric-acid",
+    "lb": 252,
+    "pallet_lb": 2000,
+    "positions": 1
+   },
+   {
+    "ingredient": "natural-flavor",
+    "lb": 230,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "onion-gran",
+    "lb": 225,
+    "pallet_lb": 1698,
+    "positions": 1
+   },
+   {
+    "ingredient": "white-pepper",
+    "lb": 202,
+    "pallet_lb": 1373,
+    "positions": 1
+   },
+   {
+    "ingredient": "chili-powder",
+    "lb": 188,
+    "pallet_lb": 1249,
+    "positions": 1
+   },
+   {
+    "ingredient": "corn-starch",
+    "lb": 180,
+    "pallet_lb": 1498,
+    "positions": 1
+   },
+   {
+    "ingredient": "beet-powder",
+    "lb": 176,
+    "pallet_lb": 1498,
+    "positions": 1
+   },
+   {
+    "ingredient": "lemon-pepper",
+    "lb": 131,
+    "pallet_lb": 1498,
+    "positions": 1
+   },
+   {
+    "ingredient": "rosemary",
+    "lb": 101,
+    "pallet_lb": 749,
+    "positions": 1
+   },
+   {
+    "ingredient": "italian-herbs",
+    "lb": 94,
+    "pallet_lb": 449,
+    "positions": 1
+   },
+   {
+    "ingredient": "flaxseed-meal",
+    "lb": 90,
+    "pallet_lb": 999,
+    "positions": 1
+   },
+   {
+    "ingredient": "baking-soda",
+    "lb": 15,
+    "pallet_lb": 2000,
+    "positions": 1
+   }
+  ]
+ },
+ "packaging": {
+  "weeks": 1,
+  "positions": 47,
+  "rows": [
+   {
+    "item": "shaker-250",
+    "units": 66306,
+    "per_pallet": 2600,
+    "positions": 26
+   },
+   {
+    "item": "jar-12",
+    "units": 7880,
+    "per_pallet": 1100,
+    "positions": 8
+   },
+   {
+    "item": "pouch-12",
+    "units": 3153,
+    "per_pallet": 6000,
+    "positions": 1
+   },
+   {
+    "item": "tub-5lb",
+    "units": 591,
+    "per_pallet": 160,
+    "positions": 4
+   },
+   {
+    "item": "box-16",
+    "units": 4138,
+    "per_pallet": 3000,
+    "positions": 2
+   }
+  ]
+ },
+ "finished": {
+  "days": 3,
+  "cases": 4163,
+  "positions": 47
+ },
+ "positions_per_bay": 8,
+ "bays": {
+  "raw": 10,
+  "packaging": 6,
+  "finished": 6
+ },
+ "total_bays": 22
+}

@@ -1,0 +1,272 @@
+[
+ {
+  "id": "P1-206",
+  "title": "Stainless work table 60 x 30 in",
+  "qty": "5",
+  "material": "SS 304 #4, 14 ga top, 1.5 in sq tube",
+  "features": 0,
+  "contact": true,
+  "size_mm": [
+   1524.0,
+   762.0,
+   914.0
+  ],
+  "mass_kg": 41.65,
+  "step": "cad/step/P1-206.step",
+  "drawing": "drawings/parts/P1-206.svg",
+  "dxf": [
+   "dxf/P1-206_top_mm.dxf",
+   "dxf/P1-206_top_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-207",
+  "title": "Weigh bench backdraft dust hood",
+  "qty": "1",
+  "material": "SS 304, 14 ga",
+  "features": 5,
+  "contact": false,
+  "size_mm": [
+   1400.0,
+   250.0,
+   680.1
+  ],
+  "mass_kg": 21.41,
+  "step": "cad/step/P1-207.step",
+  "drawing": "drawings/parts/P1-207.svg",
+  "dxf": [
+   "dxf/P1-207_front_mm.dxf",
+   "dxf/P1-207_front_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-208",
+  "title": "Premix pail tumbler frame (5 gal pail)",
+  "qty": "1",
+  "material": "SS 304, 3 mm base, 10 mm uprights",
+  "features": 10,
+  "contact": false,
+  "size_mm": [
+   600.0,
+   400.0,
+   243.0
+  ],
+  "mass_kg": 11.73,
+  "step": "cad/step/P1-208.step",
+  "drawing": "drawings/parts/P1-208.svg",
+  "dxf": [
+   "dxf/P1-208_base_mm.dxf",
+   "dxf/P1-208_base_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-210",
+  "title": "Ingredient bin ring frame (12 positions)",
+  "qty": "1",
+  "material": "SS 304 2 in sq tube 11 ga, 10 mm foot plates",
+  "features": 60,
+  "contact": false,
+  "size_mm": [
+   3221.6,
+   3221.6,
+   2235.4
+  ],
+  "mass_kg": 245.58,
+  "step": "cad/step/P1-210.step",
+  "drawing": "drawings/parts/P1-210.svg",
+  "dxf": []
+ },
+ {
+  "id": "P1-211",
+  "title": "Ingredient bin 5 cu ft",
+  "qty": "9 (12 positions)",
+  "material": "SS 304 #4, 14 ga; flanges 6 mm",
+  "features": 10,
+  "contact": true,
+  "size_mm": [
+   680.0,
+   680.0,
+   686.0
+  ],
+  "mass_kg": 25.57,
+  "step": "cad/step/P1-211.step",
+  "drawing": "drawings/parts/P1-211.svg",
+  "dxf": [
+   "dxf/P1-211_flange_mm.dxf",
+   "dxf/P1-211_flange_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-220",
+  "title": "Weigh hopper 141 L on 3 load cells",
+  "qty": "1",
+  "material": "SS 316L #4, 14 ga; lugs 10 mm 304",
+  "features": 20,
+  "contact": true,
+  "size_mm": [
+   834.7,
+   835.0,
+   605.9
+  ],
+  "mass_kg": 27.8,
+  "step": "cad/step/P1-220.step",
+  "drawing": "drawings/parts/P1-220.svg",
+  "dxf": [
+   "dxf/P1-220_lid_mm.dxf",
+   "dxf/P1-220_lid_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-302",
+  "title": "Blender bag-dump grate and dust upstand",
+  "qty": "1",
+  "material": "SS 304, 10 mm bar + 14 ga",
+  "features": 1,
+  "contact": true,
+  "size_mm": [
+   600.0,
+   428.7,
+   310.0
+  ],
+  "mass_kg": 17.34,
+  "step": "cad/step/P1-302.step",
+  "drawing": "drawings/parts/P1-302.svg",
+  "dxf": [
+   "dxf/P1-302_grate_mm.dxf",
+   "dxf/P1-302_grate_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-304",
+  "title": "Drum-top vibratory sifter rev B (full set P1-304-000..900)",
+  "qty": "1",
+  "material": "316L product contact, 304 frame",
+  "features": 0,
+  "contact": true,
+  "size_mm": [
+   680.4,
+   682.2,
+   320.3
+  ],
+  "mass_kg": 28.66,
+  "step": "cad/step/P1-304.step",
+  "drawing": "drawings/parts/P1-304.svg",
+  "dxf": []
+ },
+ {
+  "id": "P1-322",
+  "title": "Mill feed hopper and discharge transition",
+  "qty": "1 set",
+  "material": "SS 304 #4, 14 ga; flanges 6 mm",
+  "features": 5,
+  "contact": true,
+  "size_mm": [
+   398.8,
+   398.8,
+   832.2
+  ],
+  "mass_kg": 6.67,
+  "step": "cad/step/P1-322.step",
+  "drawing": "drawings/parts/P1-322.svg",
+  "dxf": [
+   "dxf/P1-322_flange_mm.dxf",
+   "dxf/P1-322_flange_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-309",
+  "title": "Drum dolly base",
+  "qty": "3",
+  "material": "SS 304, 3 mm [11 ga]",
+  "features": 17,
+  "contact": false,
+  "size_mm": [
+   640.4,
+   640.6,
+   25.8
+  ],
+  "mass_kg": 8.72,
+  "step": "cad/step/P1-309.step",
+  "drawing": "drawings/parts/P1-309.svg",
+  "dxf": [
+   "dxf/P1-309_base_mm.dxf",
+   "dxf/P1-309_base_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-408",
+  "title": "Accumulation turntable disc 30 in",
+  "qty": "1",
+  "material": "SS 304 #4, 14 ga",
+  "features": 5,
+  "contact": false,
+  "size_mm": [
+   762.5,
+   762.7,
+   25.9
+  ],
+  "mass_kg": 7.77,
+  "step": "cad/step/P1-408.step",
+  "drawing": "drawings/parts/P1-408.svg",
+  "dxf": [
+   "dxf/P1-408_disc_mm.dxf",
+   "dxf/P1-408_disc_in.dxf"
+  ]
+ },
+ {
+  "id": "P1-410a",
+  "title": "Filler nest, shaker-250 (\u00d866 mm)",
+  "qty": 2,
+  "material": "PETG",
+  "print": true,
+  "stl": "cad/print/P1-410a.stl",
+  "size_mm": [
+   97.1,
+   97.1,
+   40.0
+  ],
+  "grams_est": 139.4
+ },
+ {
+  "id": "P1-410b",
+  "title": "Filler nest, jar-12 (\u00d886 mm)",
+  "qty": 2,
+  "material": "PETG",
+  "print": true,
+  "stl": "cad/print/P1-410b.stl",
+  "size_mm": [
+   117.4,
+   117.4,
+   40.0
+  ],
+  "grams_est": 188.3
+ },
+ {
+  "id": "P1-410c",
+  "title": "Cap grip, 53 mm sifter cap",
+  "qty": 2,
+  "material": "PETG",
+  "print": true,
+  "stl": "cad/print/P1-410c.stl",
+  "size_mm": [
+   146.4,
+   68.4,
+   30.0
+  ],
+  "grams_est": 39.8
+ },
+ {
+  "id": "P1-410d",
+  "title": "Cap grip, 89 mm jar cap",
+  "qty": 2,
+  "material": "PETG",
+  "print": true,
+  "stl": "cad/print/P1-410d.stl",
+  "size_mm": [
+   182.4,
+   104.4,
+   30.0
+  ],
+  "grams_est": 61.0
+ }
+]

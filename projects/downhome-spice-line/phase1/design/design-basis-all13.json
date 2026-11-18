@@ -1,0 +1,1468 @@
+{
+ "basis": {
+  "volume_option": "Phase 1 prototype",
+  "daily_output_lb": {
+   "v": 200,
+   "src": "client",
+   "note": "client asked 2026-11-17 for 1,000 lb/week as a phase 1 prototype"
+  },
+  "shifts_per_day": {
+   "v": 1,
+   "src": "assumed"
+  },
+  "shift_hours": {
+   "v": 8.0,
+   "src": "assumed"
+  },
+  "days_per_week": {
+   "v": 5,
+   "src": "assumed",
+   "note": "work is batched into 2-3 production days; the rest is receiving, QC and cleaning"
+  },
+  "breaks_and_startup_min": {
+   "v": 60,
+   "src": "assumed",
+   "note": "2 x 15 min breaks + 30 min start-up and pre-op inspection"
+  },
+  "end_of_shift_clean_min": {
+   "v": 30,
+   "src": "assumed",
+   "note": "daily dry clean of the pack line, inside the shift"
+  },
+  "oee_target": {
+   "v": 0.5,
+   "src": "assumed",
+   "note": "semi-automatic, operator-paced"
+  },
+  "weekly_output_lb": {
+   "v": 1000,
+   "src": "calculated"
+  },
+  "building": {
+   "length_ft": 50,
+   "width_ft": 40,
+   "clear_height_ft": 12,
+   "src": "assumed",
+   "note": "about 2,000 sq ft light-industrial or food-grade unit; no bulk bags, so no high clear height"
+  },
+  "batch_rule": "batch = blender working volume x bulk density, never above; min 35 % fill",
+  "blend_cv_spec_pct": {
+   "v": 5,
+   "src": "site"
+  },
+  "mix_time_min": {
+   "v": 12,
+   "src": "site"
+  },
+  "fill_overfill_pct": {
+   "v": 1.5,
+   "src": "assumed",
+   "note": "site uses a target overfill; checkweigher rejects any unit under declared"
+  },
+  "fill_loss_pct": {
+   "v": 1.0,
+   "src": "site"
+  },
+  "lot_code": {
+   "v": "DHyyjjj-B## + BEST BY",
+   "src": "site"
+  }
+ },
+ "mix": [
+  {
+   "family": "Creole Chameleon 4 oz shakers",
+   "share": 0.25882352941176473,
+   "skus": [
+    "s-orig-4s",
+    "s-fire-4s",
+    "s-lemp-4s",
+    "s-garl-4s",
+    "s-blkn-4s"
+   ]
+  },
+  {
+   "family": "Creole Chameleon 12 oz jars",
+   "share": 0.23529411764705885,
+   "skus": [
+    "s-orig-12j",
+    "s-fire-12j",
+    "s-lemp-12j",
+    "s-garl-12j",
+    "s-blkn-12j"
+   ]
+  },
+  {
+   "family": "Creole Chameleon 12 oz pouch",
+   "share": 0.09411764705882353,
+   "skus": [
+    "s-orig-12p"
+   ]
+  },
+  {
+   "family": "Food-service 5 lb tub",
+   "share": 0.11764705882352942,
+   "skus": [
+    "s-orig-80t"
+   ]
+  },
+  {
+   "family": "Camilian + launch shakers",
+   "share": 0.29411764705882354,
+   "skus": [
+    "s-caml-4s",
+    "s-ncgb-2",
+    "s-ncnc-4",
+    "s-lyrb-4",
+    "s-lthr-3",
+    "s-ngrb-175",
+    "s-vfrb-4",
+    "s-efap-35"
+   ]
+  }
+ ],
+ "demand": [
+  {
+   "sku": "s-orig-4s",
+   "family": "Creole Chameleon 4 oz shakers",
+   "weekly_lb": 51.8,
+   "weekly_units": 204,
+   "weekly_cases": 17.0,
+   "product": "p-orig",
+   "formula": "f-orig",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 83.4
+  },
+  {
+   "sku": "s-fire-4s",
+   "family": "Creole Chameleon 4 oz shakers",
+   "weekly_lb": 51.8,
+   "weekly_units": 204,
+   "weekly_cases": 17.0,
+   "product": "p-fire",
+   "formula": "f-fire",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 85.0
+  },
+  {
+   "sku": "s-lemp-4s",
+   "family": "Creole Chameleon 4 oz shakers",
+   "weekly_lb": 51.8,
+   "weekly_units": 204,
+   "weekly_cases": 17.0,
+   "product": "p-lemp",
+   "formula": "f-lemp",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 82.4
+  },
+  {
+   "sku": "s-garl-4s",
+   "family": "Creole Chameleon 4 oz shakers",
+   "weekly_lb": 51.8,
+   "weekly_units": 204,
+   "weekly_cases": 17.0,
+   "product": "p-garl",
+   "formula": "f-garl",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 85.3
+  },
+  {
+   "sku": "s-blkn-4s",
+   "family": "Creole Chameleon 4 oz shakers",
+   "weekly_lb": 51.8,
+   "weekly_units": 204,
+   "weekly_cases": 17.0,
+   "product": "p-blkn",
+   "formula": "f-blkn",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 89.1
+  },
+  {
+   "sku": "s-orig-12j",
+   "family": "Creole Chameleon 12 oz jars",
+   "weekly_lb": 47.1,
+   "weekly_units": 62,
+   "weekly_cases": 5.2,
+   "product": "p-orig",
+   "formula": "f-orig",
+   "format": "JAR",
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 88.7
+  },
+  {
+   "sku": "s-fire-12j",
+   "family": "Creole Chameleon 12 oz jars",
+   "weekly_lb": 47.1,
+   "weekly_units": 62,
+   "weekly_cases": 5.2,
+   "product": "p-fire",
+   "formula": "f-fire",
+   "format": "JAR",
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 90.3
+  },
+  {
+   "sku": "s-lemp-12j",
+   "family": "Creole Chameleon 12 oz jars",
+   "weekly_lb": 47.1,
+   "weekly_units": 62,
+   "weekly_cases": 5.2,
+   "product": "p-lemp",
+   "formula": "f-lemp",
+   "format": "JAR",
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 87.6
+  },
+  {
+   "sku": "s-garl-12j",
+   "family": "Creole Chameleon 12 oz jars",
+   "weekly_lb": 47.1,
+   "weekly_units": 62,
+   "weekly_cases": 5.2,
+   "product": "p-garl",
+   "formula": "f-garl",
+   "format": "JAR",
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 90.7
+  },
+  {
+   "sku": "s-blkn-12j",
+   "family": "Creole Chameleon 12 oz jars",
+   "weekly_lb": 47.1,
+   "weekly_units": 62,
+   "weekly_cases": 5.2,
+   "product": "p-blkn",
+   "formula": "f-blkn",
+   "format": "JAR",
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 94.7
+  },
+  {
+   "sku": "s-orig-12p",
+   "family": "Creole Chameleon 12 oz pouch",
+   "weekly_lb": 94.1,
+   "weekly_units": 124,
+   "weekly_cases": 10.3,
+   "product": "p-orig",
+   "formula": "f-orig",
+   "format": "POUCH",
+   "net_g": 340.2,
+   "container": "pouch-12",
+   "closure": null,
+   "label": null,
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 81.7
+  },
+  {
+   "sku": "s-orig-80t",
+   "family": "Food-service 5 lb tub",
+   "weekly_lb": 117.6,
+   "weekly_units": 23,
+   "weekly_cases": 5.8,
+   "product": "p-orig",
+   "formula": "f-orig",
+   "format": "TUB",
+   "net_g": 2268.0,
+   "container": "tub-5lb",
+   "closure": "lid-tub",
+   "label": "lbl-tub",
+   "case_count": 4,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 87.5
+  },
+  {
+   "sku": "s-caml-4s",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 166,
+   "weekly_cases": 13.8,
+   "product": "p-caml",
+   "formula": "f-caml",
+   "format": "SHAKER",
+   "net_g": 99.2,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 93.7
+  },
+  {
+   "sku": "s-ncgb-2",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 290,
+   "weekly_cases": 24.1,
+   "product": "p-ncgb",
+   "formula": "f-ncgb",
+   "format": "SHAKER",
+   "net_g": 56.7,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 81.9
+  },
+  {
+   "sku": "s-ncnc-4",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 145,
+   "weekly_cases": 12.1,
+   "product": "p-ncnc",
+   "formula": "f-ncnc",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 88.3
+  },
+  {
+   "sku": "s-lyrb-4",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 145,
+   "weekly_cases": 12.1,
+   "product": "p-lyrb",
+   "formula": "f-lyrb",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 94.5
+  },
+  {
+   "sku": "s-lthr-3",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 193,
+   "weekly_cases": 16.1,
+   "product": "p-lthr",
+   "formula": "f-lthr",
+   "format": "SHAKER",
+   "net_g": 85.0,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 86.8
+  },
+  {
+   "sku": "s-ngrb-175",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 331,
+   "weekly_cases": 27.6,
+   "product": "p-ngrb",
+   "formula": "f-ngrb",
+   "format": "SHAKER",
+   "net_g": 49.6,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 85.8
+  },
+  {
+   "sku": "s-vfrb-4",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 145,
+   "weekly_cases": 12.1,
+   "product": "p-vfrb",
+   "formula": "f-vfrb",
+   "format": "SHAKER",
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 89.3
+  },
+  {
+   "sku": "s-efap-35",
+   "family": "Camilian + launch shakers",
+   "weekly_lb": 36.8,
+   "weekly_units": 166,
+   "weekly_cases": 13.8,
+   "product": "p-efap",
+   "formula": "f-efap",
+   "format": "SHAKER",
+   "net_g": 99.2,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 87.5
+  }
+ ],
+ "eco": [
+  {
+   "id": "ECO-001",
+   "sku": "s-orig-12j",
+   "from": "shaker-4 (235 mL)",
+   "to": "jar-12 (700 mL PET, 89 mm sifter cap)",
+   "why": "12 oz of a 0.548 g/mL blend needs ~620 mL; the 235 mL shaker is 264% of brimful (the site flags it too). The other four 12 oz Creole Chameleon SKUs already use jar-12, so this also removes a change part set.",
+   "status": "proposed"
+  },
+  {
+   "id": "ECO-002",
+   "sku": "s-caml-4s, s-blkn-12j, s-lyrb-4",
+   "from": "fill 93-95% of brimful",
+   "to": "confirm headspace",
+   "why": "auger-filled blends settle; above ~92% brimful a sifter-cap insert can push product out at capping. Pilot-fill 50 units each and measure; if it spills, move to shaker-320.",
+   "status": "proposed"
+  }
+ ],
+ "open_questions": [
+  "Which 5 blends launch first: assumed Original, Fire, Lemon Pepper, Garlic Herb, Blackened.",
+  "Sales mix by SKU: the weekly split is the Growth assumption scaled down.",
+  "Space: about 2,000 sq ft with a 3-phase or 240 V 1-phase service (Phase 1 needs ~60 A at 240 V).",
+  "Who fabricates: the stainless tables and hoods are TIG-welded 304; a local food-equipment fabricator if not in-house."
+ ],
+ "site_source": "https://silocloud.dev/factory/ (api/state), read 2026-11-17",
+ "skus": [
+  {
+   "id": "s-orig-12j",
+   "product": "p-orig",
+   "format": "JAR",
+   "net_oz": 12,
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 88.7,
+   "formula": "f-orig",
+   "eco": "ECO-001"
+  },
+  {
+   "id": "s-orig-12p",
+   "product": "p-orig",
+   "format": "POUCH",
+   "net_oz": 12,
+   "net_g": 340.2,
+   "container": "pouch-12",
+   "closure": null,
+   "label": null,
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 81.7,
+   "formula": "f-orig"
+  },
+  {
+   "id": "s-orig-4s",
+   "product": "p-orig",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 83.4,
+   "formula": "f-orig"
+  },
+  {
+   "id": "s-orig-80t",
+   "product": "p-orig",
+   "format": "TUB",
+   "net_oz": 80,
+   "net_g": 2268.0,
+   "container": "tub-5lb",
+   "closure": "lid-tub",
+   "label": "lbl-tub",
+   "case_count": 4,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 87.5,
+   "formula": "f-orig"
+  },
+  {
+   "id": "s-caml-4s",
+   "product": "p-caml",
+   "format": "SHAKER",
+   "net_oz": 3.5,
+   "net_g": 99.2,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 93.7,
+   "formula": "f-caml"
+  },
+  {
+   "id": "s-fire-12j",
+   "product": "p-fire",
+   "format": "JAR",
+   "net_oz": 12,
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 90.3,
+   "formula": "f-fire"
+  },
+  {
+   "id": "s-lemp-12j",
+   "product": "p-lemp",
+   "format": "JAR",
+   "net_oz": 12,
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 87.6,
+   "formula": "f-lemp"
+  },
+  {
+   "id": "s-garl-12j",
+   "product": "p-garl",
+   "format": "JAR",
+   "net_oz": 12,
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 90.7,
+   "formula": "f-garl"
+  },
+  {
+   "id": "s-blkn-12j",
+   "product": "p-blkn",
+   "format": "JAR",
+   "net_oz": 12,
+   "net_g": 340.2,
+   "container": "jar-12",
+   "closure": "cap-89",
+   "label": "lbl-12",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 94.7,
+   "formula": "f-blkn"
+  },
+  {
+   "id": "s-fire-4s",
+   "product": "p-fire",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 85.0,
+   "formula": "f-fire"
+  },
+  {
+   "id": "s-lemp-4s",
+   "product": "p-lemp",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 82.4,
+   "formula": "f-lemp"
+  },
+  {
+   "id": "s-garl-4s",
+   "product": "p-garl",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 85.3,
+   "formula": "f-garl"
+  },
+  {
+   "id": "s-blkn-4s",
+   "product": "p-blkn",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 89.1,
+   "formula": "f-blkn"
+  },
+  {
+   "id": "s-ncgb-2",
+   "product": "p-ncgb",
+   "format": "SHAKER",
+   "net_oz": 2,
+   "net_g": 56.7,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 81.9,
+   "formula": "f-ncgb"
+  },
+  {
+   "id": "s-ncnc-4",
+   "product": "p-ncnc",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 88.3,
+   "formula": "f-ncnc"
+  },
+  {
+   "id": "s-lyrb-4",
+   "product": "p-lyrb",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 94.5,
+   "formula": "f-lyrb"
+  },
+  {
+   "id": "s-lthr-3",
+   "product": "p-lthr",
+   "format": "SHAKER",
+   "net_oz": 3,
+   "net_g": 85.0,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 86.8,
+   "formula": "f-lthr"
+  },
+  {
+   "id": "s-ngrb-175",
+   "product": "p-ngrb",
+   "format": "SHAKER",
+   "net_oz": 1.75,
+   "net_g": 49.6,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 85.8,
+   "formula": "f-ngrb"
+  },
+  {
+   "id": "s-vfrb-4",
+   "product": "p-vfrb",
+   "format": "SHAKER",
+   "net_oz": 4,
+   "net_g": 113.4,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 89.3,
+   "formula": "f-vfrb"
+  },
+  {
+   "id": "s-efap-35",
+   "product": "p-efap",
+   "format": "SHAKER",
+   "net_oz": 3.5,
+   "net_g": 99.2,
+   "container": "shaker-250",
+   "closure": "cap-53-flip",
+   "label": "lbl-84",
+   "case_count": 12,
+   "category": "seasoning",
+   "fill_pct_of_brimful": 87.5,
+   "formula": "f-efap"
+  },
+  {
+   "id": "s-batter-16b",
+   "product": "p-batter",
+   "format": "BOX",
+   "net_oz": 16,
+   "net_g": 453.6,
+   "container": "box-16",
+   "closure": null,
+   "label": null,
+   "case_count": 12,
+   "category": "dry-boxed",
+   "fill_pct_of_brimful": 61.3,
+   "formula": "f-batter"
+  },
+  {
+   "id": "s-ncpm-16",
+   "product": "p-ncpm",
+   "format": "BOX",
+   "net_oz": 16,
+   "net_g": 453.6,
+   "container": "box-16",
+   "closure": null,
+   "label": null,
+   "case_count": 12,
+   "category": "dry-boxed",
+   "fill_pct_of_brimful": 75.3,
+   "formula": "f-ncpm"
+  },
+  {
+   "id": "s-afcb-20",
+   "product": "p-afcb",
+   "format": "BOX",
+   "net_oz": 20,
+   "net_g": 567.0,
+   "container": "box-16",
+   "closure": null,
+   "label": null,
+   "case_count": 12,
+   "category": "dry-boxed",
+   "fill_pct_of_brimful": 79.9,
+   "formula": "f-afcb"
+  }
+ ],
+ "formulas": {
+  "f-orig": {
+   "product": "p-orig",
+   "name": "Creole Chameleon Original",
+   "lines": {
+    "salt": 38,
+    "paprika": 14,
+    "garlic": 11,
+    "onion": 9,
+    "black-pepper": 7,
+    "red-pepper": 6,
+    "bell-pepper": 4.5,
+    "celery-seed": 3,
+    "oregano": 2.5,
+    "thyme": 2,
+    "cayenne": 1.5,
+    "parsley": 1,
+    "natural-flavor": 0.5
+   },
+   "blend_density": 0.548,
+   "allergens": [],
+   "minors": [
+    "cayenne",
+    "parsley",
+    "natural-flavor"
+   ]
+  },
+  "f-fire": {
+   "product": "p-fire",
+   "name": "Creole Chameleon Fire Blend",
+   "lines": {
+    "salt": 32,
+    "cayenne": 14,
+    "paprika": 12,
+    "garlic": 10,
+    "red-pepper": 9,
+    "onion": 8,
+    "black-pepper": 7,
+    "bell-pepper": 3,
+    "oregano": 2,
+    "thyme": 1.5,
+    "celery-seed": 1,
+    "parsley": 0.5
+   },
+   "blend_density": 0.538,
+   "allergens": [],
+   "minors": [
+    "thyme",
+    "celery-seed",
+    "parsley"
+   ]
+  },
+  "f-lemp": {
+   "product": "p-lemp",
+   "name": "Creole Chameleon Lemon Pepper",
+   "lines": {
+    "salt": 30,
+    "black-pepper-coarse": 28,
+    "lemon-peel": 16,
+    "garlic": 8,
+    "onion": 6,
+    "citric-acid": 5,
+    "natural-flavor": 3,
+    "parsley": 2,
+    "sugar": 2
+   },
+   "blend_density": 0.555,
+   "allergens": [],
+   "minors": []
+  },
+  "f-garl": {
+   "product": "p-garl",
+   "name": "Creole Chameleon Garlic Herb",
+   "lines": {
+    "garlic": 38,
+    "salt": 32,
+    "onion": 12,
+    "black-pepper": 6,
+    "basil": 3,
+    "oregano": 3,
+    "parsley": 2,
+    "thyme": 2,
+    "rosemary": 2
+   },
+   "blend_density": 0.536,
+   "allergens": [],
+   "minors": []
+  },
+  "f-blkn": {
+   "product": "p-blkn",
+   "name": "Creole Chameleon Blackened",
+   "lines": {
+    "paprika": 26,
+    "salt": 22,
+    "garlic": 12,
+    "onion": 10,
+    "black-pepper": 8,
+    "cayenne": 7,
+    "thyme": 6,
+    "oregano": 5,
+    "white-pepper": 4
+   },
+   "blend_density": 0.513,
+   "allergens": [],
+   "minors": []
+  },
+  "f-caml": {
+   "product": "p-caml",
+   "name": "Creole Camilian Standard",
+   "lines": {
+    "salt": 25,
+    "paprika": 15,
+    "garlic": 12,
+    "onion-gran": 12,
+    "chili-powder": 10,
+    "lemon-pepper": 7,
+    "cayenne": 5,
+    "oregano": 5,
+    "italian-herbs": 5,
+    "parsley": 4
+   },
+   "blend_density": 0.427,
+   "allergens": [],
+   "minors": []
+  },
+  "f-ncgb": {
+   "product": "p-ncgb",
+   "name": "N-Constant GreenBoost Blend",
+   "lines": {
+    "spinach-powder": 30,
+    "kale-powder": 18,
+    "parsley": 12,
+    "garlic": 10,
+    "onion": 8,
+    "basil": 7,
+    "lemon-peel": 6,
+    "salt": 5,
+    "black-pepper": 4
+   },
+   "blend_density": 0.279,
+   "allergens": [],
+   "minors": []
+  },
+  "f-ncnc": {
+   "product": "p-ncnc",
+   "name": "N-Constant NeuroClarity",
+   "lines": {
+    "cinnamon": 30,
+    "turmeric": 25,
+    "blueberry-powder": 20,
+    "ginger": 15,
+    "sugar": 7,
+    "black-pepper": 3
+   },
+   "blend_density": 0.518,
+   "allergens": [],
+   "minors": []
+  },
+  "f-lyrb": {
+   "product": "p-lyrb",
+   "name": "Lycopoise Red Pepper Boost",
+   "lines": {
+    "red-bell-pepper": 28,
+    "tomato-powder": 22,
+    "paprika": 16,
+    "smoked-paprika": 8,
+    "garlic": 8,
+    "onion": 7,
+    "salt": 7,
+    "cayenne": 2,
+    "oregano": 2
+   },
+   "blend_density": 0.484,
+   "allergens": [],
+   "minors": []
+  },
+  "f-lthr": {
+   "product": "p-lthr",
+   "name": "Lyco-Tomato Herb Rub",
+   "lines": {
+    "tomato-powder": 30,
+    "garlic": 14,
+    "onion": 12,
+    "basil": 10,
+    "oregano": 10,
+    "salt": 10,
+    "thyme": 6,
+    "black-pepper": 5,
+    "red-pepper": 3
+   },
+   "blend_density": 0.395,
+   "allergens": [],
+   "minors": []
+  },
+  "f-ngrb": {
+   "product": "p-ngrb",
+   "name": "Nitro-Green Rub",
+   "lines": {
+    "spinach-powder": 26,
+    "parsley": 18,
+    "garlic": 14,
+    "basil": 12,
+    "lemon-peel": 6,
+    "salt": 10,
+    "celery-seed": 6,
+    "black-pepper": 5,
+    "beet-powder": 3
+   },
+   "blend_density": 0.233,
+   "allergens": [],
+   "minors": []
+  },
+  "f-vfrb": {
+   "product": "p-vfrb",
+   "name": "Vascular Fire Rub",
+   "lines": {
+    "paprika": 24,
+    "smoked-paprika": 14,
+    "garlic": 13,
+    "salt": 13,
+    "onion": 10,
+    "cayenne": 8,
+    "black-pepper": 7,
+    "oregano": 5,
+    "sugar": 6
+   },
+   "blend_density": 0.512,
+   "allergens": [],
+   "minors": []
+  },
+  "f-efap": {
+   "product": "p-efap",
+   "name": "EndoFlex All-Purpose Blend",
+   "lines": {
+    "garlic": 22,
+    "onion": 18,
+    "salt": 18,
+    "paprika": 12,
+    "black-pepper": 9,
+    "turmeric": 7,
+    "thyme": 5,
+    "parsley": 4,
+    "ginger": 3,
+    "oregano": 2
+   },
+   "blend_density": 0.457,
+   "allergens": [],
+   "minors": []
+  },
+  "f-batter": {
+   "product": "p-batter",
+   "name": "Creole Fish Fry Batter Mix (concept)",
+   "lines": {
+    "corn-flour": 52,
+    "wheat-flour": 30,
+    "salt": 6,
+    "paprika": 4,
+    "garlic": 2.5,
+    "baking-powder": 2,
+    "black-pepper": 1.5,
+    "cayenne": 1.2,
+    "onion": 0.8
+   },
+   "blend_density": 0.643,
+   "allergens": [
+    "Wheat"
+   ],
+   "minors": [
+    "black-pepper",
+    "cayenne",
+    "onion"
+   ]
+  },
+  "f-ncpm": {
+   "product": "p-ncpm",
+   "name": "N-Constant Protein Pancake & Waffle Mix",
+   "lines": {
+    "ww-flour": 38,
+    "oat-flour": 22,
+    "pea-protein": 20,
+    "sugar": 6,
+    "beet-powder": 4,
+    "baking-powder": 4,
+    "flaxseed-meal": 3,
+    "cinnamon": 1.5,
+    "salt": 1,
+    "baking-soda": 0.5
+   },
+   "blend_density": 0.524,
+   "allergens": [
+    "Wheat"
+   ],
+   "minors": [
+    "cinnamon",
+    "salt",
+    "baking-soda"
+   ]
+  },
+  "f-afcb": {
+   "product": "p-afcb",
+   "name": "Air-Fry Crisp Batter",
+   "lines": {
+    "wheat-flour": 44,
+    "corn-flour": 22,
+    "rice-flour": 12,
+    "corn-starch": 6,
+    "salt": 4.5,
+    "paprika": 3.5,
+    "garlic": 2.5,
+    "baking-powder": 2.5,
+    "onion": 2,
+    "black-pepper": 1
+   },
+   "blend_density": 0.617,
+   "allergens": [
+    "Wheat"
+   ],
+   "minors": [
+    "black-pepper"
+   ]
+  }
+ },
+ "packaging": {
+  "jar-12": {
+   "format": "JAR",
+   "name": "PET jar, 89 mm neck (12 oz fill)",
+   "brimful_ml": 700,
+   "tare_g": 38,
+   "width_in": 3.4,
+   "height_in": 6.1
+  },
+  "shaker-4": {
+   "format": "SHAKER",
+   "name": "PET shaker, 53 mm neck (4 oz fill)",
+   "brimful_ml": 235,
+   "tare_g": 18,
+   "width_in": 2.3,
+   "height_in": 4.6
+  },
+  "shaker-250": {
+   "format": "SHAKER",
+   "name": "Clear round PET shaker jar, 8.4 fl oz (248 mL)",
+   "brimful_ml": 248,
+   "tare_g": 26,
+   "width_in": 2.6,
+   "height_in": 4.3
+  },
+  "shaker-320": {
+   "format": "SHAKER",
+   "name": "PET shaker, 53 mm neck, 320 mL",
+   "brimful_ml": 320,
+   "tare_g": 24,
+   "width_in": 2.6,
+   "height_in": 5.6
+  },
+  "pouch-12": {
+   "format": "POUCH",
+   "name": "Stand-up zip pouch, printed, window",
+   "brimful_ml": 760,
+   "tare_g": 12,
+   "width_in": 6.5,
+   "height_in": 9.0
+  },
+  "tub-5lb": {
+   "format": "TUB",
+   "name": "HDPE food-service tub, 1.25 gal",
+   "brimful_ml": 4730,
+   "tare_g": 230,
+   "width_in": 8.0,
+   "height_in": 7.5
+  },
+  "box-16": {
+   "format": "BOX",
+   "name": "Folding carton + poly liner (16 oz)",
+   "brimful_ml": 1150,
+   "tare_g": 55,
+   "width_in": 5.5,
+   "height_in": 8.0
+  }
+ },
+ "ingredients": {
+  "salt": {
+   "name": "Salt, fine flake",
+   "group": "Base",
+   "density": 1.2,
+   "allergen": ""
+  },
+  "paprika": {
+   "name": "Paprika, ground (120 ASTA)",
+   "group": "Pepper & chile",
+   "density": 0.45,
+   "allergen": ""
+  },
+  "smoked-paprika": {
+   "name": "Paprika, smoked",
+   "group": "Pepper & chile",
+   "density": 0.45,
+   "allergen": ""
+  },
+  "garlic": {
+   "name": "Garlic, granulated",
+   "group": "Allium",
+   "density": 0.72,
+   "allergen": ""
+  },
+  "onion": {
+   "name": "Onion, powder",
+   "group": "Allium",
+   "density": 0.55,
+   "allergen": ""
+  },
+  "black-pepper": {
+   "name": "Black pepper, ground 30 mesh",
+   "group": "Pepper & chile",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "black-pepper-coarse": {
+   "name": "Black pepper, coarse 16 mesh",
+   "group": "Pepper & chile",
+   "density": 0.45,
+   "allergen": ""
+  },
+  "white-pepper": {
+   "name": "White pepper, ground",
+   "group": "Pepper & chile",
+   "density": 0.55,
+   "allergen": ""
+  },
+  "red-pepper": {
+   "name": "Red pepper, crushed",
+   "group": "Pepper & chile",
+   "density": 0.35,
+   "allergen": ""
+  },
+  "cayenne": {
+   "name": "Cayenne pepper, 40K HU",
+   "group": "Pepper & chile",
+   "density": 0.45,
+   "allergen": ""
+  },
+  "bell-pepper": {
+   "name": "Bell pepper, dehydrated granules",
+   "group": "Vegetable",
+   "density": 0.3,
+   "allergen": ""
+  },
+  "celery-seed": {
+   "name": "Celery seed, whole",
+   "group": "Seed",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "oregano": {
+   "name": "Oregano, rubbed",
+   "group": "Herb",
+   "density": 0.2,
+   "allergen": ""
+  },
+  "thyme": {
+   "name": "Thyme, rubbed",
+   "group": "Herb",
+   "density": 0.3,
+   "allergen": ""
+  },
+  "parsley": {
+   "name": "Parsley flakes",
+   "group": "Herb",
+   "density": 0.08,
+   "allergen": ""
+  },
+  "basil": {
+   "name": "Basil, rubbed",
+   "group": "Herb",
+   "density": 0.15,
+   "allergen": ""
+  },
+  "rosemary": {
+   "name": "Rosemary, cut",
+   "group": "Herb",
+   "density": 0.3,
+   "allergen": ""
+  },
+  "lemon-peel": {
+   "name": "Lemon peel granules",
+   "group": "Citrus",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "citric-acid": {
+   "name": "Citric acid, fine granular",
+   "group": "Acid",
+   "density": 0.9,
+   "allergen": ""
+  },
+  "sugar": {
+   "name": "Cane sugar, fine",
+   "group": "Sweetener",
+   "density": 0.85,
+   "allergen": ""
+  },
+  "natural-flavor": {
+   "name": "Natural flavor (spray dried)",
+   "group": "Flavor",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "silicon-dioxide": {
+   "name": "Silicon dioxide",
+   "group": "Processing aid",
+   "density": 0.1,
+   "allergen": ""
+  },
+  "wheat-flour": {
+   "name": "Wheat flour, enriched",
+   "group": "Flour",
+   "density": 0.55,
+   "allergen": "Wheat"
+  },
+  "corn-flour": {
+   "name": "Yellow corn flour",
+   "group": "Flour",
+   "density": 0.7,
+   "allergen": ""
+  },
+  "baking-powder": {
+   "name": "Baking powder, double acting",
+   "group": "Leavening",
+   "density": 0.9,
+   "allergen": ""
+  },
+  "onion-gran": {
+   "name": "Onion, granulated (not powder)",
+   "group": "Allium",
+   "density": 0.68,
+   "allergen": ""
+  },
+  "chili-powder": {
+   "name": "Chili powder, no salt added",
+   "group": "Pepper & chile",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "lemon-pepper": {
+   "name": "Lemon pepper, salt-free / low salt",
+   "group": "Pepper & chile",
+   "density": 0.6,
+   "allergen": ""
+  },
+  "italian-herbs": {
+   "name": "Italian herb medley",
+   "group": "Herb",
+   "density": 0.18,
+   "allergen": ""
+  },
+  "spinach-powder": {
+   "name": "Spinach powder, dehydrated",
+   "group": "Vegetable",
+   "density": 0.45,
+   "allergen": ""
+  },
+  "kale-powder": {
+   "name": "Kale powder, dehydrated",
+   "group": "Vegetable",
+   "density": 0.42,
+   "allergen": ""
+  },
+  "beet-powder": {
+   "name": "Beet root powder",
+   "group": "Vegetable",
+   "density": 0.6,
+   "allergen": ""
+  },
+  "tomato-powder": {
+   "name": "Tomato powder, spray dried",
+   "group": "Vegetable",
+   "density": 0.62,
+   "allergen": ""
+  },
+  "red-bell-pepper": {
+   "name": "Red bell pepper, dehydrated granules",
+   "group": "Vegetable",
+   "density": 0.38,
+   "allergen": ""
+  },
+  "turmeric": {
+   "name": "Turmeric, ground",
+   "group": "Spice",
+   "density": 0.55,
+   "allergen": ""
+  },
+  "ginger": {
+   "name": "Ginger, ground",
+   "group": "Spice",
+   "density": 0.45,
+   "allergen": ""
+  },
+  "cinnamon": {
+   "name": "Cinnamon, ground (cassia)",
+   "group": "Spice",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "blueberry-powder": {
+   "name": "Blueberry powder, freeze dried",
+   "group": "Fruit",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "pea-protein": {
+   "name": "Pea protein isolate",
+   "group": "Protein",
+   "density": 0.42,
+   "allergen": ""
+  },
+  "oat-flour": {
+   "name": "Oat flour, whole grain",
+   "group": "Flour",
+   "density": 0.5,
+   "allergen": ""
+  },
+  "ww-flour": {
+   "name": "Whole wheat flour, heat-treated",
+   "group": "Flour",
+   "density": 0.55,
+   "allergen": "Wheat"
+  },
+  "flaxseed-meal": {
+   "name": "Flaxseed, milled",
+   "group": "Seed",
+   "density": 0.4,
+   "allergen": ""
+  },
+  "baking-soda": {
+   "name": "Sodium bicarbonate",
+   "group": "Leavening",
+   "density": 1.1,
+   "allergen": ""
+  },
+  "rice-flour": {
+   "name": "Rice flour, white",
+   "group": "Flour",
+   "density": 0.7,
+   "allergen": ""
+  },
+  "corn-starch": {
+   "name": "Corn starch",
+   "group": "Flour",
+   "density": 0.6,
+   "allergen": ""
+  }
+ },
+ "phase": "Phase 1 prototype (all13)"
+}

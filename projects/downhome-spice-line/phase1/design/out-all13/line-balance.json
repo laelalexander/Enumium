@@ -1,0 +1,616 @@
+{
+ "available": {
+  "min_per_day": 390.0,
+  "min_per_week": 1950.0,
+  "oee": 0.5,
+  "utilization_limit": 0.85
+ },
+ "weekly_lb": 1000.5999999999999,
+ "weekly_units": 3058,
+ "blending": {
+  "candidates": [
+   {
+    "working_cuft": 2,
+    "run_min": 625.2,
+    "changeover_min": 120.0,
+    "batches": 23,
+    "under_filled": [],
+    "utilization": 0.382
+   },
+   {
+    "working_cuft": 3,
+    "run_min": 505.2,
+    "changeover_min": 120.0,
+    "batches": 17,
+    "under_filled": [],
+    "utilization": 0.321
+   },
+   {
+    "working_cuft": 5,
+    "run_min": 445.2,
+    "changeover_min": 120.0,
+    "batches": 14,
+    "under_filled": [
+     "f-efap",
+     "f-ncnc",
+     "f-caml",
+     "f-lthr",
+     "f-lyrb",
+     "f-vfrb"
+    ],
+    "utilization": 0.29
+   },
+   {
+    "working_cuft": 6,
+    "run_min": 445.2,
+    "changeover_min": 120.0,
+    "batches": 14,
+    "under_filled": [
+     "f-efap",
+     "f-ncnc",
+     "f-caml",
+     "f-lthr",
+     "f-lyrb",
+     "f-vfrb"
+    ],
+    "utilization": 0.29
+   }
+  ],
+  "chosen": {
+   "working_cuft": 6,
+   "rows": [
+    {
+     "formula": "f-lemp",
+     "name": "Creole Chameleon Lemon Pepper",
+     "allergens": [],
+     "density": 0.555,
+     "weekly_lb": 98.9,
+     "max_batch_lb": 208,
+     "batches": 1,
+     "batch_lb": 98.9,
+     "below_min_fill": false,
+     "cycle_min": 36.3,
+     "week_min": 36.3,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-garl",
+     "name": "Creole Chameleon Garlic Herb",
+     "allergens": [],
+     "density": 0.536,
+     "weekly_lb": 98.9,
+     "max_batch_lb": 201,
+     "batches": 1,
+     "batch_lb": 98.9,
+     "below_min_fill": false,
+     "cycle_min": 36.3,
+     "week_min": 36.3,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-ncgb",
+     "name": "N-Constant GreenBoost Blend",
+     "allergens": [],
+     "density": 0.279,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 105,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": false,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-ngrb",
+     "name": "Nitro-Green Rub",
+     "allergens": [],
+     "density": 0.233,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 87,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": false,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-efap",
+     "name": "EndoFlex All-Purpose Blend",
+     "allergens": [],
+     "density": 0.457,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 171,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": true,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-ncnc",
+     "name": "N-Constant NeuroClarity",
+     "allergens": [],
+     "density": 0.518,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 194,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": true,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-orig",
+     "name": "Creole Chameleon Original",
+     "allergens": [],
+     "density": 0.548,
+     "weekly_lb": 310.6,
+     "max_batch_lb": 205,
+     "batches": 2,
+     "batch_lb": 155.3,
+     "below_min_fill": false,
+     "cycle_min": 45.6,
+     "week_min": 91.2,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-caml",
+     "name": "Creole Camilian Standard",
+     "allergens": [],
+     "density": 0.427,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 160,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": true,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-lthr",
+     "name": "Lyco-Tomato Herb Rub",
+     "allergens": [],
+     "density": 0.395,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 148,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": true,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-lyrb",
+     "name": "Lycopoise Red Pepper Boost",
+     "allergens": [],
+     "density": 0.484,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 181,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": true,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-fire",
+     "name": "Creole Chameleon Fire Blend",
+     "allergens": [],
+     "density": 0.538,
+     "weekly_lb": 98.9,
+     "max_batch_lb": 202,
+     "batches": 1,
+     "batch_lb": 98.9,
+     "below_min_fill": false,
+     "cycle_min": 36.3,
+     "week_min": 36.3,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-blkn",
+     "name": "Creole Chameleon Blackened",
+     "allergens": [],
+     "density": 0.513,
+     "weekly_lb": 98.9,
+     "max_batch_lb": 192,
+     "batches": 1,
+     "batch_lb": 98.9,
+     "below_min_fill": false,
+     "cycle_min": 36.3,
+     "week_min": 36.3,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-vfrb",
+     "name": "Vascular Fire Rub",
+     "allergens": [],
+     "density": 0.512,
+     "weekly_lb": 36.8,
+     "max_batch_lb": 192,
+     "batches": 1,
+     "batch_lb": 36.8,
+     "below_min_fill": true,
+     "cycle_min": 26.1,
+     "week_min": 26.1,
+     "every_weeks": 1
+    }
+   ],
+   "run_min": 445.2,
+   "changeover_min": 120.0,
+   "batches": 14,
+   "under_filled": [
+    "f-efap",
+    "f-ncnc",
+    "f-caml",
+    "f-lthr",
+    "f-lyrb",
+    "f-vfrb"
+   ],
+   "utilization": 0.29
+  }
+ },
+ "pack_lines": [
+  {
+   "name": "Pack bench P1 (semi-automatic: shakers, jars, pouch, tub)",
+   "rows": [
+    {
+     "sku": "s-blkn-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-blkn",
+     "units": 204,
+     "cases": 17.0,
+     "rated_upm": 12,
+     "run_min": 23.4,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-caml-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-caml",
+     "units": 166,
+     "cases": 13.8,
+     "rated_upm": 12,
+     "run_min": 19.0,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-efap-35",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-efap",
+     "units": 166,
+     "cases": 13.8,
+     "rated_upm": 12,
+     "run_min": 19.0,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-fire-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-fire",
+     "units": 204,
+     "cases": 17.0,
+     "rated_upm": 12,
+     "run_min": 23.4,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-garl-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-garl",
+     "units": 204,
+     "cases": 17.0,
+     "rated_upm": 12,
+     "run_min": 23.4,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-lemp-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-lemp",
+     "units": 204,
+     "cases": 17.0,
+     "rated_upm": 12,
+     "run_min": 23.4,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-lthr-3",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-lthr",
+     "units": 193,
+     "cases": 16.1,
+     "rated_upm": 12,
+     "run_min": 22.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-lyrb-4",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-lyrb",
+     "units": 145,
+     "cases": 12.1,
+     "rated_upm": 12,
+     "run_min": 16.6,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-ncgb-2",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-ncgb",
+     "units": 290,
+     "cases": 24.1,
+     "rated_upm": 12,
+     "run_min": 33.2,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-ncnc-4",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-ncnc",
+     "units": 145,
+     "cases": 12.1,
+     "rated_upm": 12,
+     "run_min": 16.6,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-ngrb-175",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-ngrb",
+     "units": 331,
+     "cases": 27.6,
+     "rated_upm": 12,
+     "run_min": 37.9,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-orig",
+     "units": 204,
+     "cases": 17.0,
+     "rated_upm": 12,
+     "run_min": 23.4,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-vfrb-4",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-vfrb",
+     "units": 145,
+     "cases": 12.1,
+     "rated_upm": 12,
+     "run_min": 16.6,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-blkn-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-blkn",
+     "units": 62,
+     "cases": 5.2,
+     "rated_upm": 8,
+     "run_min": 10.7,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-fire-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-fire",
+     "units": 62,
+     "cases": 5.2,
+     "rated_upm": 8,
+     "run_min": 10.7,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-garl-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-garl",
+     "units": 62,
+     "cases": 5.2,
+     "rated_upm": 8,
+     "run_min": 10.7,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-lemp-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-lemp",
+     "units": 62,
+     "cases": 5.2,
+     "rated_upm": 8,
+     "run_min": 10.7,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-orig",
+     "units": 62,
+     "cases": 5.2,
+     "rated_upm": 8,
+     "run_min": 10.7,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-12p",
+     "format": "POUCH",
+     "container": "pouch-12",
+     "formula": "f-orig",
+     "units": 124,
+     "cases": 10.3,
+     "rated_upm": 6,
+     "run_min": 28.4,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-80t",
+     "format": "TUB",
+     "container": "tub-5lb",
+     "formula": "f-orig",
+     "units": 23,
+     "cases": 5.8,
+     "rated_upm": 2,
+     "run_min": 15.8,
+     "every_weeks": 1
+    }
+   ],
+   "run_min": 395.7,
+   "changeover_min": 425.0,
+   "utilization": 0.421,
+   "stations": [
+    {
+     "tag": "FL-P401",
+     "name": "Semi-auto auger filler (foot pedal, on-scale)",
+     "unit": "upm",
+     "need": 12,
+     "rated": 15,
+     "load": 0.8,
+     "src": "estimate, operator-paced"
+    },
+    {
+     "tag": "CK-P406",
+     "name": "Hand case pack + tape",
+     "unit": "cpm",
+     "need": 3.0,
+     "rated": 4,
+     "load": 0.75,
+     "src": "estimate: one operator packs and tapes a 12-count case in about 15 s"
+    },
+    {
+     "tag": "LB-P404",
+     "name": "Semi-auto round-container labeler",
+     "unit": "upm",
+     "need": 12,
+     "rated": 18,
+     "load": 0.67,
+     "src": "estimate from maker's ~1,000/h class"
+    },
+    {
+     "tag": "CP-P402",
+     "name": "Handheld electric capper",
+     "unit": "upm",
+     "need": 12,
+     "rated": 20,
+     "load": 0.6,
+     "src": "estimate"
+    },
+    {
+     "tag": "IS-P403",
+     "name": "Handheld induction sealer",
+     "unit": "upm",
+     "need": 12,
+     "rated": 20,
+     "load": 0.6,
+     "src": "estimate"
+    },
+    {
+     "tag": "MD-P405",
+     "name": "Conveyor metal detector (packs)",
+     "unit": "upm",
+     "need": 12,
+     "rated": 60,
+     "load": 0.2,
+     "src": "estimate"
+    }
+   ],
+   "bottleneck": {
+    "tag": "FL-P401",
+    "name": "Semi-auto auger filler (foot pedal, on-scale)",
+    "unit": "upm",
+    "need": 12,
+    "rated": 15,
+    "load": 0.8,
+    "src": "estimate, operator-paced"
+   }
+  }
+ ],
+ "schedule": {
+  "blending": [
+   [
+    "f-lemp #1 (99 lb)",
+    "f-garl #1 (99 lb)",
+    "f-ncgb #1 (37 lb)",
+    "f-ngrb #1 (37 lb)",
+    "f-efap #1 (37 lb)",
+    "f-ncnc #1 (37 lb)"
+   ],
+   [
+    "f-orig #1 (155 lb)",
+    "f-orig #2 (155 lb)",
+    "f-caml #1 (37 lb)",
+    "f-lthr #1 (37 lb)",
+    "f-lyrb #1 (37 lb)",
+    "f-fire #1 (99 lb)"
+   ],
+   [
+    "f-blkn #1 (99 lb)",
+    "f-vfrb #1 (37 lb)"
+   ],
+   [],
+   []
+  ],
+  "Pack bench P1 (semi-automatic: shakers, jars, pouch, tub)": [
+   [
+    "s-blkn-4s 23 min",
+    "s-caml-4s 19 min",
+    "s-efap-35 19 min",
+    "s-fire-4s 23 min",
+    "s-garl-4s 23 min",
+    "s-lemp-4s 23 min",
+    "s-lthr-3 22 min",
+    "s-lyrb-4 17 min",
+    "s-ncgb-2 33 min",
+    "s-ncnc-4 17 min",
+    "s-ngrb-175 20 min"
+   ],
+   [
+    "s-ngrb-175 18 min",
+    "s-orig-4s 23 min",
+    "s-vfrb-4 17 min",
+    "s-blkn-12j 11 min",
+    "s-fire-12j 11 min",
+    "s-garl-12j 11 min",
+    "s-lemp-12j 11 min",
+    "s-orig-12j 11 min",
+    "s-orig-12p 28 min",
+    "s-orig-80t 16 min"
+   ],
+   [],
+   [],
+   []
+  ]
+ },
+ "notes": [
+  "Blender: 6 cu ft chosen (a used Sprout-Waldron B-6 class unit). For the 5 launch blends it needs 7 batches a week instead of 13 at 3 cu ft, and when all 13 seasonings run, the 6 small blends are made every 2 weeks at double size so each batch stays above the 35 % minimum fill.",
+  "Phase 1 is operator-paced: one blend operator and one or two pack operators, on 2 to 3 production days a week.",
+  "Every formula is blended weekly in one batch; finished-goods stock covers sales between runs.",
+  "Rates are estimates for a trained operator; measure them in the first month and update this file."
+ ]
+}

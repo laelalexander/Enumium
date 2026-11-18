@@ -1,0 +1,65 @@
+{
+ "routes": {
+  "allergen-free": ["WS-201", "WS-202", "WS-203", "PM-210", "BD-301", "BB-302", "RB-303", "SC-304", "MD-305", "FC-307", "BF-306", "BU-401", "FL-403", "BU-502", "NW-501"],
+  "wheat": ["WS-201", "WS-202", "WS-203", "PM-210", "BD-301", "BB-302", "RB-303", "SC-304", "MD-305", "FC-307", "BF-306", "BU-502", "NW-501"]
+ },
+ "validated_cleans": {
+  "WS-201": "wheat weighed last on Friday; bench and scale pan wet-cleaned, gluten lateral-flow swab < 10 ppm before Monday",
+  "WS-202": "same as WS-201",
+  "WS-203": "same as WS-201",
+  "PM-210": "wheat premix last; V-cone wet clean, swab",
+  "BD-301": "wheat last; dry clean + wet clean of hopper and screw, swab",
+  "BB-302": "salt only, never sees wheat directly; screw tube dry-cleaned with the train",
+  "RB-303": "Friday wheat campaign last; full wet clean (CIP-less: open, scrape, wash, sanitize, dry), gluten swab at 5 points, first blend Monday tested for gluten",
+  "SC-304": "screen out, wet clean, swab",
+  "MD-305": "wet wipe aperture, swab",
+  "FC-307": "screw out, wet clean, swab",
+  "BF-306": "spout and seal wet clean, swab",
+  "BU-502": "station B in room B: allergen-free products packed on B only before the wheat campaign of the week, then full wet clean",
+  "NW-501": "same as BU-502"
+ },
+ "claims": [
+  {"claim": "Gluten free (< 20 ppm, 21 CFR 101.91)", "allergen": "wheat", "applies_to": "Creole Chameleon and launch seasonings",
+   "action": "Hold first lot after every wheat campaign until an ELISA (R5) test of finished product reads < 10 ppm; or buy a dedicated small blender for the 3 wheat mixes (about $40-60k) and remove the risk."}
+ ],
+ "dust": {
+  "collector": "DC-310", "margin": 0.25,
+  "nfpa_items": [
+   "NFPA 652 dust hazard analysis (DHA) before ordering DC-310; send Kst/Pmax and MIE samples of the 3 highest-volume blends to a test lab.",
+   "NFPA 61 (agricultural/food dusts): collector outside the building, explosion vent directed away from people, isolation flap valve on the inlet duct.",
+   "Ducts sized for >= 4,000 ft/min transport velocity; no horizontal duct runs where avoidable; cleanouts every 3 m.",
+   "Bond and ground every conveying element (< 10 ohm); flexible screws and FIBC spouts use Type C bags or grounded Type B with a grounding clamp on BB-302, BU-401 and BU-502.",
+   "Housekeeping: dust layer on any surface over 1/32 in (0.8 mm) triggers cleaning; vacuum only with a Class II Div 2 rated vacuum (Nilfisk), never compressed air.",
+   "Electrical in blending and weigh rooms: Class II Div 2 Group G unless the DHA shows otherwise; panels CP-300/CP-400 sit outside the exposed-product rooms."
+  ]
+ },
+ "haccp": [
+  {"ccp": "CCP-1", "step": "Metal detection MD-305 (after sifter, before bulk bag)", "hazard": "Physical: metal fragments from raw spice or equipment wear",
+   "limit": "No blend passes containing Fe >= 1.5 mm, non-Fe >= 2.0 mm, 316 SS >= 2.5 mm spheres (confirm at FAT with the product effect)",
+   "monitor": "Test wands through the aperture at start, every 2 h, at end and after any stop; reject-confirm sensor and locked reject bin",
+   "correct": "Failed test: hold all blend since the last good test, re-run it through MD-305, find the cause, record",
+   "verify": "QA reviews records daily; annual validation by Mettler-Toledo", "records": "MES batch record (md_rejects), MD-305 test log"},
+  {"ccp": "CCP-2 (allergen, if the HACCP team classifies it as a CCP)", "step": "Allergen changeover after the wheat campaign",
+   "hazard": "Chemical/allergen: wheat gluten cross-contact into gluten-free seasonings",
+   "limit": "Gluten swab < 10 ppm at every listed point; first allergen-free lot < 10 ppm (ELISA R5)",
+   "monitor": "Swabs after the wet clean; finished-product test of the first lot", "correct": "Re-clean and re-swab; hold and test lots; no gluten-free claim on a failed lot",
+   "verify": "Quarterly validation study; QA review", "records": "SSOP log, swab results, ELISA certificate in MES"}
+ ],
+ "prerequisites": [
+  "Supplier approval with COA per lot; spices bought steam-treated or ETO-free validated (Salmonella log reduction by the supplier) because the plant has no kill step.",
+  "Raw material micro: Salmonella negative in 375 g, per COA; skip-lot verification testing.",
+  "Sifter SC-304 with a 12 mesh screen and the DH-102 magnet: screens checked for damage each shift (prerequisite, not a CCP).",
+  "Net contents: CW-409 rejects every unit under declared (site rule); NIST HB 133 lot check in the MES.",
+  "Label control: first-off UPC and lot code check signed in the MES before the line can run; label rolls stored per SKU.",
+  "Pest control, glass and brittle plastic register, foreign-material policy, hygiene vestibule with hand wash and boot wash into Z3."
+ ],
+ "ssop": [
+  {"task": "Dry clean pack line A contact parts", "when": "end of every shift (30 min)", "method": "vacuum (Nilfisk Class II), dry brush (Vikan color-coded), wipe", "verify": "visual + ATP swab < 150 RLU on 3 points", "who": "line operators"},
+  {"task": "Blender sequence purge between allergen-free formulas", "when": "every formula change", "method": "run blender empty, brush ribbons, vacuum valve, purge with 25 kg salt (reused as carrier salt)", "verify": "visual", "who": "blend operator"},
+  {"task": "Full dry clean of the blending train", "when": "end of each blender campaign", "method": "open RB-303 cover (locked out), scrape and vacuum; sifter screen out; magnet wiped", "verify": "visual + ATP", "who": "blend operator"},
+  {"task": "Wet clean after wheat", "when": "Friday after the wheat campaign (outside production minutes)", "method": "disassemble per the joints on ASM-001; wash, sanitize (quat, no-rinse), dry with forced air for 12 h", "verify": "gluten swabs < 10 ppm; first Monday lot ELISA", "who": "sanitation crew"},
+  {"task": "Station B wet clean", "when": "after the wheat campaign on B", "method": "same as above for BU-502 and NW-501", "verify": "gluten swabs", "who": "sanitation crew"},
+  {"task": "Room clean (floors, ledges, overhead)", "when": "weekly; overhead monthly", "method": "vacuum top-down, no compressed air", "verify": "visual; dust layer < 1/32 in", "who": "sanitation crew"},
+  {"task": "Environmental monitoring (Salmonella)", "when": "monthly in Z3, zones 2-4 swabs", "method": "sponge swabs to lab", "verify": "trend in QA", "who": "QA"}
+ ]
+}

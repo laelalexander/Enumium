@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<defs><marker id="ar" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="context-stroke"/></marker><pattern id="hz" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#c62828" stroke-width="1"/></pattern></defs>
+<line x1="435.03937007874015" y1="1366.6393700787403" x2="435.03937007874015" y2="325.03937007874015" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="435.03937007874015" cy="295.03937007874015" r="22" fill="#fff" stroke="#607d8b"/><text x="435.03937007874015" y="301.03937007874015" font-size="18" text-anchor="middle" fill="#37474f">1</text>
+<line x1="812.992125984252" y1="1366.6393700787403" x2="812.992125984252" y2="325.03937007874015" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="812.992125984252" cy="295.03937007874015" r="22" fill="#fff" stroke="#607d8b"/><text x="812.992125984252" y="301.03937007874015" font-size="18" text-anchor="middle" fill="#37474f">2</text>
+<line x1="1190.9448818897638" y1="1366.6393700787403" x2="1190.9448818897638" y2="325.03937007874015" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="1190.9448818897638" cy="295.03937007874015" r="22" fill="#fff" stroke="#607d8b"/><text x="1190.9448818897638" y="301.03937007874015" font-size="18" text-anchor="middle" fill="#37474f">3</text>
+<line x1="1568.8976377952756" y1="1366.6393700787403" x2="1568.8976377952756" y2="325.03937007874015" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="1568.8976377952756" cy="295.03937007874015" r="22" fill="#fff" stroke="#607d8b"/><text x="1568.8976377952756" y="301.03937007874015" font-size="18" text-anchor="middle" fill="#37474f">4</text>
+<line x1="375.03937007874015" y1="1306.6393700787403" x2="1647.0393700787401" y2="1306.6393700787403" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="345.03937007874015" cy="1306.6393700787403" r="22" fill="#fff" stroke="#607d8b"/><text x="345.03937007874015" y="1312.6393700787403" font-size="18" text-anchor="middle" fill="#37474f">A</text>
+<line x1="375.03937007874015" y1="928.6866141732283" x2="1647.0393700787401" y2="928.6866141732283" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="345.03937007874015" cy="928.6866141732283" r="22" fill="#fff" stroke="#607d8b"/><text x="345.03937007874015" y="934.6866141732283" font-size="18" text-anchor="middle" fill="#37474f">B</text>
+<line x1="375.03937007874015" y1="550.7338582677165" x2="1647.0393700787401" y2="550.7338582677165" stroke="#cfd8dc" stroke-width="1" stroke-dasharray="20,6,4,6"/>
+<circle cx="345.03937007874015" cy="550.7338582677165" r="22" fill="#fff" stroke="#607d8b"/><text x="345.03937007874015" y="556.7338582677165" font-size="18" text-anchor="middle" fill="#37474f">C</text>
+<rect x="435.03937007874015" y="1004.2771653543307" width="680.3149606299213" height="302.3622047244094" fill="#eef3fb" stroke="#263238" stroke-width="5"/>
+<text x="457.7165354330709" y="1033.348031496063" font-size="20" font-weight="bold" fill="#263238">RECEIVING &amp; INGREDIENT STORAGE</text>
+<text x="457.7165354330709" y="1058.348031496063" font-size="13" fill="#455a64">Z1 warehouse · 36 m² [388 ft²]</text>
+<rect x="1115.3543307086616" y="1004.2771653543307" width="471.68503937007875" height="302.3622047244094" fill="#eef3fb" stroke="#263238" stroke-width="5"/>
+<text x="1138.0314960629921" y="1080.9700787401575" font-size="20" font-weight="bold" fill="#263238">FINISHED GOODS &amp; SHIPPING</text>
+<text x="1138.0314960629921" y="1105.9700787401575" font-size="13" fill="#455a64">Z1 warehouse · 25 m² [269 ft²]</text>
+<rect x="435.03937007874015" y="777.5055118110236" width="151.1811023622047" height="226.77165354330708" fill="#f3eef8" stroke="#263238" stroke-width="5"/>
+<text x="444.1102362204724" y="804.844094488189" font-size="16" font-weight="bold" fill="#263238">HYGIENE</text>
+<text x="444.1102362204724" y="823.844094488189" font-size="16" font-weight="bold" fill="#263238">VESTIBULE</text>
+<text x="444.1102362204724" y="844.844094488189" font-size="13" fill="#455a64">support</text>
+<text x="444.1102362204724" y="860.844094488189" font-size="13" fill="#455a64">6 m² [65 ft²]</text>
+<rect x="435.03937007874015" y="385.03937007874015" width="151.1811023622047" height="392.46614173228346" fill="#f3eef8" stroke="#263238" stroke-width="5"/>
+<text x="444.1102362204724" y="419.93700787401576" font-size="16" font-weight="bold" fill="#263238">OFFICE &amp; QC</text>
+<text x="444.1102362204724" y="440.93700787401576" font-size="13" fill="#455a64">support</text>
+<text x="444.1102362204724" y="456.93700787401576" font-size="13" fill="#455a64">10 m² [112 ft²]</text>
+<rect x="586.2204724409448" y="385.03937007874015" width="514.0157480314961" height="619.2377952755905" fill="#fff4e0" stroke="#263238" stroke-width="5"/>
+<text x="608.8976377952756" y="427.7165354330709" font-size="20" font-weight="bold" fill="#263238">DOSING &amp; BLENDING ROOM</text>
+<text x="608.8976377952756" y="452.7165354330709" font-size="13" fill="#455a64">Z3 high-care dry (exposed product) · 56 m² [600 ft²]</text>
+<rect x="1100.236220472441" y="385.03937007874015" width="486.8031496062992" height="619.2377952755905" fill="#fff4e0" stroke="#263238" stroke-width="5"/>
+<text x="1122.9133858267717" y="420.1574803149606" font-size="20" font-weight="bold" fill="#263238">PACK ROOM</text>
+<text x="1122.9133858267717" y="445.1574803149606" font-size="13" fill="#455a64">Z3 high-care dry (exposed product) · 53 m² [568 ft²]</text>
+<rect x="480.39370078740154" y="233.85826771653544" width="151.1811023622047" height="120.94488188976378" fill="#f4f4f4" stroke="#263238" stroke-width="1.5"/>
+<text x="480.39370078740154" y="197.16535433070865" font-size="20" font-weight="bold" fill="#263238">DUST COLLECTOR PAD (OUTSIDE)</text>
+<text x="480.39370078740154" y="222.16535433070865" font-size="13" fill="#455a64">Z0 outside · 3 m² [34 ft²]</text>
+<rect x="435.03937007874015" y="385.03937007874015" width="1152.0" height="921.6" fill="none" stroke="#111" stroke-width="9"/>
+<line x1="480.39370078740154" y1="1306.6393700787403" x2="661.8110236220473" y2="1306.6393700787403" stroke="#fff" stroke-width="11"/>
+<text x="571.1023622047244" y="1340.6393700787403" font-size="14" text-anchor="middle" fill="#37474f">Roll-up (receiving)</text>
+<line x1="1440.3937007874015" y1="1306.6393700787403" x2="1621.8110236220473" y2="1306.6393700787403" stroke="#fff" stroke-width="11"/>
+<text x="1531.1023622047244" y="1340.6393700787403" font-size="14" text-anchor="middle" fill="#37474f">Roll-up (shipping)</text>
+<line x1="435.03937007874015" y1="928.6866141732283" x2="435.03937007874015" y2="853.096062992126" stroke="#fff" stroke-width="11"/>
+<text x="423.03937007874015" y="890.8913385826771" font-size="13" text-anchor="end" fill="#37474f">Staff entry</text>
+<line x1="812.992125984252" y1="1004.2771653543307" x2="926.3779527559054" y2="1004.2771653543307" stroke="#fff" stroke-width="11"/>
+<text x="869.6850393700787" y="1038.2771653543307" font-size="14" text-anchor="middle" fill="#37474f">Ingredients in</text>
+<line x1="1115.3543307086616" y1="1004.2771653543307" x2="1206.0629921259842" y2="1004.2771653543307" stroke="#fff" stroke-width="11"/>
+<text x="1160.7086614173227" y="1038.2771653543307" font-size="14" text-anchor="middle" fill="#37474f">Packaging in</text>
+<line x1="1342.1259842519685" y1="1004.2771653543307" x2="1432.8346456692911" y2="1004.2771653543307" stroke="#fff" stroke-width="11"/>
+<text x="1387.48031496063" y="1038.2771653543307" font-size="14" text-anchor="middle" fill="#37474f">Cases out</text>
+<line x1="1100.236220472441" y1="883.3322834645669" x2="1100.236220472441" y2="769.9464566929134" stroke="#fff" stroke-width="11"/>
+<text x="1112.236220472441" y="826.6393700787401" font-size="13" text-anchor="start" fill="#37474f">Released drums</text>
+<line x1="586.2204724409448" y1="928.6866141732283" x2="586.2204724409448" y2="853.096062992126" stroke="#fff" stroke-width="11"/>
+<text x="598.2204724409448" y="890.8913385826771" font-size="13" text-anchor="start" fill="#37474f">Gowning</text>
+<rect x="548.4251968503937" y="1203.155905511811" width="92.14488188976378" height="92.14488188976378" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="594.4976377952755" y="1254.2283464566929" font-size="14.176135675348274" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-101</text>
+<circle cx="657.5700787401574" cy="1186.155905511811" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="657.5700787401574" y="1191.155905511811" font-size="14" text-anchor="middle" fill="#0d47a1">1</text>
+<rect x="457.7165354330709" y="1086.6708661417324" width="115.2" height="46.11023622047244" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="515.3165354330708" y="1114.7259842519684" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">SH-1</text>
+<circle cx="589.9165354330709" cy="1069.6708661417324" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="589.9165354330709" y="1074.6708661417324" font-size="14" text-anchor="middle" fill="#0d47a1">2</text>
+<rect x="582.4409448818898" y="1086.6708661417324" width="115.2" height="46.11023622047244" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="640.0409448818898" y="1114.7259842519684" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">SH-2</text>
+<circle cx="714.6409448818897" cy="1069.6708661417324" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="714.6409448818897" y="1074.6708661417324" font-size="14" text-anchor="middle" fill="#0d47a1">3</text>
+<rect x="707.1653543307086" y="1086.6708661417324" width="115.2" height="46.11023622047244" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="764.7653543307086" y="1114.7259842519684" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">SH-3</text>
+<circle cx="839.3653543307087" cy="1069.6708661417324" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="839.3653543307087" y="1074.6708661417324" font-size="14" text-anchor="middle" fill="#0d47a1">4</text>
+<rect x="831.8897637795276" y="1086.6708661417324" width="115.2" height="46.11023622047244" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="889.4897637795275" y="1114.7259842519684" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">SH-4</text>
+<circle cx="964.0897637795275" cy="1069.6708661417324" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="964.0897637795275" y="1074.6708661417324" font-size="14" text-anchor="middle" fill="#0d47a1">5</text>
+<rect x="956.6141732283464" y="1086.6708661417324" width="115.2" height="46.11023622047244" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1014.2141732283465" y="1114.7259842519684" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">SH-5</text>
+<circle cx="1088.8141732283466" cy="1069.6708661417324" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1088.8141732283466" y="1074.6708661417324" font-size="14" text-anchor="middle" fill="#0d47a1">6</text>
+<rect x="737.4015748031495" y="1204.592125984252" width="188.9763779527559" height="90.70866141732283" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="831.8897637795276" y="1254.9464566929132" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">PAL-RM</text>
+<circle cx="943.3779527559054" cy="1187.592125984252" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="943.3779527559054" y="1192.592125984252" font-size="14" text-anchor="middle" fill="#0d47a1">7</text>
+<rect x="994.4094488188977" y="1231.8047244094487" width="117.16535433070867" height="52.15748031496063" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1052.992125984252" y="1262.883464566929" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-103</text>
+<circle cx="1128.5748031496064" cy="1214.8047244094487" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1128.5748031496064" y="1219.8047244094487" font-size="14" text-anchor="middle" fill="#0d47a1">8</text>
+<rect x="608.8976377952756" y="503.11181102362207" width="251.71653543307087" height="251.71653543307087" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="734.7559055118111" y="633.9700787401575" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-210</text>
+<circle cx="877.6141732283464" cy="486.11181102362207" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="877.6141732283464" y="491.11181102362207" font-size="14" text-anchor="middle" fill="#0d47a1">9</text>
+<rect x="616.4566929133858" y="777.5055118110236" width="98.26771653543307" height="60.47244094488189" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="665.5905511811023" y="812.7417322834646" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-227</text>
+<circle cx="731.724409448819" cy="760.5055118110236" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="731.724409448819" y="765.5055118110236" font-size="14" text-anchor="middle" fill="#0d47a1">10</text>
+<rect x="593.7795275590552" y="962.7023622047244" width="45.354330708661415" height="18.89763779527559" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="616.4566929133858" y="977.1511811023622" font-size="9" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-225</text>
+<circle cx="656.1338582677165" cy="945.7023622047244" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="656.1338582677165" y="950.7023622047244" font-size="14" text-anchor="middle" fill="#0d47a1">11</text>
+<rect x="860.6141732283464" y="573.4110236220472" width="75.59055118110236" height="30.236220472440944" fill="#ffe0b2" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="898.4094488188975" y="593.5291338582676" font-size="11.62931556632344" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-224</text>
+<circle cx="953.2047244094488" cy="556.4110236220472" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="953.2047244094488" y="561.4110236220472" font-size="14" text-anchor="middle" fill="#0d47a1">12</text>
+<rect x="937.7165354330709" y="488.7496062992126" width="64.25196850393701" height="130.01574803149606" fill="#ffe0b2" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="969.8425196850394" y="558.7574803149606" font-size="9.884918231374924" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-301</text>
+<circle cx="1018.9685039370079" cy="471.7496062992126" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1018.9685039370079" y="476.7496062992126" font-size="14" text-anchor="middle" fill="#0d47a1">13</text>
+<rect x="642.9133858267717" y="924.0" width="115.2" height="57.6" fill="#ffe0b2" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="700.5133858267716" y="957.8" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-206</text>
+<circle cx="775.1133858267717" cy="907.0" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="775.1133858267717" y="912.0" font-size="14" text-anchor="middle" fill="#0d47a1">14</text>
+<rect x="775.1968503937007" y="951.363779527559" width="45.354330708661415" height="30.236220472440944" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="797.8740157480315" y="971.4818897637795" font-size="9" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-208</text>
+<circle cx="837.5511811023622" cy="934.363779527559" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="837.5511811023622" y="939.363779527559" font-size="14" text-anchor="middle" fill="#0d47a1">15</text>
+<rect x="986.8503937007874" y="837.9779527559056" width="98.26771653543307" height="143.6220472440945" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1035.984251968504" y="914.7889763779527" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">HOLD-1</text>
+<circle cx="1102.1181102362204" cy="820.9779527559056" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1102.1181102362204" y="825.9779527559056" font-size="14" text-anchor="middle" fill="#0d47a1">16</text>
+<rect x="826.5984251968504" y="822.859842519685" width="68.03149606299212" height="45.354330708661415" fill="#ffe0b2" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="860.6141732283464" y="850.5370078740157" font-size="10.466384009691096" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-320</text>
+<circle cx="911.6299212598425" cy="805.859842519685" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="911.6299212598425" y="810.859842519685" font-size="14" text-anchor="middle" fill="#0d47a1">17</text>
+<rect x="495.51181102362204" y="271.6535433070866" width="90.70866141732283" height="68.03149606299212" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="540.8661417322835" y="310.66929133858264" font-size="13.955178679588128" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-310</text>
+<circle cx="603.2204724409448" cy="254.65354330708658" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="603.2204724409448" y="259.6535433070866" font-size="14" text-anchor="middle" fill="#0d47a1">18</text>
+<rect x="1122.9133858267717" y="452.46614173228346" width="70.2992125984252" height="75.59055118110236" fill="#ffe0b2" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1158.0629921259842" y="495.26141732283463" font-size="10.8152634766808" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-401</text>
+<circle cx="1210.2125984251968" cy="435.46614173228346" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1210.2125984251968" y="440.46614173228346" font-size="14" text-anchor="middle" fill="#0d47a1">19</text>
+<rect x="1179.6062992125985" y="474.23622047244095" width="115.2" height="57.6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1237.2062992125984" y="508.03622047244096" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">TBL-1</text>
+<circle cx="1311.8062992125983" cy="457.23622047244095" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1311.8062992125983" y="462.23622047244095" font-size="14" text-anchor="middle" fill="#0d47a1">20</text>
+<rect x="1296.771653543307" y="474.23622047244095" width="115.2" height="57.6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1354.371653543307" y="508.03622047244096" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">TBL-2</text>
+<circle cx="1428.9716535433072" cy="457.23622047244095" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1428.9716535433072" y="462.23622047244095" font-size="14" text-anchor="middle" fill="#0d47a1">21</text>
+<rect x="1413.9370078740158" y="483.45826771653543" width="114.14173228346456" height="44.59842519685039" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1471.007874015748" y="510.7574803149606" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-406</text>
+<circle cx="1545.0787401574803" cy="466.45826771653543" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1545.0787401574803" y="471.45826771653543" font-size="14" text-anchor="middle" fill="#0d47a1">22</text>
+<rect x="1489.527559055118" y="598.9606299212599" width="57.6" height="57.6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1518.3275590551182" y="632.7606299212598" font-size="9" text-anchor="middle" font-weight="bold" fill="#0d47a1">P1-408</text>
+<circle cx="1564.1275590551181" cy="581.9606299212599" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1564.1275590551181" y="586.9606299212599" font-size="14" text-anchor="middle" fill="#0d47a1">23</text>
+<rect x="1349.6850393700788" y="606.5196850393701" width="115.2" height="57.6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1407.2850393700787" y="640.31968503937" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">TBL-3</text>
+<circle cx="1481.8850393700786" cy="589.5196850393701" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1481.8850393700786" y="594.5196850393701" font-size="14" text-anchor="middle" fill="#0d47a1">24</text>
+<rect x="1228.7401574803148" y="606.5196850393701" width="115.2" height="57.6" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1286.340157480315" y="640.31968503937" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">TBL-4</text>
+<circle cx="1360.940157480315" cy="589.5196850393701" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1360.940157480315" y="594.5196850393701" font-size="14" text-anchor="middle" fill="#0d47a1">25</text>
+<rect x="1122.9133858267717" y="890.8913385826771" width="181.41732283464566" height="90.70866141732283" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1213.6220472440946" y="941.2456692913386" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">PKG</text>
+<circle cx="1321.3307086614172" cy="873.8913385826771" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1321.3307086614172" y="878.8913385826771" font-size="14" text-anchor="middle" fill="#0d47a1">26</text>
+<rect x="1379.9212598425197" y="904.4976377952755" width="92.22047244094487" height="77.10236220472441" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1426.0314960629921" y="948.0488188976378" font-size="14.187764990914596" text-anchor="middle" font-weight="bold" fill="#0d47a1">PAL-FG</text>
+<circle cx="1489.1417322834645" cy="887.4976377952755" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1489.1417322834645" y="892.4976377952755" font-size="14" text-anchor="middle" fill="#0d47a1">27</text>
+<rect x="1153.1496062992126" y="1163.0173228346457" width="279.68503937007875" height="98.26771653543307" fill="#e3f2fd" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="1292.992125984252" y="1217.1511811023622" font-size="15" text-anchor="middle" font-weight="bold" fill="#0d47a1">FG-1</text>
+<circle cx="1449.8346456692911" cy="1146.0173228346457" r="14" fill="#fff" stroke="#0d47a1" stroke-width="1.6"/><text x="1449.8346456692911" y="1151.0173228346457" font-size="14" text-anchor="middle" fill="#0d47a1">28</text>
+<polyline points="571.1023622047244,1283.9622047244093 571.1023622047244,1159.2377952755905 865.9055118110236,1159.2377952755905 865.9055118110236,981.6 865.9055118110236,906.0094488188976 744.9606299212599,906.0094488188976 741.1811023622047,762.3874015748031" fill="none" stroke="#1565c0" stroke-width="4" stroke-dasharray="10,4" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="733.6220472440945,630.103937007874 903.7007874015749,588.5291338582676 969.8425196850394,588.5291338582676 969.8425196850394,649.0015748031497" fill="none" stroke="#e65100" stroke-width="4" stroke-dasharray="" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="969.8425196850394,649.0015748031497 969.8425196850394,754.8283464566929 1009.5275590551181,830.4188976377952" fill="none" stroke="#e65100" stroke-width="4" stroke-dasharray="" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="1039.763779527559,928.6866141732283 1100.236220472441,830.4188976377952 1145.5905511811025,531.8362204724409" fill="none" stroke="#e65100" stroke-width="4" stroke-dasharray="" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="1153.1496062992126,501.6 1523.543307086614,501.6 1515.984251968504,626.3244094488189 1266.535433070866,633.8834645669291" fill="none" stroke="#e65100" stroke-width="4" stroke-dasharray="" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="1085.1181102362204,1094.9858267716536 1160.7086614173227,1034.5133858267716 1160.7086614173227,981.6" fill="none" stroke="#00838f" stroke-width="4" stroke-dasharray="8,3,2,3" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="1266.535433070866,664.1196850393701 1410.1574803149606,898.4503937007873 1387.48031496063,1004.2771653543307 1342.1259842519685,1163.0173228346457 1531.1023622047244,1283.9622047244093" fill="none" stroke="#2e7d32" stroke-width="4" stroke-dasharray="14,4" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="457.7165354330709,890.8913385826771 548.4251968503937,890.8913385826771 616.4566929133858,890.8913385826771" fill="none" stroke="#6a1b9a" stroke-width="4" stroke-dasharray="3,4" marker-end="url(#ar)" opacity="0.9"/>
+<polyline points="699.6062992125984,943.8047244094488 699.6062992125984,887.1118110236221 597.5590551181102,860.6551181102362 597.5590551181102,399.5527559055118 555.9842519685039,331.52125984251967" fill="none" stroke="#5d4037" stroke-width="4" stroke-dasharray="2,3" marker-end="url(#ar)" opacity="0.9"/>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="435.03937007874015" y1="1548.5291338582676" x2="1587.0393700787401" y2="1548.5291338582676"/><line x1="435.03937007874015" y1="1538.5291338582676" x2="435.03937007874015" y2="1558.5291338582676"/><line x1="1587.0393700787401" y1="1538.5291338582676" x2="1587.0393700787401" y2="1558.5291338582676"/><text x="1011.0393700787401" y="1540.5291338582676" font-size="17" text-anchor="middle" stroke="none">OVERALL 15,240 [50'-0"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="193.1496062992126" y1="1306.6393700787403" x2="193.1496062992126" y2="385.03937007874015"/><line x1="183.1496062992126" y1="1306.6393700787403" x2="203.1496062992126" y2="1306.6393700787403"/><line x1="183.1496062992126" y1="385.03937007874015" x2="203.1496062992126" y2="385.03937007874015"/><text transform="translate(183.1496062992126,845.8393700787402) rotate(-90)" font-size="17" text-anchor="middle" stroke="none">OVERALL 12,192 [40'-0"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="435.03937007874015" y1="1420.0251968503937" x2="1115.3543307086616" y2="1420.0251968503937"/><line x1="435.03937007874015" y1="1410.0251968503937" x2="435.03937007874015" y2="1430.0251968503937"/><line x1="1115.3543307086616" y1="1410.0251968503937" x2="1115.3543307086616" y2="1430.0251968503937"/><text x="775.1968503937009" y="1412.0251968503937" font-size="17" text-anchor="middle" stroke="none">9,000 [29'-6"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="1115.3543307086616" y1="1420.0251968503937" x2="1587.0393700787401" y2="1420.0251968503937"/><line x1="1115.3543307086616" y1="1410.0251968503937" x2="1115.3543307086616" y2="1430.0251968503937"/><line x1="1587.0393700787401" y1="1410.0251968503937" x2="1587.0393700787401" y2="1430.0251968503937"/><text x="1351.196850393701" y="1412.0251968503937" font-size="17" text-anchor="middle" stroke="none">6,240 [20'-6"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="321.6535433070866" y1="1306.6393700787403" x2="321.6535433070866" y2="1004.2771653543307"/><line x1="311.6535433070866" y1="1306.6393700787403" x2="331.6535433070866" y2="1306.6393700787403"/><line x1="311.6535433070866" y1="1004.2771653543307" x2="331.6535433070866" y2="1004.2771653543307"/><text transform="translate(311.6535433070866,1155.4582677165354) rotate(-90)" font-size="17" text-anchor="middle" stroke="none">4,000 [13'-1"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="321.6535433070866" y1="1004.2771653543307" x2="321.6535433070866" y2="777.5055118110236"/><line x1="311.6535433070866" y1="1004.2771653543307" x2="331.6535433070866" y2="1004.2771653543307"/><line x1="311.6535433070866" y1="777.5055118110236" x2="331.6535433070866" y2="777.5055118110236"/><text transform="translate(311.6535433070866,890.8913385826771) rotate(-90)" font-size="17" text-anchor="middle" stroke="none">3,000 [9'-10"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="321.6535433070866" y1="777.5055118110236" x2="321.6535433070866" y2="385.03937007874015"/><line x1="311.6535433070866" y1="777.5055118110236" x2="331.6535433070866" y2="777.5055118110236"/><line x1="311.6535433070866" y1="385.03937007874015" x2="331.6535433070866" y2="385.03937007874015"/><text transform="translate(311.6535433070866,581.2724409448819) rotate(-90)" font-size="17" text-anchor="middle" stroke="none">5,192 [17'-0"]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="1122.9133858267717" y1="554.5133858267716" x2="1527.3228346456692" y2="554.5133858267716"/><line x1="1122.9133858267717" y1="544.5133858267716" x2="1122.9133858267717" y2="564.5133858267716"/><line x1="1527.3228346456692" y1="544.5133858267716" x2="1527.3228346456692" y2="564.5133858267716"/><text x="1325.1181102362204" y="546.5133858267716" font-size="17" text-anchor="middle" stroke="none">PACK BENCH 5,350 [17.6 ft]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="1.2"><line x1="597.5590551181102" y1="754.8283464566929" x2="597.5590551181102" y2="503.11181102362207"/><line x1="587.5590551181102" y1="754.8283464566929" x2="607.5590551181102" y2="754.8283464566929"/><line x1="587.5590551181102" y1="503.11181102362207" x2="607.5590551181102" y2="503.11181102362207"/><text transform="translate(587.5590551181102,628.9700787401575) rotate(-90)" font-size="17" text-anchor="middle" stroke="none">DOSING RING 3,330 [10.9 ft]</text></g>
+<g transform="translate(2560,150)"><path d="M0,-40 L16,20 L0,8 L-16,20 Z" fill="#111"/><text x="0" y="48" font-size="20" text-anchor="middle" font-weight="bold">N</text></g>
+<g transform="translate(435.03937007874015,2214)"><rect width="377.9527559055118" height="10" fill="#111"/><rect x="377.9527559055118" width="377.9527559055118" height="10" fill="#fff" stroke="#111"/><text y="-8" font-size="15">0</text><text x="377.9527559055118" y="-8" font-size="15" text-anchor="middle">5 m</text><text x="755.9055118110236" y="-8" font-size="15" text-anchor="middle">10 m [32'-10"]</text><text x="785.9055118110236" y="10" font-size="16">SCALE 1:50 on ARCH D (36 x 24 in)</text></g>
+<text x="2640" y="230" font-size="20" font-weight="bold">EQUIPMENT SCHEDULE</text>
+<rect x="2640" y="242" width="780" height="22" fill="#eceff1" stroke="#111"/>
+<text x="2646" y="258" font-size="13" font-weight="bold">#</text>
+<text x="2676" y="258" font-size="13" font-weight="bold">TAG</text>
+<text x="2776" y="258" font-size="13" font-weight="bold">EQUIPMENT</text>
+<text x="3200" y="258" font-size="13" font-weight="bold">FOOTPRINT mm [in]</text>
+<rect x="2640" y="264" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="278" font-size="12">1</text><text x="2676" y="278" font-size="12" font-weight="bold">P1-101</text><text x="2776" y="278" font-size="11.5">Low-profile pallet floor scale 1,000 lb with indicator (ve</text><text x="3200" y="278" font-size="11.5">1,219 x 1,219 [48 x 48]</text>
+<rect x="2640" y="283" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="297" font-size="12">2</text><text x="2676" y="297" font-size="12" font-weight="bold">SH-1</text><text x="2776" y="297" font-size="11.5">NSF shelving 24 x 60 in (P1-102)</text><text x="3200" y="297" font-size="11.5">1,524 x 610 [60 x 24]</text>
+<rect x="2640" y="302" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="316" font-size="12">3</text><text x="2676" y="316" font-size="12" font-weight="bold">SH-2</text><text x="2776" y="316" font-size="11.5">NSF shelving 24 x 60 in (P1-102)</text><text x="3200" y="316" font-size="11.5">1,524 x 610 [60 x 24]</text>
+<rect x="2640" y="321" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="335" font-size="12">4</text><text x="2676" y="335" font-size="12" font-weight="bold">SH-3</text><text x="2776" y="335" font-size="11.5">NSF shelving 24 x 60 in (P1-102)</text><text x="3200" y="335" font-size="11.5">1,524 x 610 [60 x 24]</text>
+<rect x="2640" y="340" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="354" font-size="12">5</text><text x="2676" y="354" font-size="12" font-weight="bold">SH-4</text><text x="2776" y="354" font-size="11.5">NSF shelving 24 x 60 in (P1-102)</text><text x="3200" y="354" font-size="11.5">1,524 x 610 [60 x 24]</text>
+<rect x="2640" y="359" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="373" font-size="12">6</text><text x="2676" y="373" font-size="12" font-weight="bold">SH-5</text><text x="2776" y="373" font-size="11.5">NSF shelving 24 x 60 in (P1-102)</text><text x="3200" y="373" font-size="11.5">1,524 x 610 [60 x 24]</text>
+<rect x="2640" y="378" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="392" font-size="12">7</text><text x="2676" y="392" font-size="12" font-weight="bold">PAL-RM</text><text x="2776" y="392" font-size="11.5">Floor pallets: salt, garlic, paprika (2 weeks)</text><text x="3200" y="392" font-size="11.5">2,500 x 1,200 [98 x 47]</text>
+<rect x="2640" y="397" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="411" font-size="12">8</text><text x="2676" y="411" font-size="12" font-weight="bold">P1-103</text><text x="2776" y="411" font-size="11.5">Manual pallet truck 5,500 lb</text><text x="3200" y="411" font-size="11.5">1,550 x 690 [61 x 27]</text>
+<rect x="2640" y="416" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="430" font-size="12">9</text><text x="2676" y="430" font-size="12" font-weight="bold">P1-210</text><text x="2776" y="430" font-size="11.5">Ingredient bin ring frame, 12 positions around the weigh h</text><text x="3200" y="430" font-size="11.5">3,330 x 3,330 [131 x 131]</text>
+<rect x="2640" y="435" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="449" font-size="12">10</text><text x="2676" y="449" font-size="12" font-weight="bold">P1-227</text><text x="2776" y="449" font-size="11.5">Rolling 4-step platform for loading bins (40 in top step, </text><text x="3200" y="449" font-size="11.5">1,300 x 800 [51 x 31]</text>
+<rect x="2640" y="454" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="468" font-size="12">11</text><text x="2676" y="468" font-size="12" font-weight="bold">P1-225</text><text x="2776" y="468" font-size="11.5">Dosing controller: WAGO PFC200 (CODESYS) + I/O, SS enclosu</text><text x="3200" y="468" font-size="11.5">600 x 250 [24 x 10]</text>
+<rect x="2640" y="473" width="780" height="19" fill="#fff8e1" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="487" font-size="12">12</text><text x="2676" y="487" font-size="12" font-weight="bold">P1-224</text><text x="2776" y="487" font-size="11.5">Flexible screw conveyor, weigh hopper to blender inlet, sa</text><text x="3200" y="487" font-size="11.5">1,000 x 400 [39 x 16]</text>
+<rect x="2640" y="492" width="780" height="19" fill="#fff8e1" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="506" font-size="12">13</text><text x="2676" y="506" font-size="12" font-weight="bold">P1-301</text><text x="2776" y="506" font-size="11.5">Ribbon blender 6 cu ft, built in house: 316L U-trough, dou</text><text x="3200" y="506" font-size="11.5">850 x 1,720 [33 x 68]</text>
+<rect x="2640" y="511" width="780" height="19" fill="#fff8e1" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="525" font-size="12">14</text><text x="2676" y="525" font-size="12" font-weight="bold">P1-206</text><text x="2776" y="525" font-size="11.5">Weigh bench with backdraft dust hood (stainless)</text><text x="3200" y="525" font-size="11.5">1,524 x 762 [60 x 30]</text>
+<rect x="2640" y="530" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="544" font-size="12">15</text><text x="2676" y="544" font-size="12" font-weight="bold">P1-208</text><text x="2776" y="544" font-size="11.5">Premix pail tumbler (minors + carrier salt in a sealed SS </text><text x="3200" y="544" font-size="11.5">600 x 400 [24 x 16]</text>
+<rect x="2640" y="549" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="563" font-size="12">16</text><text x="2676" y="563" font-size="12" font-weight="bold">HOLD-1</text><text x="2776" y="563" font-size="11.5">QC hold: 55 gal drums on dollies (2 x 3)</text><text x="3200" y="563" font-size="11.5">1,300 x 1,900 [51 x 75]</text>
+<rect x="2640" y="568" width="780" height="19" fill="#fff8e1" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="582" font-size="12">17</text><text x="2676" y="582" font-size="12" font-weight="bold">P1-320</text><text x="2776" y="582" font-size="11.5">Small sanitary hammer mill on stand: grinds whole pepperco</text><text x="3200" y="582" font-size="11.5">900 x 600 [35 x 24]</text>
+<rect x="2640" y="587" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="601" font-size="12">18</text><text x="2676" y="601" font-size="12" font-weight="bold">P1-310</text><text x="2776" y="601" font-size="11.5">Portable cartridge dust collector (weigh hood, blender hoo</text><text x="3200" y="601" font-size="11.5">1,200 x 900 [47 x 35]</text>
+<rect x="2640" y="606" width="780" height="19" fill="#fff8e1" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="620" font-size="12">19</text><text x="2676" y="620" font-size="12" font-weight="bold">P1-401</text><text x="2776" y="620" font-size="11.5">Servo auger filler, built in house: cabinet, column, 42 L </text><text x="3200" y="620" font-size="11.5">930 x 1,000 [37 x 39]</text>
+<rect x="2640" y="625" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="639" font-size="12">20</text><text x="2676" y="639" font-size="12" font-weight="bold">TBL-1</text><text x="2776" y="639" font-size="11.5">Spindle capper P1-412 + induction sealer</text><text x="3200" y="639" font-size="11.5">1,524 x 762 [60 x 30]</text>
+<rect x="2640" y="644" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="658" font-size="12">21</text><text x="2676" y="658" font-size="12" font-weight="bold">TBL-2</text><text x="2776" y="658" font-size="11.5">Label table (wrap labeler P1-404 + LX910)</text><text x="3200" y="658" font-size="11.5">1,524 x 762 [60 x 30]</text>
+<rect x="2640" y="663" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="677" font-size="12">22</text><text x="2676" y="677" font-size="12" font-weight="bold">P1-406</text><text x="2776" y="677" font-size="11.5">Metal detector conveyor (CCP-1 on finished packs): built f</text><text x="3200" y="677" font-size="11.5">1,510 x 590 [59 x 23]</text>
+<rect x="2640" y="682" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="696" font-size="12">23</text><text x="2676" y="696" font-size="12" font-weight="bold">P1-408</text><text x="2776" y="696" font-size="11.5">Accumulation turntable 30 in (stainless disc on lazy-susan</text><text x="3200" y="696" font-size="11.5">762 x 762 [30 x 30]</text>
+<rect x="2640" y="701" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="715" font-size="12">24</text><text x="2676" y="715" font-size="12" font-weight="bold">TBL-3</text><text x="2776" y="715" font-size="11.5">Checkweigh table (P1-407)</text><text x="3200" y="715" font-size="11.5">1,524 x 762 [60 x 30]</text>
+<rect x="2640" y="720" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="734" font-size="12">25</text><text x="2676" y="734" font-size="12" font-weight="bold">TBL-4</text><text x="2776" y="734" font-size="11.5">Case-pack table</text><text x="3200" y="734" font-size="11.5">1,524 x 762 [60 x 30]</text>
+<rect x="2640" y="739" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="753" font-size="12">26</text><text x="2676" y="753" font-size="12" font-weight="bold">PKG</text><text x="2776" y="753" font-size="11.5">Empty containers, caps, labels (1 day)</text><text x="3200" y="753" font-size="11.5">2,400 x 1,200 [94 x 47]</text>
+<rect x="2640" y="758" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="772" font-size="12">27</text><text x="2676" y="772" font-size="12" font-weight="bold">PAL-FG</text><text x="2776" y="772" font-size="11.5">Pallet being built</text><text x="3200" y="772" font-size="11.5">1,220 x 1,020 [48 x 40]</text>
+<rect x="2640" y="777" width="780" height="19" fill="#fff" stroke="#90a4ae" stroke-width="0.6"/><text x="2646" y="791" font-size="12">28</text><text x="2676" y="791" font-size="12" font-weight="bold">FG-1</text><text x="2776" y="791" font-size="11.5">FG pallets (3 days)</text><text x="3200" y="791" font-size="11.5">3,700 x 1,300 [146 x 51]</text>
+<text x="2640" y="822" font-size="20" font-weight="bold">HYGIENE ZONES</text>
+<rect x="2640" y="832" width="34" height="18" fill="#f4f4f4" stroke="#263238"/><text x="2684" y="846" font-size="13">Z0 outside</text>
+<rect x="2640" y="856" width="34" height="18" fill="#eef3fb" stroke="#263238"/><text x="2684" y="870" font-size="13">Z1 warehouse</text>
+<rect x="2640" y="880" width="34" height="18" fill="#fff4e0" stroke="#263238"/><text x="2684" y="894" font-size="13">Z3 high-care dry (exposed product)</text>
+<rect x="2640" y="904" width="34" height="18" fill="#f3eef8" stroke="#263238"/><text x="2684" y="918" font-size="13">support</text>
+<text x="2640" y="938" font-size="20" font-weight="bold">FLOWS</text>
+<line x1="2640" y1="957" x2="2700" y2="957" stroke="#1565c0" stroke-width="4" stroke-dasharray="10,4"/><text x="2712" y="962" font-size="13">raw</text>
+<line x1="2640" y1="979" x2="2700" y2="979" stroke="#e65100" stroke-width="4" stroke-dasharray=""/><text x="2712" y="984" font-size="13">product</text>
+<line x1="2640" y1="1001" x2="2700" y2="1001" stroke="#2e7d32" stroke-width="4" stroke-dasharray="14,4"/><text x="2712" y="1006" font-size="13">finished</text>
+<line x1="2640" y1="1023" x2="2700" y2="1023" stroke="#6a1b9a" stroke-width="4" stroke-dasharray="3,4"/><text x="2712" y="1028" font-size="13">people</text>
+<line x1="2640" y1="1045" x2="2700" y2="1045" stroke="#5d4037" stroke-width="4" stroke-dasharray="2,3"/><text x="2712" y="1050" font-size="13">waste</text>
+<line x1="2640" y1="1067" x2="2700" y2="1067" stroke="#00838f" stroke-width="4" stroke-dasharray="8,3,2,3"/><text x="2712" y="1072" font-size="13">packaging</text>
+<rect x="2640" y="1086" width="34" height="18" fill="#ffe0b2" stroke="#0d47a1"/><text x="2684" y="1100" font-size="13">equipment with product contact</text>
+<text x="2640" y="1120" font-size="20" font-weight="bold">LAYOUT CHECKS (layout.py)</text>
+<text x="2640" y="1142" font-size="13" fill="#2e7d32">PASS · Equipment overlaps: 0</text>
+<text x="2640" y="1161" font-size="13" fill="#2e7d32">PASS · Equipment outside its room: 0</text>
+<text x="2640" y="1180" font-size="13" fill="#2e7d32">PASS · Zone rule violations: 0</text>
+<text x="2640" y="1199" font-size="13" fill="#2e7d32">PASS · Raw/finished or waste/product flow crossings: 0</text>
+<text x="2640" y="1218" font-size="13" fill="#2e7d32">PASS · Gaps under 900 mm (linked pairs excluded): 0</text>
+<rect x="2640" y="1834" width="780" height="150" fill="none" stroke="#111"/><text x="2650" y="1856" font-size="15" font-weight="bold">NOTES</text>
+<text x="2650" y="1876" font-size="11.5">About 2,000 sq ft (50 x 40 ft) light-industrial or food-grade unit; 12 ft clear is enough (no bulk bags in Phase 1).</text>
+<text x="2650" y="1892" font-size="11.5">Dosing station: 12 bin positions (9 used for the 5 launch blends); bins are loaded from the rolling platform P1-227.</text>
+<text x="2650" y="1908" font-size="11.5">Blend path: weigh hopper &gt; flexible screw &gt; 6 cu ft blender &gt; discharge chute &gt; sieve + magnet &gt; lined dr</text>
+<text x="2650" y="1924" font-size="11.5">Metal detection (CCP-1) is on the finished pack (P1-406), after labeling, with a locked reject bin.</text>
+<text x="2650" y="1940" font-size="11.5">Z3 rooms: sealed epoxy floor, coved base, washable ceiling; enter only through the hygiene vestibule.</text>
+<text x="2650" y="1956" font-size="11.5">Footprints from equipment.json (Phase 1); used-machine sizes are estimates until the unit is chosen.</text>
+<g><rect x="2640" y="1994" width="780" height="262" fill="none" stroke="#111" stroke-width="2"/><text x="2652" y="2028" font-size="26" font-weight="bold">LAY-P1 PHASE 1 PROTOTYPE LAYOUT</text><text x="2652" y="2054" font-size="16">Down Home Creole · Phase 1 prototype · 1,000 lb/week, 5 blends (13-blend ready)</text><line x1="2640" y1="2070" x2="3420" y2="2070" stroke="#111"/>
+<text x="2652" y="2094" font-size="12" fill="#555">DRAWING NO.</text><text x="2652" y="2120" font-size="18" font-weight="bold">DH-LAY-P1</text>
+<text x="2844" y="2094" font-size="12" fill="#555">REV</text><text x="2844" y="2120" font-size="18" font-weight="bold">A</text>
+<text x="3036" y="2094" font-size="12" fill="#555">SCALE</text><text x="3036" y="2120" font-size="18" font-weight="bold">1:50</text>
+<text x="3228" y="2094" font-size="12" fill="#555">UNITS</text><text x="3228" y="2120" font-size="18" font-weight="bold">mm [ft-in]</text>
+<text x="2652" y="2168" font-size="12" fill="#555">SHEET</text><text x="2652" y="2194" font-size="18" font-weight="bold">ARCH D 36 x 24 in</text>
+<text x="2844" y="2168" font-size="12" fill="#555">DRAWN</text><text x="2844" y="2194" font-size="18" font-weight="bold">plant/layout.py</text>
+<text x="3036" y="2168" font-size="12" fill="#555">DATE</text><text x="3036" y="2194" font-size="18" font-weight="bold">2026-11-17</text>
+<text x="3228" y="2168" font-size="12" fill="#555">STATUS</text><text x="3228" y="2194" font-size="18" font-weight="bold">FOR REVIEW</text>
+</g></svg>

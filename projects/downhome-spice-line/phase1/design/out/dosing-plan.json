@@ -1,0 +1,1000 @@
+{
+ "min_dose_kg": 4.0,
+ "dose_accuracy_kg": 0.02,
+ "bin_positions": 12,
+ "spare_positions": 3,
+ "bins": [
+  {
+   "bin": "B01",
+   "ingredient": "salt",
+   "name": "Salt, fine flake",
+   "density": 1.2,
+   "weekly_kg": 149.5,
+   "weekly_l": 124.6,
+   "capacity_kg": 152.9,
+   "days_of_stock": 5.1,
+   "refills_per_week": 0.98,
+   "bags_per_refill": 6.1,
+   "max_dose_kg": 25.29,
+   "rate_l_h": 316.1,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 2.3,
+   "flow": "good",
+   "agitator": false,
+   "products": [
+    "f-blkn",
+    "f-fire",
+    "f-garl",
+    "f-lemp",
+    "f-orig"
+   ]
+  },
+  {
+   "bin": "B02",
+   "ingredient": "garlic",
+   "name": "Garlic, granulated",
+   "density": 0.72,
+   "weekly_kg": 65.1,
+   "weekly_l": 90.5,
+   "capacity_kg": 91.7,
+   "days_of_stock": 7.0,
+   "refills_per_week": 0.71,
+   "bags_per_refill": 3.7,
+   "max_dose_kg": 24.13,
+   "rate_l_h": 502.7,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 3.6,
+   "flow": "good",
+   "agitator": false,
+   "products": [
+    "f-blkn",
+    "f-fire",
+    "f-garl",
+    "f-lemp",
+    "f-orig"
+   ]
+  },
+  {
+   "bin": "B03",
+   "ingredient": "paprika",
+   "name": "Paprika, ground (120 ASTA)",
+   "density": 0.45,
+   "weekly_kg": 52.1,
+   "weekly_l": 115.7,
+   "capacity_kg": 57.3,
+   "days_of_stock": 5.5,
+   "refills_per_week": 0.91,
+   "bags_per_refill": 2.3,
+   "max_dose_kg": 16.51,
+   "rate_l_h": 550.4,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 3.9,
+   "flow": "fair",
+   "agitator": true,
+   "products": [
+    "f-blkn",
+    "f-fire",
+    "f-orig"
+   ]
+  },
+  {
+   "bin": "B04",
+   "ingredient": "onion",
+   "name": "Onion, powder",
+   "density": 0.55,
+   "weekly_kg": 37.0,
+   "weekly_l": 67.3,
+   "capacity_kg": 70.1,
+   "days_of_stock": 9.5,
+   "refills_per_week": 0.53,
+   "bags_per_refill": 2.8,
+   "max_dose_kg": 7.62,
+   "rate_l_h": 207.8,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 1.5,
+   "flow": "good",
+   "agitator": false,
+   "products": [
+    "f-blkn",
+    "f-fire",
+    "f-garl",
+    "f-orig"
+   ]
+  },
+  {
+   "bin": "B05",
+   "ingredient": "black-pepper",
+   "name": "Black pepper, ground 30 mesh",
+   "density": 0.5,
+   "weekly_kg": 23.5,
+   "weekly_l": 47.0,
+   "capacity_kg": 63.7,
+   "days_of_stock": 13.6,
+   "refills_per_week": 0.37,
+   "bags_per_refill": 2.5,
+   "max_dose_kg": 5.08,
+   "rate_l_h": 152.4,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 1.1,
+   "flow": "good",
+   "agitator": false,
+   "products": [
+    "f-blkn",
+    "f-fire",
+    "f-orig"
+   ]
+  },
+  {
+   "bin": "B06",
+   "ingredient": "black-pepper-coarse",
+   "name": "Black pepper, coarse 16 mesh",
+   "density": 0.45,
+   "weekly_kg": 17.8,
+   "weekly_l": 39.5,
+   "capacity_kg": 57.3,
+   "days_of_stock": 16.1,
+   "refills_per_week": 0.31,
+   "bags_per_refill": 2.3,
+   "max_dose_kg": 17.78,
+   "rate_l_h": 592.7,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 4.2,
+   "flow": "fair",
+   "agitator": true,
+   "products": [
+    "f-lemp"
+   ]
+  },
+  {
+   "bin": "B07",
+   "ingredient": "cayenne",
+   "name": "Cayenne pepper, 40K HU",
+   "density": 0.45,
+   "weekly_kg": 13.3,
+   "weekly_l": 29.6,
+   "capacity_kg": 57.3,
+   "days_of_stock": 21.5,
+   "refills_per_week": 0.23,
+   "bags_per_refill": 2.3,
+   "max_dose_kg": 8.89,
+   "rate_l_h": 296.3,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 2.1,
+   "flow": "fair",
+   "agitator": true,
+   "products": [
+    "f-blkn",
+    "f-fire"
+   ]
+  },
+  {
+   "bin": "B08",
+   "ingredient": "lemon-peel",
+   "name": "Lemon peel granules",
+   "density": 0.5,
+   "weekly_kg": 10.2,
+   "weekly_l": 20.3,
+   "capacity_kg": 63.7,
+   "days_of_stock": 31.4,
+   "refills_per_week": 0.16,
+   "bags_per_refill": 2.5,
+   "max_dose_kg": 10.16,
+   "rate_l_h": 304.8,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 2.2,
+   "flow": "good",
+   "agitator": false,
+   "products": [
+    "f-lemp"
+   ]
+  },
+  {
+   "bin": "B09",
+   "ingredient": "red-pepper",
+   "name": "Red pepper, crushed",
+   "density": 0.35,
+   "weekly_kg": 5.7,
+   "weekly_l": 16.3,
+   "capacity_kg": 44.6,
+   "days_of_stock": 39.0,
+   "refills_per_week": 0.13,
+   "bags_per_refill": 1.8,
+   "max_dose_kg": 5.72,
+   "rate_l_h": 244.9,
+   "feeder": "2 in volumetric screw, ~700 L/h",
+   "dose_min": 1.7,
+   "flow": "fair",
+   "agitator": true,
+   "products": [
+    "f-fire"
+   ]
+  }
+ ],
+ "not_binned_but_doseable": [],
+ "recipes": [
+  {
+   "formula": "f-lemp",
+   "name": "Creole Chameleon Lemon Pepper",
+   "batch_kg": 63.5,
+   "batches_per_week": 1.0,
+   "lines": [
+    {
+     "ingredient": "salt",
+     "pct": 30,
+     "kg": 19.051,
+     "route": "BIN",
+     "bin": "B01",
+     "tol_kg": 0.191
+    },
+    {
+     "ingredient": "black-pepper-coarse",
+     "pct": 28,
+     "kg": 17.781,
+     "route": "BIN",
+     "bin": "B06",
+     "tol_kg": 0.178
+    },
+    {
+     "ingredient": "lemon-peel",
+     "pct": 16,
+     "kg": 10.16,
+     "route": "BIN",
+     "bin": "B08",
+     "tol_kg": 0.102
+    },
+    {
+     "ingredient": "garlic",
+     "pct": 8,
+     "kg": 5.08,
+     "route": "BIN",
+     "bin": "B02",
+     "tol_kg": 0.051
+    },
+    {
+     "ingredient": "onion",
+     "pct": 6,
+     "kg": 3.81,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.038
+    },
+    {
+     "ingredient": "citric-acid",
+     "pct": 5,
+     "kg": 3.175,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.032
+    },
+    {
+     "ingredient": "natural-flavor",
+     "pct": 3,
+     "kg": 1.905,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.019
+    },
+    {
+     "ingredient": "parsley",
+     "pct": 2,
+     "kg": 1.27,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    },
+    {
+     "ingredient": "sugar",
+     "pct": 2,
+     "kg": 1.27,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    }
+   ],
+   "auto_pct": 82.0,
+   "hand_lines": 5,
+   "premix_lines": 0,
+   "sequence": [
+    "B01",
+    "B06",
+    "B08",
+    "B02"
+   ]
+  },
+  {
+   "formula": "f-garl",
+   "name": "Creole Chameleon Garlic Herb",
+   "batch_kg": 63.5,
+   "batches_per_week": 1.0,
+   "lines": [
+    {
+     "ingredient": "garlic",
+     "pct": 38,
+     "kg": 24.131,
+     "route": "BIN",
+     "bin": "B02",
+     "tol_kg": 0.241
+    },
+    {
+     "ingredient": "salt",
+     "pct": 32,
+     "kg": 20.321,
+     "route": "BIN",
+     "bin": "B01",
+     "tol_kg": 0.203
+    },
+    {
+     "ingredient": "onion",
+     "pct": 12,
+     "kg": 7.62,
+     "route": "BIN",
+     "bin": "B04",
+     "tol_kg": 0.076
+    },
+    {
+     "ingredient": "black-pepper",
+     "pct": 6,
+     "kg": 3.81,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.038
+    },
+    {
+     "ingredient": "basil",
+     "pct": 3,
+     "kg": 1.905,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.019
+    },
+    {
+     "ingredient": "oregano",
+     "pct": 3,
+     "kg": 1.905,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.019
+    },
+    {
+     "ingredient": "parsley",
+     "pct": 2,
+     "kg": 1.27,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    },
+    {
+     "ingredient": "thyme",
+     "pct": 2,
+     "kg": 1.27,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    },
+    {
+     "ingredient": "rosemary",
+     "pct": 2,
+     "kg": 1.27,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    }
+   ],
+   "auto_pct": 82.0,
+   "hand_lines": 6,
+   "premix_lines": 0,
+   "sequence": [
+    "B02",
+    "B01",
+    "B04"
+   ]
+  },
+  {
+   "formula": "f-orig",
+   "name": "Creole Chameleon Original",
+   "batch_kg": 66.54,
+   "batches_per_week": 3.0,
+   "lines": [
+    {
+     "ingredient": "salt",
+     "pct": 38,
+     "kg": 25.286,
+     "route": "BIN",
+     "bin": "B01",
+     "tol_kg": 0.253
+    },
+    {
+     "ingredient": "paprika",
+     "pct": 14,
+     "kg": 9.316,
+     "route": "BIN",
+     "bin": "B03",
+     "tol_kg": 0.093
+    },
+    {
+     "ingredient": "garlic",
+     "pct": 11,
+     "kg": 7.32,
+     "route": "BIN",
+     "bin": "B02",
+     "tol_kg": 0.073
+    },
+    {
+     "ingredient": "onion",
+     "pct": 9,
+     "kg": 5.989,
+     "route": "BIN",
+     "bin": "B04",
+     "tol_kg": 0.06
+    },
+    {
+     "ingredient": "black-pepper",
+     "pct": 7,
+     "kg": 4.658,
+     "route": "BIN",
+     "bin": "B05",
+     "tol_kg": 0.047
+    },
+    {
+     "ingredient": "red-pepper",
+     "pct": 6,
+     "kg": 3.993,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.04
+    },
+    {
+     "ingredient": "bell-pepper",
+     "pct": 4.5,
+     "kg": 2.994,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.03
+    },
+    {
+     "ingredient": "celery-seed",
+     "pct": 3,
+     "kg": 1.996,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.02
+    },
+    {
+     "ingredient": "oregano",
+     "pct": 2.5,
+     "kg": 1.664,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.017
+    },
+    {
+     "ingredient": "thyme",
+     "pct": 2,
+     "kg": 1.331,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    },
+    {
+     "ingredient": "cayenne",
+     "pct": 1.5,
+     "kg": 0.998,
+     "route": "PREMIX",
+     "bin": "",
+     "tol_kg": 0.002
+    },
+    {
+     "ingredient": "parsley",
+     "pct": 1,
+     "kg": 0.665,
+     "route": "PREMIX",
+     "bin": "",
+     "tol_kg": 0.001
+    },
+    {
+     "ingredient": "natural-flavor",
+     "pct": 0.5,
+     "kg": 0.333,
+     "route": "PREMIX",
+     "bin": "",
+     "tol_kg": 0.001
+    }
+   ],
+   "auto_pct": 79.0,
+   "hand_lines": 5,
+   "premix_lines": 3,
+   "sequence": [
+    "B01",
+    "B03",
+    "B02",
+    "B04",
+    "B05"
+   ]
+  },
+  {
+   "formula": "f-fire",
+   "name": "Creole Chameleon Fire Blend",
+   "batch_kg": 63.5,
+   "batches_per_week": 1.0,
+   "lines": [
+    {
+     "ingredient": "salt",
+     "pct": 32,
+     "kg": 20.321,
+     "route": "BIN",
+     "bin": "B01",
+     "tol_kg": 0.203
+    },
+    {
+     "ingredient": "cayenne",
+     "pct": 14,
+     "kg": 8.89,
+     "route": "BIN",
+     "bin": "B07",
+     "tol_kg": 0.089
+    },
+    {
+     "ingredient": "paprika",
+     "pct": 12,
+     "kg": 7.62,
+     "route": "BIN",
+     "bin": "B03",
+     "tol_kg": 0.076
+    },
+    {
+     "ingredient": "garlic",
+     "pct": 10,
+     "kg": 6.35,
+     "route": "BIN",
+     "bin": "B02",
+     "tol_kg": 0.064
+    },
+    {
+     "ingredient": "red-pepper",
+     "pct": 9,
+     "kg": 5.715,
+     "route": "BIN",
+     "bin": "B09",
+     "tol_kg": 0.057
+    },
+    {
+     "ingredient": "onion",
+     "pct": 8,
+     "kg": 5.08,
+     "route": "BIN",
+     "bin": "B04",
+     "tol_kg": 0.051
+    },
+    {
+     "ingredient": "black-pepper",
+     "pct": 7,
+     "kg": 4.445,
+     "route": "BIN",
+     "bin": "B05",
+     "tol_kg": 0.044
+    },
+    {
+     "ingredient": "bell-pepper",
+     "pct": 3,
+     "kg": 1.905,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.019
+    },
+    {
+     "ingredient": "oregano",
+     "pct": 2,
+     "kg": 1.27,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.013
+    },
+    {
+     "ingredient": "thyme",
+     "pct": 1.5,
+     "kg": 0.953,
+     "route": "PREMIX",
+     "bin": "",
+     "tol_kg": 0.002
+    },
+    {
+     "ingredient": "celery-seed",
+     "pct": 1,
+     "kg": 0.635,
+     "route": "PREMIX",
+     "bin": "",
+     "tol_kg": 0.001
+    },
+    {
+     "ingredient": "parsley",
+     "pct": 0.5,
+     "kg": 0.318,
+     "route": "PREMIX",
+     "bin": "",
+     "tol_kg": 0.001
+    }
+   ],
+   "auto_pct": 92.0,
+   "hand_lines": 2,
+   "premix_lines": 3,
+   "sequence": [
+    "B01",
+    "B07",
+    "B03",
+    "B02",
+    "B09",
+    "B04",
+    "B05"
+   ]
+  },
+  {
+   "formula": "f-blkn",
+   "name": "Creole Chameleon Blackened",
+   "batch_kg": 63.5,
+   "batches_per_week": 1.0,
+   "lines": [
+    {
+     "ingredient": "paprika",
+     "pct": 26,
+     "kg": 16.511,
+     "route": "BIN",
+     "bin": "B03",
+     "tol_kg": 0.165
+    },
+    {
+     "ingredient": "salt",
+     "pct": 22,
+     "kg": 13.971,
+     "route": "BIN",
+     "bin": "B01",
+     "tol_kg": 0.14
+    },
+    {
+     "ingredient": "garlic",
+     "pct": 12,
+     "kg": 7.62,
+     "route": "BIN",
+     "bin": "B02",
+     "tol_kg": 0.076
+    },
+    {
+     "ingredient": "onion",
+     "pct": 10,
+     "kg": 6.35,
+     "route": "BIN",
+     "bin": "B04",
+     "tol_kg": 0.064
+    },
+    {
+     "ingredient": "black-pepper",
+     "pct": 8,
+     "kg": 5.08,
+     "route": "BIN",
+     "bin": "B05",
+     "tol_kg": 0.051
+    },
+    {
+     "ingredient": "cayenne",
+     "pct": 7,
+     "kg": 4.445,
+     "route": "BIN",
+     "bin": "B07",
+     "tol_kg": 0.044
+    },
+    {
+     "ingredient": "thyme",
+     "pct": 6,
+     "kg": 3.81,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.038
+    },
+    {
+     "ingredient": "oregano",
+     "pct": 5,
+     "kg": 3.175,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.032
+    },
+    {
+     "ingredient": "white-pepper",
+     "pct": 4,
+     "kg": 2.54,
+     "route": "HAND",
+     "bin": "",
+     "tol_kg": 0.025
+    }
+   ],
+   "auto_pct": 85.0,
+   "hand_lines": 3,
+   "premix_lines": 0,
+   "sequence": [
+    "B03",
+    "B01",
+    "B02",
+    "B04",
+    "B05",
+    "B07"
+   ]
+  }
+ ],
+ "auto_pct_overall": 82.5,
+ "growth": {
+  "bins": [
+   {
+    "bin": "B01",
+    "ingredient": "salt",
+    "name": "Salt, fine flake",
+    "density": 1.2,
+    "weekly_kg": 109.7,
+    "weekly_l": 91.5,
+    "capacity_kg": 152.9,
+    "days_of_stock": 7.0,
+    "refills_per_week": 0.72,
+    "bags_per_refill": 6.1,
+    "max_dose_kg": 26.77,
+    "rate_l_h": 334.6,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 2.4,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-blkn",
+     "f-caml",
+     "f-fire",
+     "f-garl",
+     "f-lemp",
+     "f-orig"
+    ]
+   },
+   {
+    "bin": "B02",
+    "ingredient": "garlic",
+    "name": "Garlic, granulated",
+    "density": 0.72,
+    "weekly_kg": 42.4,
+    "weekly_l": 58.9,
+    "capacity_kg": 91.7,
+    "days_of_stock": 10.8,
+    "refills_per_week": 0.46,
+    "bags_per_refill": 3.7,
+    "max_dose_kg": 17.05,
+    "rate_l_h": 355.1,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 2.5,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-blkn",
+     "f-fire",
+     "f-garl",
+     "f-orig"
+    ]
+   },
+   {
+    "bin": "B03",
+    "ingredient": "paprika",
+    "name": "Paprika, ground (120 ASTA)",
+    "density": 0.45,
+    "weekly_kg": 40.8,
+    "weekly_l": 90.6,
+    "capacity_kg": 57.3,
+    "days_of_stock": 7.0,
+    "refills_per_week": 0.71,
+    "bags_per_refill": 2.3,
+    "max_dose_kg": 11.66,
+    "rate_l_h": 388.8,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 2.8,
+    "flow": "fair",
+    "agitator": true,
+    "products": [
+     "f-blkn",
+     "f-fire",
+     "f-orig",
+     "f-vfrb"
+    ]
+   },
+   {
+    "bin": "B04",
+    "ingredient": "onion",
+    "name": "Onion, powder",
+    "density": 0.55,
+    "weekly_kg": 22.5,
+    "weekly_l": 41.0,
+    "capacity_kg": 70.1,
+    "days_of_stock": 15.5,
+    "refills_per_week": 0.32,
+    "bags_per_refill": 2.8,
+    "max_dose_kg": 6.34,
+    "rate_l_h": 172.9,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.2,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-blkn",
+     "f-garl",
+     "f-orig"
+    ]
+   },
+   {
+    "bin": "B05",
+    "ingredient": "black-pepper-coarse",
+    "name": "Black pepper, coarse 16 mesh",
+    "density": 0.45,
+    "weekly_kg": 12.6,
+    "weekly_l": 27.9,
+    "capacity_kg": 57.3,
+    "days_of_stock": 22.8,
+    "refills_per_week": 0.22,
+    "bags_per_refill": 2.3,
+    "max_dose_kg": 12.56,
+    "rate_l_h": 418.7,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 3.0,
+    "flow": "fair",
+    "agitator": true,
+    "products": [
+     "f-lemp"
+    ]
+   },
+   {
+    "bin": "B06",
+    "ingredient": "red-pepper",
+    "name": "Red pepper, crushed",
+    "density": 0.35,
+    "weekly_kg": 12.5,
+    "weekly_l": 35.7,
+    "capacity_kg": 44.6,
+    "days_of_stock": 17.9,
+    "refills_per_week": 0.28,
+    "bags_per_refill": 1.8,
+    "max_dose_kg": 4.23,
+    "rate_l_h": 181.1,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.3,
+    "flow": "fair",
+    "agitator": true,
+    "products": [
+     "f-fire",
+     "f-orig"
+    ]
+   },
+   {
+    "bin": "B07",
+    "ingredient": "black-pepper",
+    "name": "Black pepper, ground 30 mesh",
+    "density": 0.5,
+    "weekly_kg": 9.9,
+    "weekly_l": 19.7,
+    "capacity_kg": 63.7,
+    "days_of_stock": 32.3,
+    "refills_per_week": 0.15,
+    "bags_per_refill": 2.5,
+    "max_dose_kg": 4.93,
+    "rate_l_h": 147.9,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.1,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-orig"
+    ]
+   },
+   {
+    "bin": "B08",
+    "ingredient": "spinach-powder",
+    "name": "Spinach powder, dehydrated",
+    "density": 0.45,
+    "weekly_kg": 9.3,
+    "weekly_l": 20.8,
+    "capacity_kg": 57.3,
+    "days_of_stock": 30.7,
+    "refills_per_week": 0.16,
+    "bags_per_refill": 2.3,
+    "max_dose_kg": 5.01,
+    "rate_l_h": 166.9,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.2,
+    "flow": "fair",
+    "agitator": true,
+    "products": [
+     "f-ncgb",
+     "f-ngrb"
+    ]
+   },
+   {
+    "bin": "B09",
+    "ingredient": "lemon-peel",
+    "name": "Lemon peel granules",
+    "density": 0.5,
+    "weekly_kg": 7.2,
+    "weekly_l": 14.4,
+    "capacity_kg": 63.7,
+    "days_of_stock": 44.4,
+    "refills_per_week": 0.11,
+    "bags_per_refill": 2.5,
+    "max_dose_kg": 7.18,
+    "rate_l_h": 215.3,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.5,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-lemp"
+    ]
+   },
+   {
+    "bin": "B10",
+    "ingredient": "cayenne",
+    "name": "Cayenne pepper, 40K HU",
+    "density": 0.45,
+    "weekly_kg": 6.3,
+    "weekly_l": 14.0,
+    "capacity_kg": 57.3,
+    "days_of_stock": 45.7,
+    "refills_per_week": 0.11,
+    "bags_per_refill": 2.3,
+    "max_dose_kg": 6.28,
+    "rate_l_h": 209.3,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.5,
+    "flow": "fair",
+    "agitator": true,
+    "products": [
+     "f-fire"
+    ]
+   },
+   {
+    "bin": "B11",
+    "ingredient": "cinnamon",
+    "name": "Cinnamon, ground (cassia)",
+    "density": 0.5,
+    "weekly_kg": 5.0,
+    "weekly_l": 10.0,
+    "capacity_kg": 63.7,
+    "days_of_stock": 63.6,
+    "refills_per_week": 0.08,
+    "bags_per_refill": 2.5,
+    "max_dose_kg": 5.01,
+    "rate_l_h": 150.2,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 1.1,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-ncnc"
+    ]
+   },
+   {
+    "bin": "B12",
+    "ingredient": "tomato-powder",
+    "name": "Tomato powder, spray dried",
+    "density": 0.62,
+    "weekly_kg": 5.0,
+    "weekly_l": 8.1,
+    "capacity_kg": 79.0,
+    "days_of_stock": 78.9,
+    "refills_per_week": 0.06,
+    "bags_per_refill": 3.2,
+    "max_dose_kg": 5.01,
+    "rate_l_h": 121.2,
+    "feeder": "2 in volumetric screw, ~700 L/h",
+    "dose_min": 0.9,
+    "flow": "good",
+    "agitator": false,
+    "products": [
+     "f-lthr"
+    ]
+   }
+  ],
+  "spare_positions": 0,
+  "not_binned_but_doseable": [
+   "red-bell-pepper",
+   "turmeric"
+  ],
+  "auto_pct_overall": 62.4
+ }
+}

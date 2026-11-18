@@ -1,0 +1,306 @@
+[
+ {
+  "tag": "P1-101",
+  "name": "Floor scale 1,000 lb",
+  "x": 2110,
+  "y": 760,
+  "z": 120,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-102",
+  "name": "NSF shelving (6)",
+  "x": 4362,
+  "y": 2605,
+  "z": 1900,
+  "kind": "buy"
+ },
+ {
+  "tag": "PAL-RM",
+  "name": "Salt, garlic, paprika pallets",
+  "x": 5250,
+  "y": 750,
+  "z": 1100,
+  "kind": "stock"
+ },
+ {
+  "tag": "P1-103",
+  "name": "Pallet truck",
+  "x": 8175,
+  "y": 645,
+  "z": 400,
+  "kind": "buy"
+ },
+ {
+  "tag": "FG-1",
+  "name": "Finished goods (3 days)",
+  "x": 11350,
+  "y": 1250,
+  "z": 1300,
+  "kind": "stock"
+ },
+ {
+  "tag": "P1-210",
+  "name": "Bin ring frame (12 positions)",
+  "x": 5565,
+  "y": 8965,
+  "z": 2235,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-212",
+  "name": "Screw feeder, built (9)",
+  "x": 3965,
+  "y": 10625,
+  "z": 1726,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-211",
+  "name": "Ingredient bin 5 cu ft (9 used)",
+  "x": 3965,
+  "y": 7715,
+  "z": 2430,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-220",
+  "name": "Weigh hopper on 3 load cells",
+  "x": 4385,
+  "y": 8965,
+  "z": 1231,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-223",
+  "name": "Butterfly valve, 24 V actuator",
+  "x": 4165,
+  "y": 8965,
+  "z": 610,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-227",
+  "name": "4-step platform",
+  "x": 3050,
+  "y": 6600,
+  "z": 1950,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-225",
+  "name": "PLC panel + 9 drives",
+  "x": 2400,
+  "y": 4300,
+  "z": 1750,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-302",
+  "name": "Bag-dump grate + dust hood",
+  "x": 7075,
+  "y": 9850,
+  "z": 2313,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-301",
+  "name": "Ribbon blender 6 cu ft, built",
+  "x": 6625,
+  "y": 9960,
+  "z": 1883,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-308",
+  "name": "55 gal drum on dolly",
+  "x": 6725,
+  "y": 9610,
+  "z": 700,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-304",
+  "name": "Drum-top sifter 12 mesh + magnet",
+  "x": 7495,
+  "y": 9660,
+  "z": 1250,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-224",
+  "name": "Flexible screw (hand adds at the intake)",
+  "x": 5520,
+  "y": 9628,
+  "z": 1376,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-206",
+  "name": "Weigh bench + backdraft hood",
+  "x": 3512,
+  "y": 4681,
+  "z": 1650,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-201",
+  "name": "Scales 60 kg + 6 kg x 0.1 g",
+  "x": 3412,
+  "y": 4781,
+  "z": 1080,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-205",
+  "name": "MES PC + touch screen",
+  "x": 4072,
+  "y": 4481,
+  "z": 1300,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-208",
+  "name": "Premix pail tumbler",
+  "x": 4800,
+  "y": 4500,
+  "z": 1100,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-320",
+  "name": "Hammer mill (whole spices)",
+  "x": 5530,
+  "y": 6100,
+  "z": 1450,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-321",
+  "name": "Feed magnet + hopper P1-322",
+  "x": 5630,
+  "y": 6100,
+  "z": 1600,
+  "kind": "build"
+ },
+ {
+  "tag": "HOLD-1",
+  "name": "QC hold: drums on dollies",
+  "x": 7950,
+  "y": 5250,
+  "z": 1150,
+  "kind": "stock"
+ },
+ {
+  "tag": "P1-702",
+  "name": "Dust-rated vacuum",
+  "x": 8300,
+  "y": 11500,
+  "z": 950,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-704",
+  "name": "Hands-free sink",
+  "x": 1700,
+  "y": 5900,
+  "z": 1050,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-401",
+  "name": "Servo auger filler, built",
+  "x": 9720,
+  "y": 10820,
+  "z": 1900,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-412",
+  "name": "Spindle capper, built",
+  "x": 10162,
+  "y": 10631,
+  "z": 1714,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-403",
+  "name": "Induction cap sealer",
+  "x": 10862,
+  "y": 10631,
+  "z": 1264,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-405",
+  "name": "Colour label printer",
+  "x": 11782,
+  "y": 10631,
+  "z": 1244,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-404",
+  "name": "Wrap labeler, built",
+  "x": 12492,
+  "y": 10631,
+  "z": 1244,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-406",
+  "name": "Detector conveyor, built (used head, CCP-1)",
+  "x": 13705,
+  "y": 10595,
+  "z": 1500,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-408",
+  "name": "Accumulation turntable",
+  "x": 14331,
+  "y": 8981,
+  "z": 1150,
+  "kind": "build"
+ },
+ {
+  "tag": "P1-407",
+  "name": "Checkweigh, every unit",
+  "x": 12612,
+  "y": 8881,
+  "z": 1464,
+  "kind": "buy"
+ },
+ {
+  "tag": "P1-411",
+  "name": "Case pack: tape + case label",
+  "x": 11262,
+  "y": 8881,
+  "z": 1214,
+  "kind": "buy"
+ },
+ {
+  "tag": "PKG",
+  "name": "Empty containers, caps, labels",
+  "x": 10300,
+  "y": 4900,
+  "z": 1200,
+  "kind": "stock"
+ },
+ {
+  "tag": "PAL-FG",
+  "name": "Pallet being built",
+  "x": 13100,
+  "y": 4800,
+  "z": 500,
+  "kind": "stock"
+ },
+ {
+  "tag": "P1-310",
+  "name": "Cartridge dust collector 1,400 cfm",
+  "x": 1400,
+  "y": 13242,
+  "z": 2600,
+  "kind": "buy"
+ }
+]

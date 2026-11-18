@@ -1,0 +1,369 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<defs><pattern id="hA" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hB" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hC" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#546e7a" stroke-width="0.9"/></pattern><pattern id="hS" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#546e7a" stroke-width="0.8"/><line x1="4" y1="0" x2="4" y2="14" stroke="#546e7a" stroke-width="0.8"/></pattern></defs>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<text x="237.0" y="18" font-size="14" text-anchor="middle">8</text><text x="237.0" y="2298" font-size="14" text-anchor="middle">8</text>
+<text x="663.0" y="18" font-size="14" text-anchor="middle">7</text><text x="663.0" y="2298" font-size="14" text-anchor="middle">7</text>
+<text x="1089.0" y="18" font-size="14" text-anchor="middle">6</text><text x="1089.0" y="2298" font-size="14" text-anchor="middle">6</text>
+<text x="1515.0" y="18" font-size="14" text-anchor="middle">5</text><text x="1515.0" y="2298" font-size="14" text-anchor="middle">5</text>
+<text x="1941.0" y="18" font-size="14" text-anchor="middle">4</text><text x="1941.0" y="2298" font-size="14" text-anchor="middle">4</text>
+<text x="2367.0" y="18" font-size="14" text-anchor="middle">3</text><text x="2367.0" y="2298" font-size="14" text-anchor="middle">3</text>
+<text x="2793.0" y="18" font-size="14" text-anchor="middle">2</text><text x="2793.0" y="2298" font-size="14" text-anchor="middle">2</text>
+<text x="3219.0" y="18" font-size="14" text-anchor="middle">1</text><text x="3219.0" y="2298" font-size="14" text-anchor="middle">1</text>
+<text x="12" y="212.0" font-size="14" text-anchor="middle">F</text><text x="3444" y="212.0" font-size="14" text-anchor="middle">F</text>
+<text x="12" y="588.0" font-size="14" text-anchor="middle">E</text><text x="3444" y="588.0" font-size="14" text-anchor="middle">E</text>
+<text x="12" y="964.0" font-size="14" text-anchor="middle">D</text><text x="3444" y="964.0" font-size="14" text-anchor="middle">D</text>
+<text x="12" y="1340.0" font-size="14" text-anchor="middle">C</text><text x="3444" y="1340.0" font-size="14" text-anchor="middle">C</text>
+<text x="12" y="1716.0" font-size="14" text-anchor="middle">B</text><text x="3444" y="1716.0" font-size="14" text-anchor="middle">B</text>
+<text x="12" y="2092.0" font-size="14" text-anchor="middle">A</text><text x="3444" y="2092.0" font-size="14" text-anchor="middle">A</text>
+<g><rect x="2556" y="1954" width="876" height="326" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="2568" y="1988" font-size="26" font-weight="bold">ELECTRICAL: CONTROL AND SAFETY SCHEMATIC</text>
+<text x="2568" y="2012" font-size="15">Down Home Creole · Phase 1 · P1-301 Ribbon blender 6 cu ft (built in house) · rev B</text>
+<line x1="2556" y1="2024" x2="3432" y2="2024" stroke="#111"/>
+<rect x="2556.0" y="2024" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2037" font-size="10.5" fill="#555">DRAWING NO.</text>
+<text x="2562.0" y="2059" font-size="17" font-weight="bold">P1-301-E02</text>
+<rect x="2994.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2037" font-size="10.5" fill="#555">REV</text>
+<text x="3000.0" y="2059" font-size="17" font-weight="bold">A</text>
+<rect x="3213.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2037" font-size="10.5" fill="#555">SCALE</text>
+<text x="3219.0" y="2059" font-size="17" font-weight="normal">NTS</text>
+<rect x="2556.0" y="2068" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2081" font-size="10.5" fill="#555">MATERIAL</text>
+<text x="2562.0" y="2103" font-size="17" font-weight="normal">see E03</text>
+<rect x="2556.0" y="2112" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2125" font-size="10.5" fill="#555">FINISH</text>
+<text x="2562.0" y="2147" font-size="17" font-weight="normal">24 V DC control; safety: PL d / Cat 3 (ISO 13849-1), confirm with the risk assessment</text>
+<rect x="2556.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2169" font-size="10.5" fill="#555">MASS (CALC.)</text>
+<text x="2562.0" y="2191" font-size="17" font-weight="normal">-</text>
+<rect x="2775.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2781.0" y="2169" font-size="10.5" fill="#555">QTY PER MACHINE</text>
+<text x="2781.0" y="2191" font-size="17" font-weight="normal">1</text>
+<rect x="2994.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2169" font-size="10.5" fill="#555">UNITS</text>
+<text x="3000.0" y="2191" font-size="17" font-weight="normal">mm [in]</text>
+<rect x="3213.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2169" font-size="10.5" fill="#555">SHEET</text>
+<text x="3219.0" y="2191" font-size="17" font-weight="normal">ARCH D · 18 of 21</text>
+<rect x="2556.0" y="2200" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2213" font-size="10.5" fill="#555">DRAWN</text>
+<text x="2562.0" y="2235" font-size="17" font-weight="normal">Anatomy plant/mechsheet.py</text>
+<rect x="2994.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2213" font-size="10.5" fill="#555">DATE</text>
+<text x="3000.0" y="2235" font-size="17" font-weight="normal">2026-11-17</text>
+<rect x="3213.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2213" font-size="10.5" fill="#555">STATUS</text>
+<text x="3219.0" y="2235" font-size="17" font-weight="normal">FOR REVIEW</text>
+<text x="2568" y="2270" font-size="10.5">UNLESS NOTED: LINEAR ±0.5 [±.02] · HOLES +0.2/-0 · ANGLES ±0.5° · MACHINED X.X ±0.1, X.XX ±0.05 · THIRD-ANGLE PROJECTION · BREAK EDGES 0.5 · ASME Y14.5</text>
+</g>
+<line x1="160" y1="120" x2="160" y2="1720" stroke="#0d47a1" stroke-width="2.4"/>
+<line x1="1700" y1="120" x2="1700" y2="1720" stroke="#0d47a1" stroke-width="2.4"/>
+<text x="160" y="110" font-size="13" text-anchor="middle" fill="#0d47a1" font-weight="bold">+24 V (101, fused F3 4 A)</text>
+<text x="1700" y="110" font-size="13" text-anchor="middle" fill="#0d47a1" font-weight="bold">0 V (0)</text>
+<text x="60" y="194" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">1</text>
+<text x="1720" y="194" font-size="12" text-anchor="start" fill="#607d8b">E-stop S0 ch1 + cover interlock P1-332 ch1 -&gt; K0 S11/S12</text>
+<circle cx="160" cy="190" r="3.5" fill="#111"/>
+<line x1="160" y1="190" x2="300" y2="190" stroke="#111" stroke-width="1.4"/>
+<text x="230.0" y="185.0" font-size="12" text-anchor="middle" fill="#0d47a1">110</text>
+<line x1="300" y1="190" x2="314" y2="190" stroke="#111" stroke-width="1.6"/>
+<line x1="326" y1="190" x2="340" y2="190" stroke="#111" stroke-width="1.6"/>
+<line x1="314" y1="178" x2="314" y2="202" stroke="#111" stroke-width="1.6"/>
+<line x1="326" y1="178" x2="326" y2="202" stroke="#111" stroke-width="1.6"/>
+<line x1="310" y1="202" x2="330" y2="178" stroke="#111" stroke-width="1.6"/>
+<text x="320" y="173" font-size="11" text-anchor="middle" fill="#111">S0 11-12</text>
+<line x1="320" y1="178" x2="320" y2="166" stroke="#111" stroke-width="1"/>
+<line x1="313" y1="166" x2="327" y2="166" stroke="#111" stroke-width="1.4"/>
+<line x1="340" y1="190" x2="460" y2="190" stroke="#111" stroke-width="1.4"/>
+<text x="400.0" y="185.0" font-size="12" text-anchor="middle" fill="#0d47a1">111</text>
+<line x1="460" y1="190" x2="474" y2="190" stroke="#111" stroke-width="1.6"/>
+<line x1="486" y1="190" x2="500" y2="190" stroke="#111" stroke-width="1.6"/>
+<line x1="474" y1="178" x2="474" y2="202" stroke="#111" stroke-width="1.6"/>
+<line x1="486" y1="178" x2="486" y2="202" stroke="#111" stroke-width="1.6"/>
+<line x1="470" y1="202" x2="490" y2="178" stroke="#111" stroke-width="1.6"/>
+<text x="480" y="173" font-size="11" text-anchor="middle" fill="#111">P1-332 ch1 (X4:3-4)</text>
+<line x1="500" y1="190" x2="640" y2="190" stroke="#111" stroke-width="1.4"/>
+<text x="570.0" y="185.0" font-size="12" text-anchor="middle" fill="#0d47a1">112</text>
+<rect x="640" y="160" width="320" height="230" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="646" y="178" font-size="14" text-anchor="start" fill="#111" font-weight="bold">K0  PNOZ s4 750104</text>
+<text x="646" y="196" font-size="11" text-anchor="start" fill="#607d8b">S11-S12 ch1 / S21-S22 ch2</text>
+<text x="646" y="211" font-size="11" text-anchor="start" fill="#607d8b">S33-S34 monitored manual reset</text>
+<text x="646" y="226" font-size="11" text-anchor="start" fill="#607d8b">13-14, 23-24, 33-34 safety NO</text>
+<text x="646" y="241" font-size="11" text-anchor="start" fill="#607d8b">41-42 aux NC</text>
+<text x="646" y="256" font-size="11" text-anchor="start" fill="#607d8b">A1 +24 V / A2 0 V</text>
+<text x="60" y="264" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">2</text>
+<text x="1720" y="264" font-size="12" text-anchor="start" fill="#607d8b">E-stop S0 ch2 + cover interlock ch2 -&gt; K0 S21/S22</text>
+<circle cx="160" cy="190" r="3.5" fill="#111"/>
+<line x1="160" y1="260" x2="300" y2="260" stroke="#111" stroke-width="1.4"/>
+<text x="230.0" y="255.0" font-size="12" text-anchor="middle" fill="#0d47a1">113</text>
+<circle cx="160" cy="260" r="3.5" fill="#111"/>
+<line x1="300" y1="260" x2="314" y2="260" stroke="#111" stroke-width="1.6"/>
+<line x1="326" y1="260" x2="340" y2="260" stroke="#111" stroke-width="1.6"/>
+<line x1="314" y1="248" x2="314" y2="272" stroke="#111" stroke-width="1.6"/>
+<line x1="326" y1="248" x2="326" y2="272" stroke="#111" stroke-width="1.6"/>
+<line x1="310" y1="272" x2="330" y2="248" stroke="#111" stroke-width="1.6"/>
+<text x="320" y="243" font-size="11" text-anchor="middle" fill="#111">S0 21-22</text>
+<line x1="320" y1="248" x2="320" y2="236" stroke="#111" stroke-width="1"/>
+<line x1="313" y1="236" x2="327" y2="236" stroke="#111" stroke-width="1.4"/>
+<line x1="340" y1="260" x2="460" y2="260" stroke="#111" stroke-width="1.4"/>
+<text x="400.0" y="255.0" font-size="12" text-anchor="middle" fill="#0d47a1">114</text>
+<line x1="460" y1="260" x2="474" y2="260" stroke="#111" stroke-width="1.6"/>
+<line x1="486" y1="260" x2="500" y2="260" stroke="#111" stroke-width="1.6"/>
+<line x1="474" y1="248" x2="474" y2="272" stroke="#111" stroke-width="1.6"/>
+<line x1="486" y1="248" x2="486" y2="272" stroke="#111" stroke-width="1.6"/>
+<line x1="470" y1="272" x2="490" y2="248" stroke="#111" stroke-width="1.6"/>
+<text x="480" y="243" font-size="11" text-anchor="middle" fill="#111">P1-332 ch2 (X4:5-6)</text>
+<line x1="500" y1="260" x2="640" y2="260" stroke="#111" stroke-width="1.4"/>
+<text x="570.0" y="255.0" font-size="12" text-anchor="middle" fill="#0d47a1">115</text>
+<text x="60" y="334" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">3</text>
+<text x="1720" y="334" font-size="12" text-anchor="start" fill="#607d8b">RESET S3 (blue) after E-stop or cover open</text>
+<circle cx="160" cy="330" r="3.5" fill="#111"/>
+<line x1="160" y1="330" x2="300" y2="330" stroke="#111" stroke-width="1.4"/>
+<line x1="300" y1="330" x2="314" y2="330" stroke="#111" stroke-width="1.6"/>
+<line x1="326" y1="330" x2="340" y2="330" stroke="#111" stroke-width="1.6"/>
+<line x1="314" y1="318" x2="314" y2="342" stroke="#111" stroke-width="1.6"/>
+<line x1="326" y1="318" x2="326" y2="342" stroke="#111" stroke-width="1.6"/>
+<text x="320" y="313" font-size="11" text-anchor="middle" fill="#111">S3 RESET</text>
+<line x1="320" y1="318" x2="320" y2="306" stroke="#111" stroke-width="1"/>
+<line x1="313" y1="306" x2="327" y2="306" stroke="#111" stroke-width="1.4"/>
+<line x1="340" y1="330" x2="640" y2="330" stroke="#111" stroke-width="1.4"/>
+<text x="490.0" y="325.0" font-size="12" text-anchor="middle" fill="#0d47a1">116/117</text>
+<line x1="960" y1="370" x2="1700" y2="370" stroke="#0d47a1" stroke-width="1.4"/>
+<text x="1330" y="364" font-size="11" text-anchor="middle" fill="#607d8b">K0 A2</text>
+<text x="60" y="444" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">4</text>
+<text x="1720" y="444" font-size="12" text-anchor="start" fill="#607d8b">Safe torque off channel 1: K0 13-14 -&gt; U1 STO1 (motor cannot make torque unless both are on)</text>
+<circle cx="160" cy="440" r="3.5" fill="#111"/>
+<line x1="160" y1="440" x2="600" y2="440" stroke="#111" stroke-width="1.4"/>
+<text x="380.0" y="435.0" font-size="12" text-anchor="middle" fill="#0d47a1">122</text>
+<line x1="600" y1="440" x2="614" y2="440" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="440" x2="640" y2="440" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="428" x2="614" y2="452" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="428" x2="626" y2="452" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="423" font-size="11" text-anchor="middle" fill="#111">K0 13-14</text>
+<line x1="640" y1="440" x2="1200" y2="440" stroke="#111" stroke-width="1.4"/>
+<text x="920.0" y="435.0" font-size="12" text-anchor="middle" fill="#0d47a1">120</text>
+<rect x="1200" y="424" width="150" height="32" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1206" y="442" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U1 STO1</text>
+<line x1="1350" y1="440" x2="1700" y2="440" stroke="#111" stroke-width="1.4"/>
+<text x="1525.0" y="435.0" font-size="12" text-anchor="middle" fill="#0d47a1">123 SCM</text>
+<text x="60" y="504" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">5</text>
+<text x="1720" y="504" font-size="12" text-anchor="start" fill="#607d8b">Safe torque off channel 2: K0 23-24 -&gt; U1 STO2 (motor cannot make torque unless both are on)</text>
+<circle cx="160" cy="500" r="3.5" fill="#111"/>
+<line x1="160" y1="500" x2="600" y2="500" stroke="#111" stroke-width="1.4"/>
+<text x="380.0" y="495.0" font-size="12" text-anchor="middle" fill="#0d47a1">122</text>
+<line x1="600" y1="500" x2="614" y2="500" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="500" x2="640" y2="500" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="488" x2="614" y2="512" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="488" x2="626" y2="512" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="483" font-size="11" text-anchor="middle" fill="#111">K0 23-24</text>
+<line x1="640" y1="500" x2="1200" y2="500" stroke="#111" stroke-width="1.4"/>
+<text x="920.0" y="495.0" font-size="12" text-anchor="middle" fill="#0d47a1">121</text>
+<rect x="1200" y="484" width="150" height="32" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1206" y="502" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U1 STO2</text>
+<line x1="1350" y1="500" x2="1700" y2="500" stroke="#111" stroke-width="1.4"/>
+<text x="1525.0" y="495.0" font-size="12" text-anchor="middle" fill="#0d47a1">123 SCM</text>
+<text x="60" y="574" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">6</text>
+<text x="1720" y="574" font-size="12" text-anchor="start" fill="#607d8b">SAFETY OK to plant PLC (X5:4): cover closed and E-stop released</text>
+<circle cx="160" cy="570" r="3.5" fill="#111"/>
+<line x1="160" y1="570" x2="600" y2="570" stroke="#111" stroke-width="1.4"/>
+<line x1="600" y1="570" x2="614" y2="570" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="570" x2="640" y2="570" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="558" x2="614" y2="582" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="558" x2="626" y2="582" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="553" font-size="11" text-anchor="middle" fill="#111">K0 33-34</text>
+<line x1="640" y1="570" x2="1200" y2="570" stroke="#111" stroke-width="1.4"/>
+<text x="920.0" y="565.0" font-size="12" text-anchor="middle" fill="#0d47a1">180</text>
+<circle cx="1210" cy="570" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="1219" y="562" font-size="11" text-anchor="start" fill="#607d8b">X5:4 -&gt; CP-P1 P1_301_SafetyOK</text>
+<text x="60" y="684" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">7</text>
+<text x="1720" y="684" font-size="12" text-anchor="start" fill="#607d8b">LOCAL: START S1 / STOP S2 with K1 seal-in; REMOTE: run request from the plant PLC (X4:9)</text>
+<circle cx="160" cy="680" r="3.5" fill="#111"/>
+<line x1="160" y1="680" x2="260" y2="680" stroke="#111" stroke-width="1.4"/>
+<text x="210.0" y="675.0" font-size="12" text-anchor="middle" fill="#0d47a1">130</text>
+<line x1="260" y1="680" x2="274" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="286" y1="680" x2="300" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="274" y1="668" x2="274" y2="692" stroke="#111" stroke-width="1.6"/>
+<line x1="286" y1="668" x2="286" y2="692" stroke="#111" stroke-width="1.6"/>
+<text x="280" y="663" font-size="11" text-anchor="middle" fill="#111">S4 LOCAL 13-14</text>
+<line x1="300" y1="680" x2="380" y2="680" stroke="#111" stroke-width="1.4"/>
+<text x="340.0" y="675.0" font-size="12" text-anchor="middle" fill="#0d47a1">131</text>
+<line x1="380" y1="680" x2="394" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="406" y1="680" x2="420" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="394" y1="668" x2="394" y2="692" stroke="#111" stroke-width="1.6"/>
+<line x1="406" y1="668" x2="406" y2="692" stroke="#111" stroke-width="1.6"/>
+<line x1="390" y1="692" x2="410" y2="668" stroke="#111" stroke-width="1.6"/>
+<text x="400" y="663" font-size="11" text-anchor="middle" fill="#111">S2 STOP</text>
+<line x1="400" y1="668" x2="400" y2="656" stroke="#111" stroke-width="1"/>
+<line x1="393" y1="656" x2="407" y2="656" stroke="#111" stroke-width="1.4"/>
+<line x1="420" y1="680" x2="500" y2="680" stroke="#111" stroke-width="1.4"/>
+<text x="460.0" y="675.0" font-size="12" text-anchor="middle" fill="#0d47a1">132</text>
+<line x1="500" y1="680" x2="514" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="526" y1="680" x2="540" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="514" y1="668" x2="514" y2="692" stroke="#111" stroke-width="1.6"/>
+<line x1="526" y1="668" x2="526" y2="692" stroke="#111" stroke-width="1.6"/>
+<text x="520" y="663" font-size="11" text-anchor="middle" fill="#111">S1 START</text>
+<line x1="520" y1="668" x2="520" y2="656" stroke="#111" stroke-width="1"/>
+<line x1="513" y1="656" x2="527" y2="656" stroke="#111" stroke-width="1.4"/>
+<line x1="540" y1="680" x2="720" y2="680" stroke="#111" stroke-width="1.4"/>
+<text x="630.0" y="675.0" font-size="12" text-anchor="middle" fill="#0d47a1">133</text>
+<circle cx="460" cy="680" r="3.5" fill="#111"/>
+<line x1="460" y1="680" x2="460" y2="740" stroke="#111" stroke-width="1.4"/>
+<line x1="460" y1="740" x2="500" y2="740" stroke="#111" stroke-width="1.4"/>
+<line x1="500" y1="740" x2="514" y2="740" stroke="#111" stroke-width="1.6"/>
+<line x1="526" y1="740" x2="540" y2="740" stroke="#111" stroke-width="1.6"/>
+<line x1="514" y1="728" x2="514" y2="752" stroke="#111" stroke-width="1.6"/>
+<line x1="526" y1="728" x2="526" y2="752" stroke="#111" stroke-width="1.6"/>
+<text x="520" y="723" font-size="11" text-anchor="middle" fill="#111">K1 11-14</text>
+<line x1="540" y1="740" x2="600" y2="740" stroke="#111" stroke-width="1.6"/>
+<line x1="600" y1="740" x2="600" y2="680" stroke="#111" stroke-width="1.6"/>
+<circle cx="600" cy="680" r="3.5" fill="#111"/>
+<line x1="720" y1="680" x2="734" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="746" y1="680" x2="760" y2="680" stroke="#111" stroke-width="1.6"/>
+<line x1="734" y1="668" x2="734" y2="692" stroke="#111" stroke-width="1.6"/>
+<line x1="746" y1="668" x2="746" y2="692" stroke="#111" stroke-width="1.6"/>
+<line x1="730" y1="692" x2="750" y2="668" stroke="#111" stroke-width="1.6"/>
+<text x="740" y="663" font-size="11" text-anchor="middle" fill="#111">K0 aux 41-42</text>
+<line x1="760" y1="680" x2="1100" y2="680" stroke="#111" stroke-width="1.4"/>
+<text x="930.0" y="675.0" font-size="12" text-anchor="middle" fill="#0d47a1">133</text>
+<rect x="1102" y="669" width="36" height="22" fill="#fff" stroke="#111" stroke-width="1.5"/>
+<text x="1120" y="664" font-size="12" text-anchor="middle" fill="#111" font-weight="bold">K1</text>
+<line x1="1138" y1="680" x2="1700" y2="680" stroke="#111" stroke-width="1.4"/>
+<text x="60" y="824" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">8</text>
+<text x="1720" y="824" font-size="12" text-anchor="start" fill="#607d8b">REMOTE run request (dry contact in CP-P1) through S4 REMOTE</text>
+<circle cx="160" cy="820" r="3.5" fill="#111"/>
+<line x1="160" y1="820" x2="260" y2="820" stroke="#111" stroke-width="1.4"/>
+<line x1="260" y1="820" x2="274" y2="820" stroke="#111" stroke-width="1.6"/>
+<line x1="286" y1="820" x2="300" y2="820" stroke="#111" stroke-width="1.6"/>
+<line x1="274" y1="808" x2="274" y2="832" stroke="#111" stroke-width="1.6"/>
+<line x1="286" y1="808" x2="286" y2="832" stroke="#111" stroke-width="1.6"/>
+<text x="280" y="803" font-size="11" text-anchor="middle" fill="#111">S4 REMOTE 23-24</text>
+<line x1="300" y1="820" x2="380" y2="820" stroke="#111" stroke-width="1.4"/>
+<text x="340.0" y="815.0" font-size="12" text-anchor="middle" fill="#0d47a1">134</text>
+<circle cx="400" cy="820" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="409" y="812" font-size="11" text-anchor="start" fill="#607d8b">X4:9 / W-P04 RUN REQ</text>
+<line x1="405" y1="820" x2="700" y2="820" stroke="#111" stroke-width="1.4"/>
+<line x1="700" y1="820" x2="700" y2="680" stroke="#111" stroke-width="1.6"/>
+<circle cx="700" cy="680" r="3.5" fill="#111"/>
+<text x="60" y="924" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">9</text>
+<text x="1720" y="924" font-size="12" text-anchor="start" fill="#607d8b">VFD FWD (DI1) from K1 (sink, VFD internal 24 V; DCM common)</text>
+<rect x="250" y="900" width="160" height="40" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="256" y="918" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U1 DCM</text>
+<line x1="410" y1="920" x2="600" y2="920" stroke="#111" stroke-width="1.4"/>
+<text x="505.0" y="915.0" font-size="12" text-anchor="middle" fill="#0d47a1">140</text>
+<line x1="600" y1="920" x2="614" y2="920" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="920" x2="640" y2="920" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="908" x2="614" y2="932" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="908" x2="626" y2="932" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="903" font-size="11" text-anchor="middle" fill="#111">K1 21-24</text>
+<line x1="640" y1="920" x2="900" y2="920" stroke="#111" stroke-width="1.4"/>
+<text x="770.0" y="915.0" font-size="12" text-anchor="middle" fill="#0d47a1">141</text>
+<rect x="900" y="900" width="160" height="40" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="906" y="918" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U1 DI1 FWD</text>
+<text x="60" y="1014" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">10</text>
+<text x="1720" y="1014" font-size="12" text-anchor="start" fill="#607d8b">Motor PTC (X2:TP1/TP2) -&gt; K2 EMT6; K2 trips -&gt; U1 DI3 external fault (motor stops, FAULT lamp)</text>
+<circle cx="160" cy="1010" r="3.5" fill="#111"/>
+<line x1="160" y1="1010" x2="600" y2="1010" stroke="#111" stroke-width="1.4"/>
+<rect x="600" y="980" width="200" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="606" y="998" font-size="14" text-anchor="start" fill="#111" font-weight="bold">K2 EMT6-DB</text>
+<text x="606" y="1016" font-size="11" text-anchor="start" fill="#607d8b">T1-T2: motor PTC</text>
+<line x1="800" y1="1010" x2="1700" y2="1010" stroke="#111" stroke-width="1.4"/>
+<rect x="250" y="1060" width="160" height="40" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="256" y="1078" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U1 DCM</text>
+<line x1="410" y1="1080" x2="600" y2="1080" stroke="#111" stroke-width="1.4"/>
+<text x="505.0" y="1075.0" font-size="12" text-anchor="middle" fill="#0d47a1">143</text>
+<line x1="600" y1="1080" x2="614" y2="1080" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1080" x2="640" y2="1080" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="1068" x2="614" y2="1092" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1068" x2="626" y2="1092" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="1063" font-size="11" text-anchor="middle" fill="#111">K2 13-14</text>
+<line x1="640" y1="1080" x2="900" y2="1080" stroke="#111" stroke-width="1.4"/>
+<text x="770.0" y="1075.0" font-size="12" text-anchor="middle" fill="#0d47a1">142</text>
+<rect x="900" y="1060" width="160" height="40" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="906" y="1078" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U1 DI3 EF</text>
+<text x="60" y="1174" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">11</text>
+<text x="1720" y="1174" font-size="12" text-anchor="start" fill="#607d8b">VFD relay 1 = running</text>
+<circle cx="160" cy="1170" r="3.5" fill="#111"/>
+<line x1="160" y1="1170" x2="600" y2="1170" stroke="#111" stroke-width="1.4"/>
+<text x="380.0" y="1165.0" font-size="12" text-anchor="middle" fill="#0d47a1">152</text>
+<line x1="600" y1="1170" x2="614" y2="1170" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1170" x2="640" y2="1170" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="1158" x2="614" y2="1182" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1158" x2="626" y2="1182" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="1153" font-size="11" text-anchor="middle" fill="#111">U1 R1A-R1C</text>
+<line x1="640" y1="1170" x2="1100" y2="1170" stroke="#111" stroke-width="1.4"/>
+<text x="870.0" y="1165.0" font-size="12" text-anchor="middle" fill="#0d47a1">150</text>
+<circle cx="1120" cy="1170" r="12" fill="#fff" stroke="#111" stroke-width="1.5"/>
+<line x1="1112" y1="1162" x2="1128" y2="1178" stroke="#111" stroke-width="1"/>
+<line x1="1112" y1="1178" x2="1128" y2="1162" stroke="#111" stroke-width="1"/>
+<text x="1120" y="1153" font-size="11" text-anchor="middle" fill="#111" font-weight="bold">H1</text>
+<line x1="1132" y1="1170" x2="1700" y2="1170" stroke="#111" stroke-width="1.6"/>
+<text x="60" y="1244" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">12</text>
+<text x="1720" y="1244" font-size="12" text-anchor="start" fill="#607d8b">VFD relay 2 = fault</text>
+<circle cx="160" cy="1240" r="3.5" fill="#111"/>
+<line x1="160" y1="1240" x2="600" y2="1240" stroke="#111" stroke-width="1.4"/>
+<text x="380.0" y="1235.0" font-size="12" text-anchor="middle" fill="#0d47a1">152</text>
+<line x1="600" y1="1240" x2="614" y2="1240" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1240" x2="640" y2="1240" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="1228" x2="614" y2="1252" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1228" x2="626" y2="1252" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="1223" font-size="11" text-anchor="middle" fill="#111">U1 R2A-R2C</text>
+<line x1="640" y1="1240" x2="1100" y2="1240" stroke="#111" stroke-width="1.4"/>
+<text x="870.0" y="1235.0" font-size="12" text-anchor="middle" fill="#0d47a1">151</text>
+<circle cx="1120" cy="1240" r="12" fill="#fff" stroke="#111" stroke-width="1.5"/>
+<line x1="1112" y1="1232" x2="1128" y2="1248" stroke="#111" stroke-width="1"/>
+<line x1="1112" y1="1248" x2="1128" y2="1232" stroke="#111" stroke-width="1"/>
+<text x="1120" y="1223" font-size="11" text-anchor="middle" fill="#111" font-weight="bold">H2</text>
+<line x1="1132" y1="1240" x2="1700" y2="1240" stroke="#111" stroke-width="1.6"/>
+<text x="60" y="1314" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">13</text>
+<text x="1720" y="1314" font-size="12" text-anchor="start" fill="#607d8b">RUNNING to plant (X5:8) from K1 (+ VFD READY MO1 to X5:5 over the same cable)</text>
+<circle cx="160" cy="1310" r="3.5" fill="#111"/>
+<line x1="160" y1="1310" x2="600" y2="1310" stroke="#111" stroke-width="1.4"/>
+<line x1="600" y1="1310" x2="614" y2="1310" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1310" x2="640" y2="1310" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="1298" x2="614" y2="1322" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1298" x2="626" y2="1322" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="1293" font-size="11" text-anchor="middle" fill="#111">K1 (spare 2nd CO)</text>
+<line x1="640" y1="1310" x2="1200" y2="1310" stroke="#111" stroke-width="1.4"/>
+<circle cx="1210" cy="1310" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="1219" y="1302" font-size="11" text-anchor="start" fill="#607d8b">X5:8 RUNNING  /  X5:5 READY (U1 MO1)</text>
+<text x="60" y="1404" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">14</text>
+<text x="1720" y="1404" font-size="12" text-anchor="start" fill="#607d8b">High-level switch P1-337 (FTM20, PNP): +24 V on X4:1, signal X4:2 -&gt; X5:3 HIGH; blender also inhibits loading in the PLC</text>
+<circle cx="160" cy="1400" r="3.5" fill="#111"/>
+<line x1="160" y1="1400" x2="400" y2="1400" stroke="#111" stroke-width="1.4"/>
+<text x="280.0" y="1395.0" font-size="12" text-anchor="middle" fill="#0d47a1">160</text>
+<rect x="400" y="1375" width="200" height="50" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="406" y="1393" font-size="14" text-anchor="start" fill="#111" font-weight="bold">P1-337</text>
+<text x="406" y="1411" font-size="11" text-anchor="start" fill="#607d8b">FTM20 PNP, 1-1/2 in TC</text>
+<line x1="600" y1="1400" x2="1200" y2="1400" stroke="#111" stroke-width="1.4"/>
+<text x="900.0" y="1395.0" font-size="12" text-anchor="middle" fill="#0d47a1">161</text>
+<circle cx="1210" cy="1400" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="1219" y="1392" font-size="11" text-anchor="start" fill="#607d8b">X5:3 HIGH</text>
+<line x1="500" y1="1425" x2="500" y2="1450" stroke="#111" stroke-width="1"/>
+<line x1="500" y1="1450" x2="1700" y2="1450" stroke="#0d47a1" stroke-width="1.2"/>
+<text x="60" y="1524" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">15</text>
+<text x="1720" y="1524" font-size="12" text-anchor="start" fill="#607d8b">Valve P1-331: plant PLC output (X5:1) energises K331; K331 NO = OPEN, NC = CLOSE (actuator 24 V DC, 2-wire + common)</text>
+<circle cx="250" cy="1520" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="259" y="1512" font-size="11" text-anchor="start" fill="#607d8b">X5:1 VALVE CMD (from CP-P1)</text>
+<line x1="255" y1="1520" x2="1100" y2="1520" stroke="#111" stroke-width="1.4"/>
+<text x="677.5" y="1515.0" font-size="12" text-anchor="middle" fill="#0d47a1">170</text>
+<rect x="1102" y="1509" width="36" height="22" fill="#fff" stroke="#111" stroke-width="1.5"/>
+<text x="1120" y="1504" font-size="12" text-anchor="middle" fill="#111" font-weight="bold">K331</text>
+<line x1="1138" y1="1520" x2="1700" y2="1520" stroke="#111" stroke-width="1.6"/>
+<text x="60" y="1604" font-size="13" text-anchor="start" fill="#607d8b" font-weight="bold">16</text>
+<text x="1720" y="1604" font-size="12" text-anchor="start" fill="#607d8b"></text>
+<circle cx="160" cy="1600" r="3.5" fill="#111"/>
+<line x1="160" y1="1600" x2="600" y2="1600" stroke="#111" stroke-width="1.4"/>
+<line x1="600" y1="1600" x2="614" y2="1600" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1600" x2="640" y2="1600" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="1588" x2="614" y2="1612" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1588" x2="626" y2="1612" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="1583" font-size="11" text-anchor="middle" fill="#111">K331 11-14</text>
+<line x1="640" y1="1600" x2="900" y2="1600" stroke="#111" stroke-width="1.4"/>
+<text x="770.0" y="1595.0" font-size="12" text-anchor="middle" fill="#0d47a1">171</text>
+<circle cx="910" cy="1600" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="919" y="1592" font-size="11" text-anchor="start" fill="#607d8b">X6:1 OPEN</text>
+<circle cx="560" cy="1600" r="3.5" fill="#111"/>
+<line x1="560" y1="1600" x2="560" y2="1660" stroke="#111" stroke-width="1.6"/>
+<line x1="560" y1="1660" x2="600" y2="1660" stroke="#111" stroke-width="1.6"/>
+<line x1="600" y1="1660" x2="614" y2="1660" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1660" x2="640" y2="1660" stroke="#111" stroke-width="1.6"/>
+<line x1="614" y1="1648" x2="614" y2="1672" stroke="#111" stroke-width="1.6"/>
+<line x1="626" y1="1648" x2="626" y2="1672" stroke="#111" stroke-width="1.6"/>
+<line x1="610" y1="1672" x2="630" y2="1648" stroke="#111" stroke-width="1.6"/>
+<text x="620" y="1643" font-size="11" text-anchor="middle" fill="#111">K331 11-12</text>
+<line x1="640" y1="1660" x2="900" y2="1660" stroke="#111" stroke-width="1.4"/>
+<text x="770.0" y="1655.0" font-size="12" text-anchor="middle" fill="#0d47a1">172</text>
+<circle cx="910" cy="1660" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="919" y="1652" font-size="11" text-anchor="start" fill="#607d8b">X6:2 CLOSE</text>
+<text x="1100" y="1630" font-size="12" text-anchor="start" fill="#607d8b">limits: X6:3 OPEN -&gt; X5:6, X6:4 CLOSED -&gt; X5:7 (wires 173, 174)</text>
+<rect x="120" y="1780" width="1550" height="106" fill="#fff" stroke="#111"/><text x="130" y="1804" font-size="16" font-weight="bold">NOTES</text><text x="130" y="1826" font-size="13">1. Stop categories: E-stop and cover open = STO via K0 (stop category 0, IEC 60204-1); STOP button = VFD ramp stop (cat 1 not required, cat 0 by removing FWD is acceptable: coast + 3 s decel).</text><text x="130" y="1844" font-size="13">2. The cover interlock is coded-magnetic, dual channel, monitored by K0 with a manual reset: opening the cover stops the agitator; closing it does NOT restart it (RESET, then START or a new remote request).</text><text x="130" y="1862" font-size="13">3. K0 aux 41-42 in the run rung drops K1 on a safety stop so the seal-in cannot hold through a reset. Remote run is a maintained request from the plant PLC; the PLC must drop it on any safety-OK loss.</text><text x="130" y="1880" font-size="13">4. Validate per P1-301-900 T20..T26 before the first product batch. Keep the PNOZ s4 response time (&lt; 30 ms) and the agitator run-down (&lt; 2 s at 40 rpm) on the validation record.</text>
+</svg>

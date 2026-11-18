@@ -5,6 +5,7 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { loadXometry, xometryStage } from './xometry.js';
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ext = p => { const b = p.toLowerCase().split('/').pop(); if (b.endsWith('.gcode.3mf')) return 'gcode.3mf'; const i = b.lastIndexOf('.'); return i < 0 ? '' : b.slice(i + 1); };
@@ -204,7 +205,17 @@ async function loadModel(p) {
   if (e === 'stl') { const g = new STLLoader().parse(await (await fetch(url)).arrayBuffer()); g.computeVertexNormals(); return new THREE.Mesh(g, MAT()); }
   if (e === '3mf') return new ThreeMFLoader().parse(await (await fetch(url)).arrayBuffer());
   if (e === 'obj') return new OBJLoader().parse(await (await fetch(url)).text());
-  if (e === 'glb' || e === 'gltf') return (await new GLTFLoader().loadAsync(url)).scene;
+  if (e === 'glb' || e === 'gltf') {
+    // glTF is Y-up by spec; this viewer is Z-up. CAD exporters (OCCT/cadquery) convert to Y-up, so turn the
+    // scene back. Only a trimesh export with no root transform keeps the source Z-up axes as-is; leave just that case alone.
+    const g = await new GLTFLoader().loadAsync(url);
+    const js = g.parser?.json || {};
+    const gen = String(js.asset?.generator || '');
+    const roots = (js.scenes?.[js.scene || 0]?.nodes || []).map(i => js.nodes?.[i] || {});
+    const rootXf = roots.some(n => n.matrix || n.rotation);   // e.g. trimesh writes a Y-up root matrix for Z-up sources
+    if (!/trimesh/i.test(gen) || rootXf) { const wrap = new THREE.Group(); g.scene.rotation.x = Math.PI / 2; wrap.add(g.scene); wrap.updateMatrixWorld(true); return wrap; }
+    return g.scene;
+  }
   if (e === 'step' || e === 'stp') {
     const occt = await loadOcct();
     const r = occt.ReadStepFile(new Uint8Array(await (await fetch(url)).arrayBuffer()), null);
@@ -529,9 +540,9 @@ async function sim(el) {
 
 // ---------------------------------------------------------------- Build wizard
 const BUILD_PROMPT = `Prepare the build package for this project, following references/build-package.md of the anatomy skill exactly.
-Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, PCB order files), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
+Turn the existing design into something a person can actually build: build/build.json plus the purchase list with per-supplier cart files, the 3D print list with G-code sliced for my printer (see the settings), fabrication files (DXF cut files in mm and inch, and for every custom board a turnkey PCBA order zip from tools/pcba/pcba_export.py per references/pcba-export.md, ready for RushPCB), illustrated step-by-step assembly instructions with a rendered picture per step, and firmware flashing and test steps.
 First fix anything that blocks a real build: replace generic or unverified BOM parts with exact orderable parts, add BUILD lines for every printed or fabricated part, slice every printed part, and bring drawings up to the drawing standard. Run the BOM and build.json checks and report what is still open.`;
-const STAGES = [['purchase', 'Order parts'], ['print', 'Print parts'], ['fabricate', 'Fabricate'], ['assembly', 'Assemble'], ['firmware', 'Firmware & test']];
+const STAGES = [['purchase', 'Order parts'], ['print', 'Print parts'], ['xometry', 'Xometry'], ['fabricate', 'Fabricate'], ['assembly', 'Assemble'], ['firmware', 'Firmware & test']];
 async function build(el) {
   const B = await S.api(`/api/projects/${S.id}/build`).catch(() => ({}));
   if (!B || (!B.purchase && !B.print && !B.assembly)) {
@@ -546,10 +557,13 @@ async function build(el) {
   let state = await S.api(`/api/projects/${S.id}/build-state`).catch(() => ({})) || {};
   const save = () => S.api(`/api/projects/${S.id}/build-state`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state) });
   const key = (st, id, f) => `${st}:${id}:${f}`;
+  let XO = await loadXometry(S);
+  const toXo = name => (XO.parts || []).some(p => p.route === 'xometry' && p.key === name);
   const items = {
     purchase: (B.purchase || []).map((p, i) => ({ id: p.line || 'p' + i, fields: ['ordered', 'received'] })),
-    print: (B.print || []).map((p, i) => ({ id: p.part || 'r' + i, fields: ['printed'] })),
-    fabricate: (B.fabricate || []).map((p, i) => ({ id: p.part || 'f' + i, fields: ['done'] })),
+    print: (B.print || []).filter(p => !toXo(p.part)).map((p, i) => ({ id: p.part || 'r' + i, fields: ['printed'] })),
+    xometry: (XO.parts || []).filter(p => p.route === 'xometry').map(p => ({ id: p.key, fields: ['ordered', 'received'] })),
+    fabricate: (B.fabricate || []).filter(p => !toXo(p.part)).map((p, i) => ({ id: p.part || 'f' + i, fields: ['done'] })),
     assembly: (B.assembly || []).map((p, i) => ({ id: 's' + (p.step || i + 1), fields: ['done'] })),
     firmware: [...(B.firmware || []).map((p, i) => ({ id: 'fw' + i, fields: ['done'] })), ...(B.tests || []).map((p, i) => ({ id: 't' + i, fields: ['done'] }))],
   };
@@ -565,7 +579,7 @@ async function build(el) {
     <nav class="stages" id="stages"></nav><div id="stage"></div>`;
   const nav = el.querySelector('#stages');
   const renderNav = () => {
-    nav.innerHTML = STAGES.map(([k, n], i) => { const p = pct(k); return `<button data-s="${k}" class="${cur === k ? 'on' : ''} ${p === 100 ? 'done' : ''}" ${p === null ? 'disabled' : ''}><i>${p === 100 ? '✓' : i + 1}</i>${n}<em>${p === null ? '—' : p + '%'}</em></button>`; }).join('');
+    nav.innerHTML = STAGES.map(([k, n], i) => { const p = pct(k); const off = p === null && !(k === 'xometry' && (XO.parts || []).length); return `<button data-s="${k}" class="${cur === k ? 'on' : ''} ${p === 100 ? 'done' : ''}" ${off ? 'disabled' : ''}><i>${p === 100 ? '✓' : i + 1}</i>${n}<em>${p === null ? '—' : p + '%'}</em></button>`; }).join('');
     el.querySelector('#allpct').textContent = allPct() + '%';
   };
   let cur = STAGES.find(s => pct(s[0]) !== null && pct(s[0]) < 100)?.[0] || 'purchase';
@@ -594,11 +608,17 @@ async function build(el) {
       const tot = (B.print || []).reduce((a, p) => ({ t: a.t + (+p.time_min || 0) * (+p.qty || 1), g: a.g + (+p.grams || 0) * (+p.qty || 1) }), { t: 0, g: 0 });
       box.innerHTML = `<p class="lead">${(B.print || []).length} parts · ${(tot.t / 60).toFixed(1)} h · ${Math.round(tot.g)} g of filament. Open each G-code in your slicer to send it to the printer.</p>` + [...plates].map(([pl, list]) => `<div class="sgroup"><div class="sgh"><b>Plate ${esc(pl)}</b></div>
         <table class="bom"><tr><th>Printed</th><th>Part</th><th>Qty</th><th>Material</th><th>Time</th><th>Weight</th><th>G-code</th><th>After printing / check</th></tr>${list.map(p => `<tr>
-        <td>${check('print', p.part, 'printed', '')}</td><td><b>${esc(p.part)}</b><div class="empty">${esc(p.orientation || '')}${p.supports ? ' · supports: ' + esc(p.supports) : ''}</div></td><td>${esc(p.qty || 1)}</td><td>${esc(p.material || '')}</td>
+        <td>${toXo(p.part) ? '<span class="gtag xo-tag">Xometry</span>' : check('print', p.part, 'printed', '')}</td><td><b>${esc(p.part)}</b><div class="empty">${esc(p.orientation || '')}${p.supports ? ' · supports: ' + esc(p.supports) : ''}</div></td><td>${esc(p.qty || 1)}</td><td>${esc(p.material || '')}</td>
         <td>${p.time_min ? Math.floor(p.time_min / 60) + 'h ' + (p.time_min % 60) + 'm' : ''}</td><td>${p.grams ? p.grams + ' g' : ''}</td><td>${p.gcode ? fileBtns(p.gcode) : '<span class="gtag">not sliced</span>'}</td>
         <td>${esc(p.after || '')}${(p.checks || []).length ? '<ul>' + p.checks.map(c => `<li>${esc(c)}</li>`).join('') + '</ul>' : ''}</td></tr>`).join('')}</table></div>`).join('');
+    } else if (cur === 'xometry') {
+      xometryStage(box, { id: S.id, api: S.api, raw, R: XO, check, fileBtns, reveal,
+        onChange: R => { XO = R; items.print = (B.print || []).filter(p => !toXo(p.part)).map((p, i) => ({ id: p.part || 'r' + i, fields: ['printed'] }));
+          items.xometry = XO.parts.filter(p => p.route === 'xometry').map(p => ({ id: p.key, fields: ['ordered', 'received'] }));
+          items.fabricate = (B.fabricate || []).filter(p => !toXo(p.part)).map((p, i) => ({ id: p.part || 'f' + i, fields: ['done'] })); renderNav(); } });
     } else if (cur === 'fabricate') {
-      box.innerHTML = (B.fabricate || []).map(f => `<div class="appcard"><div class="t">${check('fabricate', f.part, 'done', '')} ${esc(f.part)} <span class="empty">· ${esc(f.process || '')}${f.qty ? ' · qty ' + esc(f.qty) : ''}</span></div>
+      box.innerHTML = (B.fabricate || []).map(f => `<div class="appcard"><div class="t">${toXo(f.part) ? '<span class="gtag xo-tag">Xometry</span>' : check('fabricate', f.part, 'done', '')} ${esc(f.part)} <span class="empty">· ${esc(f.process || '')}${f.qty ? ' · qty ' + esc(f.qty) : ''}</span></div>
+        ${f.pcba_package ? `<div class="checkbox-note"><b>Turnkey PCBA order package:</b> ${fileBtns(f.pcba_package)} Upload the Gerber zip, BOM, centroid and drawings listed in its README; type the values from its QUOTE-SHEET.md into the quote form.</div>` : ''}
         <div class="d">${f.vendor ? 'Vendor: ' + esc(f.vendor) + '. ' : ''}${f.material ? 'Material: ' + esc(f.material) + '. ' : ''}${esc(f.settings || '')}</div>
         <div>${(f.files || []).map(fileBtns).join('<br>')}</div></div>`).join('');
     } else if (cur === 'assembly') {

@@ -139,7 +139,17 @@ async function load(p) {
   if (e === 'stl') return [new STLLoader().parse(await (await fetch(url, { cache: 'no-store' })).arrayBuffer())];
   if (e === '3mf') return geometriesOf(new ThreeMFLoader().parse(await (await fetch(url, { cache: 'no-store' })).arrayBuffer()));
   if (e === 'obj') return geometriesOf(new OBJLoader().parse(await (await fetch(url, { cache: 'no-store' })).text()));
-  if (e === 'glb') return geometriesOf((await new GLTFLoader().loadAsync(url)).scene);
+  if (e === 'glb') {
+    // glTF is Y-up; this viewer is Z-up. Same rule as results.js: CAD exporters (OCCT/cadquery) convert
+    // Z-up to Y-up, so turn the scene back; only a trimesh export with no root transform is left as-is.
+    const g = await new GLTFLoader().loadAsync(url);
+    const js = g.parser?.json || {};
+    const roots = (js.scenes?.[js.scene || 0]?.nodes || []).map(i => js.nodes?.[i] || {});
+    if (!/trimesh/i.test(String(js.asset?.generator || '')) || roots.some(n => n.matrix || n.rotation)) {
+      const wrap = new THREE.Group(); g.scene.rotation.x = Math.PI / 2; wrap.add(g.scene); return geometriesOf(wrap);
+    }
+    return geometriesOf(g.scene);
+  }
   return [];
 }
 function build(geos) {

@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<defs><pattern id="h45" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" stroke="#455a64" stroke-width="1.2"/></pattern><pattern id="h135" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><line x1="0" y1="0" x2="0" y2="9" stroke="#455a64" stroke-width="1.2"/></pattern><marker id="arr" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto"><path d="M0,0 L12,5 L0,10 z" fill="#111"/></marker></defs>
+<text x="237.0" y="18" font-size="14" text-anchor="middle">8</text>
+<text x="663.0" y="18" font-size="14" text-anchor="middle">7</text>
+<text x="1089.0" y="18" font-size="14" text-anchor="middle">6</text>
+<text x="1515.0" y="18" font-size="14" text-anchor="middle">5</text>
+<text x="1941.0" y="18" font-size="14" text-anchor="middle">4</text>
+<text x="2367.0" y="18" font-size="14" text-anchor="middle">3</text>
+<text x="2793.0" y="18" font-size="14" text-anchor="middle">2</text>
+<text x="3219.0" y="18" font-size="14" text-anchor="middle">1</text>
+<g><rect x="2636" y="2004" width="796" height="276" fill="#fff" stroke="#111" stroke-width="2"/><text x="2648" y="2040" font-size="28" font-weight="bold">ELE-P1-003 TYPICAL CONTROL WIRING</text><text x="2648" y="2066" font-size="16">Down Home Creole · Phase 1 prototype · 1,000 lb/week, 5 blends (13-blend ready)</text><line x1="2636" y1="2084" x2="3432" y2="2084" stroke="#111"/>
+<text x="2648" y="2110" font-size="12" fill="#555">DRAWING NO.</text><text x="2648" y="2136" font-size="18" font-weight="bold">DH-ELE-P1-003</text>
+<text x="2844" y="2110" font-size="12" fill="#555">REV</text><text x="2844" y="2136" font-size="18" font-weight="bold">A</text>
+<text x="3040" y="2110" font-size="12" fill="#555">SCALE</text><text x="3040" y="2136" font-size="18" font-weight="bold">NTS</text>
+<text x="3236" y="2110" font-size="12" fill="#555">UNITS</text><text x="3236" y="2136" font-size="18" font-weight="bold">mm [in]</text>
+<text x="2648" y="2188" font-size="12" fill="#555">SHEET</text><text x="2648" y="2214" font-size="18" font-weight="bold">ARCH D · 1 of 1</text>
+<text x="2844" y="2188" font-size="12" fill="#555">DRAWN</text><text x="2844" y="2214" font-size="18" font-weight="bold">plant/engsheets.py</text>
+<text x="3040" y="2188" font-size="12" fill="#555">DATE</text><text x="3040" y="2214" font-size="18" font-weight="bold">2026-11-17</text>
+<text x="3236" y="2188" font-size="12" fill="#555">STATUS</text><text x="3236" y="2214" font-size="18" font-weight="bold">FOR REVIEW</text>
+</g>
+<text x="100" y="90" font-size="20" font-weight="bold">A. 24 V DC CONTROL: SAFETY CIRCUIT, BIN B01 CHANNEL, VALVE AND SCREW PERMISSIVES</text>
+<line x1="120" y1="130" x2="120" y2="1150" stroke="#c62828" stroke-width="4" stroke-dasharray=""/>
+<line x1="2100" y1="130" x2="2100" y2="1150" stroke="#1565c0" stroke-width="4" stroke-dasharray=""/>
+<text x="70" y="125" font-size="13" font-weight="bold">+24 V (PS-1, 10 A)</text>
+<text x="2060" y="125" font-size="13" font-weight="bold">0 V</text>
+<line x1="120" y1="200" x2="220" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="220" y="182" width="120" height="36" fill="#fff" stroke="#111"/>
+<text x="228" y="198" font-size="13" font-weight="bold">ES-1</text>
+<text x="228" y="213" font-size="10">e-stop dosing</text>
+<rect x="326" y="175" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="360" y="188" font-size="11" text-anchor="middle" fill="#b00020">SF-01</text>
+<line x1="340" y1="200" x2="380" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="380" y1="200" x2="480" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="480" y="182" width="120" height="36" fill="#fff" stroke="#111"/>
+<text x="488" y="198" font-size="13" font-weight="bold">ES-2</text>
+<text x="488" y="213" font-size="10">e-stop blender</text>
+<rect x="586" y="175" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="620" y="188" font-size="11" text-anchor="middle" fill="#b00020">SF-02</text>
+<line x1="600" y1="200" x2="640" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="640" y1="200" x2="740" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="740" y="182" width="120" height="36" fill="#fff" stroke="#111"/>
+<text x="748" y="198" font-size="13" font-weight="bold">ES-3</text>
+<text x="748" y="213" font-size="10">e-stop mill</text>
+<rect x="846" y="175" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="880" y="188" font-size="11" text-anchor="middle" fill="#b00020">SF-03</text>
+<line x1="860" y1="200" x2="900" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="900" y1="200" x2="1000" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1000" y="182" width="120" height="36" fill="#fff" stroke="#111"/>
+<text x="1008" y="198" font-size="13" font-weight="bold">ZS-220</text>
+<text x="1008" y="213" font-size="10">hopper lid closed</text>
+<rect x="1106" y="175" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="1140" y="188" font-size="11" text-anchor="middle" fill="#b00020">SF-04</text>
+<line x1="1120" y1="200" x2="1160" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="1160" y1="200" x2="1260" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1260" y="182" width="120" height="36" fill="#fff" stroke="#111"/>
+<text x="1268" y="198" font-size="13" font-weight="bold">ZS-224</text>
+<text x="1268" y="213" font-size="10">screw guard</text>
+<rect x="1366" y="175" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="1400" y="188" font-size="11" text-anchor="middle" fill="#b00020">SF-05</text>
+<line x1="1380" y1="200" x2="1420" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1560" y="170" width="300" height="70" fill="#ffebee" stroke="#111" stroke-width="2"/><text x="1710.0" y="192" font-size="15" font-weight="bold" text-anchor="middle">SR-P1 safety relay</text><text x="1710.0" y="212" font-size="12" text-anchor="middle">dual channel, PL d (Pilz PNOZ s4 class)</text>
+<line x1="1380" y1="200" x2="1560" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="1860" y1="200" x2="2100" y2="200" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<text x="1560" y="270" font-size="12">outputs: 13-14 &gt; GS21 STO (all 9), 23-24 &gt; K-224 / K-301 / K-320 coils, 33-34 &gt; DI_SafetyOK</text>
+<rect x="1666" y="279" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="1700" y="292" font-size="11" text-anchor="middle" fill="#b00020">225-01-00</text>
+<line x1="120" y1="380" x2="300" y2="380" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="300" y="345" width="260" height="70" fill="#ffe0b2" stroke="#111" stroke-width="2"/><text x="430.0" y="367" font-size="15" font-weight="bold" text-anchor="middle">LS-213-01 Soliphant FTM20</text><text x="430.0" y="387" font-size="12" text-anchor="middle">bin B01, PNP, covered = ON</text>
+<text x="305" y="435" font-size="11">BN +24 V   BK signal   BU 0 V</text>
+<line x1="560" y1="380" x2="900" y2="380" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="696" y="355" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="730" y="368" font-size="11" text-anchor="middle" fill="#b00020">225-02-00</text>
+<rect x="900" y="345" width="300" height="70" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="1050.0" y="367" font-size="15" font-weight="bold" text-anchor="middle">750-1405 slot 2 ch 0</text><text x="1050.0" y="387" font-size="12" text-anchor="middle">%IX1.0 DI_BinLow[1]</text>
+<line x1="1200" y1="380" x2="2100" y2="380" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<text x="1220" y="370" font-size="11">W-P11 cores 1-3 (shield to panel ground bar only)</text>
+<line x1="120" y1="520" x2="900" y2="520" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="900" y="485" width="300" height="70" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="1050.0" y="507" font-size="15" font-weight="bold" text-anchor="middle">750-1504 slot 4 ch 0</text><text x="1050.0" y="527" font-size="12" text-anchor="middle">%QX1.0 DO_Agitator[1]</text>
+<line x1="1200" y1="520" x2="1450" y2="520" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1291" y="495" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="1325" y="508" font-size="11" text-anchor="middle" fill="#b00020">225-04-00</text>
+<rect x="1450" y="485" width="260" height="70" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1580.0" y="507" font-size="15" font-weight="bold" text-anchor="middle">KA-01 relay coil</text><text x="1580.0" y="527" font-size="12" text-anchor="middle">24 V DC, with diode</text>
+<line x1="1710" y1="520" x2="2100" y2="520" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<text x="1450" y="575" font-size="11">KA-01 13-14 switches the B01 agitator motor (W-P11 cores 4-5)</text>
+<line x1="120" y1="660" x2="900" y2="660" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="900" y="625" width="300" height="70" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="1050.0" y="647" font-size="15" font-weight="bold" text-anchor="middle">750-1504 slot 3 ch 0</text><text x="1050.0" y="667" font-size="12" text-anchor="middle">%QX0.0 DO_ValveOpen</text>
+<line x1="1200" y1="660" x2="1450" y2="660" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1291" y="635" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="1325" y="648" font-size="11" text-anchor="middle" fill="#b00020">225-03-00</text>
+<rect x="1450" y="625" width="300" height="70" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1600.0" y="647" font-size="15" font-weight="bold" text-anchor="middle">P1-223 actuator OPEN</text><text x="1600.0" y="667" font-size="12" text-anchor="middle">24 V DC, spring/power close</text>
+<line x1="1750" y1="660" x2="2100" y2="660" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="120" y1="760" x2="300" y2="760" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="300" y="730" width="200" height="60" fill="#fff" stroke="#111" stroke-width="2"/><text x="400.0" y="752" font-size="15" font-weight="bold" text-anchor="middle">ZSO-223</text><text x="400.0" y="772" font-size="12" text-anchor="middle">open limit</text>
+<line x1="500" y1="760" x2="900" y2="760" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="666" y="735" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="700" y="748" font-size="11" text-anchor="middle" fill="#b00020">225-01-02</text>
+<rect x="900" y="730" width="300" height="60" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="1050.0" y="752" font-size="15" font-weight="bold" text-anchor="middle">%IX0.2 DI_ValveOpen</text>
+<line x1="1200" y1="760" x2="2100" y2="760" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="120" y1="850" x2="300" y2="850" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="300" y="820" width="200" height="60" fill="#fff" stroke="#111" stroke-width="2"/><text x="400.0" y="842" font-size="15" font-weight="bold" text-anchor="middle">ZSC-223</text><text x="400.0" y="862" font-size="12" text-anchor="middle">closed limit</text>
+<line x1="500" y1="850" x2="900" y2="850" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="666" y="825" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="700" y="838" font-size="11" text-anchor="middle" fill="#b00020">225-01-01</text>
+<rect x="900" y="820" width="300" height="60" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="1050.0" y="842" font-size="15" font-weight="bold" text-anchor="middle">%IX0.1 DI_ValveClosed</text>
+<line x1="1200" y1="850" x2="2100" y2="850" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<line x1="120" y1="970" x2="900" y2="970" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="900" y="935" width="300" height="70" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="1050.0" y="957" font-size="15" font-weight="bold" text-anchor="middle">750-1504 slot 3 ch 1</text><text x="1050.0" y="977" font-size="12" text-anchor="middle">%QX0.1 DO_ScrewRun</text>
+<line x1="1200" y1="970" x2="1330" y2="970" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1231" y="945" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="1265" y="958" font-size="11" text-anchor="middle" fill="#b00020">225-03-01</text>
+<rect x="1330" y="940" width="170" height="60" fill="#fff" stroke="#111" stroke-width="2"/><text x="1415.0" y="962" font-size="15" font-weight="bold" text-anchor="middle">SR-P1 23-24</text><text x="1415.0" y="982" font-size="12" text-anchor="middle">safety</text>
+<line x1="1500" y1="970" x2="1560" y2="970" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1560" y="940" width="170" height="60" fill="#fff" stroke="#111" stroke-width="2"/><text x="1645.0" y="962" font-size="15" font-weight="bold" text-anchor="middle">ZSO-223</text><text x="1645.0" y="982" font-size="12" text-anchor="middle">hard permissive</text>
+<line x1="1730" y1="970" x2="1780" y2="970" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="1780" y="935" width="220" height="70" fill="#fff8e1" stroke="#111" stroke-width="2"/><text x="1890.0" y="957" font-size="15" font-weight="bold" text-anchor="middle">K-224 coil</text><text x="1890.0" y="977" font-size="12" text-anchor="middle">MS-P1 screw starter</text>
+<line x1="2000" y1="970" x2="2100" y2="970" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<text x="1330" y="1025" font-size="11">The screw can only run with the valve proven open and the safety circuit made, even if the PLC output is forced.</text>
+<text x="100" y="1250" font-size="20" font-weight="bold">B. FEEDER DRIVE (TYPICAL OF 9): GS21 #1 FOR BIN B01</text>
+<rect x="140" y="1300" width="240" height="80" fill="#fff" stroke="#111" stroke-width="2"/><text x="260.0" y="1322" font-size="15" font-weight="bold" text-anchor="middle">LP-P1 CB-21</text><text x="260.0" y="1342" font-size="12" text-anchor="middle">20 A 2-pole, 208 V</text>
+<line x1="380" y1="1340" x2="520" y2="1340" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="416" y="1315" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="450" y="1328" font-size="11" text-anchor="middle" fill="#b00020">L1/L2-21</text>
+<rect x="520" y="1290" width="360" height="110" fill="#e3f2fd" stroke="#111" stroke-width="2"/><text x="700.0" y="1312" font-size="15" font-weight="bold" text-anchor="middle">P1-226 GS21-20P5 #1</text><text x="700.0" y="1332" font-size="12" text-anchor="middle">Modbus addr 1 · STO from SR-P1 13-14</text>
+<line x1="880" y1="1340" x2="1040" y2="1340" stroke="#111" stroke-width="2" stroke-dasharray=""/>
+<rect x="926" y="1315" width="68" height="16" fill="#fffde7" stroke="#b00020" stroke-width="0.8"/><text x="960" y="1328" font-size="11" text-anchor="middle" fill="#b00020">U/V/W-12-01</text>
+<circle cx="1090" cy="1340" r="40" fill="#fff" stroke="#111" stroke-width="2"/><text x="1090" y="1346" font-size="16" text-anchor="middle">M</text>
+<text x="1140" y="1335" font-size="13" font-weight="bold">M-212-01 feeder 0.5 HP, 230 V 3-ph (P1-212 B01)</text>
+<text x="1140" y="1355" font-size="11">4C x 14 AWG VFD cable, shield bonded both ends</text>
+<line x1="700" y1="1400" x2="700" y2="1480" stroke="#5e35b1" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="710" y="1470" font-size="12">RS-485 W-P30: D+/D-/SG daisy chain to #2 ... #9; 120 ohm terminator at #9</text>
+<text x="140" y="1552" font-size="19" font-weight="bold">GS21 SETTINGS (TYPICAL)</text><rect x="140" y="1560" width="900" height="23" fill="#eceff1" stroke="#111"/><text x="145" y="1576" font-size="13" font-weight="bold">DRIVE SETTING</text><text x="365" y="1576" font-size="13" font-weight="bold">VALUE</text><text x="625" y="1576" font-size="13" font-weight="bold">WHERE</text><rect x="140" y="1583" width="900" height="21" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="145" y="1598" font-size="12">Fast speed</text><text x="365" y="1598" font-size="12">60 Hz (about 700 L/h)</text><text x="625" y="1598" font-size="12">FastHz[b] in DosingStation.st</text><rect x="140" y="1604" width="900" height="21" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="145" y="1619" font-size="12">Slow speed</text><text x="365" y="1619" font-size="12">12 Hz</text><text x="625" y="1619" font-size="12">SlowHz[b], tuned at SAT</text><rect x="140" y="1625" width="900" height="21" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="145" y="1640" font-size="12">Accel / decel</text><text x="365" y="1640" font-size="12">0.5 s / 0.2 s</text><text x="625" y="1640" font-size="12">short stop for a clean cut-off</text><rect x="140" y="1646" width="900" height="21" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="145" y="1661" font-size="12">Control source</text><text x="365" y="1661" font-size="12">Modbus RTU</text><text x="625" y="1661" font-size="12">P09.00 per GS21 manual (VERIFY)</text><rect x="140" y="1667" width="900" height="21" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="145" y="1682" font-size="12">Motor overload</text><text x="365" y="1682" font-size="12">nameplate FLA</text><text x="625" y="1682" font-size="12">drive electronic overload</text>
+<rect x="2636" y="1340" width="796" height="125" fill="#fff" stroke="#111"/><text x="2646" y="1362" font-size="16" font-weight="bold">NOTES</text><text x="2646" y="1384" font-size="13">1. Wire numbers are 225-slot-channel for PLC I/O and SF-nn for the safety loop; every wire is ferruled at both ends.</text><text x="2646" y="1403" font-size="13">2. Bins B02-B12 repeat sections A rungs 2-3 and B with their own slot channels, cables W-P12...W-P22 and drives #2-#9.</text><text x="2646" y="1422" font-size="13">3. Safety functions are hard-wired through SR-P1. The PLC only reads SR-P1&#x27;s status.</text><text x="2646" y="1441" font-size="13">4. 24 V DC: PS-1 10 A for I/O and actuator, PS-2 2 A for the PFC200 and 880 interface (separate fuses).</text><text x="2646" y="1460" font-size="13">5. Field cables: 18 AWG [0.82 mm²] TC-ER; shields grounded at the panel end only.</text>
+</svg>

@@ -1,0 +1,56 @@
+<!doctype html><html><head><style>html,body{margin:0;background:#f4f5f2;overflow:hidden}canvas{display:block;position:absolute;left:0;top:0}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three'; import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const V = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+const W = innerWidth, H = innerHeight;
+const r = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true}); r.setSize(W,H); r.setPixelRatio(1);
+r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap; r.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const ov = document.createElement('canvas'); ov.width=W; ov.height=H; document.body.appendChild(ov);
+const sc = new THREE.Scene(); sc.background = new THREE.Color(0xf4f5f2);
+const P = (x,y,z)=>new THREE.Vector3(x, z, -y);          // plan mm, Z up -> three
+sc.add(new THREE.HemisphereLight(0xffffff, 0x8a8a80, 1.6));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.copy(P(16000,-6000,16000)); sun.target.position.copy(P(7600,7000,0));
+sun.castShadow = true; sun.shadow.mapSize.set(4096,4096); const s = sun.shadow.camera; s.left=-14000; s.right=14000; s.top=14000; s.bottom=-14000; s.near=100; s.far=60000; sun.shadow.bias=-0.0004;
+sc.add(sun, sun.target);
+const fill = new THREE.DirectionalLight(0xffffff, 0.6); fill.position.copy(P(-8000, 20000, 9000)); sc.add(fill);
+const cam = new THREE.PerspectiveCamera(V.fov||30, W/H, 50, 200000);
+cam.position.copy(P(...V.eye)); cam.up.set(0,1,0); cam.lookAt(P(...V.target));
+new GLTFLoader().load('DH-P1-plant.glb', g=>{
+  g.scene.traverse(o=>{ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; const m=o.material; if(m){ m.metalness=Math.min(m.metalness??0,0.25); m.roughness=0.55; m.side=THREE.DoubleSide; } } });
+  sc.add(g.scene); r.render(sc,cam);
+  fetch('anchors.json').then(x=>x.json()).then(A=>{ labels(A); window.DONE=true; });
+});
+function labels(A){
+  const c = ov.getContext('2d'); const fs = V.fs||22; c.font = `600 ${fs}px Helvetica, Arial`; c.textBaseline='middle';
+  const col = {buy:'#1f5fa8', build:'#c0620c', stock:'#666'};
+  const want = V.tags ? A.filter(a=>V.tags.includes(a.tag)) : A;
+  const boxes = [];
+  const pts = want.map(a=>{ const v=P(a.x,a.y,a.z).project(cam); return {...a, sx:(v.x+1)/2*W, sy:(1-v.y)/2*H, vis:v.z<1}; })
+                  .filter(p=>p.vis && p.sx>20 && p.sx<W-20 && p.sy>20 && p.sy<H-20).sort((a,b)=>a.sy-b.sy);
+  for (const p of pts){
+    const txt = V.short ? p.tag : `${p.tag}  ${p.name}`; const tw = c.measureText(txt).width + 18, th = fs + 12;
+    let bx = p.sx + (V.dx??30), by = p.sy - (V.dy??70) - th;
+    if (bx + tw > W - 10) bx = p.sx - tw - (V.dx??30);
+    for (let k=0;k<60;k++){ const hit = boxes.find(b=> bx < b.x+b.w+6 && bx+tw+6 > b.x && by < b.y+b.h+4 && by+th+4 > b.y); if(!hit) break; by = hit.y - th - 6; }
+    if (by < (V.legend?400:140)) { by = p.sy + 40; for (let k=0;k<60;k++){ const hit = boxes.find(b=> bx < b.x+b.w+6 && bx+tw+6 > b.x && by < b.y+b.h+4 && by+th+4 > b.y); if(!hit) break; by = hit.y + hit.h + 6; } }
+    boxes.push({x:bx,y:by,w:tw,h:th});
+    c.strokeStyle=col[p.kind]; c.lineWidth=2; c.beginPath(); c.moveTo(p.sx,p.sy); c.lineTo(bx + (bx>p.sx?0:tw), by+th/2); c.stroke();
+    c.fillStyle=col[p.kind]; c.beginPath(); c.arc(p.sx,p.sy,5,0,7); c.fill();
+    c.fillStyle='rgba(255,255,255,0.93)'; c.fillRect(bx,by,tw,th); c.lineWidth=2.5; c.strokeRect(bx,by,tw,th);
+    c.fillStyle='#111'; c.fillText(txt, bx+9, by+th/2+1);
+  }
+  if (V.list){ const L=[...pts].sort((a,b)=>a.tag.localeCompare(b.tag)); const x0=W-V.list, rh=31; const h=60+rh*L.length;
+    c.fillStyle='rgba(255,255,255,0.95)'; c.fillRect(x0,20,V.list-24,h); c.strokeStyle='#333'; c.lineWidth=1.5; c.strokeRect(x0,20,V.list-24,h);
+    c.fillStyle='#111'; c.font='700 22px Helvetica, Arial'; c.fillText('EQUIPMENT IN VIEW', x0+16, 46);
+    L.forEach((a,i)=>{ const y=80+i*rh; c.fillStyle=col[a.kind]; c.font='700 19px Helvetica, Arial'; c.fillText(a.tag, x0+16, y); c.fillStyle='#111'; c.font='400 19px Helvetica, Arial'; c.fillText(a.name, x0+120, y); }); }
+  // title + legend
+  c.fillStyle='rgba(255,255,255,0.92)'; c.fillRect(24,20,V.legendW||900, V.legend? 40+30*V.legend.length+70 : 110); c.strokeStyle='#333'; c.lineWidth=1.5; c.strokeRect(24,20,V.legendW||900, V.legend? 40+30*V.legend.length+70 : 110);
+  c.fillStyle='#111'; c.font='700 30px Helvetica, Arial'; c.fillText(V.title, 40, 48);
+  c.font='400 18px Helvetica, Arial'; c.fillText(V.sub, 40, 80);
+  let y = 112;
+  let lx = 40; for (const [k,t] of [['build','Fabricated in house (our STEP model)'],['buy','Bought machine (catalog-size model)'],['stock','Stock']]){ c.fillStyle=col[k]; c.fillRect(lx,y-8,26,16); c.fillStyle='#111'; c.fillText(t,lx+34,y); lx += c.measureText(t).width + 70; }
+  if (V.legend){ c.font='400 17px Helvetica, Arial'; let yy=150; for (const [t,n,k] of V.legend){ c.fillStyle=col[k]; c.font='700 17px Helvetica, Arial'; c.fillText(t,40,yy); c.fillStyle='#111'; c.font='400 17px Helvetica, Arial'; c.fillText(n,140,yy); yy+=30; } }
+}
+</script></body></html>

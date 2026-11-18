@@ -1,0 +1,140 @@
+{
+ "routes": {
+  "allergen-free": [
+   "P1-201",
+   "P1-202",
+   "P1-206",
+   "P1-208",
+   "P1-211",
+   "P1-212",
+   "P1-213",
+   "P1-214",
+   "P1-220",
+   "P1-223",
+   "P1-224",
+   "P1-301",
+   "P1-302",
+   "P1-304",
+   "P1-305",
+   "P1-307",
+   "P1-308",
+   "P1-401",
+   "P1-320",
+   "P1-321",
+   "P1-322"
+  ]
+ },
+ "validated_cleans": {},
+ "housed_in": {
+  "P1-211": "P1-210",
+  "P1-212": "P1-210",
+  "P1-213": "P1-210",
+  "P1-214": "P1-210",
+  "P1-220": "P1-210",
+  "P1-223": "P1-210",
+  "P1-302": "P1-301",
+  "P1-305": "P1-301",
+  "P1-307": "P1-301",
+  "P1-201": "P1-206",
+  "P1-202": "P1-206",
+  "P1-207": "P1-206",
+  "P1-321": "P1-320",
+  "P1-322": "P1-320",
+  "P1-331": "P1-301",
+  "P1-304": "P1-301",
+  "P1-308": "P1-301",
+  "P1-309": "P1-301",
+  "P1-215": "P1-210",
+  "P1-216": "P1-210",
+  "P1-217": "P1-210",
+  "P1-333": "P1-301",
+  "P1-334": "P1-301",
+  "P1-335": "P1-301",
+  "P1-336": "P1-301",
+  "P1-332": "P1-301"
+ },
+ "claims": [
+  {
+   "claim": "Gluten free (< 20 ppm, 21 CFR 101.91)",
+   "allergen": "wheat",
+   "applies_to": "all Phase 1 blends",
+   "action": "No wheat in the building in Phase 1 (client 2026-11-17: blended seasonings only). Keep a supplier gluten statement for every spice; test one finished lot a quarter."
+  }
+ ],
+ "dust": {
+  "collector": "P1-310",
+  "margin": 0.25,
+  "nfpa_items": [
+   "NFPA 652 dust hazard analysis (DHA) before ordering DC-310; send Kst/Pmax and MIE samples of the 3 highest-volume blends to a test lab.",
+   "NFPA 61 (agricultural/food dusts): collector outside the building, explosion vent directed away from people, isolation flap valve on the inlet duct.",
+   "Bins vent back through the weigh hopper to P1-310; lids gasketed so bins do not puff dust at refill.",
+   "Bond and ground the bins, feeders, flexible screw and blender (< 10 ohm); drums are conductive-lined or grounded with a clip at the drum-top sifter.",
+   "Housekeeping: dust layer over 1/32 in triggers cleaning; vacuum P1-702 only, never compressed air.",
+   "Electrical in the dosing and blending room per the DHA (Class II Div 2 Group G unless shown otherwise); controller P1-225 in a sealed SS enclosure."
+  ]
+ },
+ "haccp": [
+  {
+   "ccp": "CCP-1",
+   "step": "Metal detection P1-406 on every finished pack, after labeling",
+   "hazard": "Physical: metal from raw spice or equipment wear",
+   "limit": "No pack passes containing Fe >= 2.0 mm, non-Fe >= 2.5 mm, 316 SS >= 3.0 mm spheres (set at validation with the jar's foil liner)",
+   "monitor": "Test cards through the aperture at start, every 2 h, at end and after any stop; locked reject bin",
+   "correct": "Failed test: hold every pack since the last good test, re-run them, find the cause, record",
+   "verify": "QA reviews records daily; annual validation",
+   "records": "MES pack run record, detector test log"
+  }
+ ],
+ "prerequisites": [
+  "Supplier approval with COA per lot; spices bought steam-treated (no kill step in this plant); Salmonella negative in 375 g per COA.",
+  "Bin lot control: every refill is scanned into the MES; bins run empty weekly so the lot set per batch stays small.",
+  "Sieve (12 mesh) and grate magnet on every batch: screen and magnet checked and recorded per batch.",
+  "Net contents: every unit weighed on P1-407; NIST HB 133 lot check in the MES.",
+  "Label control: labels printed per run with the batch lot code; first-off label check signed in the MES.",
+  "Pest control, glass and brittle plastic register, hygiene vestibule with hand sink P1-704."
+ ],
+ "ssop": [
+  {
+   "task": "Dry clean pack bench and filler",
+   "when": "end of each pack day",
+   "method": "vacuum (P1-702), dry brush (Vikan green)",
+   "verify": "visual + ATP < 150 RLU on 3 points",
+   "who": "pack operator"
+  },
+  {
+   "task": "Blender and flexible screw purge between blends",
+   "when": "every blend change",
+   "method": "run screw and blender empty, brush ribbons, vacuum valve; first 5 kg of the next blend back into its own drum",
+   "verify": "visual",
+   "who": "blend operator"
+  },
+  {
+   "task": "Bin run-empty and wipe",
+   "when": "weekly per bin, at the low-level switch",
+   "method": "feed to empty, vacuum, wipe cone with dry cloth",
+   "verify": "visual; MES closes the bin lot set",
+   "who": "blend operator"
+  },
+  {
+   "task": "Full dry clean of dosing and blending",
+   "when": "end of each blending week",
+   "method": "open blender (locked out), feeders screws out, hopper and drum-top sifter vacuumed",
+   "verify": "visual + ATP",
+   "who": "blend operator"
+  },
+  {
+   "task": "Wet clean (only if a wet event or pest finding)",
+   "when": "as needed",
+   "method": "disassemble, wash, sanitize (quat, no-rinse), dry 12 h before use",
+   "verify": "ATP + dryness check",
+   "who": "sanitation"
+  },
+  {
+   "task": "Environmental monitoring (Salmonella)",
+   "when": "monthly, zones 2-4",
+   "method": "sponge swabs to lab",
+   "verify": "trend in QA",
+   "who": "QA"
+  }
+ ]
+}

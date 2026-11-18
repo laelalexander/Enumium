@@ -1,0 +1,199 @@
+{
+ "utilization_limit": 0.85,
+ "changeover_in_schedule_min": 25,
+ "blending": {
+  "candidate_working_cuft": [
+   18,
+   25,
+   36,
+   52
+  ],
+  "max_fill_frac": 1.0,
+  "min_fill_frac": 0.35,
+  "charge_lb_per_min": 100,
+  "premix_add_min": 5,
+  "mix_min": 12,
+  "sift_lb_per_min": 100,
+  "sample_min": 5,
+  "dry_clean_min": 30,
+  "wet_clean_after_allergen_min": 240,
+  "sequence_purge_min": 10,
+  "wet_clean_outside_shift": true,
+  "campaign_every_weeks_if_lb_below": [
+   1000,
+   2
+  ]
+ },
+ "color_order": [
+  "f-lemp",
+  "f-garl",
+  "f-ncgb",
+  "f-ngrb",
+  "f-efap",
+  "f-ncnc",
+  "f-orig",
+  "f-caml",
+  "f-lthr",
+  "f-lyrb",
+  "f-fire",
+  "f-blkn",
+  "f-vfrb",
+  "f-ncpm",
+  "f-batter",
+  "f-afcb"
+ ],
+ "pack_lines": [
+  {
+   "name": "Pack line A (shakers + jars)",
+   "formats": [
+    "SHAKER",
+    "JAR"
+   ],
+   "rated_upm": {
+    "SHAKER": 80,
+    "JAR": 45
+   },
+   "container_order": [
+    "shaker-250",
+    "jar-12"
+   ],
+   "product_change_min": 25,
+   "container_change_min": 20,
+   "allergen_change_min": 0,
+   "stations": [
+    {
+     "tag": "UN-402",
+     "name": "Unscrambler",
+     "unit": "upm",
+     "rated": 120,
+     "src": "documented class 1-400 bpm"
+    },
+    {
+     "tag": "FL-403",
+     "name": "Rotary auger filler",
+     "unit": "upm",
+     "rated": 80,
+     "src": "assumed, confirm on quote"
+    },
+    {
+     "tag": "CP-404",
+     "name": "Capper A6",
+     "unit": "upm",
+     "rated": 200,
+     "src": "documented"
+    },
+    {
+     "tag": "IS-405",
+     "name": "Induction sealer",
+     "unit": "upm",
+     "rated": 150,
+     "src": "estimate"
+    },
+    {
+     "tag": "LB-406",
+     "name": "Labeler PL-501",
+     "unit": "upm",
+     "rated": 150,
+     "src": "calculated from 72 ft/min conveyor"
+    },
+    {
+     "tag": "CW-409",
+     "name": "Checkweigher C33",
+     "unit": "upm",
+     "rated": 300,
+     "src": "documented"
+    },
+    {
+     "tag": "CE-411",
+     "name": "Case erector WF20T",
+     "unit": "cpm",
+     "rated": 20,
+     "src": "documented"
+    },
+    {
+     "tag": "CK-412",
+     "name": "Cobot case packer",
+     "unit": "cpm",
+     "rated": 8,
+     "src": "estimate"
+    },
+    {
+     "tag": "CS-413",
+     "name": "Case sealer",
+     "unit": "cpm",
+     "rated": 25,
+     "src": "estimate"
+    },
+    {
+     "tag": "PA-414",
+     "name": "Print & apply",
+     "unit": "cpm",
+     "rated": 25,
+     "src": "estimate"
+    },
+    {
+     "tag": "PL-415",
+     "name": "Cobot palletizer PE20",
+     "unit": "cpm",
+     "rated": 13,
+     "src": "documented"
+    }
+   ],
+   "campaign_every_weeks_if_units_below": [
+    4000,
+    2
+   ]
+  },
+  {
+   "name": "Pack station B (pouch, tub, carton)",
+   "formats": [
+    "POUCH",
+    "TUB",
+    "BOX"
+   ],
+   "rated_upm": {
+    "POUCH": 12,
+    "TUB": 6,
+    "BOX": 10
+   },
+   "container_order": [
+    "pouch-12",
+    "tub-5lb",
+    "box-16"
+   ],
+   "product_change_min": 20,
+   "container_change_min": 15,
+   "allergen_change_min": 0,
+   "stations": [
+    {
+     "tag": "NW-501",
+     "name": "Net-weight auger",
+     "unit": "upm",
+     "rated": 12,
+     "src": "estimate"
+    },
+    {
+     "tag": "BS-503",
+     "name": "Band sealer",
+     "unit": "upm",
+     "rated": 30,
+     "src": "estimate from 12 m/min"
+    }
+   ],
+   "campaign_every_weeks_if_units_below": [
+    4000,
+    2
+   ]
+  }
+ ],
+ "notes": [
+  "Low-volume formulas (< 1,000 lb/week) are blended and packed every second week at double size; finished-goods stock covers the gap (24-month shelf life per the site).",
+  "The weekly wet clean after the wheat campaign is done by the sanitation crew after the Friday shift, so it is outside production minutes.",
+  "Blend batches are made one day ahead of packing so each bag can be QC-released (uniformity CV and micro) before it is opened at the filler.",
+  "Wheat products (boxed dry mixes) run as the last campaign of the week on station B and the last blender campaign; the blender is then wet-cleaned and verified with a gluten swab before Monday.",
+  "Station B handles the wheat mixes, so line A never sees wheat: the gluten-free claim on seasonings is protected by equipment separation at packing, and by cleaning at the shared blender.",
+  "Changeover times are assumptions; measure them at commissioning and update this file."
+ ],
+ "rate_factor": 0.8,
+ "unplanned_downtime_frac": 0.1
+}

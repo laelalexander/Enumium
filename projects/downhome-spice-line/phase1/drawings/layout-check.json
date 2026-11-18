@@ -1,0 +1,58 @@
+{
+ "overlaps": [],
+ "outside_room": [],
+ "tight_aisles": [],
+ "zone_violations": [],
+ "flow_crossings": [],
+ "ok": [
+  "overlaps",
+  "outside_room",
+  "zone_violations",
+  "flow_crossings"
+ ],
+ "rooms": [
+  {
+   "name": "Receiving & ingredient storage",
+   "zone": "Z1 warehouse",
+   "area_m2": 36.0,
+   "area_ft2": 388
+  },
+  {
+   "name": "Finished goods & shipping",
+   "zone": "Z1 warehouse",
+   "area_m2": 25.0,
+   "area_ft2": 269
+  },
+  {
+   "name": "Hygiene vestibule",
+   "zone": "support",
+   "area_m2": 6.0,
+   "area_ft2": 65
+  },
+  {
+   "name": "Office & QC",
+   "zone": "support",
+   "area_m2": 10.4,
+   "area_ft2": 112
+  },
+  {
+   "name": "Dosing & blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "area_m2": 55.7,
+   "area_ft2": 600
+  },
+  {
+   "name": "Pack room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "area_m2": 52.8,
+   "area_ft2": 568
+  },
+  {
+   "name": "Dust collector pad (outside)",
+   "zone": "Z0 outside",
+   "area_m2": 3.2,
+   "area_ft2": 34
+  }
+ ],
+ "scale": "1:50"
+}

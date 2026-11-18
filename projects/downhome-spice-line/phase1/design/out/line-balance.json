@@ -1,0 +1,378 @@
+{
+ "available": {
+  "min_per_day": 390.0,
+  "min_per_week": 1950.0,
+  "oee": 0.5,
+  "utilization_limit": 0.85
+ },
+ "weekly_lb": 1000.0,
+ "weekly_units": 2093,
+ "blending": {
+  "candidates": [
+   {
+    "working_cuft": 2,
+    "run_min": 545.0,
+    "changeover_min": 40.0,
+    "batches": 19,
+    "under_filled": [],
+    "utilization": 0.3
+   },
+   {
+    "working_cuft": 3,
+    "run_min": 425.0,
+    "changeover_min": 40.0,
+    "batches": 13,
+    "under_filled": [],
+    "utilization": 0.238
+   },
+   {
+    "working_cuft": 5,
+    "run_min": 305.0,
+    "changeover_min": 40.0,
+    "batches": 7,
+    "under_filled": [],
+    "utilization": 0.177
+   },
+   {
+    "working_cuft": 6,
+    "run_min": 305.0,
+    "changeover_min": 40.0,
+    "batches": 7,
+    "under_filled": [],
+    "utilization": 0.177
+   }
+  ],
+  "chosen": {
+   "working_cuft": 6,
+   "rows": [
+    {
+     "formula": "f-lemp",
+     "name": "Creole Chameleon Lemon Pepper",
+     "allergens": [],
+     "density": 0.555,
+     "weekly_lb": 140.0,
+     "max_batch_lb": 208,
+     "batches": 1,
+     "batch_lb": 140.0,
+     "below_min_fill": false,
+     "cycle_min": 43.1,
+     "week_min": 43.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-garl",
+     "name": "Creole Chameleon Garlic Herb",
+     "allergens": [],
+     "density": 0.536,
+     "weekly_lb": 140.0,
+     "max_batch_lb": 201,
+     "batches": 1,
+     "batch_lb": 140.0,
+     "below_min_fill": false,
+     "cycle_min": 43.1,
+     "week_min": 43.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-orig",
+     "name": "Creole Chameleon Original",
+     "allergens": [],
+     "density": 0.548,
+     "weekly_lb": 440.0,
+     "max_batch_lb": 205,
+     "batches": 3,
+     "batch_lb": 146.7,
+     "below_min_fill": false,
+     "cycle_min": 44.2,
+     "week_min": 132.6,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-fire",
+     "name": "Creole Chameleon Fire Blend",
+     "allergens": [],
+     "density": 0.538,
+     "weekly_lb": 140.0,
+     "max_batch_lb": 202,
+     "batches": 1,
+     "batch_lb": 140.0,
+     "below_min_fill": false,
+     "cycle_min": 43.1,
+     "week_min": 43.1,
+     "every_weeks": 1
+    },
+    {
+     "formula": "f-blkn",
+     "name": "Creole Chameleon Blackened",
+     "allergens": [],
+     "density": 0.513,
+     "weekly_lb": 140.0,
+     "max_batch_lb": 192,
+     "batches": 1,
+     "batch_lb": 140.0,
+     "below_min_fill": false,
+     "cycle_min": 43.1,
+     "week_min": 43.1,
+     "every_weeks": 1
+    }
+   ],
+   "run_min": 305.0,
+   "changeover_min": 40.0,
+   "batches": 7,
+   "under_filled": [],
+   "utilization": 0.177
+  }
+ },
+ "pack_lines": [
+  {
+   "name": "Pack bench P1 (semi-automatic: shakers, jars, pouch, tub)",
+   "rows": [
+    {
+     "sku": "s-blkn-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-blkn",
+     "units": 289,
+     "cases": 24.1,
+     "rated_upm": 12,
+     "run_min": 33.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-fire-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-fire",
+     "units": 289,
+     "cases": 24.1,
+     "rated_upm": 12,
+     "run_min": 33.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-garl-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-garl",
+     "units": 289,
+     "cases": 24.1,
+     "rated_upm": 12,
+     "run_min": 33.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-lemp-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-lemp",
+     "units": 289,
+     "cases": 24.1,
+     "rated_upm": 12,
+     "run_min": 33.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-4s",
+     "format": "SHAKER",
+     "container": "shaker-250",
+     "formula": "f-orig",
+     "units": 289,
+     "cases": 24.1,
+     "rated_upm": 12,
+     "run_min": 33.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-blkn-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-blkn",
+     "units": 88,
+     "cases": 7.3,
+     "rated_upm": 8,
+     "run_min": 15.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-fire-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-fire",
+     "units": 88,
+     "cases": 7.3,
+     "rated_upm": 8,
+     "run_min": 15.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-garl-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-garl",
+     "units": 88,
+     "cases": 7.3,
+     "rated_upm": 8,
+     "run_min": 15.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-lemp-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-lemp",
+     "units": 88,
+     "cases": 7.3,
+     "rated_upm": 8,
+     "run_min": 15.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-12j",
+     "format": "JAR",
+     "container": "jar-12",
+     "formula": "f-orig",
+     "units": 88,
+     "cases": 7.3,
+     "rated_upm": 8,
+     "run_min": 15.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-12p",
+     "format": "POUCH",
+     "container": "pouch-12",
+     "formula": "f-orig",
+     "units": 175,
+     "cases": 14.6,
+     "rated_upm": 6,
+     "run_min": 40.1,
+     "every_weeks": 1
+    },
+    {
+     "sku": "s-orig-80t",
+     "format": "TUB",
+     "container": "tub-5lb",
+     "formula": "f-orig",
+     "units": 33,
+     "cases": 8.2,
+     "rated_upm": 2,
+     "run_min": 22.7,
+     "every_weeks": 1
+    }
+   ],
+   "run_min": 303.8,
+   "changeover_min": 265.0,
+   "utilization": 0.292,
+   "stations": [
+    {
+     "tag": "FL-P401",
+     "name": "Semi-auto auger filler (foot pedal, on-scale)",
+     "unit": "upm",
+     "need": 12,
+     "rated": 15,
+     "load": 0.8,
+     "src": "estimate, operator-paced"
+    },
+    {
+     "tag": "CK-P406",
+     "name": "Hand case pack + tape",
+     "unit": "cpm",
+     "need": 3.0,
+     "rated": 4,
+     "load": 0.75,
+     "src": "estimate: one operator packs and tapes a 12-count case in about 15 s"
+    },
+    {
+     "tag": "LB-P404",
+     "name": "Semi-auto round-container labeler",
+     "unit": "upm",
+     "need": 12,
+     "rated": 18,
+     "load": 0.67,
+     "src": "estimate from maker's ~1,000/h class"
+    },
+    {
+     "tag": "CP-P402",
+     "name": "Handheld electric capper",
+     "unit": "upm",
+     "need": 12,
+     "rated": 20,
+     "load": 0.6,
+     "src": "estimate"
+    },
+    {
+     "tag": "IS-P403",
+     "name": "Handheld induction sealer",
+     "unit": "upm",
+     "need": 12,
+     "rated": 20,
+     "load": 0.6,
+     "src": "estimate"
+    },
+    {
+     "tag": "MD-P405",
+     "name": "Conveyor metal detector (packs)",
+     "unit": "upm",
+     "need": 12,
+     "rated": 60,
+     "load": 0.2,
+     "src": "estimate"
+    }
+   ],
+   "bottleneck": {
+    "tag": "FL-P401",
+    "name": "Semi-auto auger filler (foot pedal, on-scale)",
+    "unit": "upm",
+    "need": 12,
+    "rated": 15,
+    "load": 0.8,
+    "src": "estimate, operator-paced"
+   }
+  }
+ ],
+ "schedule": {
+  "blending": [
+   [
+    "f-lemp #1 (140 lb)",
+    "f-garl #1 (140 lb)",
+    "f-orig #1 (147 lb)",
+    "f-orig #2 (147 lb)",
+    "f-orig #3 (147 lb)",
+    "f-fire #1 (140 lb)"
+   ],
+   [
+    "f-blkn #1 (140 lb)"
+   ],
+   [],
+   [],
+   []
+  ],
+  "Pack bench P1 (semi-automatic: shakers, jars, pouch, tub)": [
+   [
+    "s-blkn-4s 33 min",
+    "s-fire-4s 33 min",
+    "s-garl-4s 33 min",
+    "s-lemp-4s 33 min",
+    "s-orig-4s 33 min",
+    "s-blkn-12j 15 min",
+    "s-fire-12j 15 min",
+    "s-garl-12j 15 min",
+    "s-lemp-12j 15 min",
+    "s-orig-12j 15 min"
+   ],
+   [
+    "s-orig-12p 40 min",
+    "s-orig-80t 23 min"
+   ],
+   [],
+   [],
+   []
+  ]
+ },
+ "notes": [
+  "Blender: 6 cu ft chosen (a used Sprout-Waldron B-6 class unit). For the 5 launch blends it needs 7 batches a week instead of 13 at 3 cu ft, and when all 13 seasonings run, the 6 small blends are made every 2 weeks at double size so each batch stays above the 35 % minimum fill.",
+  "Phase 1 is operator-paced: one blend operator and one or two pack operators, on 2 to 3 production days a week.",
+  "Every formula is blended weekly in one batch; finished-goods stock covers sales between runs.",
+  "Rates are estimates for a trained operator; measure them in the first month and update this file."
+ ]
+}

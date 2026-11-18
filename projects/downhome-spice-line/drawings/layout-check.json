@@ -1,0 +1,100 @@
+{
+ "overlaps": [],
+ "outside_room": [],
+ "tight_aisles": [],
+ "zone_violations": [],
+ "flow_crossings": [],
+ "ok": [
+  "overlaps",
+  "outside_room",
+  "zone_violations",
+  "flow_crossings"
+ ],
+ "rooms": [
+  {
+   "name": "Raw material warehouse",
+   "zone": "Z1 warehouse",
+   "area_m2": 180.0,
+   "area_ft2": 1938
+  },
+  {
+   "name": "Packaging materials",
+   "zone": "Z1 warehouse",
+   "area_m2": 144.0,
+   "area_ft2": 1550
+  },
+  {
+   "name": "Utilities & electrical",
+   "zone": "support",
+   "area_m2": 30.0,
+   "area_ft2": 323
+  },
+  {
+   "name": "Maintenance",
+   "zone": "support",
+   "area_m2": 30.0,
+   "area_ft2": 323
+  },
+  {
+   "name": "Finished goods & shipping",
+   "zone": "Z1 warehouse",
+   "area_m2": 128.1,
+   "area_ft2": 1378
+  },
+  {
+   "name": "Weigh & dispense",
+   "zone": "Z3 high-care dry (exposed product)",
+   "area_m2": 64.0,
+   "area_ft2": 689
+  },
+  {
+   "name": "Hygiene vestibule & lockers",
+   "zone": "support",
+   "area_m2": 29.7,
+   "area_ft2": 320
+  },
+  {
+   "name": "Offices, QC lab & IT",
+   "zone": "support",
+   "area_m2": 29.7,
+   "area_ft2": 320
+  },
+  {
+   "name": "Blending room",
+   "zone": "Z3 high-care dry (exposed product)",
+   "area_m2": 185.2,
+   "area_ft2": 1993
+  },
+  {
+   "name": "Pack room B (wheat)",
+   "zone": "Z3A allergen (wheat) exposed",
+   "area_m2": 60.5,
+   "area_ft2": 651
+  },
+  {
+   "name": "Case & pallet area",
+   "zone": "Z2 controlled (packaging, non-exposed)",
+   "area_m2": 64.2,
+   "area_ft2": 691
+  },
+  {
+   "name": "Packing hall A",
+   "zone": "Z3 high-care dry (exposed product)",
+   "area_m2": 225.2,
+   "area_ft2": 2424
+  },
+  {
+   "name": "Allergen cage (wheat)",
+   "zone": "Z1 warehouse",
+   "area_m2": 18.6,
+   "area_ft2": 200
+  },
+  {
+   "name": "Dust collector pad (outside)",
+   "zone": "Z0 outside",
+   "area_m2": 7.5,
+   "area_ft2": 81
+  }
+ ],
+ "scale": "1:75"
+}

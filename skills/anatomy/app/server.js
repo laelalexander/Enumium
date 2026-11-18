@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn, execFile } = require('child_process');
 const os = require('os');
+const xometry = require('./xometry');
 
 const PORT = Number(process.env.ANATOMY_PORT || 4377);
 const ROOT = process.env.ANATOMY_ROOT || (process.platform === 'win32' ? 'C:\\Anatomy' : path.join(os.homedir(), 'Anatomy'));
@@ -350,6 +351,22 @@ function openWithDefault(p) {
 }
 
 // ---------------------------------------------------------------- routes
+// Serve a file without ever crashing the server: folders and missing files get 404,
+// a file another program has locked gets 500.
+function streamFile(res, p, cache) {
+  let st; try { st = fs.statSync(p); } catch { return send(res, 404, { error: 'not found' }); }
+  if (!st.isFile()) return send(res, 404, { error: 'not found' });
+  const rs = fs.createReadStream(p);
+  rs.on('error', e => { if (!res.headersSent) send(res, 500, { error: 'could not read file: ' + e.code }); else res.destroy(); });
+  rs.once('open', () => { res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': cache }); rs.pipe(res); });
+}
+
+// Last-resort guard: log anything unexpected and keep the app up.
+const ERR_LOG = path.join(__dirname, 'server.err.log');
+for (const ev of ['uncaughtException', 'unhandledRejection']) {
+  process.on(ev, e => { try { fs.appendFileSync(ERR_LOG, `${new Date().toISOString()} ${ev}: ${(e && e.stack) || e}\n`); } catch {} });
+}
+
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host}`);
@@ -362,11 +379,9 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);
     }
-    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'viewer.html')) {
+    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
-      if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
-      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': parts[0] === 'vendor' ? 'max-age=3600' : 'no-store' });
-      return fs.createReadStream(p).pipe(res);
+      return streamFile(res, p, parts[0] === 'vendor' ? 'max-age=3600' : 'no-store');
     }
     // Raw project files at a stable URL, so HTML outputs (assembly guide, viewers) load their relative assets.
     if (req.method === 'GET' && parts[0] === 'p' && parts[1]) {
@@ -374,9 +389,7 @@ const server = http.createServer(async (req, res) => {
       const rel = decodeURIComponent(parts.slice(2).join('/'));
       let p = safeJoin(dir, rel);
       if (fs.existsSync(p) && fs.statSync(p).isDirectory()) p = path.join(p, 'index.html');
-      if (!fs.existsSync(p)) return send(res, 404, { error: 'not found' });
-      res.writeHead(200, { 'Content-Type': MIME[path.extname(p).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store' });
-      return fs.createReadStream(p).pipe(res);
+      return streamFile(res, p, 'no-store');
     }
     if (parts[0] !== 'api') return send(res, 404, { error: 'not found' });
 
@@ -457,6 +470,17 @@ const server = http.createServer(async (req, res) => {
         if (!hits.length) return send(res, 200, {});
         try { const j = readJson(path.join(dir, hits[0].path)); j._file = hits[0].path; return send(res, 200, j); }
         catch (e) { return send(res, 200, { error: `${hits[0].path} is not valid JSON: ${e.message}` }); }
+      }
+      if (action === 'xometry') {
+        // Parts routed to Xometry (oversized, other materials, machined/cut metal, or moved by hand). Never contacts Xometry.
+        const bf = fs.existsSync(path.join(dir, 'build', 'build.json')) ? 'build/build.json'
+          : (listFiles(dir).filter(f => /(^|\/)build\/build\.json$/.test(f.path)).sort((a, b) => a.path.length - b.path.length)[0] || {}).path;
+        if (!bf) return send(res, 200, { parts: [] });
+        try {
+          if (req.method === 'GET') return send(res, 200, xometry.routing(dir, bf, readSettings(), listFiles));
+          if (req.method === 'PUT') { xometry.savePrefs(dir, bf, JSON.parse((await readBody(req, 1024 * 1024)).toString('utf8') || '{}')); return send(res, 200, xometry.routing(dir, bf, readSettings(), listFiles)); }
+          if (req.method === 'POST' && parts[4] === 'package') return send(res, 200, xometry.preparePackage(dir, bf, readSettings(), listFiles));
+        } catch (e) { return send(res, 200, { parts: [], error: e.message }); }
       }
       if (action === 'simtest' && req.method === 'POST') {
         // Run the simulator's headless tests (anatomy.json "tests": {cwd, run, results}) and return the output.

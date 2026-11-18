@@ -1,0 +1,26 @@
+{
+ "bin_positions": 12,
+ "reserve_positions": 0,
+ "bin_cuft": 5,
+ "bin_fill_frac": 0.9,
+ "bag_kg": 25,
+ "days_per_week": 5,
+ "dose_accuracy_kg": 0.02,
+ "dose_tolerance_frac": 0.01,
+ "premix_tolerance_frac": 0.002,
+ "minor_pct": 2.0,
+ "dose_time_min": 4,
+ "feeders": [
+  {
+   "name": "2 in volumetric screw, ~700 L/h",
+   "max_l_h": 700
+  }
+ ],
+ "notes": [
+  "Weigh hopper WH-P220: 100 kg on 3 x 50 kg load cells, Rice Lake 880 at 10,000 divisions (10 g); fast/slow feed with in-flight compensation gives about +/-20 g.",
+  "Tolerance for bin-dosed majors is +/-1 % of target, so the smallest bin dose is 2 x 20 g / 1 % = 4 kg.",
+  "Feeder rates are maker-class estimates for a volumetric screw at 30-100 rpm; confirm on the feeder quote with each ingredient's bulk density.",
+  "One feeder size (2 in) for every bin so screws, seals and spares are interchangeable; the longest single dose (salt) takes under 8 minutes."
+ ],
+ "max_dose_min": 8
+}

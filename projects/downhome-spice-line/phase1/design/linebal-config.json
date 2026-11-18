@@ -1,0 +1,131 @@
+{
+ "utilization_limit": 0.85,
+ "changeover_in_schedule_min": 15,
+ "blending": {
+  "candidate_working_cuft": [
+   2,
+   3,
+   5,
+   6
+  ],
+  "max_fill_frac": 1.0,
+  "min_fill_frac": 0.35,
+  "charge_lb_per_min": 25,
+  "premix_add_min": 3,
+  "mix_min": 12,
+  "sift_lb_per_min": 8,
+  "sample_min": 5,
+  "dry_clean_min": 25,
+  "wet_clean_after_allergen_min": 180,
+  "sequence_purge_min": 10,
+  "wet_clean_outside_shift": true,
+  "campaign_every_weeks_if_lb_below": [
+   0,
+   1
+  ],
+  "choose_cuft": 6
+ },
+ "color_order": [
+  "f-lemp",
+  "f-garl",
+  "f-ncgb",
+  "f-ngrb",
+  "f-efap",
+  "f-ncnc",
+  "f-orig",
+  "f-caml",
+  "f-lthr",
+  "f-lyrb",
+  "f-fire",
+  "f-blkn",
+  "f-vfrb",
+  "f-ncpm",
+  "f-batter",
+  "f-afcb"
+ ],
+ "pack_lines": [
+  {
+   "name": "Pack bench P1 (semi-automatic: shakers, jars, pouch, tub)",
+   "formats": [
+    "SHAKER",
+    "JAR",
+    "POUCH",
+    "TUB",
+    "BOX"
+   ],
+   "rated_upm": {
+    "SHAKER": 12,
+    "JAR": 8,
+    "POUCH": 6,
+    "TUB": 2,
+    "BOX": 4
+   },
+   "container_order": [
+    "shaker-250",
+    "jar-12",
+    "pouch-12",
+    "tub-5lb",
+    "box-16"
+   ],
+   "product_change_min": 20,
+   "container_change_min": 15,
+   "allergen_change_min": 0,
+   "stations": [
+    {
+     "tag": "FL-P401",
+     "name": "Semi-auto auger filler (foot pedal, on-scale)",
+     "unit": "upm",
+     "rated": 15,
+     "src": "estimate, operator-paced"
+    },
+    {
+     "tag": "CP-P402",
+     "name": "Handheld electric capper",
+     "unit": "upm",
+     "rated": 20,
+     "src": "estimate"
+    },
+    {
+     "tag": "IS-P403",
+     "name": "Handheld induction sealer",
+     "unit": "upm",
+     "rated": 20,
+     "src": "estimate"
+    },
+    {
+     "tag": "LB-P404",
+     "name": "Semi-auto round-container labeler",
+     "unit": "upm",
+     "rated": 18,
+     "src": "estimate from maker's ~1,000/h class"
+    },
+    {
+     "tag": "MD-P405",
+     "name": "Conveyor metal detector (packs)",
+     "unit": "upm",
+     "rated": 60,
+     "src": "estimate"
+    },
+    {
+     "tag": "CK-P406",
+     "name": "Hand case pack + tape",
+     "unit": "cpm",
+     "rated": 4,
+     "src": "estimate: one operator packs and tapes a 12-count case in about 15 s"
+    }
+   ],
+   "campaign_every_weeks_if_units_below": [
+    0,
+    1
+   ]
+  }
+ ],
+ "notes": [
+  "Blender: 6 cu ft chosen (a used Sprout-Waldron B-6 class unit). For the 5 launch blends it needs 7 batches a week instead of 13 at 3 cu ft, and when all 13 seasonings run, the 6 small blends are made every 2 weeks at double size so each batch stays above the 35 % minimum fill.",
+  "Phase 1 is operator-paced: one blend operator and one or two pack operators, on 2 to 3 production days a week.",
+  "Every formula is blended weekly in one batch; finished-goods stock covers sales between runs.",
+  "Rates are estimates for a trained operator; measure them in the first month and update this file."
+ ],
+ "rate_factor": 0.8,
+ "unplanned_downtime_frac": 0.1
+}
