@@ -1,0 +1,31 @@
+<!doctype html><html><head><style>html,body{margin:0;background:#fff;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/render/node_modules/three/build/three.module.js","three/addons/":"/render/node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three'; import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+const V = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+const W = innerWidth, H = innerHeight;
+const r = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true}); r.setSize(W,H); r.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc = new THREE.Scene(); sc.background = new THREE.Color(V.bg||0xf6f7f9);
+const P = (x,y,z)=>new THREE.Vector3(x, z, -y);   // satellite mm (Z long axis) -> three (Y up)
+sc.add(new THREE.HemisphereLight(0xffffff, 0x777777, 1.7));
+const sun = new THREE.DirectionalLight(0xffffff, 2.0); sun.position.copy(P(400,-600,700)); sc.add(sun);
+const fill = new THREE.DirectionalLight(0xffffff, 0.7); fill.position.copy(P(-500,400,200)); sc.add(fill);
+const cam = new THREE.PerspectiveCamera(V.fov||28, W/H, 1, 20000);
+cam.position.copy(P(...V.eye)); cam.lookAt(P(...V.target));
+new GLTFLoader().load(V.glb||'/AON-1-ASM.glb', g=>{
+  const hide = V.hide ? new RegExp(V.hide) : null, hi = V.hi ? new RegExp(V.hi) : null, ghost = V.ghost ? new RegExp(V.ghost) : null;
+  g.scene.traverse(o=>{
+    if(!o.isMesh) return;
+    let n = o.name, p = o.parent; while(p){ n = p.name + '/' + n; p = p.parent; }
+    if (hide && hide.test(n)) { o.visible = false; return; }
+    const m = o.material = o.material.clone(); m.side = THREE.DoubleSide; m.metalness = Math.min(m.metalness??0, 0.3); m.roughness = 0.5;
+    if (hi && !hi.test(n)) { m.transparent = true; m.opacity = 0.18; m.depthWrite = false; }
+    if (hi && hi.test(n)) { m.emissive = new THREE.Color(0xff7a00); m.emissiveIntensity = 0.25; }
+    if (ghost && ghost.test(n)) { m.transparent = true; m.opacity = 0.25; m.depthWrite = false; }
+    const e = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry, 30), new THREE.LineBasicMaterial({color:0x222222, transparent:true, opacity: (hi && !hi.test(n)) ? 0.08 : 0.35}));
+    o.add(e);
+  });
+  sc.add(g.scene); r.render(sc,cam); window.DONE = true;
+});
+</script></body></html>

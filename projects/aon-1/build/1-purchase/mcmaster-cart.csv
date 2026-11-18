@@ -1,0 +1,17 @@
+Part Number,Quantity,BOM line,Description
+(pick SKU),4,BP-04,"Spring plunger, 303 stainless, M3 x 0.5 body x 9 long, pin nose, light force 3-7 N"
+(pick SKU),1,BP-10,Dyneema SK78 braided line 0.5 mm (antenna restraint)
+(pick SKU),2,BP-12,"Titanium threaded rod M3 x 0.5, Ti-6Al-4V grade 5, 1 m"
+(pick SKU),1,BP-15,"Staking compound, low outgassing (secures fasteners, wire tie-downs)"
+(pick SKU),27,H1,"Countersunk screw M2.5 x 14, Torx T8, A4-70 (316)"
+(pick SKU),18,H2,"Pan head screw M2 x 5, Torx, A4-70 + flat washer M2 A4"
+(pick SKU),6,H3,"Hex nut M3 thin, A4-70 + flat washer M3 A4"
+(pick SKU),6,H4,"Pan head screw M2 x 4, Torx, A4-70"
+(pick SKU),6,H5,"Pan head screw M2 x 10, A4-70 + hex nut M2 A4 + flat washers"
+(pick SKU),6,H7,"Hex standoff M3 F-F, 5.5 AF x 5.0 long, aluminium 6061 (E05 mount + rod nut)"
+(pick SKU),6,H8,"Pan head screw M3 x 5, A4-70 + flat washer"
+(pick SKU),6,H9,"Silicone pad 82 x 8 x 0.8, Shore A 40, low outgassing (Dow DC 93-500 cast or Bergquist Gap Pad TGP 1000)"
+(pick SKU),1,RM-1,"6061-T6 aluminium square bar 10 x 10 mm [3/8 in], 1.0 m (4 rails + spare)"
+(pick SKU),1,RM-2,"6061-T6 aluminium plate 10 mm [.394], 120 x 360 mm (3 frames)"
+(pick SKU),1,RM-3,"5052-H32 aluminium sheet 1.0 mm [.040], 100 x 100 mm (brackets)"
+(pick SKU),1,RM-4,"6061-T6 round bar Ø6 mm, 1.0 m (spacers)"

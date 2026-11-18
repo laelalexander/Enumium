@@ -1,0 +1,176 @@
+[
+{
+"out": "../../drawings/img/step01.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hide": "AON\\-101_rail_\\+X\\+Y|AON\\-102_rail_\\-X\\+Y|AON\\-101_rail_\\-X\\-Y|AON\\-102_rail_\\+X\\-Y|E07_\\-Z_end_board|E07_Z_torquer_coil|E07_nuts_M3_thin_\\(4\\)|E02_battery_board|E02_18650_cells_\\(4\\)|E02_cell_holder|E01_EPS_board|E01_EPS_parts|E03_OBC_board|E03_OBC_parts|Stack_rods_M3_Ti_\\(4\\)|Stack_spacers|AON\\-104_mid_frame|E04_COM_board|E04_COM_shield_can|AON\\-105_\\+Z_frame|E05_antenna_board|E05_UHF_tape_elements_\\(stowed\\)|E05_standoffs|Separation_spring_plungers_\\(2\\)|E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y",
+"hi": "AON\\-103_\\-Z_frame|SW1\\-SW2_deployment_switches|AON\\-106_switch_brackets_\\(2\\)"
+},
+{
+"out": "../../drawings/img/step02.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hide": "E07_\\-Z_end_board|E07_Z_torquer_coil|E07_nuts_M3_thin_\\(4\\)|E02_battery_board|E02_18650_cells_\\(4\\)|E02_cell_holder|E01_EPS_board|E01_EPS_parts|E03_OBC_board|E03_OBC_parts|Stack_rods_M3_Ti_\\(4\\)|Stack_spacers|AON\\-104_mid_frame|E04_COM_board|E04_COM_shield_can|AON\\-105_\\+Z_frame|E05_antenna_board|E05_UHF_tape_elements_\\(stowed\\)|E05_standoffs|Separation_spring_plungers_\\(2\\)|E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y",
+"hi": "AON\\-101_rail_\\+X\\+Y|AON\\-102_rail_\\-X\\+Y|AON\\-101_rail_\\-X\\-Y|AON\\-102_rail_\\+X\\-Y"
+},
+{
+"out": "../../drawings/img/step03.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hide": "AON\\-104_mid_frame|E04_COM_board|E04_COM_shield_can|AON\\-105_\\+Z_frame|E05_antenna_board|E05_UHF_tape_elements_\\(stowed\\)|E05_standoffs|Separation_spring_plungers_\\(2\\)|E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y",
+"hi": "E07_\\-Z_end_board|E07_Z_torquer_coil|E07_nuts_M3_thin_\\(4\\)|E02_battery_board|E02_18650_cells_\\(4\\)|E02_cell_holder|E01_EPS_board|E01_EPS_parts|E03_OBC_board|E03_OBC_parts|Stack_rods_M3_Ti_\\(4\\)|Stack_spacers"
+},
+{
+"out": "../../drawings/img/step04.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hide": "E04_COM_board|E04_COM_shield_can|AON\\-105_\\+Z_frame|E05_antenna_board|E05_UHF_tape_elements_\\(stowed\\)|E05_standoffs|Separation_spring_plungers_\\(2\\)|E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y",
+"hi": "AON\\-104_mid_frame"
+},
+{
+"out": "../../drawings/img/step05.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hide": "AON\\-105_\\+Z_frame|E05_antenna_board|E05_UHF_tape_elements_\\(stowed\\)|E05_standoffs|Separation_spring_plungers_\\(2\\)|E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y",
+"hi": "E04_COM_board|E04_COM_shield_can"
+},
+{
+"out": "../../drawings/img/step06.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hide": "E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y",
+"hi": "AON\\-105_\\+Z_frame|E05_antenna_board|E05_UHF_tape_elements_\\(stowed\\)|E05_standoffs|Separation_spring_plungers_\\(2\\)"
+},
+{
+"out": "../../drawings/img/step07.png",
+"w": 1200,
+"h": 1300,
+"eye": [
+430,
+-520,
+480
+],
+"target": [
+0,
+0,
+150
+],
+"fov": 33,
+"hi": "E06_solar_panel_\\+X|E06_cells_\\+X|E06_solar_panel_\\-Y|E06_cells_\\-Y|E06_solar_panel_\\-X|E06_cells_\\-X|E06_solar_panel_\\+Y|E06_cells_\\+Y"
+},
+{
+"out": "../../drawings/img/iso.png",
+"w": 1600,
+"h": 1400,
+"eye": [
+520,
+-620,
+560
+],
+"target": [
+0,
+0,
+165
+],
+"fov": 30
+},
+{
+"out": "../../drawings/img/cutaway.png",
+"w": 1600,
+"h": 1400,
+"eye": [
+520,
+-620,
+560
+],
+"target": [
+0,
+0,
+165
+],
+"fov": 30,
+"hide": "E06|AON\\-10[12]"
+},
+{
+"out": "../../drawings/img/bottom.png",
+"w": 1200,
+"h": 1200,
+"eye": [
+260,
+-300,
+-420
+],
+"target": [
+0,
+0,
+60
+],
+"fov": 30
+}
+]

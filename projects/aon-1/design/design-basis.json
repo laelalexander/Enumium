@@ -1,0 +1,301 @@
+{
+ "env": {
+  "w": 100.0,
+  "w_tol": 0.1,
+  "L": 340.5,
+  "L_tol": 0.3,
+  "rail": 8.5,
+  "rail_r": 1.0,
+  "protrude": 6.5,
+  "m_max": 6.0,
+  "m_target": 4.0,
+  "cg_xy": 20.0,
+  "cg_z": 70.0
+ },
+ "frames": {
+  "t": 10.0,
+  "bar_x0": 42.0,
+  "bar_x1": 48.0,
+  "blk": 9.5,
+  "relief": 1.5,
+  "z": [
+   6.5,
+   165.25,
+   321.0
+  ],
+  "blk0": 32.5,
+  "dz_screw": 2.25
+ },
+ "board": {
+  "w": 81.0,
+  "t": 1.6,
+  "hole": 3.2,
+  "hp": 36.5,
+  "corner_ch": 3.0
+ },
+ "stack": [
+  [
+   "E02",
+   "Battery board (2S2P 18650)",
+   22.0,
+   44.0
+  ],
+  [
+   "E01",
+   "EPS (MPPT, regulators, switches)",
+   80.0,
+   12.0
+  ],
+  [
+   "E03",
+   "OBC + ADCS (EOR-1 flight computer)",
+   108.0,
+   12.0
+  ],
+  [
+   "E04",
+   "COM UHF transceiver",
+   186.0,
+   14.0
+  ]
+ ],
+ "panel": {
+  "w": 82.0,
+  "t": 1.6,
+  "z0": 7.5,
+  "z1": 330.0,
+  "hole_y": 34.0,
+  "hole_d": 2.2,
+  "L": 322.5
+ },
+ "cell": {
+  "name": "Azur Space 3G30C-Advanced 80x40 mm (TJ GaInP/GaAs/Ge, 30 % class)",
+  "l": 80.0,
+  "w": 40.0,
+  "t": 0.3,
+  "area_cm2": 30.18,
+  "eff_bol": 0.3,
+  "vmp": 2.41,
+  "imp": 0.504,
+  "voc": 2.7,
+  "isc": 0.52,
+  "mass_g": 2.6,
+  "n_per_face": 7
+ },
+ "orbit": {
+  "h": 500.0,
+  "inc": 97.4,
+  "note": "sun-synchronous ~97.4\u00b0 if the AODV-1 trajectory allows, else the launch-site latitude; 500 km circular [asm]",
+  "a_km": 6878.137,
+  "period_min": 94.61630047543098,
+  "eclipse_max_min": 35.75375155315574,
+  "sun_frac_min": 0.6221184788086286,
+  "v_kms": 7.612608173223869
+ },
+ "power": {
+  "face_peak_W": 6.310060831040399,
+  "tumble_sun_W": 4.955910187625306,
+  "spin_sun_W": 8.034218979765061,
+  "orbit_avg_gen_tumble_W": 3.08316330703764,
+  "orbit_avg_gen_spin_W": 4.998236090106852,
+  "orbit_avg_load_W": 1.8129166666666667,
+  "margin_tumble": 0.7006646602827709,
+  "margin_spin": 1.7570137017367147,
+  "batt_Wh": 50.89,
+  "eclipse_Wh": 1.0803095347762544,
+  "dod_eclipse": 0.021228326484107964,
+  "string_vmp": 16.87,
+  "string_voc_cold": 20.412000000000003,
+  "loads": [
+   {
+    "load": "OBC STM32H743 + FRAM + NOR + sensors",
+    "W": 0.45,
+    "duty": 1.0,
+    "avg_W": 0.45
+   },
+   {
+    "load": "EPS quiescent (MPPT, regulators, monitors)",
+    "W": 0.2,
+    "duty": 1.0,
+    "avg_W": 0.2
+   },
+   {
+    "load": "COM receiver (always listening)",
+    "W": 0.24,
+    "duty": 1.0,
+    "avg_W": 0.24
+   },
+   {
+    "load": "COM transmit beacon 2 W RF (1 s every 30 s)",
+    "W": 6.5,
+    "duty": 0.03333333333333333,
+    "avg_W": 0.21666666666666667
+   },
+   {
+    "load": "COM transmit pass downlink (3 passes x 6 min/day)",
+    "W": 6.5,
+    "duty": 0.0125,
+    "avg_W": 0.08125
+   },
+   {
+    "load": "ADCS magnetorquers (B-dot / pointing, average)",
+    "W": 0.35,
+    "duty": 0.5,
+    "avg_W": 0.175
+   },
+   {
+    "load": "Battery heater (cold case, thermostat duty)",
+    "W": 2.0,
+    "duty": 0.1,
+    "avg_W": 0.2
+   },
+   {
+    "load": "Payload bay reserve",
+    "W": 0.5,
+    "duty": 0.5,
+    "avg_W": 0.25
+   }
+  ]
+ },
+ "link": {
+  "slant_km": 1695.0911959373275,
+  "fspl_dB": 149.10757235666813,
+  "dl_ebn0_dB": 23.266088417993736,
+  "dl_margin_dB": 10.666088417993736,
+  "ul_ebn0_dB": 35.12729021854293,
+  "ul_margin_dB": 22.52729021854293,
+  "bits_per_day": 7257600.0
+ },
+ "mass": {
+  "rows": [
+   [
+    "Solar cells 3G30C incl. cover glass (28)",
+    28,
+    2.6,
+    72.8,
+    "ds"
+   ],
+   [
+    "Li-ion 18650 cells LG INR18650 MJ1 (4)",
+    4,
+    47.0,
+    188.0,
+    "ds"
+   ],
+   [
+    "Battery holder + straps + heater",
+    1,
+    38.0,
+    38.0,
+    "est"
+   ],
+   [
+    "E01 EPS PCBA",
+    1,
+    62.0,
+    62.0,
+    "est"
+   ],
+   [
+    "E02 battery PCBA (without cells)",
+    1,
+    48.0,
+    48.0,
+    "est"
+   ],
+   [
+    "E03 OBC/ADCS PCBA",
+    1,
+    55.0,
+    55.0,
+    "est"
+   ],
+   [
+    "E04 COM PCBA incl. shield can",
+    1,
+    85.0,
+    85.0,
+    "est"
+   ],
+   [
+    "E05 antenna board + 2 tape elements + burn resistors",
+    1,
+    70.0,
+    70.0,
+    "est"
+   ],
+   [
+    "E06 solar panel substrate PCBA (4) without cells",
+    4,
+    72.0,
+    288.0,
+    "est"
+   ],
+   [
+    "E07 -Z end board (Z torquer, sun sensor)",
+    1,
+    60.0,
+    60.0,
+    "est"
+   ],
+   [
+    "Stack rods, spacers, nuts",
+    1,
+    64.0,
+    64.0,
+    "est"
+   ],
+   [
+    "Harness (connectors, wire)",
+    1,
+    55.0,
+    55.0,
+    "est"
+   ],
+   [
+    "Deployment switches (2) + separation spring plungers (2)",
+    1,
+    22.0,
+    22.0,
+    "ds"
+   ],
+   [
+    "Fasteners",
+    1,
+    30.0,
+    30.0,
+    "est"
+   ],
+   [
+    "Thermal (tape, MLI patch on battery)",
+    1,
+    25.0,
+    25.0,
+    "est"
+   ]
+  ],
+  "structure_g": 444.47533423789594,
+  "bought_g": 1162.8,
+  "cbe_g": 1607.275334237896,
+  "with_margin_g": 1928.730401085475
+ },
+ "life_years": 1.9137577002053388,
+ "deploy": {
+  "t_antenna_s": 1800,
+  "t_rf_s": 2700,
+  "burn_on_s": 6.0,
+  "burn_retries": 4,
+  "burn_current_a": 1.0,
+  "burn_r_ohm": 4.7,
+  "rbf_inhibits": [
+   "deployment switch SW1 (-Z rail end, battery minus)",
+   "deployment switch SW2 (-Z rail end, battery plus)",
+   "remove-before-flight pin RBF1 (solar + battery path)"
+  ],
+  "rf_inhibits": [
+   "SW1/SW2 (no battery to COM until deployed)",
+   "EPS COM load switch, enabled by OBC only after t_rf",
+   "COM PA enable line, separate GPIO with its own 45 min hardware timer (TPL5111 on E04)"
+  ]
+ }
+}
