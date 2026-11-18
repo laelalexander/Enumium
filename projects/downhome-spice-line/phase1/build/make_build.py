@@ -119,16 +119,16 @@ ASSEMBLY = [
          torque="1/2 in wedge anchors 60 N·m [45 lbf·ft]", check="ring top level within 2 mm across"),
     dict(step=4, title="Mount the load cells and weigh hopper", image=PNG("P1-220"), parts=A("P1-221", "P1-220", "P1-223"),
          tools=["torque wrench", "test weights 2 x 20 kg"], text="Bolt the three weigh modules to the frame brackets, lower the hopper onto them, fit the 4 in butterfly valve on the outlet Tri-Clamp. "
-         "Nothing but the flexible boots may touch the hopper.", torque="M12 load-cell mount bolts 70 N·m (A2-70)",
+         "Nothing but the silicone sleeves may touch the hopper.", torque="M12 load-cell mount bolts 70 N·m (A2-70)",
          check="hopper rocks freely on the cells; nothing bridges to the frame"),
     dict(step=5, title="Build the feeders; hang the bins, feeders and level probes", image=PNG("P1-212-GA"),
-         parts=A("P1-211", "P1-212", "P1-215", "P1-216", "P1-217", "P1-213", "P1-214"), tools=["torque wrench", "hex keys"],
-         text="In the shop, assemble each of the 9 feeders per P1-212-GA: slide the 316 flighting into the barrel weldment, bolt the 1/3 HP gearmotor to the C-face, "
-              "fit the Tri-Clamp end cap (the screw pulls out forward for cleaning). Fit the slow agitator kit on the herb and peel bins. "
+         parts=A("P1-211", "P1-212", "P1-215", "P1-216", "P1-217", "P1-213", "P1-214", "P1-241", "P1-242", "P1-243", "P1-244", "P1-245", "P1-246", "P1-247", "P1-248"), tools=["torque wrench", "hex keys"],
+         text="In the shop, build each of the 9 feeders per drawing set P1-212-000..900 (sheet 003 has the steps): drive cartridge (bearings, lip seal, pinned shaft), "
+              "lantern, jaw coupling and 0.25 kW gearmotor, then hang the barrel and slide the screw in from the tail (it pulls out the tail end for cleaning). Fit the slow agitator kit on the herb and peel bins. "
               "On site, bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, "
-              "and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md "
+              "and a silicone sleeve P1-214 from each vertical feeder spout over its hopper lid stub (2 band clamps). Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md "
               "(salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
-         torque="M10 outlet flange 25 N·m; M12 bin lugs 70 N·m; C-face 3/8-16 bolts 27 N·m", check="each screw turns by hand without rubbing; every connector sits square; tag each bin"),
+         torque="M10 outlet flange 25 N·m; M12 bin lugs 70 N·m; M6 drive and lantern screws 8 N·m; sleeve clamps 3 N·m", check="each screw turns by hand without rubbing; every connector sits square; tag each bin"),
     dict(step=6, title="Build and set the ribbon blender, run the flexible screw", image=PNG("P1-301-GA"),
          parts=A("P1-301", "P1-333", "P1-334", "P1-335", "P1-331", "P1-332", "P1-336", "P1-302", "P1-224"), tools=["engine hoist", "torque wrench", "feeler gauges"],
          text="In the shop, per P1-301-GA: stand the frame, set the trough on its saddles and bolt the end plates; lower the agitator in, slide the UCF212 bearings on and bolt them to the end plates, "

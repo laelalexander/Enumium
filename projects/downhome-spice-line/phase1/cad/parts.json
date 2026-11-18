@@ -67,11 +67,11 @@
   "features": 60,
   "contact": false,
   "size_mm": [
-   3330.0,
-   3330.0,
+   3221.6,
+   3221.6,
    2235.4
   ],
-  "mass_kg": 245.41,
+  "mass_kg": 245.58,
   "step": "cad/step/P1-210.step",
   "drawing": "drawings/parts/P1-210.svg",
   "dxf": []
@@ -104,11 +104,11 @@
   "features": 20,
   "contact": true,
   "size_mm": [
-   836.7,
-   840.4,
-   581.3
+   834.7,
+   835.0,
+   605.9
   ],
-  "mass_kg": 26.75,
+  "mass_kg": 27.8,
   "step": "cad/step/P1-220.step",
   "drawing": "drawings/parts/P1-220.svg",
   "dxf": [

@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<defs><pattern id="hA" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hB" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hC" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#546e7a" stroke-width="0.9"/></pattern><pattern id="hS" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#546e7a" stroke-width="0.8"/><line x1="4" y1="0" x2="4" y2="14" stroke="#546e7a" stroke-width="0.8"/></pattern></defs>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<text x="237.0" y="18" font-size="14" text-anchor="middle">8</text><text x="237.0" y="2298" font-size="14" text-anchor="middle">8</text>
+<text x="663.0" y="18" font-size="14" text-anchor="middle">7</text><text x="663.0" y="2298" font-size="14" text-anchor="middle">7</text>
+<text x="1089.0" y="18" font-size="14" text-anchor="middle">6</text><text x="1089.0" y="2298" font-size="14" text-anchor="middle">6</text>
+<text x="1515.0" y="18" font-size="14" text-anchor="middle">5</text><text x="1515.0" y="2298" font-size="14" text-anchor="middle">5</text>
+<text x="1941.0" y="18" font-size="14" text-anchor="middle">4</text><text x="1941.0" y="2298" font-size="14" text-anchor="middle">4</text>
+<text x="2367.0" y="18" font-size="14" text-anchor="middle">3</text><text x="2367.0" y="2298" font-size="14" text-anchor="middle">3</text>
+<text x="2793.0" y="18" font-size="14" text-anchor="middle">2</text><text x="2793.0" y="2298" font-size="14" text-anchor="middle">2</text>
+<text x="3219.0" y="18" font-size="14" text-anchor="middle">1</text><text x="3219.0" y="2298" font-size="14" text-anchor="middle">1</text>
+<text x="12" y="212.0" font-size="14" text-anchor="middle">F</text><text x="3444" y="212.0" font-size="14" text-anchor="middle">F</text>
+<text x="12" y="588.0" font-size="14" text-anchor="middle">E</text><text x="3444" y="588.0" font-size="14" text-anchor="middle">E</text>
+<text x="12" y="964.0" font-size="14" text-anchor="middle">D</text><text x="3444" y="964.0" font-size="14" text-anchor="middle">D</text>
+<text x="12" y="1340.0" font-size="14" text-anchor="middle">C</text><text x="3444" y="1340.0" font-size="14" text-anchor="middle">C</text>
+<text x="12" y="1716.0" font-size="14" text-anchor="middle">B</text><text x="3444" y="1716.0" font-size="14" text-anchor="middle">B</text>
+<text x="12" y="2092.0" font-size="14" text-anchor="middle">A</text><text x="3444" y="2092.0" font-size="14" text-anchor="middle">A</text>
+<g><rect x="2556" y="1954" width="876" height="326" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="2568" y="1988" font-size="26" font-weight="bold">ELECTRICAL: FEEDER POWER AND CONTROL (TYPICAL n = 1..9)</text>
+<text x="2568" y="2012" font-size="15">Down Home Creole · Phase 1 · P1-212 Bin screw feeder (built in house, 9 off) · rev B</text>
+<line x1="2556" y1="2024" x2="3432" y2="2024" stroke="#111"/>
+<rect x="2556.0" y="2024" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2037" font-size="10.5" fill="#555">DRAWING NO.</text>
+<text x="2562.0" y="2059" font-size="17" font-weight="bold">P1-212-E01</text>
+<rect x="2994.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2037" font-size="10.5" fill="#555">REV</text>
+<text x="3000.0" y="2059" font-size="17" font-weight="bold">A</text>
+<rect x="3213.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2037" font-size="10.5" fill="#555">SCALE</text>
+<text x="3219.0" y="2059" font-size="17" font-weight="normal">NTS</text>
+<rect x="2556.0" y="2068" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2081" font-size="10.5" fill="#555">MATERIAL</text>
+<text x="2562.0" y="2103" font-size="17" font-weight="normal">see component list</text>
+<rect x="2556.0" y="2112" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2125" font-size="10.5" fill="#555">FINISH</text>
+<text x="2562.0" y="2147" font-size="17" font-weight="normal">UL 508A practice, NEC 430 / 430.102 (disconnect in sight); 75 °C Cu</text>
+<rect x="2556.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2169" font-size="10.5" fill="#555">MASS (CALC.)</text>
+<text x="2562.0" y="2191" font-size="17" font-weight="normal">-</text>
+<rect x="2775.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2781.0" y="2169" font-size="10.5" fill="#555">QTY PER MACHINE</text>
+<text x="2781.0" y="2191" font-size="17" font-weight="normal">9 circuits</text>
+<rect x="2994.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2169" font-size="10.5" fill="#555">UNITS</text>
+<text x="3000.0" y="2191" font-size="17" font-weight="normal">mm [in]</text>
+<rect x="3213.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2169" font-size="10.5" fill="#555">SHEET</text>
+<text x="3219.0" y="2191" font-size="17" font-weight="normal">ARCH D · 12 of 14</text>
+<rect x="2556.0" y="2200" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2213" font-size="10.5" fill="#555">DRAWN</text>
+<text x="2562.0" y="2235" font-size="17" font-weight="normal">Anatomy plant/mechsheet.py</text>
+<rect x="2994.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2213" font-size="10.5" fill="#555">DATE</text>
+<text x="3000.0" y="2235" font-size="17" font-weight="normal">2026-11-17</text>
+<rect x="3213.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2213" font-size="10.5" fill="#555">STATUS</text>
+<text x="3219.0" y="2235" font-size="17" font-weight="normal">FOR REVIEW</text>
+<text x="2568" y="2270" font-size="10.5">UNLESS NOTED: LINEAR ±0.5 [±.02] · HOLES +0.2/-0 · ANGLES ±0.5° · MACHINED X.X ±0.1, X.XX ±0.05 · THIRD-ANGLE PROJECTION · BREAK EDGES 0.5 · ASME Y14.5</text>
+</g>
+<text x="120" y="110" font-size="20" text-anchor="start" fill="#111" font-weight="bold">POWER (one feeder shown; repeat for n = 1..9)</text>
+<text x="290" y="160" font-size="14" text-anchor="end" fill="#111" font-weight="bold">L1</text>
+<text x="370" y="160" font-size="14" text-anchor="start" fill="#111" font-weight="bold">L2  230 V 1-ph from MS-P1 dosing bus</text>
+<line x1="300" y1="165" x2="300" y2="200" stroke="#111" stroke-width="1.6"/>
+<line x1="360" y1="165" x2="360" y2="200" stroke="#111" stroke-width="1.6"/>
+<rect x="250" y="200" width="170" height="70" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="256" y="218" font-size="14" text-anchor="start" fill="#111" font-weight="bold">KM-DOS</text>
+<text x="256" y="236" font-size="11" text-anchor="start" fill="#607d8b">safety contactor (E-stop)</text>
+<text x="256" y="251" font-size="11" text-anchor="start" fill="#607d8b">1-2 / 3-4</text>
+<line x1="300" y1="270" x2="300" y2="320" stroke="#111" stroke-width="1.6"/>
+<line x1="360" y1="270" x2="360" y2="320" stroke="#111" stroke-width="1.6"/>
+<rect x="250" y="320" width="170" height="70" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="256" y="338" font-size="14" text-anchor="start" fill="#111" font-weight="bold">Q2x</text>
+<text x="256" y="356" font-size="11" text-anchor="start" fill="#607d8b">MCB 2P C16 (2 drives)</text>
+<text x="256" y="371" font-size="11" text-anchor="start" fill="#607d8b">1-2 / 3-4</text>
+<line x1="300" y1="390" x2="300" y2="450" stroke="#111" stroke-width="1.6"/>
+<text x="294.0" y="420.0" font-size="12" text-anchor="end" fill="#0d47a1">21n.L1</text>
+<line x1="360" y1="390" x2="360" y2="450" stroke="#111" stroke-width="1.6"/>
+<text x="366.0" y="420.0" font-size="12" text-anchor="start" fill="#0d47a1">21n.L2</text>
+<rect x="230" y="450" width="230" height="170" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="236" y="468" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U2n  GS21-20P5</text>
+<text x="236" y="486" font-size="11" text-anchor="start" fill="#607d8b">AC drive 0.5 HP (P1-226)</text>
+<text x="236" y="501" font-size="11" text-anchor="start" fill="#607d8b">R/L1  S/L2   in</text>
+<text x="236" y="516" font-size="11" text-anchor="start" fill="#607d8b">U/T1 V/T2 W/T3 out</text>
+<text x="236" y="531" font-size="11" text-anchor="start" fill="#607d8b">RS-485, DI1 enable</text>
+<line x1="280" y1="620" x2="280" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="274.0" y="690.0" font-size="12" text-anchor="end" fill="#0d47a1">W-M21n 1</text>
+<line x1="340" y1="620" x2="340" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="346.0" y="690.0" font-size="12" text-anchor="start" fill="#0d47a1">W-M21n 2</text>
+<line x1="400" y1="620" x2="400" y2="760" stroke="#111" stroke-width="1.6"/>
+<text x="406.0" y="690.0" font-size="12" text-anchor="start" fill="#0d47a1">W-M21n 3</text>
+<text x="470" y="700" font-size="12" text-anchor="start" fill="#607d8b">VFD cable 4C 14 AWG shielded</text>
+<text x="470" y="716" font-size="12" text-anchor="start" fill="#607d8b">shield 360° both ends</text>
+<rect x="230" y="760" width="230" height="110" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="236" y="778" font-size="14" text-anchor="start" fill="#111" font-weight="bold">Q-21n  ISOLATOR 16 A</text>
+<text x="236" y="796" font-size="11" text-anchor="start" fill="#607d8b">on the ring leg beside bin n</text>
+<text x="236" y="811" font-size="11" text-anchor="start" fill="#607d8b">lockable OFF, IP66 (P1-248)</text>
+<text x="236" y="826" font-size="11" text-anchor="start" fill="#607d8b">1/3/5 → 2/4/6, aux 13-14</text>
+<line x1="280" y1="870" x2="280" y2="960" stroke="#111" stroke-width="1.6"/>
+<line x1="340" y1="870" x2="340" y2="960" stroke="#111" stroke-width="1.6"/>
+<line x1="400" y1="870" x2="400" y2="960" stroke="#111" stroke-width="1.6"/>
+<text x="470" y="920" font-size="12" text-anchor="start" fill="#607d8b">W-M21n.1, 1.5 m</text>
+<circle cx="340" cy="1000" r="34" fill="#fff" stroke="#111" stroke-width="1.8"/>
+<text x="340" y="998" font-size="20" text-anchor="middle" fill="#111" font-weight="bold">M</text>
+<text x="340" y="1018" font-size="13" text-anchor="middle" fill="#111">3~</text>
+<text x="384" y="1004" font-size="13" text-anchor="start" fill="#111">M-21n  0.25 kW 230 V Δ  (P1-216)</text>
+<line x1="280" y1="960" x2="315" y2="975" stroke="#111" stroke-width="1.6"/>
+<line x1="400" y1="960" x2="365" y2="975" stroke="#111" stroke-width="1.6"/>
+<line x1="200" y1="480" x2="230" y2="480" stroke="#2e7d32" stroke-width="1.6"/>
+<line x1="200" y1="480" x2="200" y2="1040" stroke="#2e7d32" stroke-width="1.6"/>
+<line x1="200" y1="1040" x2="310" y2="1040" stroke="#2e7d32" stroke-width="1.6"/>
+<text x="190" y="760" font-size="13" text-anchor="end" fill="#2e7d32" font-weight="bold">PE</text>
+<text x="1000" y="110" font-size="20" text-anchor="start" fill="#111" font-weight="bold">CONTROL</text>
+<rect x="1000" y="160" width="320" height="230" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1006" y="178" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U2n (drive control terminals)</text>
+<text x="1006" y="196" font-size="11" text-anchor="start" fill="#607d8b">+24V  (internal supply)</text>
+<text x="1006" y="211" font-size="11" text-anchor="start" fill="#607d8b">DI1   RUN ENABLE</text>
+<text x="1006" y="226" font-size="11" text-anchor="start" fill="#607d8b">DCM   common (SINK)</text>
+<text x="1006" y="241" font-size="11" text-anchor="start" fill="#607d8b">RS-485  D+  D-  SG</text>
+<text x="1006" y="256" font-size="11" text-anchor="start" fill="#607d8b">RA/RC  fault relay (spare)</text>
+<circle cx="1330" cy="210" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="1339" y="202" font-size="11" text-anchor="start" fill="#607d8b">+24V</text>
+<circle cx="1330" cy="240" r="5" fill="#fff" stroke="#111" stroke-width="1.3"/>
+<text x="1339" y="232" font-size="11" text-anchor="start" fill="#607d8b">DI1</text>
+<line x1="1330" y1="210" x2="1500" y2="210" stroke="#111" stroke-width="1.6"/>
+<text x="1415.0" y="205.0" font-size="12" text-anchor="middle" fill="#0d47a1">W-C21n 1</text>
+<line x1="1330" y1="240" x2="1450" y2="240" stroke="#111" stroke-width="1.6"/>
+<text x="1390.0" y="235.0" font-size="12" text-anchor="middle" fill="#0d47a1">W-C21n 2</text>
+<line x1="1500" y1="210" x2="1500" y2="260" stroke="#111" stroke-width="1.6"/>
+<line x1="1500" y1="260" x2="1500" y2="275" stroke="#111" stroke-width="1.6"/>
+<line x1="1500" y1="295" x2="1500" y2="310" stroke="#111" stroke-width="1.6"/>
+<line x1="1500" y1="295" x2="1488" y2="275" stroke="#111" stroke-width="1.6"/>
+<text x="1514" y="290" font-size="12" text-anchor="start" fill="#111">Q-21n 13-14 early-break NO</text>
+<line x1="1500" y1="310" x2="1500" y2="330" stroke="#111" stroke-width="1.6"/>
+<line x1="1450" y1="330" x2="1500" y2="330" stroke="#111" stroke-width="1.6"/>
+<line x1="1450" y1="240" x2="1450" y2="330" stroke="#111" stroke-width="1.6"/>
+<text x="1000" y="430" font-size="13" text-anchor="start" fill="#111">Isolator OFF → aux opens first → DI1 drops → drive stops on the ramp before the main poles break (no switching under load).</text>
+<text x="1000" y="450" font-size="13" text-anchor="start" fill="#111">PLC sees &#x27;not enabled&#x27; over Modbus status and skips the bin; MES shows &#x27;feeder n isolated&#x27;.</text>
+<text x="1000" y="520" font-size="16" text-anchor="start" fill="#111" font-weight="bold">SAFETY (from plant safety relay SR-P1, DH-ELE-P1-003)</text>
+<line x1="1000" y1="560" x2="1600" y2="560" stroke="#111" stroke-width="1.6"/>
+<text x="990" y="565" font-size="12" text-anchor="end" fill="#111">+24 V safe out (SR-P1 S34 / 14)</text>
+<line x1="1100" y1="560" x2="1100" y2="590" stroke="#111" stroke-width="1.6"/>
+<rect x="1082" y="601" width="36" height="22" fill="#fff" stroke="#111" stroke-width="1.5"/>
+<text x="1100" y="596" font-size="12" text-anchor="middle" fill="#111" font-weight="bold">KM-DOS</text>
+<line x1="1100" y1="623" x2="1100" y2="660" stroke="#111" stroke-width="1.6"/>
+<line x1="1000" y1="660" x2="1600" y2="660" stroke="#111" stroke-width="1.6"/>
+<text x="990" y="665" font-size="12" text-anchor="end" fill="#111">0 V</text>
+<text x="1140" y="610" font-size="13" text-anchor="start" fill="#111">E-stop or dosing-room guard → SR-P1 drops KM-DOS → all 9 drives lose supply (stop cat. 0).</text>
+<text x="1140" y="628" font-size="13" text-anchor="start" fill="#111">KM-DOS mirror contact 21-22 to SR-P1 feedback loop (EDM).</text>
+<text x="1140" y="646" font-size="13" text-anchor="start" fill="#b00020">If the drives bought have STO, wire STO1/STO2 from SR-P1 instead and keep KM-DOS as the supply switch.</text>
+<text x="1000" y="740" font-size="16" text-anchor="start" fill="#111" font-weight="bold">RS-485 MODBUS RTU (W-P30, Belden 3105A, daisy chain)</text>
+<rect x="1000" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1006" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">750-652</text>
+<text x="1006" y="806" font-size="11" text-anchor="start" fill="#607d8b">P1-225</text>
+<rect x="1110" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1116" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U21</text>
+<text x="1116" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 1</text>
+<line x1="1090" y1="800" x2="1110" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1230" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1236" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U22</text>
+<text x="1236" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 2</text>
+<line x1="1210" y1="800" x2="1230" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1350" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1356" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U23</text>
+<text x="1356" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 3</text>
+<line x1="1330" y1="800" x2="1350" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1470" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1476" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U24</text>
+<text x="1476" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 4</text>
+<line x1="1450" y1="800" x2="1470" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1590" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1596" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U25</text>
+<text x="1596" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 5</text>
+<line x1="1570" y1="800" x2="1590" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1710" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1716" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U26</text>
+<text x="1716" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 6</text>
+<line x1="1690" y1="800" x2="1710" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1830" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1836" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U27</text>
+<text x="1836" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 7</text>
+<line x1="1810" y1="800" x2="1830" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="1950" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="1956" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U28</text>
+<text x="1956" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 8</text>
+<line x1="1930" y1="800" x2="1950" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="2070" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2076" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">U29</text>
+<text x="2076" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 9</text>
+<line x1="2050" y1="800" x2="2070" y2="800" stroke="#111" stroke-width="1.6"/>
+<rect x="2190" y="770" width="100" height="60" fill="#fff" stroke="#111" stroke-width="1.6"/>
+<text x="2196" y="788" font-size="14" text-anchor="start" fill="#111" font-weight="bold">P1-336</text>
+<text x="2196" y="806" font-size="11" text-anchor="start" fill="#607d8b">addr 10, 120 Ω</text>
+<line x1="2170" y1="800" x2="2190" y2="800" stroke="#111" stroke-width="1.6"/>
+<text x="1000" y="860" font-size="13" text-anchor="start" fill="#111">D+ / D- twisted pair, SG to drain; drain bonded at the PLC end only; no stubs &gt; 0.3 m; 120 Ω at the far end only.</text>
+<text x="1000" y="911" font-size="18" font-weight="bold">COMPONENTS (feeder circuits)</text><rect x="1000" y="920" width="1280" height="22" fill="#eceff1" stroke="#111"/><text x="1005" y="935" font-size="12" font-weight="bold">TAG</text><text x="1125" y="935" font-size="12" font-weight="bold">DESCRIPTION</text><text x="1745" y="935" font-size="12" font-weight="bold">PART</text><text x="2075" y="935" font-size="12" font-weight="bold">WHERE</text><text x="2235" y="935" font-size="12" font-weight="bold">QTY</text><rect x="1000" y="942" width="1280" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="957" font-size="12">KM-DOS</text><text x="1125" y="957" font-size="12">Safety contactor 2-pole 25 A AC-3, 24 V DC coil, mirror aux (feeder drive supply)</text><text x="1745" y="957" font-size="12">Siemens 3RT2016-1BB42 + 3RH2911 (or equal)</text><text x="2075" y="957" font-size="12">MS-P1</text><text x="2235" y="957" font-size="12">1</text><rect x="1000" y="964" width="1280" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="979" font-size="12">Q21..Q25</text><text x="1125" y="979" font-size="12">MCB 2-pole C 16 A, 10 kA (1 per 2 drives; Q25 feeds drive 9 only)</text><text x="1745" y="979" font-size="12">ABB S202-C16</text><text x="2075" y="979" font-size="12">MS-P1</text><text x="2235" y="979" font-size="12">5</text><rect x="1000" y="986" width="1280" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1001" font-size="12">U21..U29</text><text x="1125" y="1001" font-size="12">AC drive 0.5 HP 230 V 1-ph in / 3-ph out, RS-485 Modbus RTU (P1-226)</text><text x="1745" y="1001" font-size="12">AutomationDirect GS21-20P5 (confirm)</text><text x="2075" y="1001" font-size="12">MS-P1</text><text x="2235" y="1001" font-size="12">9</text><rect x="1000" y="1008" width="1280" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1023" font-size="12">Q-21n</text><text x="1125" y="1023" font-size="12">Motor isolator 16 A lockable + early-break NO aux (P1-248)</text><text x="1745" y="1023" font-size="12">ABB OTP16T3M + OA1G10 (confirm)</text><text x="2075" y="1023" font-size="12">ring leg at bin n</text><text x="2235" y="1023" font-size="12">9</text><rect x="1000" y="1030" width="1280" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1045" font-size="12">M-21n</text><text x="1125" y="1045" font-size="12">Gearmotor 0.25 kW 230/460 V Δ/Y, 1.3 A at 230 V (P1-216)</text><text x="1745" y="1045" font-size="12">NORD SK 072.1-71S/4</text><text x="2075" y="1045" font-size="12">feeder n</text><text x="2235" y="1045" font-size="12">9</text><rect x="1000" y="1052" width="1280" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1067" font-size="12">R-485</text><text x="1125" y="1067" font-size="12">Termination 120 Ω 0.25 W at the last node (blender drive P1-336)</text><text x="1745" y="1067" font-size="12">-</text><text x="2075" y="1067" font-size="12">P1-336</text><text x="2235" y="1067" font-size="12">1</text>
+<text x="1000" y="1131" font-size="18" font-weight="bold">TAG TABLE (n = feeder = bin number)</text><rect x="1000" y="1140" width="860" height="22" fill="#eceff1" stroke="#111"/><text x="1005" y="1155" font-size="12" font-weight="bold">n</text><text x="1045" y="1155" font-size="12" font-weight="bold">BIN</text><text x="1105" y="1155" font-size="12" font-weight="bold">DRIVE</text><text x="1185" y="1155" font-size="12" font-weight="bold">MCB</text><text x="1255" y="1155" font-size="12" font-weight="bold">ISOLATOR</text><text x="1355" y="1155" font-size="12" font-weight="bold">MOTOR</text><text x="1445" y="1155" font-size="12" font-weight="bold">POWER CABLES</text><text x="1685" y="1155" font-size="12" font-weight="bold">ENABLE</text><text x="1785" y="1155" font-size="12" font-weight="bold">MODBUS</text><rect x="1000" y="1162" width="860" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1177" font-size="12">1</text><text x="1045" y="1177" font-size="12">B01</text><text x="1105" y="1177" font-size="12">U21</text><text x="1185" y="1177" font-size="12">Q21</text><text x="1255" y="1177" font-size="12">Q-211</text><text x="1355" y="1177" font-size="12">M-211</text><text x="1445" y="1177" font-size="12">W-M211 / W-M211.1</text><text x="1685" y="1177" font-size="12">W-C211</text><text x="1785" y="1177" font-size="12">1</text><rect x="1000" y="1184" width="860" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1199" font-size="12">2</text><text x="1045" y="1199" font-size="12">B02</text><text x="1105" y="1199" font-size="12">U22</text><text x="1185" y="1199" font-size="12">Q21</text><text x="1255" y="1199" font-size="12">Q-212</text><text x="1355" y="1199" font-size="12">M-212</text><text x="1445" y="1199" font-size="12">W-M212 / W-M212.1</text><text x="1685" y="1199" font-size="12">W-C212</text><text x="1785" y="1199" font-size="12">2</text><rect x="1000" y="1206" width="860" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1221" font-size="12">3</text><text x="1045" y="1221" font-size="12">B03</text><text x="1105" y="1221" font-size="12">U23</text><text x="1185" y="1221" font-size="12">Q22</text><text x="1255" y="1221" font-size="12">Q-213</text><text x="1355" y="1221" font-size="12">M-213</text><text x="1445" y="1221" font-size="12">W-M213 / W-M213.1</text><text x="1685" y="1221" font-size="12">W-C213</text><text x="1785" y="1221" font-size="12">3</text><rect x="1000" y="1228" width="860" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1243" font-size="12">4</text><text x="1045" y="1243" font-size="12">B04</text><text x="1105" y="1243" font-size="12">U24</text><text x="1185" y="1243" font-size="12">Q22</text><text x="1255" y="1243" font-size="12">Q-214</text><text x="1355" y="1243" font-size="12">M-214</text><text x="1445" y="1243" font-size="12">W-M214 / W-M214.1</text><text x="1685" y="1243" font-size="12">W-C214</text><text x="1785" y="1243" font-size="12">4</text><rect x="1000" y="1250" width="860" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1265" font-size="12">5</text><text x="1045" y="1265" font-size="12">B05</text><text x="1105" y="1265" font-size="12">U25</text><text x="1185" y="1265" font-size="12">Q23</text><text x="1255" y="1265" font-size="12">Q-215</text><text x="1355" y="1265" font-size="12">M-215</text><text x="1445" y="1265" font-size="12">W-M215 / W-M215.1</text><text x="1685" y="1265" font-size="12">W-C215</text><text x="1785" y="1265" font-size="12">5</text><rect x="1000" y="1272" width="860" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1287" font-size="12">6</text><text x="1045" y="1287" font-size="12">B06</text><text x="1105" y="1287" font-size="12">U26</text><text x="1185" y="1287" font-size="12">Q23</text><text x="1255" y="1287" font-size="12">Q-216</text><text x="1355" y="1287" font-size="12">M-216</text><text x="1445" y="1287" font-size="12">W-M216 / W-M216.1</text><text x="1685" y="1287" font-size="12">W-C216</text><text x="1785" y="1287" font-size="12">6</text><rect x="1000" y="1294" width="860" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1309" font-size="12">7</text><text x="1045" y="1309" font-size="12">B07</text><text x="1105" y="1309" font-size="12">U27</text><text x="1185" y="1309" font-size="12">Q24</text><text x="1255" y="1309" font-size="12">Q-217</text><text x="1355" y="1309" font-size="12">M-217</text><text x="1445" y="1309" font-size="12">W-M217 / W-M217.1</text><text x="1685" y="1309" font-size="12">W-C217</text><text x="1785" y="1309" font-size="12">7</text><rect x="1000" y="1316" width="860" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1331" font-size="12">8</text><text x="1045" y="1331" font-size="12">B08</text><text x="1105" y="1331" font-size="12">U28</text><text x="1185" y="1331" font-size="12">Q24</text><text x="1255" y="1331" font-size="12">Q-218</text><text x="1355" y="1331" font-size="12">M-218</text><text x="1445" y="1331" font-size="12">W-M218 / W-M218.1</text><text x="1685" y="1331" font-size="12">W-C218</text><text x="1785" y="1331" font-size="12">8</text><rect x="1000" y="1338" width="860" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1005" y="1353" font-size="12">9</text><text x="1045" y="1353" font-size="12">B09</text><text x="1105" y="1353" font-size="12">U29</text><text x="1185" y="1353" font-size="12">Q25</text><text x="1255" y="1353" font-size="12">Q-219</text><text x="1355" y="1353" font-size="12">M-219</text><text x="1445" y="1353" font-size="12">W-M219 / W-M219.1</text><text x="1685" y="1353" font-size="12">W-C219</text><text x="1785" y="1353" font-size="12">9</text>
+<rect x="120" y="1150" width="800" height="142" fill="#fff" stroke="#111"/><text x="130" y="1174" font-size="16" font-weight="bold">NOTES</text><text x="130" y="1196" font-size="13">1. Load: 9 x 1.3 A motors, drives 1-ph input ≈ 4.4 A each at full load; one feeder runs at a time (DosingStation.st), so</text><text x="148" y="1214" font-size="13">the dosing bus carries &lt; 10 A.</text><text x="130" y="1232" font-size="13">2. Disconnect in sight (NEC 430.102(B)): isolator Q-21n at each bin; lockable OFF, used for LOTO before opening the tail</text><text x="148" y="1250" font-size="13">cap.</text><text x="130" y="1268" font-size="13">3. Cable lengths ~15 m [50 ft] from MS-P1 (confirm on site); VFD cable max 50 m without output reactor (GS21 manual).</text><text x="130" y="1286" font-size="13">4. Bond the barrel and gearmotor to PE (&lt; 10 Ω) through the motor cable G/Y and the bin ring.</text>
+</svg>

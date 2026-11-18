@@ -139,21 +139,22 @@ def asm1():
             R((XC - 1590 - 75, 0, 150, 10), fill="#90a4ae"), R((XC + 1590 - 75, 0, 150, 10), fill="#90a4ae"),
             T("ring 2 in sq tube on R1,590; bins on R1,250", (XC, 2560), 12)]
     FA = Y_BIN - 204.0           # built feeder P1-212 barrel axis: bin outlet flange on the transition top (P1-212-GA)
-    FS = FA - 132.0              # spout bottom into the BFM boot
-    def feeder(bx, d):           # d = +1 screw runs right (inward), -1 left
+    FS = FA - 132.0              # spout bottom (P1-212 rev B: vertical spout at R280, sleeve P1-214 down to the lid stub)
+    def feeder(bx, d):           # d = +1 screw runs right (inward), -1 left; P1-212 rev B frame (x 0 under the bin outlet)
         xs = lambda a, b: (min(bx + d * a, bx + d * b), abs(b - a))
-        x0, w = xs(-250, 650)
-        sh = [R((x0, FA - 32, w, 64), fill=SS, sw=2), P([(bx - 75, Y_BIN - 6), (bx + 75, Y_BIN - 6), (bx + 70, FA + 32), (bx - 70, FA + 32)], fill=SS, sw=1.5),
+        x0, w = xs(-130, 1065)
+        sh = [R((x0, FA - 32, w, 64), fill=SS, sw=2), P([(bx - 75, Y_BIN - 6), (bx + 75, Y_BIN - 6), (bx + 60, FA + 32), (bx - 60, FA + 32)], fill=SS, sw=1.5),
               R((bx - 100, Y_BIN - 6, 200, 6), fill=SS)]
-        x0, w = xs(550, 610)
+        x0, w = xs(938, 1002)
         sh.append(R((x0, FS, w, 100), fill=SS))
-        x0, w = xs(-560, -260)
-        sh += [R((x0, FA - 60, w, 120), fill="#b3c7e6", sw=2), T("1/3 HP", (bx - d * 410, FA + 90), 11)]
+        x0, w = xs(-345, -130)
+        sh.append(R((x0, FA - 55, w, 110), fill=SS, sw=1.5))
+        x0, w = xs(-625, -345)
+        sh += [R((x0, FA - 60, w, 120), fill="#b3c7e6", sw=2), T("0.25 kW", (bx - d * 485, FA + 90), 11)]
         return sh
     fl = feeder(b_left, 1)
     fr = feeder(b_right, -1)
-    bfm = [P([(b_left + 550, FS), (b_left + 610, FS), (XC - 240, Y_LID), (XC - 320, Y_LID)], fill="#e1f5fe", sw=1.5),
-           P([(b_right - 610, FS), (b_right - 550, FS), (XC + 320, Y_LID), (XC + 240, Y_LID)], fill="#e1f5fe", sw=1.5)]
+    bfm = [R((XC - 280 - 35, Y_LID, 70, FS + 30 - Y_LID), fill="#fffde7", sw=1.5), R((XC + 280 - 35, Y_LID, 70, FS + 30 - Y_LID), fill="#fffde7", sw=1.5)]
     probe = [R((b_left + 160, Y_BIN + 250, 120, 40), fill="#ffe0b2"), R((b_right - 280, Y_BIN + 250, 120, 40), fill="#ffe0b2")]
     hop = [R((XC - 380, Y_LID - 3, 760, 3), fill=SS), R((XC - 352, Y_LID - 253, 704, 250), fill=STEEL, sw=2.5),
            P([(XC - 352, Y_LID - 253), (XC + 352, Y_LID - 253), (XC + 52, Y_HOP + 29), (XC - 52, Y_HOP + 29)], fill=STEEL, sw=2.5),
@@ -235,7 +236,7 @@ def asm1():
         det.append(f'<line x1="{cx + math.cos(a) * 1050 * k}" y1="{cy - math.sin(a) * 1050 * k}" x2="{xi}" y2="{yi}" stroke="#ef6c00" stroke-width="3"/>')
     det.append(f'<text x="{cx - 380}" y="{cy + 215}" font-size="12">Feeders (orange) point to the hopper inlet ring Ø560 [22.05]. Spares B10-B12 blanked for growth to 13 blends.</text>')
     stack = [["Ring top (bin lugs rest here)", mm_in(H_RING + 25)], ["Bin rim / lid", mm_in(Y_BIN + 662)], ["Bin outlet flange = feeder inlet", mm_in(Y_BIN)],
-             ["Feeder barrel axis (built P1-212)", mm_in(FA)], ["Feeder spout = BFM boot top", mm_in(FS)], ["Hopper lid, inlet ring Ø560", mm_in(Y_LID)], ["Load-cell mount plate top", mm_in(1028)],
+             ["Feeder barrel axis (built P1-212)", mm_in(FA)], ["Feeder spout end (sleeve P1-214 to lid stub)", mm_in(FS)], ["Hopper lid, inlet ring Ø560", mm_in(Y_LID)], ["Load-cell mount plate top", mm_in(1028)],
              ["Hopper outlet (4 in TC)", mm_in(Y_HOP)], ["Valve outlet = screw intake top", mm_in(Y_VALVE)], ["Blender cover / screw inlet", mm_in(Y_FLG)],
              ["Blender agitator axis", mm_in(TB + 283)], ["Blender trough bottom", mm_in(TB)], ["Blender valve outlet", mm_in(Y_VOUT)],
              ["Sifter inlet (4 in TC)", mm_in(1235)], ["Sifter seat = drum rim on dolly", mm_in(1054)], ["Screw discharge", mm_in(Y_FLG + 170)]]
@@ -244,7 +245,7 @@ def asm1():
     conn = [
         ["J1", "P1-211 bin > P1-212 feeder inlet", "4 x M10 x 30 A2-70 on 160 sq", "FDA silicone 3 mm", "25 N·m [18 lbf·ft]"],
         ["J2", "P1-211 lugs > P1-210 ring", "2 x M12 x 40 A2-70 per lug", "-", "70 N·m [52 lbf·ft]"],
-        ["J3", "P1-212 spout > P1-220 inlet", "BFM 100 mm snap-fit boot (scale isolation)", "BFM Seeflex", "tool-free"],
+        ["J3", "P1-212 spout > P1-220 lid stub", "silicone sleeve 2.5 in + 2 band clamps (scale isolation)", "FDA silicone", "screwdriver"],
         ["J4", "P1-220 lugs > P1-221 cells", "2 x M12 x 40 A2-70 per lug", "-", "70 N·m; check free float"],
         ["J5", "P1-220 > P1-223 valve", "4 in Tri-Clamp 13MHHM", "EPDM FDA", "hand tight"],
         ["J6", "P1-223 > P1-224 intake", "4 in Tri-Clamp + flex sock", "EPDM FDA", "hand tight"],
@@ -270,7 +271,7 @@ def asm1():
                 notes_at=(SW - 1290, 1335),
                 notes=["Section through the ring on the blender axis, looking north. True scale 1:20; heights from CAD and equipment.json.",
                        "Bins B01-B09 per dosing-plan.md; B10-B12 blanked. Only one feeder runs at a time (DosingStation.st).",
-                       "The hopper floats on 3 cells: only the BFM boots touch it. Check free float before calibration.",
+                       "The hopper floats on 3 cells: only the silicone sleeves touch it. Check free float before calibration.",
                        "Hand adds and premix are tipped into the P1-224 intake grate at 550 [21.7] after the bin charge.",
                        "Blender built in house (P1-301-GA): no riser stand; a drum on its dolly rolls in from the free end between the legs (664 clear).",
                        "Bond bins, feeders, hopper, screw, blender and sifter to ground (< 10 ohm). Lock out before opening (1910.147)."])

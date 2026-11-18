@@ -242,7 +242,7 @@ def dosing():
             p_out = (XC + (R_BIN + 410) * ux, YC + (R_BIN + 410) * uy, FA)
             sx, sy = XC + (R_BIN - 580) * ux, YC + (R_BIN - 580) * uy
             hx, hy = XC + (R_INLET + 10) * ux, YC + (R_INLET + 10) * uy
-            add(tube((sx, sy, FA - 132), (hx, hy, Y_LID + 4), 50), (0.85, 0.93, 0.98), "P1-214 BFM boot")
+            # P1-214 silicone sleeve spout to lid stub is part of the P1-212 rev B machine model (vertical at R280)
             add(cbox(bx + 330 * ux, by + 330 * uy, Y_BIN + 80, 40, 40, 120), (0.15, 0.55, 0.85), "P1-213 level fork")
             if k in (0, 6):
                 anchor("P1-212" if k == 0 else "P1-211", "Screw feeder, built (9)" if k == 0 else "Ingredient bin 5 cu ft (9 used)",
@@ -253,7 +253,7 @@ def dosing():
     add(step("P1-220", XC, YC, Y_HOP), SS, "P1-220 weigh hopper")
     anchor("P1-220", "Weigh hopper on 3 load cells", XC + 420, YC, Y_LID, "build")
     for k in range(3):
-        a = math.radians(90 + 120 * k)
+        a = math.radians(105 + 120 * k)
         add(cbox(XC + 470 * math.cos(a), YC + 470 * math.sin(a), Y_HOP + 330, 90, 90, 70), SSB, "P1-221 load cell mount")
     add(cyl(XC, YC, Y_VALVE, 70, 100), SSB, "P1-223 butterfly valve body")
     add(cbox(XC + 150, YC, Y_VALVE + 10, 180, 110, 110), (0.25, 0.25, 0.30), "P1-223 actuator")

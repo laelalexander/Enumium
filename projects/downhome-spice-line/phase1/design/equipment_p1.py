@@ -82,10 +82,11 @@ eq("P1-213", "Dosing", "Vibrating fork low-level switch for powders", "Endress+H
    "https://www.endress.com/en/field-instruments-overview/level-measurement/point-level-vibronic-ftm20", "Endress+Hauser", 9, "one per used bin",
    {"usd": 520, "src": "estimate", "per": "each"}, [0, 0, 0], "estimate", "24 V DC", "316L fork, 1.5 in Tri-Clamp process connection (sanitary option)",
    contact=True, growth_equiv="LS-624")
-eq("P1-214", "Dosing", "Flexible snap-fit connector feeder spout to hopper inlet (scale isolation)", "BFM Global", "BFM fitting, 100 mm, Seeflex 040E (confirm size)",
-   {"material": "FDA polyether urethane (documented class)"}, "https://www.bfmfitting.com/", "BFM Global distributor", 9, "one per feeder",
-   {"usd": 140, "src": "estimate", "per": "each"}, [0, 0, 0], "estimate", None, "tool-free, see-through", contact=True)
-eq("P1-220", "Dosing", "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing)", "fabricated", "drawing P1-220",
+eq("P1-214", "Dosing", "Flexible sleeve feeder spout to hopper lid stub (scale isolation), FDA silicone 2.5 in ID x 200 + 2 SS band clamps", "generic FDA silicone",
+   "silicone sleeve 2.5 in ID x 3 wall x 200 + 2 SS worm clamps 60-80 (P1-212 rev B)",
+   {"material": "FDA 21 CFR 177.2600 platinum-cured silicone"}, "https://www.mcmaster.com/", "sanitary hose supplier", 9, "one per feeder",
+   {"usd": 25, "src": "estimate", "per": "each"}, [0, 0, 0], "estimate", None, "clamped, see P1-212-001", contact=True)
+eq("P1-220", "Dosing", "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing), rev B: lugs on the leg lines, 12 lid stubs 2.5 in", "fabricated", "drawing P1-220",
    {"capacity": "100 kg", "accuracy": "+/-20 g with fast/slow feed"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one dosing station",
    {"usd": 0, "src": "see build"}, [840, 840, 580], "calculated", None, "316L #4, ground welds", kind="build", contact=True, dust_cfm=150,
    build=fab("P1-220", "316L 14 ga ~2 m2 + 4 in BPE ferrule + 304 lugs", 620, 12, "laser cut, roll, TIG, polish, passivate", ["dxf/P1-220_lid"]))

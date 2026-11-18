@@ -530,18 +530,18 @@
  {
   "tag": "P1-214",
   "area": "Dosing",
-  "name": "Flexible snap-fit connector feeder spout to hopper inlet (scale isolation)",
-  "maker": "BFM Global",
-  "model": "BFM fitting, 100 mm, Seeflex 040E (confirm size)",
+  "name": "Flexible sleeve feeder spout to hopper lid stub (scale isolation), FDA silicone 2.5 in ID x 200 + 2 SS band clamps",
+  "maker": "generic FDA silicone",
+  "model": "silicone sleeve 2.5 in ID x 3 wall x 200 + 2 SS worm clamps 60-80 (P1-212 rev B)",
   "specs": {
-   "material": "FDA polyether urethane (documented class)"
+   "material": "FDA 21 CFR 177.2600 platinum-cured silicone"
   },
-  "source": "https://www.bfmfitting.com/",
-  "supplier": "BFM Global distributor",
+  "source": "https://www.mcmaster.com/",
+  "supplier": "sanitary hose supplier",
   "qty": 9,
   "qty_basis": "one per feeder",
   "price": {
-   "usd": 140,
+   "usd": 25,
    "src": "estimate",
    "per": "each"
   },
@@ -553,7 +553,7 @@
   "footprint_src": "estimate",
   "power": null,
   "air_cfm": 0,
-  "sanitary": "tool-free, see-through",
+  "sanitary": "clamped, see P1-212-001",
   "alternates": [],
   "rate": null,
   "kind": "buy",
@@ -563,12 +563,12 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 1260
+  "ext_usd": 225
  },
  {
   "tag": "P1-220",
   "area": "Dosing",
-  "name": "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing)",
+  "name": "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing), rev B: lugs on the leg lines, 12 lid stubs 2.5 in",
   "maker": "fabricated",
   "model": "drawing P1-220",
   "specs": {
@@ -1949,16 +1949,16 @@
   "maker": "fabricated",
   "model": "drawing P1-212-GA + part sheets P1-212-01",
   "specs": {
-   "assembly": "Hangs from the bin outlet flange; screw pulls out forward after the 2.5 in TC end cap comes off",
-   "bought_parts": "P1-215, P1-216, P1-217"
+   "assembly": "Hangs from the bin outlet flange; spout vertical over the hopper lid stub (R280) with sleeve P1-214; screw pulls out the tail end after the hex-nut TC clamp. Full build set: machines/P1-212/drawings/P1-212-drawing-set.pdf (14 sheets)",
+   "bought_parts": "P1-215, P1-216, P1-241, P1-242, P1-243, P1-244, P1-245, P1-246, P1-247, P1-248, P1-217"
   },
   "source": "cad/p1_machines.py",
   "supplier": "in-house / local stainless fabricator",
   "qty": 9,
   "qty_basis": "one per used bin (dosing-plan.md); 3 more positions at growth",
   "price": {
-   "usd": 558.0,
-   "src": "build: material $103 + 7.0 h x $65",
+   "usd": 1234.0,
+   "src": "build: material $194 + 16.0 h x $65",
    "per": "each"
   },
   "footprint_mm": [
@@ -1980,31 +1980,31 @@
   "build": {
    "drawing": "P1-212-GA",
    "material": "SS 304/316L sheet, tube and bar per part sheets",
-   "material_usd": 103,
-   "labor_h": 7.0,
+   "material_usd": 194,
+   "labor_h": 16.0,
    "process": "laser cut, roll, TIG, machine, polish, assemble",
    "files": [
     "cad/step/P1-212-01"
    ]
   },
   "reuse_in_growth": false,
-  "ext_usd": 5022.0
+  "ext_usd": 11106.0
  },
  {
   "tag": "P1-215",
   "area": "Dosing",
-  "name": "Formed screw flighting 2 in OD x 2 in pitch on 3/4 in shaft, 316, drive end with 5/8 in keyed stub",
-  "maker": "Kase Conveyors / Spirotech",
-  "model": "custom flighting 2 x 2 x 3/4 in, 316 SS, 860 mm (quote)",
+  "name": "Formed (cold-rolled) continuous screw flight, 316, OD 56 x ID 25 x pitch 56 x 3 thick, 1,110 long (20 turns), right hand",
+  "maker": "Spirotech / Kase Conveyors",
+  "model": "continuous helicoid flight 56 x 25 x 56 x 3, 316 (quote; alternate: 20 sectional blanks per DXF P1-212-202)",
   "specs": {
-   "for": "P1-212 Bin screw feeder 2 in (built, 9)"
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
   },
-  "source": "https://www.kaseconveyors.com/",
-  "supplier": "Kase Conveyors",
+  "source": "https://www.mcmaster.com/",
+  "supplier": "Spirotech",
   "qty": 9,
   "qty_basis": "9 for 9 x P1-212",
   "price": {
-   "usd": 260,
+   "usd": 180,
    "src": "estimate",
    "per": "each"
   },
@@ -2026,23 +2026,23 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 2340
+  "ext_usd": 1620
  },
  {
   "tag": "P1-216",
   "area": "Dosing",
-  "name": "Gearmotor 1/3 HP 3-ph 56C with 5:1 inline helical gearbox (about 345 rpm)",
-  "maker": "AutomationDirect IronHorse",
-  "model": "MTRP-P33-AD18 motor + inline gearbox 5:1 (confirm SKU)",
+  "name": "Helical in-line gearmotor 0.25 kW 4-pole 230/460 V 3-ph, i \u2248 10.25 (165 rpm at 60 Hz), solid shaft \u00d820 j6 x 40 keyed, B14 face flange (spigot \u00d880, 4 x M6 on PCD 100), IP66 washdown",
+  "maker": "NORD Drivesystems",
+  "model": "SK 072.1 - 71S/4, B14 flange C120 (confirm flange code and shaft with the NORD quote drawing)",
   "specs": {
-   "for": "P1-212 Bin screw feeder 2 in (built, 9)"
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
   },
-  "source": "https://www.automationdirect.com/",
-  "supplier": "AutomationDirect",
+  "source": "https://www.nord.com/",
+  "supplier": "NORD Drivesystems",
   "qty": 9,
   "qty_basis": "9 for 9 x P1-212",
   "price": {
-   "usd": 420,
+   "usd": 520,
    "src": "estimate",
    "per": "each"
   },
@@ -2064,7 +2064,311 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 3780
+  "ext_usd": 4680
+ },
+ {
+  "tag": "P1-241",
+  "area": "Dosing",
+  "name": "Deep-groove ball bearing, stainless, 20 x 42 x 12, sealed both sides, food grease",
+  "maker": "SKF",
+  "model": "W 6004-2RS1 (stainless)",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.skf.com/",
+  "supplier": "SKF",
+  "qty": 18,
+  "qty_basis": "18 for 9 x P1-212",
+  "price": {
+   "usd": 38,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 684
+ },
+ {
+  "tag": "P1-242",
+  "area": "Dosing",
+  "name": "Rotary lip seal 20 x 35 x 7, FDA PTFE lip, stainless case, dry-running",
+  "maker": "Trelleborg / AHP Seals",
+  "model": "PTFE lip seal 20x35x7 FDA, SS case (confirm series)",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "Trelleborg",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 45,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 405
+ },
+ {
+  "tag": "P1-243",
+  "area": "Dosing",
+  "name": "O-ring 46 x 2.5, EPDM, FDA 21 CFR 177.2600",
+  "maker": "generic",
+  "model": "O-ring 46 x 2.5 EPDM 70 FDA",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "generic",
+  "qty": 18,
+  "qty_basis": "18 for 9 x P1-212",
+  "price": {
+   "usd": 3,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 54
+ },
+ {
+  "tag": "P1-244",
+  "area": "Dosing",
+  "name": "Jaw coupling, cast iron hubs, 20 mm bore 6 mm key both hubs, Hytrel spider",
+  "maker": "Lovejoy (Timken)",
+  "model": "L-075 hubs 20 mm x 6 kw (2) + L-075 Hytrel spider",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.lovejoy-inc.com/",
+  "supplier": "Lovejoy (Timken)",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 55,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 495
+ },
+ {
+  "tag": "P1-245",
+  "area": "Dosing",
+  "name": "Sanitary short weld ferrule 2.5 in, 316L, A270 tube end",
+  "maker": "generic sanitary (14WMP)",
+  "model": "14WMP-2.5 316L",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "generic sanitary (14WMP)",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 9,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 81
+ },
+ {
+  "tag": "P1-246",
+  "area": "Dosing",
+  "name": "Tri-Clamp gasket 2.5 in EPDM, FDA",
+  "maker": "generic sanitary",
+  "model": "40MP-2.5 EPDM",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "generic sanitary",
+  "qty": 18,
+  "qty_basis": "18 for 9 x P1-212",
+  "price": {
+   "usd": 2,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 36
+ },
+ {
+  "tag": "P1-247",
+  "area": "Dosing",
+  "name": "Tri-Clamp clamp 2.5 in, single pin, HEX-NUT closure (tool needed: the cap guards the screw)",
+  "maker": "generic sanitary",
+  "model": "13MHHS-2.5 304",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://www.mcmaster.com/",
+  "supplier": "generic sanitary",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 14,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 126
+ },
+ {
+  "tag": "P1-248",
+  "area": "Dosing",
+  "name": "Motor isolator, 3-pole 16 A, lockable OFF, stainless or polycarbonate IP66 enclosure, 1 early-break NO aux contact",
+  "maker": "ABB",
+  "model": "OTP16T3M + OA1G10 aux, IP66 (confirm enclosure code)",
+  "specs": {
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
+  },
+  "source": "https://new.abb.com/low-voltage",
+  "supplier": "ABB",
+  "qty": 9,
+  "qty_basis": "9 for 9 x P1-212",
+  "price": {
+   "usd": 95,
+   "src": "estimate",
+   "per": "each"
+  },
+  "footprint_mm": [
+   0,
+   0,
+   0
+  ],
+  "footprint_src": "in machine envelope",
+  "power": null,
+  "air_cfm": 0,
+  "sanitary": "",
+  "alternates": [],
+  "rate": null,
+  "kind": "buy",
+  "product_contact": false,
+  "dust_cfm": 0,
+  "confirm": "",
+  "growth_equiv": "",
+  "build": null,
+  "reuse_in_growth": false,
+  "ext_usd": 855
  },
  {
   "tag": "P1-217",
@@ -2073,7 +2377,7 @@
   "maker": "Bodine Electric",
   "model": "1/17 HP 30 rpm gearmotor + SS paddle (confirm)",
   "specs": {
-   "for": "P1-212 Bin screw feeder 2 in (built, 9)"
+   "for": "P1-212 Bin screw feeder 2.5 in (built, 9) rev B"
   },
   "source": "https://www.bodine-electric.com/",
   "supplier": "Bodine distributor",

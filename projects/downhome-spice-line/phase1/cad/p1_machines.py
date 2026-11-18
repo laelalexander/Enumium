@@ -174,40 +174,39 @@ def bought_blender():
 
 
 # =============================================================================================== feeder P1-212
-F_OD, F_T, F_L = 63.5, 1.65, 900.0
+_FD = {}
+
+
+def _fd_model():
+    """rev B feeder from machines/P1-212 (design.py + model.py): the full drawing set P1-212-000..900 is drawn from the same model."""
+    if not _FD:
+        import importlib.util
+        d = P1 / "machines" / "P1-212"
+        saved = sys.modules.pop("design", None)
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("p1_212_model", d / "model.py")
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            _FD["parts"], _FD["bought"] = m.build(), m.bought()
+        finally:
+            sys.path.remove(str(d)); sys.modules.pop("design", None)
+            if saved is not None:
+                sys.modules["design"] = saved
+    return _FD
 
 
 def fd_barrel():
-    """Barrel weldment: 2.5 in 316L tube, inlet slot under a transition to the bin's 160 sq outlet flange, 2.5 in TC discharge end
-    cap (pull the screw out forward without tools), drop spout Ø60 to the BFM boot, C-face motor flange at the drive end."""
-    x0, x1 = -250.0, F_L - 250.0
-    b = tube_x(x0, x1, F_OD, F_T)
-    b = b.cut(W().box(140, 50, 60).translate((0, 0, 30)))
-    tr = (W().rect(150, 150).workplane(offset=-170).rect(140, 50).loft()
-          .cut(W().workplane(offset=0.01).rect(150 - 2 * GA14, 150 - 2 * GA14).workplane(offset=-170.02).rect(140 - 2 * GA14, 50 - 2 * GA14).loft())
-          .translate((0, 0, F_OD / 2 + 170 - 4)))
-    fl = W().rect(200, 200).rect(150, 150).extrude(6).translate((0, 0, F_OD / 2 + 166))
-    fl = fl.faces(">Z").workplane().rect(160, 160, forConstruction=True).vertices().hole(11)
-    b = b.union(tr).union(fl)
-    sp = W().circle(30).circle(30 - F_T).extrude(110).translate((x1 - 70, 0, -F_OD / 2 - 100))
-    b = b.cut(W().circle(30 - F_T).extrude(40).translate((x1 - 70, 0, -F_OD / 2 - 10))).union(sp)
-    b = b.union(W().circle(77.5 / 2).circle(F_OD / 2 - F_T).extrude(21.5).rotate((0, 0, 0), (0, 1, 0), 90).translate((x1, 0, 0)))  # 2.5 in TC ferrule
-    mf = W().box(10, 150, 150).translate((x0 - 5, 0, 0)).cut(W().circle(22).extrude(30).rotate((0, 0, 0), (0, 1, 0), 90).translate((x0 - 15, 0, 0)))
-    for k in range(4):
-        a = math.radians(45 + 90 * k)
-        mf = mf.cut(W().circle(4.5).extrude(30).rotate((0, 0, 0), (0, 1, 0), 90).translate((x0 - 15, 53 * math.cos(a), 53 * math.sin(a))))  # 56C face, 5.875 in BC
-    b = b.union(mf)
-    b = b.union(W().box(60, 6, 80).translate((x0 + 60, F_OD / 2 + 3, 0)).faces(">Y").workplane(centerOption="CenterOfBoundBox").hole(9))   # hanger tab
-    return b
+    """Feeder P1-212 rev B, all made parts (barrel weldment, screw, drive cartridge, tail cap, lantern, guard) in the feeder frame:
+    x along the screw, 0 under the bin outlet, +x toward the hopper; z 0 on the axis (1,526 AFF)."""
+    out = None
+    for pid, s in _fd_model()["parts"].items():
+        out = s if out is None else out.union(s, clean=False)
+    return out
 
 
 def bought_feeder():
-    gm = rod((-260, 0, 0), (-560, 0, 0), 120).union(W().box(120, 130, 130).translate((-320, 0, 0)))
-    screw = W()
-    for k in range(int(860 / 50)):
-        screw = screw.union(W().circle(25).circle(9.5).extrude(3).rotate((0, 0, 0), (0, 1, 0), 90).translate((-230 + k * 50, 0, 0)))
-    screw = screw.union(rod((-240, 0, 0), (620, 0, 0), 19))
-    return dict(gearmotor=gm, screw=screw)
+    b = _fd_model()["bought"]
+    return {"gearmotor": b["P1-216"], "coupling": b["P1-244"], "bearings": b["P1-241"], "clamp": b["P1-247"], "sleeve": b["P1-214"]}
 
 
 # =============================================================================================== auger filler P1-401
@@ -382,21 +381,40 @@ MACHINES = [
               "https://www.schmersal.com/", "Schmersal distributor", 1, 260, None),
              ("P1-336", "VFD 2 HP for the blender (soft start, 40 rpm trim)", "AutomationDirect", "GS21-22P0 (confirm)", "https://www.automationdirect.com/", "AutomationDirect", 1, 330, None),
          ]),
-    dict(id="P1-212", title="Bin screw feeder 2 in (built, 9)", tag_name="Bin screw feeder", qty=9,
-         assy_note="Hangs from the bin outlet flange; screw pulls out forward after the 2.5 in TC end cap comes off",
+    dict(id="P1-212", title="Bin screw feeder 2.5 in (built, 9) rev B", tag_name="Bin screw feeder", qty=9,
+         full_set="machines/P1-212/drawings/P1-212-001_general_arrangement.svg",
+         assy_note="Hangs from the bin outlet flange; spout vertical over the hopper lid stub (R280) with sleeve P1-214; screw pulls out the tail end "
+                   "after the hex-nut TC clamp. Full build set: machines/P1-212/drawings/P1-212-drawing-set.pdf (14 sheets)",
          parts=[
-             dict(id="P1-212-01", fn=fd_barrel, title="Feeder barrel weldment 2.5 in", material="SS 316L tube 2.5 in x 16 ga; transition 14 ga; flanges 6 mm",
-                  process="Laser cut, brake, TIG, ground, polish", mat_kg=9, labor_h=7, flat="flange", contact=True, qty=9,
-                  notes=["Inlet slot 140 x 50 under a 150 sq transition from the bin's 160 sq bolt pattern (4 x Ø11)",
-                         "Screw (P1-215) cantilevered from the drive: no bearing in the product; 2 mm clearance to the barrel",
-                         "0.04 L/rev at 45 % fill: 290 rpm (60 Hz) about 700 L/h fast, 12 Hz about 140 L/h slow"],
-                  fasteners=lambda f: "M10 x 30 A2-70 + FDA gasket to bin, 25 N·m" if abs(f["dia"] - 11) < 1 else ("3/8-16 x 1 to 56C face" if f["dia"] < 10 else "hanger to ring")),
+             dict(id="P1-212-01", fn=fd_barrel, title="Feeder P1-212 rev B made parts (barrel weldment, screw, drive cartridge, tail cap, lantern, guard)",
+                  material="SS 316L A270 tube 2.5 in x 16 ga, 316L plate, 316 bar; 304 lantern/guard; UHMW tail bush",
+                  process="Laser, brake, TIG, lathe, mill, polish (see P1-212-100..400)", mat_kg=22, labor_h=16, flat=None, contact=True, qty=9,
+                  notes=["Detail drawings: P1-212-001..900 (GA, sections, weldment, flat patterns, screw, drive, tail, lantern, assembly, hardware, E01/E02, ITP)",
+                         "Screw Ø56 x pitch 56 on Ø25, supported both ends: drive pin in socket, UHMW bush at the tail; no bearing in the product",
+                         "0.044 L/rev at 40 % fill: 150 rpm about 398 L/h fast, 15 rpm about 6 g/s dribble; 0.25 kW i 10.25 gearmotor"],
+                  fasteners=lambda f: "M10 x 30 A2-70 + FDA gasket to bin, 25 N·m" if abs(f["dia"] - 11) < 1 else "see P1-212-600"),
          ],
          bought=[
-             ("P1-215", "Formed screw flighting 2 in OD x 2 in pitch on 3/4 in shaft, 316, drive end with 5/8 in keyed stub", "Kase Conveyors / Spirotech",
-              "custom flighting 2 x 2 x 3/4 in, 316 SS, 860 mm (quote)", "https://www.kaseconveyors.com/", "Kase Conveyors", 9, 260, "screw"),
-             ("P1-216", "Gearmotor 1/3 HP 3-ph 56C with 5:1 inline helical gearbox (about 345 rpm)", "AutomationDirect IronHorse",
-              "MTRP-P33-AD18 motor + inline gearbox 5:1 (confirm SKU)", "https://www.automationdirect.com/", "AutomationDirect", 9, 420, "gearmotor"),
+             ('P1-215', 'Formed (cold-rolled) continuous screw flight, 316, OD 56 x ID 25 x pitch 56 x 3 thick, 1,110 long (20 turns), right hand', 'Spirotech / Kase Conveyors',
+              'continuous helicoid flight 56 x 25 x 56 x 3, 316 (quote; alternate: 20 sectional blanks per DXF P1-212-202)', 'https://www.mcmaster.com/', 'Spirotech', 9, 180, 'screw'),
+             ('P1-216', 'Helical in-line gearmotor 0.25 kW 4-pole 230/460 V 3-ph, i ≈ 10.25 (165 rpm at 60 Hz), solid shaft Ø20 j6 x 40 keyed, B14 face flange (spigot Ø80, 4 x M6 on PCD 100), IP66 washdown', 'NORD Drivesystems',
+              'SK 072.1 - 71S/4, B14 flange C120 (confirm flange code and shaft with the NORD quote drawing)', 'https://www.nord.com/', 'NORD Drivesystems', 9, 520, 'gearmotor'),
+             ('P1-241', 'Deep-groove ball bearing, stainless, 20 x 42 x 12, sealed both sides, food grease', 'SKF',
+              'W 6004-2RS1 (stainless)', 'https://www.skf.com/', 'SKF', 18, 38, None),
+             ('P1-242', 'Rotary lip seal 20 x 35 x 7, FDA PTFE lip, stainless case, dry-running', 'Trelleborg / AHP Seals',
+              'PTFE lip seal 20x35x7 FDA, SS case (confirm series)', 'https://www.mcmaster.com/', 'Trelleborg', 9, 45, None),
+             ('P1-243', 'O-ring 46 x 2.5, EPDM, FDA 21 CFR 177.2600', 'generic',
+              'O-ring 46 x 2.5 EPDM 70 FDA', 'https://www.mcmaster.com/', 'generic', 18, 3, None),
+             ('P1-244', 'Jaw coupling, cast iron hubs, 20 mm bore 6 mm key both hubs, Hytrel spider', 'Lovejoy (Timken)',
+              'L-075 hubs 20 mm x 6 kw (2) + L-075 Hytrel spider', 'https://www.lovejoy-inc.com/', 'Lovejoy (Timken)', 9, 55, None),
+             ('P1-245', 'Sanitary short weld ferrule 2.5 in, 316L, A270 tube end', 'generic sanitary (14WMP)',
+              '14WMP-2.5 316L', 'https://www.mcmaster.com/', 'generic sanitary (14WMP)', 9, 9, None),
+             ('P1-246', 'Tri-Clamp gasket 2.5 in EPDM, FDA', 'generic sanitary',
+              '40MP-2.5 EPDM', 'https://www.mcmaster.com/', 'generic sanitary', 18, 2, None),
+             ('P1-247', 'Tri-Clamp clamp 2.5 in, single pin, HEX-NUT closure (tool needed: the cap guards the screw)', 'generic sanitary',
+              '13MHHS-2.5 304', 'https://www.mcmaster.com/', 'generic sanitary', 9, 14, None),
+             ('P1-248', 'Motor isolator, 3-pole 16 A, lockable OFF, stainless or polycarbonate IP66 enclosure, 1 early-break NO aux contact', 'ABB',
+              'OTP16T3M + OA1G10 aux, IP66 (confirm enclosure code)', 'https://new.abb.com/low-voltage', 'ABB', 9, 95, None),
              ("P1-217", "Inlet agitator gearmotor kit for herb and peel bins (slow paddle)", "Bodine Electric", "1/17 HP 30 rpm gearmotor + SS paddle (confirm)",
               "https://www.bodine-electric.com/", "Bodine distributor", 3, 380, None),
          ]),
@@ -623,7 +641,10 @@ def main():
         bought_shapes = BOUGHT_FN[m["id"]]()
         bsum = sum(b[6] * b[7] for b in m["bought"]) / m["qty"]
         m["cost"] = dict(material=round(mat), labor_h=round(lab, 1), labor=round(lab * LABOR), bought=round(bsum), total=round(mat + lab * LABOR + bsum))
-        (dwg / f"{m['id']}-GA.svg").write_text(ga_sheet(m, parts, bought_shapes))
+        if m.get("full_set"):            # machine has its own full drawing set: its real GA replaces the auto GA (and the auto HLR is too slow on it)
+            (dwg / f"{m['id']}-GA.svg").write_text((P1 / m["full_set"]).read_text())
+        else:
+            (dwg / f"{m['id']}-GA.svg").write_text(ga_sheet(m, parts, bought_shapes))
         asm = cq.Assembly(name=m["id"])
         for pid, s in parts.items():
             asm.add(s, name=pid, color=cq.Color(0.80, 0.82, 0.84))

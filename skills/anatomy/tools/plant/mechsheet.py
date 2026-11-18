@@ -411,3 +411,74 @@ def dxf_profile(path_stem, outer, holes=(), arcs=(), lines=(), bends=(), text=No
         if text:
             msp.add_text(text, dxfattribs={"layer": "MARK", "height": 5 * k}).set_placement((0, -15 * k))
         doc.saveas(f"{path_stem}_{unit}.dxf")
+
+
+# ------------------------------------------------------------------ electrical schematic primitives (sheet px)
+INK_E, RED_E, BLU, GRY = "#111", "#b00020", "#0d47a1", "#607d8b"
+
+
+class Sch:
+    """schematic primitives in sheet px."""
+
+    def __init__(self, S):
+        self.S = S
+
+    def w(self, x1, y1, x2, y2, col=INK_E, wd=1.6, no=None, side=1):
+        self.S.add(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{col}" stroke-width="{wd}"/>')
+        if no:
+            mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+            if x1 == x2:
+                self.t(mx + 6 * side, my, no, 12, "start" if side > 0 else "end", BLU)
+            else:
+                self.t(mx, my - 5, no, 12, "middle", BLU)
+
+    def t(self, x, y, s, fs=13, anchor="start", col=INK_E, bold=False):
+        self.S.add(f'<text x="{x}" y="{y}" font-size="{fs}" text-anchor="{anchor}" fill="{col}"{" font-weight=\"bold\"" if bold else ""}>{escape(str(s))}</text>')
+
+    def dot(self, x, y):
+        self.S.add(f'<circle cx="{x}" cy="{y}" r="3.5" fill="{INK_E}"/>')
+
+    def term(self, x, y, lab=None):
+        self.S.add(f'<circle cx="{x}" cy="{y}" r="5" fill="#fff" stroke="{INK_E}" stroke-width="1.3"/>')
+        if lab:
+            self.t(x + 9, y - 8, lab, 11, "start", GRY)
+
+    def box(self, x, y, w, h, tag=None, sub=None, dash=False):
+        self.S.add(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#fff" stroke="{INK_E}" stroke-width="1.6"{" stroke-dasharray=\"10,5\"" if dash else ""}/>')
+        if tag:
+            self.t(x + 6, y + 18, tag, 14, "start", INK_E, True)
+        if sub:
+            for i, l in enumerate(sub if isinstance(sub, list) else [sub]):
+                self.t(x + 6, y + 36 + 15 * i, l, 11, "start", GRY)
+
+    # vertical devices (current flows down), centred at x between y and y + 50
+    def fuse_v(self, x, y, tag):
+        self.w(x, y, x, y + 12); self.S.add(f'<rect x="{x - 7}" y="{y + 12}" width="14" height="26" fill="#fff" stroke="{INK_E}" stroke-width="1.4"/>')
+        self.w(x, y + 12, x, y + 38, INK_E, 0.8); self.w(x, y + 38, x, y + 50); self.t(x + 12, y + 30, tag, 12)
+
+    def sw_v(self, x, y, tag=None, nc=False):
+        self.w(x, y, x, y + 15); self.w(x, y + 35, x, y + 50)
+        self.w(x, y + 35, x - 12, y + 15) if not nc else (self.w(x, y + 35, x + 10, y + 13), self.w(x, y + 15, x + 12, y + 15))
+        if tag:
+            self.t(x + 14, y + 30, tag, 12)
+
+    def coil_h(self, x, y, tag):            # horizontal rung coil centred at x
+        self.S.add(f'<rect x="{x - 18}" y="{y - 11}" width="36" height="22" fill="#fff" stroke="{INK_E}" stroke-width="1.5"/>'); self.t(x, y - 16, tag, 12, "middle", INK_E, True)
+
+    def no_h(self, x, y, tag=None, nc=False):  # contact on a horizontal rung, 40 wide
+        self.w(x - 20, y, x - 6, y); self.w(x + 6, y, x + 20, y)
+        self.w(x - 6, y - 12, x - 6, y + 12); self.w(x + 6, y - 12, x + 6, y + 12)
+        if nc:
+            self.w(x - 10, y + 12, x + 10, y - 12)
+        if tag:
+            self.t(x, y - 17, tag, 11, "middle")
+
+    def pb_h(self, x, y, tag, nc=False):
+        self.no_h(x, y, tag, nc); self.w(x, y - 12, x, y - 24, INK_E, 1); self.w(x - 7, y - 24, x + 7, y - 24, INK_E, 1.4)
+
+    def lamp_h(self, x, y, tag):
+        self.S.add(f'<circle cx="{x}" cy="{y}" r="12" fill="#fff" stroke="{INK_E}" stroke-width="1.5"/>')
+        self.w(x - 8, y - 8, x + 8, y + 8, INK_E, 1); self.w(x - 8, y + 8, x + 8, y - 8, INK_E, 1); self.t(x, y - 17, tag, 11, "middle", INK_E, True)
+
+    def motor(self, x, y, tag):
+        self.S.add(f'<circle cx="{x}" cy="{y}" r="34" fill="#fff" stroke="{INK_E}" stroke-width="1.8"/>'); self.t(x, y - 2, "M", 20, "middle", INK_E, True); self.t(x, y + 18, "3~", 13, "middle"); self.t(x + 44, y + 4, tag, 13)

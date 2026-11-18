@@ -2,16 +2,16 @@
  "title": "Down Home Creole spice plant: Phase 1 prototype",
  "summary": "A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a 6 cu ft ribbon blender we build, sifted on the drum, held for QC, then packed on a bench of machines we build: servo auger filler, spindle capper, wrap labeler and a detector conveyor. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, tables and most machines are fabricated in house to save money; scales, motors, drives, valves and a used metal detector head are bought.",
  "totals": {
-  "parts_cost": 168710.0,
+  "parts_cost": 176675.0,
   "currency": "USD",
-  "bought": 121528.0,
-  "fabricated": 47182.0,
-  "fabrication_hours": 331.0,
+  "bought": 123409.0,
+  "fabricated": 53266.0,
+  "fabrication_hours": 340.0,
   "print_hours": null,
   "filament_g": {
    "PETG": 857
   },
-  "build_hours": 451.0,
+  "build_hours": 460.0,
   "note": "build_hours = fabrication + about 120 h install and commissioning; excludes building fit-out and electrical service"
  },
  "tools": [
@@ -146,13 +146,13 @@
   },
   {
    "line": "P1-214",
-   "desc": "Flexible snap-fit connector feeder spout to hopper inlet (scale isolation)",
-   "mfr": "BFM Global",
-   "mpn": "BFM fitting, 100 mm, Seeflex 040E (confirm size)",
+   "desc": "Flexible sleeve feeder spout to hopper lid stub (scale isolation), FDA silicone 2.5 in ID x 200 + 2 SS band clamps",
+   "mfr": "generic FDA silicone",
+   "mpn": "silicone sleeve 2.5 in ID x 3 wall x 200 + 2 SS worm clamps 60-80 (P1-212 rev B)",
    "qty": 9,
-   "supplier": "BFM Global distributor",
-   "url": "https://www.bfmfitting.com/",
-   "unit_price": 140.0,
+   "supplier": "sanitary hose supplier",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 25.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
@@ -484,26 +484,130 @@
   },
   {
    "line": "P1-215",
-   "desc": "Formed screw flighting 2 in OD x 2 in pitch on 3/4 in shaft, 316, drive end with 5/8 in keyed stub",
-   "mfr": "Kase Conveyors / Spirotech",
-   "mpn": "custom flighting 2 x 2 x 3/4 in, 316 SS, 860 mm (quote)",
+   "desc": "Formed (cold-rolled) continuous screw flight, 316, OD 56 x ID 25 x pitch 56 x 3 thick, 1,110 long (20 turns), right hand",
+   "mfr": "Spirotech / Kase Conveyors",
+   "mpn": "continuous helicoid flight 56 x 25 x 56 x 3, 316 (quote; alternate: 20 sectional blanks per DXF P1-212-202)",
    "qty": 9,
-   "supplier": "Kase Conveyors",
-   "url": "https://www.kaseconveyors.com/",
-   "unit_price": 260.0,
+   "supplier": "Spirotech",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 180.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
   },
   {
    "line": "P1-216",
-   "desc": "Gearmotor 1/3 HP 3-ph 56C with 5:1 inline helical gearbox (about 345 rpm)",
-   "mfr": "AutomationDirect IronHorse",
-   "mpn": "MTRP-P33-AD18 motor + inline gearbox 5:1 (confirm SKU)",
+   "desc": "Helical in-line gearmotor 0.25 kW 4-pole 230/460 V 3-ph, i \u2248 10.25 (165 rpm at 60 Hz), solid shaft \u00d820 j6 x 40 keyed, B14 face flange (spigot \u00d880, 4 x M6 on PCD 100), IP66 washdown",
+   "mfr": "NORD Drivesystems",
+   "mpn": "SK 072.1 - 71S/4, B14 flange C120 (confirm flange code and shaft with the NORD quote drawing)",
    "qty": 9,
-   "supplier": "AutomationDirect",
-   "url": "https://www.automationdirect.com/",
-   "unit_price": 420.0,
+   "supplier": "NORD Drivesystems",
+   "url": "https://www.nord.com/",
+   "unit_price": 520.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-241",
+   "desc": "Deep-groove ball bearing, stainless, 20 x 42 x 12, sealed both sides, food grease",
+   "mfr": "SKF",
+   "mpn": "W 6004-2RS1 (stainless)",
+   "qty": 18,
+   "supplier": "SKF",
+   "url": "https://www.skf.com/",
+   "unit_price": 38.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-242",
+   "desc": "Rotary lip seal 20 x 35 x 7, FDA PTFE lip, stainless case, dry-running",
+   "mfr": "Trelleborg / AHP Seals",
+   "mpn": "PTFE lip seal 20x35x7 FDA, SS case (confirm series)",
+   "qty": 9,
+   "supplier": "Trelleborg",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 45.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-243",
+   "desc": "O-ring 46 x 2.5, EPDM, FDA 21 CFR 177.2600",
+   "mfr": "generic",
+   "mpn": "O-ring 46 x 2.5 EPDM 70 FDA",
+   "qty": 18,
+   "supplier": "generic",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 3.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-244",
+   "desc": "Jaw coupling, cast iron hubs, 20 mm bore 6 mm key both hubs, Hytrel spider",
+   "mfr": "Lovejoy (Timken)",
+   "mpn": "L-075 hubs 20 mm x 6 kw (2) + L-075 Hytrel spider",
+   "qty": 9,
+   "supplier": "Lovejoy (Timken)",
+   "url": "https://www.lovejoy-inc.com/",
+   "unit_price": 55.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-245",
+   "desc": "Sanitary short weld ferrule 2.5 in, 316L, A270 tube end",
+   "mfr": "generic sanitary (14WMP)",
+   "mpn": "14WMP-2.5 316L",
+   "qty": 9,
+   "supplier": "generic sanitary (14WMP)",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 9.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-246",
+   "desc": "Tri-Clamp gasket 2.5 in EPDM, FDA",
+   "mfr": "generic sanitary",
+   "mpn": "40MP-2.5 EPDM",
+   "qty": 18,
+   "supplier": "generic sanitary",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 2.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-247",
+   "desc": "Tri-Clamp clamp 2.5 in, single pin, HEX-NUT closure (tool needed: the cap guards the screw)",
+   "mfr": "generic sanitary",
+   "mpn": "13MHHS-2.5 304",
+   "qty": 9,
+   "supplier": "generic sanitary",
+   "url": "https://www.mcmaster.com/",
+   "unit_price": 14.0,
+   "price_src": "estimate",
+   "alt": "",
+   "notes": ""
+  },
+  {
+   "line": "P1-248",
+   "desc": "Motor isolator, 3-pole 16 A, lockable OFF, stainless or polycarbonate IP66 enclosure, 1 early-break NO aux contact",
+   "mfr": "ABB",
+   "mpn": "OTP16T3M + OA1G10 aux, IP66 (confirm enclosure code)",
+   "qty": 9,
+   "supplier": "ABB",
+   "url": "https://new.abb.com/low-voltage",
+   "unit_price": 95.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
@@ -977,7 +1081,7 @@
   },
   {
    "part": "P1-220",
-   "title": "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing)",
+   "title": "Weigh hopper 141 L on 3 load cells (gain-in-weight dosing), rev B: lugs on the leg lines, 12 lid stubs 2.5 in",
    "process": "laser cut, roll, TIG, polish, passivate",
    "files": [
     "phase1/dxf/P1-220_lid_mm.dxf",
@@ -1139,8 +1243,8 @@
    "material": "SS 304/316L sheet, tube and bar per part sheets",
    "qty": 9,
    "vendor": "in-house / local stainless fabricator",
-   "labor_h": 7.0,
-   "material_usd": 103,
+   "labor_h": 16.0,
+   "material_usd": 194,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
@@ -1310,7 +1414,7 @@
     "torque wrench",
     "test weights 2 x 20 kg"
    ],
-   "text": "Bolt the three weigh modules to the frame brackets, lower the hopper onto them, fit the 4 in butterfly valve on the outlet Tri-Clamp. Nothing but the flexible boots may touch the hopper.",
+   "text": "Bolt the three weigh modules to the frame brackets, lower the hopper onto them, fit the 4 in butterfly valve on the outlet Tri-Clamp. Nothing but the silicone sleeves may touch the hopper.",
    "torque": "M12 load-cell mount bolts 70 N\u00b7m (A2-70)",
    "check": "hopper rocks freely on the cells; nothing bridges to the frame"
   },
@@ -1346,14 +1450,46 @@
     {
      "line": "P1-214",
      "qty": 9
+    },
+    {
+     "line": "P1-241",
+     "qty": 18
+    },
+    {
+     "line": "P1-242",
+     "qty": 9
+    },
+    {
+     "line": "P1-243",
+     "qty": 18
+    },
+    {
+     "line": "P1-244",
+     "qty": 9
+    },
+    {
+     "line": "P1-245",
+     "qty": 9
+    },
+    {
+     "line": "P1-246",
+     "qty": 18
+    },
+    {
+     "line": "P1-247",
+     "qty": 9
+    },
+    {
+     "line": "P1-248",
+     "qty": 9
     }
    ],
    "tools": [
     "torque wrench",
     "hex keys"
    ],
-   "text": "In the shop, assemble each of the 9 feeders per P1-212-GA: slide the 316 flighting into the barrel weldment, bolt the 1/3 HP gearmotor to the C-face, fit the Tri-Clamp end cap (the screw pulls out forward for cleaning). Fit the slow agitator kit on the herb and peel bins. On site, bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, and a BFM flexible connector from each feeder spout to its hopper inlet. Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md (salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
-   "torque": "M10 outlet flange 25 N\u00b7m; M12 bin lugs 70 N\u00b7m; C-face 3/8-16 bolts 27 N\u00b7m",
+   "text": "In the shop, build each of the 9 feeders per drawing set P1-212-000..900 (sheet 003 has the steps): drive cartridge (bearings, lip seal, pinned shaft), lantern, jaw coupling and 0.25 kW gearmotor, then hang the barrel and slide the screw in from the tail (it pulls out the tail end for cleaning). Fit the slow agitator kit on the herb and peel bins. On site, bolt each bin to its ring position with M12 bolts, the feeder to the bin outlet flange with an FDA gasket, and a silicone sleeve P1-214 from each vertical feeder spout over its hopper lid stub (2 band clamps). Fit a Soliphant in each bin's low-level port. Bins B01 to B09 in the order of dosing-plan.md (salt, garlic, paprika, onion, black pepper, coarse black pepper, cayenne, lemon peel, red pepper); positions 10 to 12 stay blanked for growth.",
+   "torque": "M10 outlet flange 25 N\u00b7m; M12 bin lugs 70 N\u00b7m; M6 drive and lantern screws 8 N\u00b7m; sleeve clamps 3 N\u00b7m",
    "check": "each screw turns by hand without rubbing; every connector sits square; tag each bin"
   },
   {

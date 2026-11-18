@@ -102,7 +102,7 @@ def p1_211():
 
 
 def p1_220():
-    """Weigh hopper: Ø700 x 250 cylinder + 45° cone to 4 in TC; 3 load-cell lugs at 120° on Ø800 (VERIFY load cell)."""
+    """Weigh hopper rev B: Ø700 x 250 cylinder + 45° cone to 4 in TC; 3 load-cell lugs at 105° + 120k on Ø800 (VERIFY load cell); 12 lid stubs 2.5 in."""
     R, t = 350.0, GA14
     cyl = cq.Workplane("XY").circle(R + t).circle(R).extrude(250)
     h_cone = R - TC4_TUBE / 2
@@ -112,13 +112,16 @@ def p1_220():
     fer = ferrule4().translate((0, 0, -h_cone - 28.6))
     part = cyl.union(cone).union(fer)
     for k in range(3):
-        a = math.radians(90 + 120 * k)
+        a = math.radians(105 + 120 * k)                 # rev B: on the ring-leg lines, between feeder ports
         lug = (cq.Workplane("XY").box(110, 80, 10).translate((math.cos(a) * (R + 55), math.sin(a) * (R + 55), 150))
                .faces(">Z").workplane(centerOption="CenterOfBoundBox").pushPoints([(-25, 0), (25, 0)]).hole(13))
         part = part.union(lug.rotate((math.cos(a) * (R + 55), math.sin(a) * (R + 55), 0), (math.cos(a) * (R + 55), math.sin(a) * (R + 55), 1), math.degrees(a) - 90 + 90))
-    # 12 inlet holes Ø70 in the lid ring for the feeder spouts, on Ø560
+    # rev B: 12 inlet holes Ø64 on Ø560 with 2.5 in x 16 ga tube stubs 25 high (P1-214 sleeve clamps on), welded and ground
     lid = cq.Workplane("XY").circle(R + 30).extrude(3).translate((0, 0, 250))
-    lid = lid.faces(">Z").workplane().polarArray(280, 0, 360, 12).hole(70)
+    lid = lid.faces(">Z").workplane().polarArray(280, 0, 360, 12).hole(64)
+    for k in range(12):
+        a = 2 * math.pi * k / 12
+        lid = lid.union(cq.Workplane("XY").circle(63.5 / 2).circle(63.5 / 2 - 1.65).extrude(28).translate((280 * math.cos(a), 280 * math.sin(a), 250)))
     return part.union(lid).translate((0, 0, h_cone + 28.6))
 
 
@@ -134,7 +137,8 @@ def p1_210():
     3 load-cell hanger arms at 1,000 for the weigh hopper (stack-up on ASM-P1-001)."""
     Rb, Hr, tube = 1250.0, 2210.0, 50.8
     n = 12
-    pts = [(math.cos(2 * math.pi * k / n) * (Rb + 340), math.sin(2 * math.pi * k / n) * (Rb + 340)) for k in range(n)]
+    # rev B: legs and ring corners turned 15° so each leg sits between two bins, clear of the feeder gearmotors (P1-212 rev B)
+    pts = [(math.cos(2 * math.pi * k / n + math.radians(15)) * (Rb + 340), math.sin(2 * math.pi * k / n + math.radians(15)) * (Rb + 340)) for k in range(n)]
     frame = cq.Workplane("XY")
     for k in range(n):
         x0, y0 = pts[k]; x1, y1 = pts[(k + 1) % n]
@@ -147,9 +151,9 @@ def p1_210():
         a = 2 * math.pi * (k + 0.5) / n
         arm = htube(700).rotate((0, 0, 0), (0, 0, 1), math.degrees(a)).translate((math.cos(a) * Rb, math.sin(a) * Rb, Hr))
         frame = frame.union(arm)
-    # 3 hanger arms from the legs to the load-cell mounts (hopper lugs on Ø810 at 120°), top of mount plate at 1,028
+    # 3 hanger arms from the legs to the load-cell mounts (hopper lugs on Ø810 at 105° + 120k, on a leg line), top of mount plate at 1,028
     for k in range(3):
-        a = math.radians(90 + 120 * k)
+        a = math.radians(105 + 120 * k)
         L = Rb + 340 - 405
         arm = htube(L).rotate((0, 0, 0), (0, 0, 1), math.degrees(a)).translate((math.cos(a) * (405 + L / 2), math.sin(a) * (405 + L / 2), 1000 - 25.4))
         mp = (cq.Workplane("XY").box(150, 150, 10).translate((math.cos(a) * 405, math.sin(a) * 405, 1023))
