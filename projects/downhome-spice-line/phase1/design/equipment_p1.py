@@ -120,13 +120,14 @@ eq("P1-302", "Blending", "Blender cover grate and dust hood (vent pickup on the 
    {"grate": "50 mm [2 in] bar spacing, bag rest", "pickup": "250 cfm, 4 in collar"}, "cad/p1_parts.py", "local stainless fabricator", 1, "one blender",
    {"usd": 0, "src": "see build"}, [700, 500, 450], "calculated", None, "304 #4, removable without tools for cleaning", kind="build", contact=True, dust_cfm=250,
    build=fab("P1-302", "304 SS 14 ga + 10 mm bar", 340, 10, "laser cut, brake, TIG", ["dxf/P1-302_grate"]))
-eq("P1-305", "Blending", "Sieve screen 18 in, 12 mesh stainless, with frame", "Gilson", "18 in sieve 12 mesh, SS frame (V18SS12 class, confirm)",
-   {"mesh": "12 (site sifter spec)"}, "https://www.globalgilson.com/18in-sieves", "Gilson Company", 2, "one in use + one spare (screen check each shift)",
-   {"usd": 290, "src": "estimate", "per": "each"}, [457, 457, 100], "documented", None, "inspect for tears each shift", contact=True)
-eq("P1-306", "Blending", "Rotary electric vibrator motor for the drum-top sifter", "Martin Engineering", "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
-   {"force": "~150 lbf class (estimate)"}, "https://www.martin-eng.com/content/product/690/electric-vibrators", "Martin Engineering", 1, "one drum-top sifter",
-   {"usd": 750, "src": "estimate"}, [200, 120, 120], "estimate", "120 V 1-ph")
-eq("P1-307", "Blending", "Grate magnet 12 x 12 in, rare earth, resting on the drum-top sifter screen frame", "Industrial Magnetics, Inc.", "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
+eq("P1-305", "Blending", "Woven wire cloth 12 x 12 mesh, 0.023 in 316 wire, 1.53 mm opening, 24 x 24 in (for sifter deck P1-304-400)", "TWP Inc. / McMaster-Carr",
+   "316 SS woven cloth 12 mesh 0.023 wire (confirm)", {"mesh": "12 x 12, 52 % open (site sifter spec)"}, "https://www.twpinc.com/", "TWP Inc.", 3,
+   "1 per deck (2 decks) + 1 re-screen", {"usd": 45, "src": "estimate", "per": "each"}, [610, 610, 1], "documented", None, "inspect for tears each batch", contact=True)
+eq("P1-306", "Blending", "Rotary electric vibrator for the drum-top sifter, 2-pole 3,600 rpm, 2.0 kN max, 1-ph 115 V, IP66", "OLI Vibrators",
+   "MVE 200/36 class, 1-ph 115 V option (confirm voltage, foot drilling 120 x 70 4 x M10, FLA)",
+   {"force": "2.0 kN max; set to 78 % for 0.6 mm p-p on a 36 kg vibrating mass (machines/P1-304/design.py)"}, "https://www.olivibrators.com/", "OLI / Martin Engineering dealer", 1,
+   "one drum-top sifter", {"usd": 950, "src": "estimate"}, [190, 160, 260], "calculated", "115 V 1-ph")
+eq("P1-307", "Blending", "Grate magnet 12 x 12 in, rare earth, resting on 2 bars in the drum-top sifter under the deck", "Industrial Magnetics, Inc.", "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
    {"strength": "10,000 G class (estimate)"}, "https://www.magnetics.com/product.asp?ProductID=24", "IMI", 1, "one train (prerequisite, not the CCP)",
    {"usd": 650, "src": "estimate"}, [305, 305, 50], "estimate", None, "pull and wipe each batch; record finds", contact=True)
 eq("P1-308", "Blending", "Lidded food-grade blend drum 55 gal, open top, with liner (one batch per drum, QC hold container)", "Uline",
@@ -187,11 +188,14 @@ eq("P1-411", "Pack bench", "Tape dispenser and hand stretch-wrap dispenser", "Ul
    {}, "https://www.uline.com/", "Uline", 1, "one pack-off", {"usd": 90, "src": "estimate"}, [0, 0, 0], "estimate")
 
 # ---------------------------------------------------------------- machines built in house (cad/p1_machines.py -> cad/machines.json)
-eq("P1-304", "Blending", "Drum-top sifter: 18 in 12 mesh screen deck on the blend drum, grate magnet under the screen", "fabricated", "drawing P1-304",
-   {"rate": "8 lb/min design (line balance)", "screen": "18 in round 12 mesh SS", "height": "200 mm on the drum rim, so the blender needs no riser"},
-   "cad/p1_parts.py", "local stainless fabricator", 1, "one blending train", {"usd": 0, "src": "see build"}, [620, 620, 240], "calculated", "120 V vibrator",
-   "screen and deck lift off without tools", kind="build", contact=True, dust_cfm=200,
-   build=fab("P1-304", "304 SS 14 ga sheet + 6 mm seat ring + 3 rubber isolators", 420, 10, "laser cut, roll, TIG", ["cad/step/P1-304"]), growth_equiv="SC-304")
+eq("P1-304", "Blending", "Drum-top vibratory sifter rev B: Ø480 316L body on 3 rubber isolators, 12 mesh deck, grate magnet, lid on 4 draw latches", "fabricated",
+   "full set machines/P1-304 (P1-304-000..900, 13 sheets)",
+   {"rate": "3.6 kg [8 lb]/min duty, 15.9 kg/min screen capacity", "screen": "Ø450 12 mesh 316 deck", "height": "inlet top 1,235 AFF on the drum rim 1,054, so the blender needs no riser"},
+   "machines/P1-304/model.py", "local stainless fabricator", 1, "one blending train", {"usd": 0, "src": "see build"}, [680, 680, 240], "calculated", "115 V vibrator P1-306",
+   "lid, deck and magnet lift out without tools", kind="build", contact=True, dust_cfm=200,
+   build=fab("P1-304", "316L 14 ga + 6 mm plate, 304 seat ring and brackets, BPE ferrules; kit: 4 isolators P1-341, 4 latches P1-342, band P1-344, dust kit P1-345, "
+             "3 socks P1-346, bond strap P1-347, isolator P1-348, contactor + MPP P1-349, cord P1-350 (≈ $515)", 1165, 24, "laser cut, roll, TIG, polish, passivate",
+             ["machines/P1-304/drawings/P1-304-drawing-set.pdf", "machines/P1-304/dxf", "machines/P1-304/cad"]), growth_equiv="SC-304")
 MACH = json.loads((HERE.parent / "cad" / "machines.json").read_text())["machines"]
 _M = {
     "P1-301": dict(area="Blending", name="Ribbon blender 6 cu ft, built in house: 316L U-trough, double ribbons, cover with bag-dump grate, frame (valve 1,260 into the drum-top sifter)",

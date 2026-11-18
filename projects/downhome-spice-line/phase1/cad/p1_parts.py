@@ -203,28 +203,39 @@ def p1_322():
     return feed.union(dis).translate((0, 0, 606 + 150 + 28.6))
 
 
+_SF = {}
+
+
+def _sf_model():
+    """rev B drum-top sifter from machines/P1-304 (design.py + model.py): the full drawing set P1-304-000..900 is drawn from the same model."""
+    if not _SF:
+        import importlib.util
+        d = P1 / "machines" / "P1-304"
+        saved = sys.modules.pop("design", None)
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("p1_304_model", d / "model.py")
+            m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+            _SF["parts"], _SF["bought"] = m.build(), m.bought()
+        finally:
+            sys.path.remove(str(d)); sys.modules.pop("design", None)
+            if saved is not None:
+                sys.modules["design"] = saved
+    return _SF
+
+
 def p1_304():
-    """Drum-top sifter: Ø480 x 150 screen housing with ledge and 4 clamp lugs, on a seat ring that rests on the 55 gal drum rim
-    through 3 rubber isolators, with a skirt into the drum; the inlet cover takes the blender valve's sock. 200 mm overall."""
-    R = 240.0
-    seat = cq.Workplane("XY").circle(310).circle(R + GA14).extrude(6)
-    skirt = cq.Workplane("XY").circle(R + GA14).circle(R).extrude(60).translate((0, 0, -60))
-    hs = cq.Workplane("XY").circle(R + GA14).circle(R).extrude(150)
-    ledge = cq.Workplane("XY").circle(R).circle(R - 15).extrude(6).translate((0, 0, 40))
-    lid = cq.Workplane("XY").circle(R + 10).extrude(2).translate((0, 0, 150))
-    lid = lid.cut(cq.Workplane("XY").circle(TC4_TUBE / 2 - 1.65).extrude(10).translate((0, 0, 145)))
-    lid = lid.union(ferrule4().translate((0, 0, 152)).cut(cq.Workplane("XY").circle(TC4_TUBE / 2 - 1.65).extrude(40).translate((0, 0, 150))))
-    part = seat.union(skirt).union(hs).union(ledge).union(lid)
-    for k in range(3):                                          # isolator feet on the drum rim (Ø584 drum: rim on R292)
-        a = math.radians(90 + 120 * k)
-        part = part.union(cq.Workplane("XY").box(50, 40, 6).translate((math.cos(a) * 292, math.sin(a) * 292, 3))
-                          .faces(">Z").workplane(centerOption="CenterOfBoundBox").hole(9))
-    for k in range(4):
-        a = math.radians(45 + 90 * k)
-        part = part.union(cq.Workplane("XY").box(50, 40, 8).translate((math.cos(a) * (R + 25), math.sin(a) * (R + 25), 146))
-                          .faces(">Z").workplane(centerOption="CenterOfBoundBox").hole(11))
-    part = part.union(cq.Workplane("XY").box(10, 140, 100).translate((R + 8, 0, 80)))   # vibrator pad
-    return part.translate((0, 0, 60))
+    """Drum-top vibratory sifter rev B, all made parts (base, body, lid, deck) from machines/P1-304/model.py.
+    Model z 0 is the drum rim; shifted +60 so the skirt bottom is z 0 (placed at 934 + 60 = 994 AFF in the plant)."""
+    out = None
+    for pid, s in _sf_model()["parts"].items():
+        out = s if out is None else out.union(s, clean=False)
+    return out.translate((0, 0, 60))
+
+
+def bought_sifter():
+    """bought parts in the same frame as p1_304(): vibrator, magnet, isolators, flex band, latches."""
+    return {k: v.translate((0, 0, 60)) for k, v in _sf_model()["bought"].items()}
 
 
 def sqt(lx, ly, lz, t=3.0):
@@ -347,12 +358,11 @@ PARTS = [
          process="Laser cut, TIG, ground", assy="Blender P1-301", flat="grate", contact=True,
          notes=["Bars 10 mm wide at 50 mm pitch keep bags and gloves out", "VERIFY outside 600 x 400 against the used blender's cover opening"],
          fasteners=lambda f: "4 in Tri-Clamp to dust duct"),
-    dict(id="P1-304", fn=p1_304, title="Drum-top sifter for 18 in screen", material="SS 304 #4, 14 ga; seat ring 6 mm", qty="1", tol="sheet",
-         process="Laser cut, roll, TIG, ground", assy="Blender P1-301 to blend drum P1-308", flat=None, contact=True,
-         notes=["Screen (P1-305) sits on the 15 mm ledge, grate magnet P1-307 on brackets under it; 4 quick clamps on the lugs",
-                "Sits on the drum rim on 3 rubber isolators (M8); skirt keeps dust in the liner; vibrator P1-306 bolts to the side pad",
-                "Blender valve sock clamps to the 4 in TC inlet; 200 mm overall, so the blender stands 1,400 [55.1] to the trough, no riser stand"],
-         fasteners=lambda f: "M8 rubber isolator foot" if f["dia"] < 10 else "quick clamp 1/2 in"),
+    dict(id="P1-304", fn=p1_304, title="Drum-top vibratory sifter rev B (full set P1-304-000..900)", material="316L product contact, 304 frame", qty="1", tol="sheet",
+         process="Laser cut, roll, TIG, polish, passivate", assy="Blender P1-301 to blend drum P1-308", flat=None, contact=True,
+         full_set="machines/P1-304/drawings/P1-304-001_general_arrangement.svg",
+         notes=["Full shop set in machines/P1-304: weldments, flat patterns, lid, deck, assembly, bought parts, electrical, ITP"],
+         fasteners=lambda f: "-"),
     dict(id="P1-322", fn=p1_322, title="Mill feed hopper and discharge transition", material="SS 304 #4, 14 ga; flanges 6 mm", qty="1 set", tol="sheet",
          process="Laser cut, brake, TIG, ground, polished", assy="Hammer mill P1-320", flat="flange", contact=True,
          notes=["Feed hopper bolts to the mill inlet; P1-321 grate magnet slides through the side slot (tramp metal stops before the hammers)",
@@ -400,7 +410,10 @@ def main():
         cq.exporters.export(s, str(cad / "stl" / f"{p['id']}.stl"), tolerance=0.2, angularTolerance=0.2)
         info = dict(title=p["title"], partno=p["id"], material=p["material"], process=p["process"], qty=p["qty"], density=8.0, tol=p["tol"],
                     notes=p["notes"], project=PROJECT, assy=p["assy"], qty_label="QTY PHASE 1")
-        svg, feats = partsheet.sheet(s, info, fasteners=p["fasteners"])
+        if p.get("full_set"):            # machine has its own full drawing set: its real GA replaces the auto part sheet
+            svg, feats = (P1 / p["full_set"]).read_text(), []
+        else:
+            svg, feats = partsheet.sheet(s, info, fasteners=p["fasteners"])
         (dwg / f"{p['id']}.svg").write_text(svg)
         files = []
         if p["flat"]:

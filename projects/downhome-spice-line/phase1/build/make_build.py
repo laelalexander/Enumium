@@ -138,9 +138,10 @@ ASSEMBLY = [
          torque="M12 end-plate and feet 70 N·m; UCF212 M16 bolts 120 N·m; gland follower M10 hand tight plus 1/4 turn",
          check="ribbons clear the trough by 3 to 6 mm all along; shaft turns by hand; glands do not weep; cover interlock stops the VFD; drum on its dolly rolls in between the legs"),
     dict(step=7, title="Drum-top sifter, magnet and drum dollies", image=PNG("ASM-P1-002"), parts=A("P1-304", "P1-305", "P1-306", "P1-307", "P1-308", "P1-309"),
-         tools=["torque wrench"], text="Bolt the vibrator to the sifter's pad, seat the 12 mesh screen on its ledge, lay the grate magnet on the screen frame and clamp the lid. "
+         tools=["torque wrench"], text="Build the sifter per its own set P1-304-000..900 (assembly sheet P1-304-003): isolators into the seat ring, vibrator on its bracket "
+         "(weights at 80 %), body onto the isolators, flex band and bond strap, grate magnet on the bars, 12 mesh deck on the ledge, lid on the 4 draw latches. "
          "Build the three drum dollies. Roll a lined drum in under the blender valve, set the sifter on the drum rim (seat 1,054 mm [41.5 in]) and pull the valve sock over its 4 in inlet (1,235 mm [48.6 in]).",
-         torque="vibrator M10 45 N·m", check="screen seals all round; magnet pull test card picks up; sifter sits level on its 3 isolators"),
+         torque="isolator nuts M8 12 N·m; vibrator M10 45 N·m + thread lock (re-check after 1 h)", check="gap body to upstand 4 ±1 all round; pads press the deck; magnet pull test card picks up; sifter sits level on the rim; ITP P1-304-900 T9-T18"),
     dict(step=8, title="Hammer mill, feed magnet and hopper", image=PNG("ASM-P1-002"), parts=A("P1-320", "P1-321", "P1-322"),
          tools=["torque wrench", "hammer drill 3/8 in", "IR thermometer"], text="Set the mill on its stand and anchor it. Bolt the feed hopper to the mill inlet with the FDA gasket, slide the grate magnet into "
          "the hopper slot, and fit the discharge transition with a sock into a lined 5 gal pail. Connect the 150 cfm dust pickup.",

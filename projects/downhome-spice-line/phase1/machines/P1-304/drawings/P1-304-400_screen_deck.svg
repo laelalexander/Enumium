@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3456" height="2304" viewBox="0 0 3456 2304" font-family="Helvetica,Arial,sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<defs><pattern id="hA" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hB" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><line x1="0" y1="0" x2="0" y2="8" stroke="#546e7a" stroke-width="1"/></pattern><pattern id="hC" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#546e7a" stroke-width="0.9"/></pattern><pattern id="hS" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="14" stroke="#546e7a" stroke-width="0.8"/><line x1="4" y1="0" x2="4" y2="14" stroke="#546e7a" stroke-width="0.8"/></pattern></defs>
+<rect x="24" y="24" width="3408" height="2256" fill="none" stroke="#111" stroke-width="3"/>
+<text x="237.0" y="18" font-size="14" text-anchor="middle">8</text><text x="237.0" y="2298" font-size="14" text-anchor="middle">8</text>
+<text x="663.0" y="18" font-size="14" text-anchor="middle">7</text><text x="663.0" y="2298" font-size="14" text-anchor="middle">7</text>
+<text x="1089.0" y="18" font-size="14" text-anchor="middle">6</text><text x="1089.0" y="2298" font-size="14" text-anchor="middle">6</text>
+<text x="1515.0" y="18" font-size="14" text-anchor="middle">5</text><text x="1515.0" y="2298" font-size="14" text-anchor="middle">5</text>
+<text x="1941.0" y="18" font-size="14" text-anchor="middle">4</text><text x="1941.0" y="2298" font-size="14" text-anchor="middle">4</text>
+<text x="2367.0" y="18" font-size="14" text-anchor="middle">3</text><text x="2367.0" y="2298" font-size="14" text-anchor="middle">3</text>
+<text x="2793.0" y="18" font-size="14" text-anchor="middle">2</text><text x="2793.0" y="2298" font-size="14" text-anchor="middle">2</text>
+<text x="3219.0" y="18" font-size="14" text-anchor="middle">1</text><text x="3219.0" y="2298" font-size="14" text-anchor="middle">1</text>
+<text x="12" y="212.0" font-size="14" text-anchor="middle">F</text><text x="3444" y="212.0" font-size="14" text-anchor="middle">F</text>
+<text x="12" y="588.0" font-size="14" text-anchor="middle">E</text><text x="3444" y="588.0" font-size="14" text-anchor="middle">E</text>
+<text x="12" y="964.0" font-size="14" text-anchor="middle">D</text><text x="3444" y="964.0" font-size="14" text-anchor="middle">D</text>
+<text x="12" y="1340.0" font-size="14" text-anchor="middle">C</text><text x="3444" y="1340.0" font-size="14" text-anchor="middle">C</text>
+<text x="12" y="1716.0" font-size="14" text-anchor="middle">B</text><text x="3444" y="1716.0" font-size="14" text-anchor="middle">B</text>
+<text x="12" y="2092.0" font-size="14" text-anchor="middle">A</text><text x="3444" y="2092.0" font-size="14" text-anchor="middle">A</text>
+<g><rect x="2556" y="1954" width="876" height="326" fill="#fff" stroke="#111" stroke-width="2"/>
+<text x="2568" y="1988" font-size="26" font-weight="bold">SCREEN DECK 12 MESH (MAKE 2)</text>
+<text x="2568" y="2012" font-size="15">Down Home Creole · Phase 1 · P1-304 Drum-top vibratory sifter (built in house) · rev B</text>
+<line x1="2556" y1="2024" x2="3432" y2="2024" stroke="#111"/>
+<rect x="2556.0" y="2024" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2037" font-size="10.5" fill="#555">DRAWING NO.</text>
+<text x="2562.0" y="2059" font-size="17" font-weight="bold">P1-304-400</text>
+<rect x="2994.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2037" font-size="10.5" fill="#555">REV</text>
+<text x="3000.0" y="2059" font-size="17" font-weight="bold">B</text>
+<rect x="3213.0" y="2024" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2037" font-size="10.5" fill="#555">SCALE</text>
+<text x="3219.0" y="2059" font-size="17" font-weight="normal">1:2 · 2:1</text>
+<rect x="2556.0" y="2068" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2081" font-size="10.5" fill="#555">MATERIAL</text>
+<text x="2562.0" y="2103" font-size="17" font-weight="normal">316L flat bar 3 mm; 316 cloth 12 mesh</text>
+<rect x="2556.0" y="2112" width="876.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2125" font-size="10.5" fill="#555">FINISH</text>
+<text x="2562.0" y="2147" font-size="15" font-weight="normal">Product contact: 2B sheet, #4 polish Ra ≤ 0.8 µm [32 µin]; welds ground flush; passivate ASTM A967</text>
+<rect x="2556.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2169" font-size="10.5" fill="#555">MASS (CALC.)</text>
+<text x="2562.0" y="2191" font-size="17" font-weight="normal">1.52 kg [3.35 lb]</text>
+<rect x="2775.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2781.0" y="2169" font-size="10.5" fill="#555">QTY PER MACHINE</text>
+<text x="2781.0" y="2191" font-size="17" font-weight="normal">1 + 1 spare</text>
+<rect x="2994.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2169" font-size="10.5" fill="#555">UNITS</text>
+<text x="3000.0" y="2191" font-size="17" font-weight="normal">mm [in]</text>
+<rect x="3213.0" y="2156" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2169" font-size="10.5" fill="#555">SHEET</text>
+<text x="3219.0" y="2191" font-size="17" font-weight="normal">ARCH D · 9 of 13</text>
+<rect x="2556.0" y="2200" width="438.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="2562.0" y="2213" font-size="10.5" fill="#555">DRAWN</text>
+<text x="2562.0" y="2235" font-size="17" font-weight="normal">Anatomy plant/mechsheet.py</text>
+<rect x="2994.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3000.0" y="2213" font-size="10.5" fill="#555">DATE</text>
+<text x="3000.0" y="2235" font-size="17" font-weight="normal">2026-11-18</text>
+<rect x="3213.0" y="2200" width="219.0" height="44" fill="none" stroke="#90a4ae" stroke-width="0.8"/><text x="3219.0" y="2213" font-size="10.5" fill="#555">STATUS</text>
+<text x="3219.0" y="2235" font-size="17" font-weight="normal">FOR REVIEW</text>
+<text x="2568" y="2270" font-size="10.5">UNLESS NOTED: LINEAR ±0.5 [±.02] · HOLES +0.2/-0 · ANGLES ±0.5° · MACHINED X.X ±0.1, X.XX ±0.05 · THIRD-ANGLE PROJECTION · BREAK EDGES 0.5 · ASME Y14.5</text>
+</g>
+<text x="150" y="330" font-size="20" font-weight="bold">PLAN (1:2)</text>
+<circle cx="800.00" cy="930.00" r="449.76" stroke="#111" stroke-width="2" fill="#f4f6f8"/>
+<circle cx="800.00" cy="930.00" r="444.09" stroke="#111" stroke-width="2" fill="#fff"/>
+<line x1="374.80" y1="1058.17" x2="374.80" y2="801.83" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="671.83" y1="1355.20" x2="928.17" y2="1355.20" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="403.15" y1="1129.32" x2="403.15" y2="730.68" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="600.68" y1="1326.85" x2="999.32" y2="1326.85" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="431.50" y1="1177.84" x2="431.50" y2="682.16" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="552.16" y1="1298.50" x2="1047.84" y2="1298.50" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="459.84" y1="1215.50" x2="459.84" y2="644.50" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="514.50" y1="1270.16" x2="1085.50" y2="1270.16" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="488.19" y1="1246.22" x2="488.19" y2="613.78" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="483.78" y1="1241.81" x2="1116.22" y2="1241.81" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="516.54" y1="1271.86" x2="516.54" y2="588.14" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="458.14" y1="1213.46" x2="1141.86" y2="1213.46" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="544.88" y1="1293.50" x2="544.88" y2="566.50" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="436.50" y1="1185.12" x2="1163.50" y2="1185.12" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="573.23" y1="1311.83" x2="573.23" y2="548.17" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="418.17" y1="1156.77" x2="1181.83" y2="1156.77" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="601.57" y1="1327.30" x2="601.57" y2="532.70" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="402.70" y1="1128.43" x2="1197.30" y2="1128.43" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="629.92" y1="1340.24" x2="629.92" y2="519.76" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="389.76" y1="1100.08" x2="1210.24" y2="1100.08" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="658.27" y1="1350.87" x2="658.27" y2="509.13" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="379.13" y1="1071.73" x2="1220.87" y2="1071.73" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="686.61" y1="1359.38" x2="686.61" y2="500.62" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="370.62" y1="1043.39" x2="1229.38" y2="1043.39" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="714.96" y1="1365.88" x2="714.96" y2="494.12" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="364.12" y1="1015.04" x2="1235.88" y2="1015.04" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="743.31" y1="1370.46" x2="743.31" y2="489.54" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="359.54" y1="986.69" x2="1240.46" y2="986.69" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="771.65" y1="1373.19" x2="771.65" y2="486.81" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="356.81" y1="958.35" x2="1243.19" y2="958.35" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="800.00" y1="1374.09" x2="800.00" y2="485.91" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="355.91" y1="930.00" x2="1244.09" y2="930.00" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="828.35" y1="1373.19" x2="828.35" y2="486.81" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="356.81" y1="901.65" x2="1243.19" y2="901.65" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="856.69" y1="1370.46" x2="856.69" y2="489.54" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="359.54" y1="873.31" x2="1240.46" y2="873.31" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="885.04" y1="1365.88" x2="885.04" y2="494.12" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="364.12" y1="844.96" x2="1235.88" y2="844.96" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="913.39" y1="1359.38" x2="913.39" y2="500.62" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="370.62" y1="816.61" x2="1229.38" y2="816.61" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="941.73" y1="1350.87" x2="941.73" y2="509.13" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="379.13" y1="788.27" x2="1220.87" y2="788.27" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="970.08" y1="1340.24" x2="970.08" y2="519.76" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="389.76" y1="759.92" x2="1210.24" y2="759.92" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="998.43" y1="1327.30" x2="998.43" y2="532.70" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="402.70" y1="731.57" x2="1197.30" y2="731.57" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1026.77" y1="1311.83" x2="1026.77" y2="548.17" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="418.17" y1="703.23" x2="1181.83" y2="703.23" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1055.12" y1="1293.50" x2="1055.12" y2="566.50" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="436.50" y1="674.88" x2="1163.50" y2="674.88" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1083.46" y1="1271.86" x2="1083.46" y2="588.14" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="458.14" y1="646.54" x2="1141.86" y2="646.54" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1111.81" y1="1246.22" x2="1111.81" y2="613.78" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="483.78" y1="618.19" x2="1116.22" y2="618.19" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1140.16" y1="1215.50" x2="1140.16" y2="644.50" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="514.50" y1="589.84" x2="1085.50" y2="589.84" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1168.50" y1="1177.84" x2="1168.50" y2="682.16" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="552.16" y1="561.50" x2="1047.84" y2="561.50" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1196.85" y1="1129.32" x2="1196.85" y2="730.68" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="600.68" y1="533.15" x2="999.32" y2="533.15" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="1225.20" y1="1058.17" x2="1225.20" y2="801.83" stroke="#111" stroke-width="1" fill="none"/>
+<line x1="671.83" y1="504.80" x2="928.17" y2="504.80" stroke="#111" stroke-width="1" fill="none"/>
+<circle cx="1246.93" cy="930.00" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1231.70" cy="814.33" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1187.05" cy="706.54" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1116.03" cy="613.97" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1023.46" cy="542.95" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="915.67" cy="498.30" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="800.00" cy="483.07" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="684.33" cy="498.30" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="576.54" cy="542.95" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="483.97" cy="613.97" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="412.95" cy="706.54" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="368.30" cy="814.33" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="353.07" cy="930.00" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="368.30" cy="1045.67" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="412.95" cy="1153.46" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="483.97" cy="1246.03" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="576.54" cy="1317.05" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="684.33" cy="1361.70" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="800.00" cy="1376.93" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="915.67" cy="1361.70" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1023.46" cy="1317.05" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1116.03" cy="1246.03" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1187.05" cy="1153.46" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<circle cx="1231.70" cy="1045.67" r="5.67" stroke="#111" stroke-width="2" fill="#b0bec5"/>
+<line x1="309.89" y1="930.00" x2="1290.11" y2="930.00" stroke="#2e7d32" stroke-width="0.9" stroke-dasharray="22,4,4,4" fill="none"/>
+<line x1="800.00" y1="1420.11" x2="800.00" y2="439.89" stroke="#2e7d32" stroke-width="0.9" stroke-dasharray="22,4,4,4" fill="none"/>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="1118.0" y1="612.0" x2="1423.6" y2="363.1"/><line x1="1423.6" y1="363.1" x2="1441.6" y2="363.1"/><path d="M1118.0,612.0 L1125.1,601.7 L1129.5,607.1 z" stroke="none"/><text x="1447.6" y="368.1" font-size="14" text-anchor="start" stroke="none">Ø476 [18.740] -0/-1 (fits Ø480 shell, 2 radial)</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="1231.7" y1="814.3" x2="1518.1" y2="703.2"/><line x1="1518.1" y1="703.2" x2="1536.1" y2="703.2"/><path d="M1231.7,814.3 L1241.6,806.7 L1244.2,813.2 z" stroke="none"/><text x="1542.1" y="708.2" font-size="14" text-anchor="start" stroke="none">24 TIG TACKS through cloth and both rings</text><text x="1542.1" y="725.2" font-size="14" text-anchor="start" stroke="none">every 15°, 4 mm long, ground</text></g>
+<text x="800.0" y="1493.1" font-size="12" text-anchor="middle" fill="#111">cloth shown at 15 mm pitch for clarity (actual 2.12 mm pitch)</text>
+<text x="1950" y="480" font-size="20" font-weight="bold">SECTION AT THE RIM (2:1)</text>
+<polygon points="2477.32,900.00 2500.00,900.00 2500.00,824.41 2477.32,824.41" stroke="#111" stroke-width="2" fill="url(#hB)" fill-opacity="1.0" stroke-linejoin="round"/>
+<polygon points="2477.32,819.87 2500.00,819.87 2500.00,630.90 2477.32,630.90" stroke="#111" stroke-width="2" fill="url(#hB)" fill-opacity="1.0" stroke-linejoin="round"/>
+<line x1="2046.46" y1="822.14" x2="2500.00" y2="822.14" stroke="#111" stroke-width="2" fill="none"/>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="2503.0" y1="900.0" x2="2546.0" y2="900.0" stroke-width="0.7"/><line x1="2503.0" y1="824.4" x2="2546.0" y2="824.4" stroke-width="0.7"/><line x1="2540.0" y1="900.0" x2="2540.0" y2="824.4"/><path d="M2540.0,900.0 L2543.5,889.0 L2536.5,889.0 z" stroke="none"/><path d="M2540.0,824.4 L2536.5,835.4 L2543.5,835.4 z" stroke="none"/><text transform="translate(2540.0,862.2) rotate(-270.0)" y="-6" font-size="14" text-anchor="middle" stroke="none">10 [.394]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="2503.0" y1="824.4" x2="2546.0" y2="824.4" stroke-width="0.7"/><line x1="2503.0" y1="630.9" x2="2546.0" y2="630.9" stroke-width="0.7"/><line x1="2540.0" y1="824.4" x2="2540.0" y2="630.9"/><path d="M2540.0,824.4 L2543.5,813.4 L2536.5,813.4 z" stroke="none"/><path d="M2540.0,630.9 L2536.5,641.9 L2543.5,641.9 z" stroke="none"/><text transform="translate(2540.0,727.7) rotate(-270.0)" y="-6" font-size="14" text-anchor="middle" stroke="none">25.6 [1.008]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="2477.3" y1="903.0" x2="2477.3" y2="936.0" stroke-width="0.7"/><line x1="2500.0" y1="903.0" x2="2500.0" y2="936.0" stroke-width="0.7"/><line x1="2477.3" y1="930.0" x2="2500.0" y2="930.0"/><path d="M2477.3,930.0 L2488.3,933.5 L2488.3,926.5 z" stroke="none"/><path d="M2500.0,930.0 L2489.0,926.5 L2489.0,933.5 z" stroke="none"/><text transform="translate(2488.7,930.0) rotate(0.0)" y="-6" font-size="14" text-anchor="middle" stroke="none">3 [.118]</text></g>
+<g stroke="#b00020" fill="#b00020" stroke-width="0.9"><line x1="2197.6" y1="822.1" x2="2046.5" y2="1013.4"/><line x1="2046.5" y1="1013.4" x2="2028.5" y2="1013.4"/><path d="M2197.6,822.1 L2192.9,833.7 L2187.5,829.4 z" stroke="none"/><text x="2022.5" y="1018.4" font-size="14" text-anchor="end" stroke="none">CLOTH P1-305 12 x 12 mesh 0.58 wire 316</text><text x="2022.5" y="1035.4" font-size="14" text-anchor="end" stroke="none">tension 20-25 N/cm before tacking</text></g>
+<g stroke="#4a148c" fill="none" stroke-width="1.4"><line x1="2500.0" y1="824.4" x2="2689.0" y2="635.4"/><line x1="2689.0" y1="635.4" x2="2809.0" y2="635.4"/><path d="M2500.0,824.4 L2506.4,812.4 L2512.0,818.0 z" fill="#4a148c"/><path d="M2734.4,635.4 v15 M2744.4,635.4 v15"/><text x="2723.4" y="651.4" font-size="14" fill="#4a148c" stroke="none" text-anchor="end"></text><path d="M2809.0,635.4 l10,-9 M2809.0,635.4 l10,9"/><text x="2825.0" y="640.4" font-size="13" fill="#4a148c" stroke="none" text-anchor="start">W2 24 tacks x 4, ground</text></g>
+<text x="1650" y="1441" font-size="18" font-weight="bold">PARTS</text><rect x="1650" y="1450" width="1070" height="22" fill="#eceff1" stroke="#111"/><text x="1655" y="1465" font-size="12" font-weight="bold">PART</text><text x="1775" y="1465" font-size="12" font-weight="bold">DESCRIPTION</text><text x="2155" y="1465" font-size="12" font-weight="bold">QTY</text><text x="2205" y="1465" font-size="12" font-weight="bold">BLANK</text><rect x="1650" y="1472" width="1070" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1655" y="1487" font-size="12">P1-304-401</text><text x="1775" y="1487" font-size="12">Upper ring</text><text x="2155" y="1487" font-size="12">1</text><text x="2205" y="1487" font-size="12">316L flat 25 x 3 x 1486, roll easy way to Ø476 OD, butt weld W1</text><rect x="1650" y="1494" width="1070" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1655" y="1509" font-size="12">P1-304-402</text><text x="1775" y="1509" font-size="12">Lower ring</text><text x="2155" y="1509" font-size="12">1</text><text x="2205" y="1509" font-size="12">316L flat 10 x 3 x 1486, roll to Ø476 OD, butt weld W1</text><rect x="1650" y="1516" width="1070" height="22" fill="#fff" stroke="#b0bec5" stroke-width="0.6"/><text x="1655" y="1531" font-size="12">P1-304-403</text><text x="1775" y="1531" font-size="12">Cloth</text><text x="2155" y="1531" font-size="12">1</text><text x="2205" y="1531" font-size="12">P1-305 12 mesh cut Ø500, trim flush after tacking</text><rect x="1650" y="1538" width="1070" height="22" fill="#fafafa" stroke="#b0bec5" stroke-width="0.6"/><text x="1655" y="1553" font-size="12">P1-304-502</text><text x="1775" y="1553" font-size="12">Deck gasket</text><text x="2155" y="1553" font-size="12">1</text><text x="2205" y="1553" font-size="12">FDA silicone 2 mm Ø476 / Ø450 (dxf)</text>
+<rect x="1650" y="1620" width="1200" height="106" fill="#fff" stroke="#111"/><text x="1660" y="1644" font-size="16" font-weight="bold">FABRICATION AND CARE</text><text x="1660" y="1666" font-size="13">1. Make both rings first (round ±0.5, butt seams ground flush), then stretch the cloth on a tensioning frame, sandwich it between the rings in a jig.</text><text x="1660" y="1684" font-size="13">2. Tack 24 places through cloth and both rings, trim the cloth to the ring OD, grind the tacks and the OD smooth, passivate.</text><text x="1660" y="1702" font-size="13">3. Check on a light table: no torn or distorted openings; mark the deck S1 / S2 with an etch pen (never stamp the product side).</text><text x="1660" y="1720" font-size="13">4. Inspect every batch (ITP T18); a torn deck is swapped for the spare and the batch is held for QA.</text>
+</svg>

@@ -2,7 +2,7 @@
 
 A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a 6 cu ft ribbon blender we build, sifted on the drum, held for QC, then packed on a bench of machines we build: servo auger filler, spindle capper, wrap labeler and a detector conveyor. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, tables and most machines are fabricated in house to save money; scales, motors, drives, valves and a used metal detector head are bought.
 
-**Cost:** $176,675 ($123,409 bought, $53,266 fabricated). **Fabrication:** 340.0 shop hours. **Install and commissioning:** about 120 hours. **Prints:** 4 PETG fixtures, about 857 g.
+**Cost:** $178,085 ($123,164 bought, $54,921 fabricated). **Fabrication:** 354.0 shop hours. **Install and commissioning:** about 120 hours. **Prints:** 4 PETG fixtures, about 857 g.
 
 ## Stages
 

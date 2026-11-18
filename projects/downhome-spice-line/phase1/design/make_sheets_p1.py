@@ -281,18 +281,24 @@ def asm1():
 # ================================================================== ASM-P1-002 sifting and grinding (1:10)
 def asm2():
     XS = 600.0                     # drum / sifter centreline
-    Z0 = 994.0                     # sifter skirt bottom: seat ring (z 60) rests on the drum rim at 1,054
-    zs, zh, zl = Z0 + 60, Z0 + 210, Z0 + 241   # seat, housing top / lid, inlet ferrule top (1,235)
-    sieve = [R((XS - 243, Z0, 3, 60), fill=SS), R((XS + 240, Z0, 3, 60), fill=SS), R((XS - 310, zs, 620, 6), fill=SS, sw=2),
-             R((XS - 243, zs, 3, 150), fill=STEEL), R((XS + 240, zs, 3, 150), fill=STEEL), R((XS - 250, zh, 500, 2), fill=SS),
-             R((XS - 60, zh + 2, 120, 29), hatch="h135", fill="none"), R((XS - 240, zs + 40, 15, 6), fill="#111"), R((XS + 225, zs + 40, 15, 6), fill="#111"),
-             R((XS - 310, zs - 6, 50, 6), fill="#263238"), R((XS + 260, zs - 6, 50, 6), fill="#263238"), T("isolator x 3", (XS - 420, zs - 40), 11),
-             R((XS - 290, zh - 8, 50, 8), fill=SS), R((XS + 240, zh - 8, 50, 8), fill=SS), T("clamp lug x 4", (XS - 470, zh + 10), 11)]
-    screen = [R((XS - 228, zs + 46, 456, 30), fill="none", sw=1.5, stroke="#37474f"), P([(XS - 222, zs + 52), (XS + 222, zs + 52)], closed=False, dash="4,3", sw=2),
-              T("12 mesh", (XS, zs + 25), 11)]
-    magnet = [C((XS - 120, zs + 100), 12, fill="#b71c1c"), C((XS - 40, zs + 100), 12, fill="#b71c1c"), C((XS + 40, zs + 100), 12, fill="#b71c1c"),
-              C((XS + 120, zs + 100), 12, fill="#b71c1c"), R((XS - 160, zs + 86, 320, 4), fill="#455a64")]
-    vib = [R((XS + 243, zs + 30, 10, 100), fill=SS), R((XS + 253, zs + 20, 200, 120), fill="#ffe0b2"), T("120 V", (XS + 353, zs + 75), 11)]
+    Z0 = 994.0                     # sifter skirt bottom (60 into the liner): seat ring rests on the drum rim at 1,054
+    zs = Z0 + 60                   # drum rim = seat ring underside (machines/P1-304 design.py z 0)
+    zh, zl = zs + 159, zs + 182.5  # lid underside, inlet ferrule top (1,236)
+    BAND = "#efe9d0"
+    sieve = [R((XS - 235, Z0, 1.5, 60), fill=SS), R((XS + 233.5, Z0, 1.5, 60), fill=SS), R((XS - 340, zs, 680, 6), fill=SS, sw=2),
+             R((XS - 242, zs + 6, 2, 30), fill=SS), R((XS + 240, zs + 6, 2, 30), fill=SS),
+             R((XS - 330, zs + 6, 30, 30), fill="#263238"), R((XS + 300, zs + 6, 30, 30), fill="#263238"), T("isolator x 3 (R315)", (XS - 470, zs - 30), 11),
+             R((XS - 342, zs + 36, 100, 6), fill=SS), R((XS + 242, zs + 36, 100, 6), fill=SS),
+             R((XS - 246, zs + 20, 4, 40), fill=BAND), R((XS + 242, zs + 20, 4, 40), fill=BAND), T("flex band", (XS - 420, zs + 70), 11),
+             R((XS - 242, zs + 40, 2, 110), fill=STEEL), R((XS + 240, zs + 40, 2, 110), fill=STEEL),
+             R((XS - 240, zs + 84, 15, 6), fill=SS), R((XS + 225, zs + 84, 15, 6), fill=SS),
+             R((XS - 270, zs + 150, 540, 6), fill=SS), R((XS - 270, zh, 540, 2), fill=SS),
+             R((XS - 51, zh + 2, 102, 21.5), hatch="h135", fill="none"), R((XS - 198, zh + 2, 76, 21.5), hatch="h135", fill="none"),
+             T("4 draw latches", (XS - 470, zh + 10), 11)]
+    screen = [R((XS - 238, zs + 92, 476, 35), fill="none", sw=1.5, stroke="#37474f"), P([(XS - 236, zs + 102), (XS + 236, zs + 102)], closed=False, dash="4,3", sw=2),
+              T("12 mesh deck", (XS, zs + 118), 11)]
+    magnet = [C((XS + 60 * k, zs + 68), 12.7, fill="#b71c1c") for k in (-2, -1, 0, 1, 2)] + [R((XS - 240, zs + 48, 480, 5), fill="#455a64")]
+    vib = [R((XS + 282, zs + 40, 10, 220), fill=SS), R((XS + 292, zs + 20, 160, 260), fill="#ffe0b2"), T("115 V", (XS + 372, zs + 150), 11)]
     chute = [R((XS - 60, zl, 120, 26), hatch="h45", fill="none"), P([(XS - 50, zl + 26), (XS - 50, 1500), (XS + 50, 1500), (XS + 50, zl + 26)], fill="#fffde7", dash="5,3"),
              T("sock from P1-331 valve (outlet 1,261)", (XS + 380, 1400), 11)]
     drum = [R((XS - 320, 114, 640, 26), fill=SS), C((XS - 230, 57), 57, fill="#90a4ae"), C((XS + 230, 57), 57, fill="#90a4ae"),
@@ -310,12 +316,12 @@ def asm2():
            R((XM - 60, 715, 120, 29), hatch="h135", fill="none"), P([(XM - 50, 715), (XM - 70, 430), (XM + 70, 430), (XM + 50, 715)], fill="#fffde7", dash="5,3"),
            R((XM - 150, 40, 300, 380), fill="#e8f5e9", sw=2), R((XM - 170, 0, 340, 40), fill=SS), T("5 gal pail + liner", (XM, 230), 11)]
     duct = [P([(XM - 250, 1300), (XM - 450, 1300), (XM - 450, 1900)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("150 cfm to P1-310", (XM - 450, 1950), 11),
-            P([(XS - 250, zh - 40), (XS - 520, zh - 40), (XS - 520, 1900)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("200 cfm to P1-310 (drum vent)", (XS - 520, 1950), 11)]
+            P([(XS - 160, zl), (XS - 160, zl + 80), (XS - 520, zl + 80), (XS - 520, 1900)], closed=False, sw=5, stroke="#78909c", dash="14,6"), T("200 cfm to P1-310 (3 in TC dust port)", (XS - 520, 1950), 11)]
     items = [
-        item(1, "P1-304", sieve, (XS - 750, 1350), (XS - 243, zs + 100), name="Drum-top sifter: Ø480 housing, seat ring on the drum rim, skirt, 4 in TC inlet"),
-        item(2, "P1-305", screen, (XS + 750, 900), (XS + 200, zs + 60)),
-        item(3, "P1-307", magnet, (XS + 750, 1550), (XS + 120, zs + 100)),
-        item(4, "P1-306", vib, (XS + 900, 1250), (XS + 400, zs + 130)),
+        item(1, "P1-304", sieve, (XS - 750, 1350), (XS - 243, zs + 100), name="Drum-top sifter rev B (set P1-304-000..900): Ø480 body on 3 isolators, seat Ø680 on the drum rim, skirt, 4 in TC inlet"),
+        item(2, "P1-305", screen, (XS + 750, 900), (XS + 200, zs + 110), name="12 mesh 316 cloth in screen deck P1-304-400 (spare deck)"),
+        item(3, "P1-307", magnet, (XS + 750, 1550), (XS + 120, zs + 68)),
+        item(4, "P1-306", vib, (XS + 900, 1350), (XS + 452, zs + 200)),
         item(5, "P1-331", chute, (XS - 300, 1750), (XS - 50, 1450), name="Blender valve sock and 4 in TC clamp onto the sifter inlet"),
         item(6, "P1-308", drum, (XS - 700, 700), (XS - 292, 700)),
         item(7, "P1-309", [], (XS - 700, 300), (XS - 320, 127)),
@@ -325,19 +331,19 @@ def asm2():
         item(11, "P1-310", duct, (XM - 450, 2150), (XM - 450, 1900), name="Dust pickups to the cartridge collector P1-310 (outside)"),
     ]
     conn = [["J1", "P1-331 valve > P1-304 inlet", "cotton sock over the 4 in TC ferrule", "sock", "drawstring"],
-            ["J2", "P1-305 screen > housing ledge", "screen frame on 15 mm ledge, lid + 4 clamp lugs", "silicone frame seal", "clamp, hand"],
-            ["J3", "P1-307 magnet", "rests on the screen frame, lifts out with the lid", "-", "-"],
-            ["J4", "P1-304 seat > drum rim", "3 rubber isolators, skirt 60 deep into the liner", "liner folded over rim", "rests (no bolts)"],
-            ["J5", "P1-306 > vibrator pad", "4 x M10 x 30 A2-70 with lock washers", "-", "45 N·m [33 lbf·ft]"],
+            ["J2", "P1-304-400 deck > ledge", "deck on the 15 mm ledge, lid pads press it; 4 draw latches", "2 mm + 3 mm FDA silicone", "latch, hand"],
+            ["J3", "P1-307 magnet", "rests on 2 bars under the deck, lifts out after the deck", "-", "-"],
+            ["J4", "P1-304 seat > drum rim", "seat Ø680 on the rim, 3 centring tabs, skirt 60 into the liner", "liner folded over rim", "rests (no bolts)"],
+            ["J5", "P1-306 > bracket P1-304-206", "4 x M10 x 35 A2-70, nyloc + thread lock", "-", "45 N·m [33 lbf·ft]"],
             ["J6", "P1-322 feed > P1-320 inlet", "4 x M8 x 20 A2-70 on 170 sq (VERIFY)", "FDA silicone 3 mm", "18 N·m [13 lbf·ft]"],
             ["J7", "P1-321 magnet drawer", "slides through the hopper slot, pull to clean", "-", "-"],
             ["J8", "P1-320 > P1-322 discharge", "4 x M8 x 20 A2-70 on 170 sq (VERIFY)", "FDA silicone 3 mm", "18 N·m"],
             ["J9", "P1-322 outlet > pail", "4 in TC + cotton sock into the pail liner", "sock", "drawstring"],
             ["J10", "P1-320 stand > slab", "4 x 3/8 in wedge anchors", "-", "34 N·m [25 lbf·ft]"]]
     det = []
-    sched = [["Sifter screen", "12 mesh (1.68 mm) SS, 18 in", "check for tears every batch; spare on the shadow board"],
+    sched = [["Sifter screen", "12 mesh 0.023 wire (1.53 mm) 316, Ø450 deck", "check for tears every batch; spare deck on the shadow board"],
              ["Sifter rate", "about 8 lb/min [3.6 kg/min]", "valve throttled: a 147 lb batch empties in about 20 min"],
-             ["Sifter magnet", "Ø400 rare earth grate on the screen", "wipe every batch, log catches (prerequisite program)"],
+             ["Sifter magnet", "12 x 12 in rare earth grate under the deck", "wipe every batch, log catches (prerequisite program)"],
              ["Mill screens", "1/16, 1/8, 3/16 in perforated SS", "1/8 in for coarse black pepper (B06)"],
              ["Mill batch", "about 25 lb [11 kg] per run, under 20 min", "keeps the spice below 40 °C [104 °F]; check with an IR gun"],
              ["Mill magnet", "6 x 6 in grate in the feed slot", "tramp metal stops before the hammers (NFPA 61 ignition control)"],
@@ -350,8 +356,8 @@ def asm2():
                       dict(dir="v", x=XS + 1150, y1=0, y2=1054, label=f"DRUM RIM {mm_in(1054)}", ext=XS + 292),
                       dict(dir="v", x=XM + 1150, y1=0, y2=1556, label=f"FEED HOPPER TOP {mm_in(1556)}", ext=XM + 150),
                       dict(dir="v", x=XM + 950, y1=0, y2=900, label=f"MILL STAND {mm_in(900)}", ext=XM + 350),
-                      dict(dir="h", x1=XS - 310, x2=XS + 310, y=-150, label="SEAT RING Ø620 [24.41]", ext=0),
-                      dict(dir="h", x1=XS - 243, x2=XS + 243, y=1620, label="HOUSING Ø486 [19.13]", ext=zh)],
+                      dict(dir="h", x1=XS - 340, x2=XS + 340, y=-150, label="SEAT RING Ø680 [26.77]", ext=0),
+                      dict(dir="h", x1=XS - 270, x2=XS + 270, y=1620, label="LID + FLANGE Ø540 [21.26]", ext=zh)],
                 notes_at=(SW - 1290, 1100),
                 notes=["Left: drum-top sifter on the drum under the blender (section, looking north). Right: hammer mill station (looking east). True scale 1:10.",
                        "The sifter rides on the drum: roll the drum in on its dolly, set the sifter on the rim, clamp the sock. No sieve frame, no chute.",

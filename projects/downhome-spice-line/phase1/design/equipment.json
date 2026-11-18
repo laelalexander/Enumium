@@ -930,30 +930,30 @@
  {
   "tag": "P1-305",
   "area": "Blending",
-  "name": "Sieve screen 18 in, 12 mesh stainless, with frame",
-  "maker": "Gilson",
-  "model": "18 in sieve 12 mesh, SS frame (V18SS12 class, confirm)",
+  "name": "Woven wire cloth 12 x 12 mesh, 0.023 in 316 wire, 1.53 mm opening, 24 x 24 in (for sifter deck P1-304-400)",
+  "maker": "TWP Inc. / McMaster-Carr",
+  "model": "316 SS woven cloth 12 mesh 0.023 wire (confirm)",
   "specs": {
-   "mesh": "12 (site sifter spec)"
+   "mesh": "12 x 12, 52 % open (site sifter spec)"
   },
-  "source": "https://www.globalgilson.com/18in-sieves",
-  "supplier": "Gilson Company",
-  "qty": 2,
-  "qty_basis": "one in use + one spare (screen check each shift)",
+  "source": "https://www.twpinc.com/",
+  "supplier": "TWP Inc.",
+  "qty": 3,
+  "qty_basis": "1 per deck (2 decks) + 1 re-screen",
   "price": {
-   "usd": 290,
+   "usd": 45,
    "src": "estimate",
    "per": "each"
   },
   "footprint_mm": [
-   457,
-   457,
-   100
+   610,
+   610,
+   1
   ],
   "footprint_src": "documented",
   "power": null,
   "air_cfm": 0,
-  "sanitary": "inspect for tears each shift",
+  "sanitary": "inspect for tears each batch",
   "alternates": [],
   "rate": null,
   "kind": "buy",
@@ -963,32 +963,32 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 580
+  "ext_usd": 135
  },
  {
   "tag": "P1-306",
   "area": "Blending",
-  "name": "Rotary electric vibrator motor for the drum-top sifter",
-  "maker": "Martin Engineering",
-  "model": "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
+  "name": "Rotary electric vibrator for the drum-top sifter, 2-pole 3,600 rpm, 2.0 kN max, 1-ph 115 V, IP66",
+  "maker": "OLI Vibrators",
+  "model": "MVE 200/36 class, 1-ph 115 V option (confirm voltage, foot drilling 120 x 70 4 x M10, FLA)",
   "specs": {
-   "force": "~150 lbf class (estimate)"
+   "force": "2.0 kN max; set to 78 % for 0.6 mm p-p on a 36 kg vibrating mass (machines/P1-304/design.py)"
   },
-  "source": "https://www.martin-eng.com/content/product/690/electric-vibrators",
-  "supplier": "Martin Engineering",
+  "source": "https://www.olivibrators.com/",
+  "supplier": "OLI / Martin Engineering dealer",
   "qty": 1,
   "qty_basis": "one drum-top sifter",
   "price": {
-   "usd": 750,
+   "usd": 950,
    "src": "estimate"
   },
   "footprint_mm": [
-   200,
-   120,
-   120
+   190,
+   160,
+   260
   ],
-  "footprint_src": "estimate",
-  "power": "120 V 1-ph",
+  "footprint_src": "calculated",
+  "power": "115 V 1-ph",
   "air_cfm": 0,
   "sanitary": "",
   "alternates": [],
@@ -1000,12 +1000,12 @@
   "growth_equiv": "",
   "build": null,
   "reuse_in_growth": false,
-  "ext_usd": 750
+  "ext_usd": 950
  },
  {
   "tag": "P1-307",
   "area": "Blending",
-  "name": "Grate magnet 12 x 12 in, rare earth, resting on the drum-top sifter screen frame",
+  "name": "Grate magnet 12 x 12 in, rare earth, resting on 2 bars in the drum-top sifter under the deck",
   "maker": "Industrial Magnetics, Inc.",
   "model": "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
   "specs": {
@@ -1616,32 +1616,32 @@
  {
   "tag": "P1-304",
   "area": "Blending",
-  "name": "Drum-top sifter: 18 in 12 mesh screen deck on the blend drum, grate magnet under the screen",
+  "name": "Drum-top vibratory sifter rev B: \u00d8480 316L body on 3 rubber isolators, 12 mesh deck, grate magnet, lid on 4 draw latches",
   "maker": "fabricated",
-  "model": "drawing P1-304",
+  "model": "full set machines/P1-304 (P1-304-000..900, 13 sheets)",
   "specs": {
-   "rate": "8 lb/min design (line balance)",
-   "screen": "18 in round 12 mesh SS",
-   "height": "200 mm on the drum rim, so the blender needs no riser"
+   "rate": "3.6 kg [8 lb]/min duty, 15.9 kg/min screen capacity",
+   "screen": "\u00d8450 12 mesh 316 deck",
+   "height": "inlet top 1,235 AFF on the drum rim 1,054, so the blender needs no riser"
   },
-  "source": "cad/p1_parts.py",
+  "source": "machines/P1-304/model.py",
   "supplier": "local stainless fabricator",
   "qty": 1,
   "qty_basis": "one blending train",
   "price": {
-   "usd": 1070.0,
-   "src": "build: material $420 + 10 h x $65",
+   "usd": 2725.0,
+   "src": "build: material $1165 + 24 h x $65",
    "per": "each"
   },
   "footprint_mm": [
-   620,
-   620,
+   680,
+   680,
    240
   ],
   "footprint_src": "calculated",
-  "power": "120 V vibrator",
+  "power": "115 V vibrator P1-306",
   "air_cfm": 0,
-  "sanitary": "screen and deck lift off without tools",
+  "sanitary": "lid, deck and magnet lift out without tools",
   "alternates": [],
   "rate": null,
   "kind": "build",
@@ -1651,16 +1651,18 @@
   "growth_equiv": "SC-304",
   "build": {
    "drawing": "P1-304",
-   "material": "304 SS 14 ga sheet + 6 mm seat ring + 3 rubber isolators",
-   "material_usd": 420,
-   "labor_h": 10,
-   "process": "laser cut, roll, TIG",
+   "material": "316L 14 ga + 6 mm plate, 304 seat ring and brackets, BPE ferrules; kit: 4 isolators P1-341, 4 latches P1-342, band P1-344, dust kit P1-345, 3 socks P1-346, bond strap P1-347, isolator P1-348, contactor + MPP P1-349, cord P1-350 (\u2248 $515)",
+   "material_usd": 1165,
+   "labor_h": 24,
+   "process": "laser cut, roll, TIG, polish, passivate",
    "files": [
-    "cad/step/P1-304"
+    "machines/P1-304/drawings/P1-304-drawing-set.pdf",
+    "machines/P1-304/dxf",
+    "machines/P1-304/cad"
    ]
   },
   "reuse_in_growth": false,
-  "ext_usd": 1070.0
+  "ext_usd": 2725.0
  },
  {
   "tag": "P1-301",

@@ -296,9 +296,11 @@ def blending(XC, YC):
     add(hollow_cyl(BCX, BCY, 140, 292, 914, 6), DRUM, "P1-308 55 gal drum")
     add(hollow_cyl(BCX, BCY, 150, 284, 900, 1), LINER, "drum liner")
     anchor("P1-308", "55 gal drum on dolly", BCX - 350, BCY - 350, 700, "buy")
-    add(step("P1-304", BCX, BCY, 994, rot=90), SS, "P1-304 drum-top sifter")
-    add(cyl(BCX, BCY, 1094, 228, 30), (0.60, 0.62, 0.64), "P1-305 screen frame")
-    add(cbox(BCX + 350, BCY, 1074, 200, 140, 120), MOTOR, "P1-306 vibrator")
+    add(step("P1-304", BCX, BCY, 994), SS, "P1-304 drum-top sifter")           # rev B, vibrator east (+x), drum rolls in from the south
+    import p1_parts as PP
+    sfc = {"P1-306": MOTOR, "P1-307": (0.60, 0.10, 0.10), "P1-341": DARK, "P1-344": (0.90, 0.90, 0.85), "P1-342": (0.70, 0.72, 0.75)}
+    for k, sb in PP.bought_sifter().items():
+        add(sb.val().moved(Location(Vector(BCX, BCY, 994))) if hasattr(sb, "val") else sb.moved(Location(Vector(BCX, BCY, 994))), sfc.get(k, SS), f"{k} sifter")
     add(cyl(BCX, BCY, 1235, 50, PM.Z_TB - 28.6 - 110 - 1235), (0.97, 0.95, 0.88), "cotton sock")
     anchor("P1-304", "Drum-top sifter 12 mesh + magnet", BCX + 420, BCY - 300, 1250, "build")
     L, Wt = 1000.0, 560.0

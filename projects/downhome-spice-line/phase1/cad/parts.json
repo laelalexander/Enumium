@@ -138,17 +138,17 @@
  },
  {
   "id": "P1-304",
-  "title": "Drum-top sifter for 18 in screen",
+  "title": "Drum-top vibratory sifter rev B (full set P1-304-000..900)",
   "qty": "1",
-  "material": "SS 304 #4, 14 ga; seat ring 6 mm",
-  "features": 5,
+  "material": "316L product contact, 304 frame",
+  "features": 0,
   "contact": true,
   "size_mm": [
-   620.5,
-   622.0,
-   241.0
+   680.4,
+   682.2,
+   320.3
   ],
-  "mass_kg": 17.01,
+  "mass_kg": 28.66,
   "step": "cad/step/P1-304.step",
   "drawing": "drawings/parts/P1-304.svg",
   "dxf": []

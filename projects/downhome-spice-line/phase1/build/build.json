@@ -2,16 +2,16 @@
  "title": "Down Home Creole spice plant: Phase 1 prototype",
  "summary": "A 2,000 sq ft blended-seasoning plant for 1,000 lb a week on one shift, launching with 5 blends and laid out for all 13. Ingredients are dosed from 9 stainless bins (12 positions) into a weigh hopper and blended in a 6 cu ft ribbon blender we build, sifted on the drum, held for QC, then packed on a bench of machines we build: servo auger filler, spindle capper, wrap labeler and a detector conveyor. 82.5 % of blend weight is dosed automatically. Stainless frames, bins, hoppers, tables and most machines are fabricated in house to save money; scales, motors, drives, valves and a used metal detector head are bought.",
  "totals": {
-  "parts_cost": 176675.0,
+  "parts_cost": 178085.0,
   "currency": "USD",
-  "bought": 123409.0,
-  "fabricated": 53266.0,
-  "fabrication_hours": 340.0,
+  "bought": 123164.0,
+  "fabricated": 54921.0,
+  "fabrication_hours": 354.0,
   "print_hours": null,
   "filament_g": {
    "PETG": 857
   },
-  "build_hours": 460.0,
+  "build_hours": 474.0,
   "note": "build_hours = fabrication + about 120 h install and commissioning; excludes building fit-out and electrical service"
  },
  "tools": [
@@ -250,33 +250,33 @@
   },
   {
    "line": "P1-305",
-   "desc": "Sieve screen 18 in, 12 mesh stainless, with frame",
-   "mfr": "Gilson",
-   "mpn": "18 in sieve 12 mesh, SS frame (V18SS12 class, confirm)",
-   "qty": 2,
-   "supplier": "Gilson Company",
-   "url": "https://www.globalgilson.com/18in-sieves",
-   "unit_price": 290.0,
+   "desc": "Woven wire cloth 12 x 12 mesh, 0.023 in 316 wire, 1.53 mm opening, 24 x 24 in (for sifter deck P1-304-400)",
+   "mfr": "TWP Inc. / McMaster-Carr",
+   "mpn": "316 SS woven cloth 12 mesh 0.023 wire (confirm)",
+   "qty": 3,
+   "supplier": "TWP Inc.",
+   "url": "https://www.twpinc.com/",
+   "unit_price": 45.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
   },
   {
    "line": "P1-306",
-   "desc": "Rotary electric vibrator motor for the drum-top sifter",
-   "mfr": "Martin Engineering",
-   "mpn": "CDX/MGR small electric vibrator (confirm size for 30 kg deck)",
+   "desc": "Rotary electric vibrator for the drum-top sifter, 2-pole 3,600 rpm, 2.0 kN max, 1-ph 115 V, IP66",
+   "mfr": "OLI Vibrators",
+   "mpn": "MVE 200/36 class, 1-ph 115 V option (confirm voltage, foot drilling 120 x 70 4 x M10, FLA)",
    "qty": 1,
-   "supplier": "Martin Engineering",
-   "url": "https://www.martin-eng.com/content/product/690/electric-vibrators",
-   "unit_price": 750.0,
+   "supplier": "OLI / Martin Engineering dealer",
+   "url": "https://www.olivibrators.com/",
+   "unit_price": 950.0,
    "price_src": "estimate",
    "alt": "",
    "notes": ""
   },
   {
    "line": "P1-307",
-   "desc": "Grate magnet 12 x 12 in, rare earth, resting on the drum-top sifter screen frame",
+   "desc": "Grate magnet 12 x 12 in, rare earth, resting on 2 bars in the drum-top sifter under the deck",
    "mfr": "Industrial Magnetics, Inc.",
    "mpn": "Grate magnet 12 x 12 in, 1 in tubes, no housing, 10,000 gauss class (confirm)",
    "qty": 1,
@@ -1183,18 +1183,17 @@
   },
   {
    "part": "P1-304",
-   "title": "Drum-top sifter: 18 in 12 mesh screen deck on the blend drum, grate magnet under the screen",
-   "process": "laser cut, roll, TIG",
+   "title": "Drum-top vibratory sifter rev B: \u00d8480 316L body on 3 rubber isolators, 12 mesh deck, grate magnet, lid on 4 draw latches",
+   "process": "laser cut, roll, TIG, polish, passivate",
    "files": [
     "phase1/cad/step/P1-304.step",
-    "phase1/drawings/parts/P1-304.svg",
-    "phase1/drawings/png/P1-304.png"
+    "phase1/drawings/parts/P1-304.svg"
    ],
-   "material": "304 SS 14 ga sheet + 6 mm seat ring + 3 rubber isolators",
+   "material": "316L 14 ga + 6 mm plate, 304 seat ring and brackets, BPE ferrules; kit: 4 isolators P1-341, 4 latches P1-342, band P1-344, dust kit P1-345, 3 socks P1-346, bond strap P1-347, isolator P1-348, contactor + MPP P1-349, cord P1-350 (\u2248 $515)",
    "qty": 1,
    "vendor": "local stainless fabricator",
-   "labor_h": 10,
-   "material_usd": 420,
+   "labor_h": 24,
+   "material_usd": 1165,
    "settings": "304/316L as noted; continuous welds ground flush, #4 finish on product contact, passivate; measure every VERIFY dimension on the bought part first"
   },
   {
@@ -1554,7 +1553,7 @@
     },
     {
      "line": "P1-305",
-     "qty": 2
+     "qty": 3
     },
     {
      "line": "P1-306",
@@ -1576,9 +1575,9 @@
    "tools": [
     "torque wrench"
    ],
-   "text": "Bolt the vibrator to the sifter's pad, seat the 12 mesh screen on its ledge, lay the grate magnet on the screen frame and clamp the lid. Build the three drum dollies. Roll a lined drum in under the blender valve, set the sifter on the drum rim (seat 1,054 mm [41.5 in]) and pull the valve sock over its 4 in inlet (1,235 mm [48.6 in]).",
-   "torque": "vibrator M10 45 N\u00b7m",
-   "check": "screen seals all round; magnet pull test card picks up; sifter sits level on its 3 isolators"
+   "text": "Build the sifter per its own set P1-304-000..900 (assembly sheet P1-304-003): isolators into the seat ring, vibrator on its bracket (weights at 80 %), body onto the isolators, flex band and bond strap, grate magnet on the bars, 12 mesh deck on the ledge, lid on the 4 draw latches. Build the three drum dollies. Roll a lined drum in under the blender valve, set the sifter on the drum rim (seat 1,054 mm [41.5 in]) and pull the valve sock over its 4 in inlet (1,235 mm [48.6 in]).",
+   "torque": "isolator nuts M8 12 N\u00b7m; vibrator M10 45 N\u00b7m + thread lock (re-check after 1 h)",
+   "check": "gap body to upstand 4 \u00b11 all round; pads press the deck; magnet pull test card picks up; sifter sits level on the rim; ITP P1-304-900 T9-T18"
   },
   {
    "step": 8,
