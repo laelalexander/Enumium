@@ -136,7 +136,8 @@ const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://hub');
     const parts = url.pathname.replace(/^\/+/, '').split('/').filter(Boolean);
-    if (parts[0] !== 'api') return send(res, 404, { error: 'not found' });
+    // The hub has no pages of its own: a browser visiting it goes to the landing page's project browser.
+    if (parts[0] !== 'api') { res.writeHead(302, { Location: '/#projects', 'Cache-Control': 'no-store' }); return res.end(); }
     if (parts[1] === 'health') return send(res, 200, { ok: true, app: 'anatomy-hub', version: 1 });
     if (!authed(req)) return send(res, 401, { error: 'bad or missing token' });
     const pc = String(req.headers['x-anatomy-pc'] || 'unknown').slice(0, 60);
