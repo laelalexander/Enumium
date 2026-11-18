@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="studio-token" content="__TOKEN__"><title>Software Studio</title>
+<style>
+:root{--bg:#f4f5f7;--panel:#fff;--ink:#1b1f24;--mute:#6a737d;--line:#d9dde3;--brand:#3b4cca;--ok:#1a7f4b;--warn:#b7791f;--bad:#c0392b;--code:#0f1419;--codeink:#e6edf3}
+@media(prefers-color-scheme:dark){:root{--bg:#14171c;--panel:#1c2027;--ink:#e6e9ee;--mute:#98a1ad;--line:#2d333c;--brand:#8b9cff;--code:#0b0e12}}
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,Segoe UI,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;flex-direction:column}
+header{display:flex;gap:10px;align-items:center;padding:8px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:15px;margin:0 8px 0 0}select,input,textarea,button{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 8px}
+button{cursor:pointer}button.primary{background:var(--brand);border-color:var(--brand);color:#fff}button:disabled{opacity:.45;cursor:not-allowed}
+.chip{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--mute)}.chip.ok{color:var(--ok);border-color:var(--ok)}.chip.warn{color:var(--warn);border-color:var(--warn)}
+.steps{display:flex;gap:6px;margin-left:auto}.step{font-size:12px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--mute)}.step.done{color:var(--ok);border-color:var(--ok)}.step.now{color:#fff;background:var(--brand);border-color:var(--brand)}
+main{flex:1;display:grid;grid-template-columns:minmax(280px,1fr) minmax(320px,1.2fr) minmax(360px,1.5fr);gap:10px;padding:10px;min-height:0}
+@media(max-width:1000px){main{grid-template-columns:1fr;overflow:auto}body{height:auto}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+section>h2{margin:0;padding:8px 12px;font-size:13px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}section>h2 .sp{flex:1}
+.body{padding:10px 12px;overflow:auto;flex:1}
+#chatlog{display:flex;flex-direction:column;gap:8px}.msg{padding:7px 10px;border-radius:8px;max-width:92%;white-space:pre-wrap}.msg.user{align-self:flex-end;background:var(--brand);color:#fff}.msg.assistant{background:var(--bg);border:1px solid var(--line)}
+#chatform{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line)}#chatform textarea{flex:1;resize:none;height:56px}
+label{display:block;font-size:12px;color:var(--mute);margin:10px 0 3px}label:first-child{margin-top:0}.body textarea,.body input{width:100%}.body textarea{resize:vertical;min-height:60px}
+.hint{font-size:11px;color:var(--mute)}
+.tabs{display:flex;gap:2px;padding:6px 8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.tab{padding:5px 10px;border:1px solid var(--line);border-bottom:none;border-radius:6px 6px 0 0;cursor:pointer;font-size:12px;color:var(--mute)}.tab.on{background:var(--code);color:var(--codeink);border-color:var(--code)}
+#code{background:var(--code);color:var(--codeink);margin:0;padding:10px 12px;font:12.5px/1.5 ui-monospace,Consolas,monospace;overflow:auto;flex:1;white-space:pre;tab-size:4;counter-reset:l}
+#code .ln{display:inline-block;width:3ch;margin-right:12px;text-align:right;color:#5b6572;user-select:none}
+#editor{flex:1;width:100%;background:var(--code);color:var(--codeink);border:none;border-radius:0;font:12.5px/1.5 ui-monospace,Consolas,monospace;padding:10px 12px;resize:none}
+.k{color:#ff9bce}.s{color:#9ad1ff}.c{color:#7d8a99;font-style:italic}.n{color:#ffcb6b}
+#out{background:var(--code);color:#cfe3d4;font:12px/1.45 ui-monospace,Consolas,monospace;padding:8px 12px;max-height:32%;min-height:70px;overflow:auto;white-space:pre-wrap;border-top:1px solid var(--line)}#out.bad{color:#ffb4a8}
+.toolbar{display:flex;gap:6px;padding:6px 8px;border-top:1px solid var(--line);flex-wrap:wrap;align-items:center}
+.empty{color:var(--mute);padding:24px;text-align:center}
+#toast{position:fixed;right:14px;top:56px;background:var(--bad);color:#fff;padding:8px 12px;border-radius:6px;display:none;max-width:420px;z-index:9}
+</style></head><body>
+<header>
+ <h1>Software Studio</h1>
+ <select id="plist"></select><button id="newbtn">+ New project</button>
+ <select id="lang" title="Target language"></select>
+ <span class="chip" id="llm"></span><span class="chip" id="rt"></span>
+ <div class="steps" id="steps"></div>
+</header>
+<main>
+ <section><h2>1 &middot; Discuss <span class="sp"></span><button id="draftbtn" title="Turn the conversation into a workscope sheet">Draft workscope &rarr;</button></h2>
+  <div class="body" id="chatbody"><div id="chatlog"></div></div>
+  <form id="chatform"><textarea id="chatin" placeholder="Describe the project, or answer the questions&hellip;  (Ctrl+Enter to send)"></textarea><button class="primary">Send</button></form></section>
+ <section><h2>2 &middot; Workscope <span class="sp"></span><span class="chip" id="wsstat"></span></h2>
+  <div class="body" id="ws"></div>
+  <div class="toolbar"><button id="wssave">Save</button><button id="wsapprove" class="primary">Approve workscope</button><span class="hint" id="wshint"></span></div></section>
+ <section><h2>3 &middot; Code <span class="sp"></span><button id="gen" class="primary">Generate code</button></h2>
+  <div class="tabs" id="tabs"></div><pre id="code"></pre><textarea id="editor" hidden spellcheck="false"></textarea>
+  <div class="toolbar"><button id="run">&#9654; Run</button><button id="edit">Edit</button><button id="save" hidden>Save file</button><button id="copy">Copy</button><button id="exp">Export .zip</button><span class="hint" id="runhint"></span></div>
+  <div id="out">Output appears here.</div></section>
+</main><div id="toast"></div>
+<script>
+const TOKEN=document.querySelector('meta[name=studio-token]').content;let P=null,ST={},cur=null,editing=false;
+const $=id=>document.getElementById(id);
+async function api(m,u,b){const r=await fetch(u,{method:m,headers:{'X-Studio-Token':TOKEN,'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined});
+ const j=await r.json().catch(()=>({error:'bad response'}));if(!r.ok){toast(j.error||r.statusText);throw new Error(j.error)}return j}
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',5000)}
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const KW={python:'def class return if elif else for while in import from as try except finally with lambda None True False and or not pass raise yield print',
+ nodejs:'function const let var return if else for while of in import from require class new try catch finally async await null true false undefined console',
+ vb:'Module Sub End Function Dim As If Then Else ElseIf For Next While Do Loop Return Imports Class Public Private Console String Integer Boolean True False Nothing Select Case',
+ plc:'PROGRAM END_PROGRAM VAR END_VAR VAR_INPUT VAR_OUTPUT IF THEN ELSIF ELSE END_IF FOR TO DO END_FOR WHILE END_WHILE CASE OF END_CASE BOOL INT REAL TIME TON TOF TRUE FALSE AND OR NOT FUNCTION_BLOCK END_FUNCTION_BLOCK'};
+function hl(src,lang){const kw=new Set(KW[lang].split(' '));
+ const re=lang==='python'?/(#[^\n]*)|("""[\s\S]*?"""|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)/g
+ :lang==='vb'?/('[^\n]*)|("(?:""|[^"\n])*")|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)/g
+ :lang==='plc'?/(\(\*[\s\S]*?\*\)|\/\/[^\n]*)|('(?:[^'\n])*')|(\b\d+(?:\.\d+)?\b)|([A-Za-z_]\w*)/g
+ :/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`[^`]*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)/g;
+ let out='',i=0,m;while((m=re.exec(src))){out+=esc(src.slice(i,m.index));const t=esc(m[0]);
+  out+=m[1]?`<span class=c>${t}</span>`:m[2]?`<span class=s>${t}</span>`:m[3]?`<span class=n>${t}</span>`:(kw.has(m[4])||(lang==='plc'&&kw.has(m[4].toUpperCase())))?`<span class=k>${t}</span>`:t;i=re.lastIndex}
+ out+=esc(src.slice(i));let n=0;return out.split('\n').map(l=>`<span class=ln>${++n}</span>${l}`).join('\n')}
+const STEPS=['Discuss','Workscope','Code','Run'];
+function renderSteps(){let n=0;if(P){n=P.chat.length?1:0;if(P.workscope.approved)n=2;if(Object.keys(P.files).length)n=3;if(P.runs.length)n=4}
+ $('steps').innerHTML=STEPS.map((s,i)=>`<span class="step ${i<n?'done':i===n?'now':''}">${i+1}. ${s}</span>`).join('')}
+function renderChat(){const l=$('chatlog');l.innerHTML=P.chat.length?P.chat.map(m=>`<div class="msg ${m.role}">${esc(m.content)}</div>`).join(''):
+ '<div class="empty">Tell me what you want to build.<br>I will ask questions, then draft the workscope for you to edit and approve.</div>';$('chatbody').scrollTop=1e9}
+const LISTS=[['requirements','Requirements (one per line, testable)'],['deliverables','Deliverables'],['acceptance_criteria','Acceptance criteria'],['assumptions','Assumptions'],['out_of_scope','Out of scope'],['risks','Risks']];
+function renderWs(){const w=P.workscope;$('ws').innerHTML=`<label>Title</label><input id="w_title" value="${esc(w.title).replace(/"/g,'&quot;')}">
+ <label>Objective</label><textarea id="w_objective" rows="3">${esc(w.objective)}</textarea>`+
+ LISTS.map(([k,t])=>`<label>${t}</label><textarea id="w_${k}" rows="${k==='requirements'?6:3}">${esc(w[k].join('\n'))}</textarea>`).join('');
+ const ch=$('wsstat');ch.textContent=w.approved?'APPROVED':'DRAFT';ch.className='chip '+(w.approved?'ok':'warn');
+ $('wsapprove').textContent=w.approved?'Unapprove':'Approve workscope';$('wshint').textContent=w.approved?'Editing un-approves it.':'Review, edit, then approve to unlock code generation.';
+ $('ws').querySelectorAll('input,textarea').forEach(e=>e.addEventListener('input',()=>{if(P.workscope.approved){P.workscope.approved=false;$('wsstat').textContent='DRAFT';$('wsstat').className='chip warn';$('wsapprove').textContent='Approve workscope'}}))}
+function readWs(approved){const o={title:$('w_title').value,objective:$('w_objective').value,approved};LISTS.forEach(([k])=>o[k]=$('w_'+k).value.split('\n'));return o}
+function renderCode(){const names=Object.keys(P.files);if(!names.includes(cur))cur=names[0]||null;
+ $('tabs').innerHTML=names.map(n=>`<div class="tab ${n===cur?'on':''}" data-n="${n}">${n}</div>`).join('')||'<span class="hint" style="padding:6px">No files yet</span>';
+ $('tabs').querySelectorAll('.tab').forEach(t=>t.onclick=()=>{cur=t.dataset.n;editing=false;renderCode()});
+ const has=cur!==null;$('code').hidden=editing;$('editor').hidden=!editing;$('save').hidden=!editing;$('edit').textContent=editing?'Cancel':'Edit';
+ if(!has)$('code').innerHTML='<div class="empty">Approve the workscope, then press <b>Generate code</b>.</div>';
+ else if(editing){$('editor').value=P.files[cur]}else $('code').innerHTML=hl(P.files[cur],P.language);
+ $('gen').disabled=!P.workscope.approved;$('gen').title=P.workscope.approved?'':'Approve the workscope first';
+ ['run','edit','copy','exp'].forEach(i=>$(i).disabled=!has);
+ $('runhint').textContent=({python:'runs with local Python',nodejs:ST.runtimes&&ST.runtimes.nodejs?'runs with local Node.js':'Node.js not installed',vb:ST.runtimes&&ST.runtimes.vb?'runs with dotnet':'.NET SDK not installed: preview/export only',plc:'structure check only (not a PLC runtime)'})[P.language]}
+function renderAll(){renderSteps();renderChat();renderWs();renderCode();$('lang').value=P.language}
+async function loadList(sel){const l=await api('GET','/api/projects');$('plist').innerHTML='<option value="">Open a project&hellip;</option>'+l.map(p=>`<option value="${p.id}">${esc(p.name)} (${p.language})</option>`).join('');if(sel)$('plist').value=sel}
+async function open_(id){P=await api('GET','/api/projects/'+id);cur=null;editing=false;$('out').textContent='Output appears here.';$('out').className='';renderAll();localStorage.setItem('studio.last',id);}
+$('exp').onclick=()=>dl();
+async function dl(){const r=await fetch(`/api/projects/${P.id}/export`,{headers:{'X-Studio-Token':TOKEN}});if(!r.ok)return toast('export failed');const b=await r.blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=P.name.replace(/\W+/g,'_')+'.zip';a.click()}
+$('plist').onchange=e=>e.target.value&&open_(e.target.value);
+$('newbtn').onclick=async()=>{const name=prompt('Project name');if(name===null)return;const p=await api('POST','/api/projects',{name,language:$('lang').value||'python'});await loadList(p.id);open_(p.id)};
+$('lang').onchange=async e=>{if(!P||!P.id)return;if(Object.keys(P.files).length&&!confirm('Changing language discards the generated files. Continue?')){e.target.value=P.language;return}P=await api('PUT','/api/projects/'+P.id,{language:e.target.value});renderAll()};
+$('chatform').onsubmit=async e=>{e.preventDefault();if(!P||!P.id)return toast('Create or open a project first');const m=$('chatin').value.trim();if(!m)return;$('chatin').value='';
+ P.chat.push({role:'user',content:m});renderChat();try{P=await api('POST',`/api/projects/${P.id}/chat`,{message:m});renderAll()}catch{P=await api('GET','/api/projects/'+P.id);renderAll()}};
+$('chatin').onkeydown=e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))$('chatform').requestSubmit()};
+$('draftbtn').onclick=async()=>{if(!P||!P.id)return toast('Create or open a project first');$('draftbtn').disabled=true;try{P=await api('POST',`/api/projects/${P.id}/workscope/draft`);renderAll()}finally{$('draftbtn').disabled=false}};
+$('wssave').onclick=async()=>{P=await api('PUT',`/api/projects/${P.id}/workscope`,readWs(false));renderAll();toast('Saved')};
+$('wsapprove').onclick=async()=>{P=await api('PUT',`/api/projects/${P.id}/workscope`,readWs(!P.workscope.approved));renderAll()};
+$('gen').onclick=async()=>{if(Object.keys(P.files).length&&!confirm('Regenerating replaces all files, including your edits. Continue?'))return;$('gen').disabled=true;$('gen').textContent='Generating…';
+ try{P=await api('POST',`/api/projects/${P.id}/generate`);cur=null;renderAll()}finally{$('gen').textContent='Generate code';renderCode()}};
+$('edit').onclick=()=>{editing=!editing;renderCode()};
+$('save').onclick=async()=>{P=await api('PUT',`/api/projects/${P.id}/files/${cur}`,{content:$('editor').value});editing=false;renderAll();toast('File saved')};
+$('copy').onclick=()=>navigator.clipboard.writeText(P.files[cur]).then(()=>toast('Copied'));
+$('run').onclick=async()=>{if(!confirm('Run this generated code on your computer? It runs with your permissions and network access.'))return;$('out').textContent='Running…';
+ const r=await api('POST',`/api/projects/${P.id}/run`,{file:cur});P=r.project;$('out').textContent=`[exit ${r.exit}]\n${r.output}`;$('out').className=r.exit?'bad':'';renderSteps()};
+(async()=>{ST=await api('GET','/api/status');$('lang').innerHTML=Object.entries(ST.languages).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ $('llm').textContent=ST.llm==='claude'?'Claude: '+ST.model:'Offline templates (set ANTHROPIC_API_KEY)';$('llm').className='chip '+(ST.llm==='claude'?'ok':'warn');
+ $('rt').textContent='Runtimes: python'+(ST.runtimes.nodejs?', node':'')+(ST.runtimes.vb?', dotnet':'');
+ const l=await api('GET','/api/projects');await loadList();const last=localStorage.getItem('studio.last');
+ if(last&&l.some(p=>p.id===last)){$('plist').value=last;open_(last)}else{P={chat:[],workscope:{title:'',objective:'',requirements:[],deliverables:[],acceptance_criteria:[],assumptions:[],out_of_scope:[],risks:[],approved:false},files:{},runs:[],language:'python',id:''};renderAll();$('chatlog').innerHTML='<div class="empty">Press <b>+ New project</b> to start.</div>'}})();
+</script></body></html>
