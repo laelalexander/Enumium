@@ -283,6 +283,7 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
         <button data-m="claude-fable-5-2" class="on" title="Most capable. Uses your plan's limits fastest.">Fable</button><button data-m="opus">Opus</button><button data-m="sonnet">Sonnet</button>
       </div>
       <div class="spacer"></div>
+      <button class="ghost" id="hubBtn" title="Shared project storage on your server, so every PC sees every project">Hub</button>
       <button class="ghost" id="settingsBtn" title="Printer, materials, suppliers">Settings</button>
       <button class="primary" id="go" disabled>Start anatomy</button>
     </div>
@@ -290,7 +291,7 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
   <div class="examples" id="examples"></div>
 
   <div class="recent hidden" id="recentWrap">
-    <h2>Projects</h2>
+    <h2 style="display:flex;align-items:baseline;gap:10px">Projects <span id="hubLine" class="empty" style="font-size:12px;font-weight:400"></span></h2>
     <div class="cards" id="recent"></div>
   </div>
 </section>
@@ -329,6 +330,19 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
     </aside>
   </div>
 </section>
+
+<div id="hub" class="hidden" style="position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:11">
+  <div style="width:min(560px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px"><b style="flex:1">Project hub</b><span class="empty" id="hubState"></span></div>
+    <div class="empty" style="font-size:13px">Every project is kept on your server, so all your PCs see the same projects. Runs still happen on the PC you start them from, and the results upload when the run ends.</div>
+    <label class="empty" style="font-size:12px">Hub address<input id="hubUrl" placeholder="https://..." style="width:100%;margin-top:4px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
+    <label class="empty" style="font-size:12px">Access key<input id="hubToken" type="password" placeholder="paste the key once" style="width:100%;margin-top:4px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
+    <label class="empty" style="font-size:12px">This PC's name<input id="hubPc" style="width:100%;margin-top:4px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px"></label>
+    <label class="empty" style="font-size:13px;display:flex;gap:8px;align-items:center"><input type="checkbox" id="hubAll"> Keep a full copy of every project on this PC (otherwise other PCs' projects download when you open them)</label>
+    <div id="hubMsg" class="empty" style="font-size:13px;min-height:1em"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="ghost" id="hubOff">Disconnect</button><button class="ghost" id="hubNow">Sync now</button><button class="ghost" id="hubCancel">Close</button><button class="primary" id="hubSave">Connect</button></div>
+  </div>
+</div>
 
 <div id="settings" class="hidden" style="position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:11">
   <div style="width:min(720px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px">
@@ -429,9 +443,18 @@ async function loadHome() {
   } catch {}
   const ps = await api('/api/projects').catch(() => []);
   $('#recentWrap').classList.toggle('hidden', !ps.length);
-  $('#recent').innerHTML = ps.map(p => `<button class="card" data-id="${esc(p.id)}"><div class="t">${esc(p.title)}</div>
-    <div class="m"><span class="pill ${esc(p.status)}">${esc(p.status)}</span>${esc(new Date(p.updated || p.created).toLocaleString())}</div></button>`).join('');
-  [...$('#recent').children].forEach(c => c.onclick = () => location.hash = c.dataset.id);
+  const where = p => p.where === 'hub' ? `<span style="white-space:nowrap" title="On the hub. Opens after a quick download.">☁ on hub${p.changedBy ? ' · ' + esc(p.changedBy) : ''}</span>`
+    : p.where === 'synced' ? '<span style="white-space:nowrap" title="Saved on this PC and the hub">☁✓</span>' : '';
+  $('#recent').innerHTML = ps.map(p => `<button class="card" data-id="${esc(p.id)}" data-where="${esc(p.where || '')}"><div class="t">${esc(p.title)}</div>
+    <div class="m"><span class="pill ${esc(p.status)}">${esc(p.runningOn ? 'running on ' + p.runningOn : p.status)}</span>${esc(new Date(p.updated || p.created).toLocaleString())} ${where(p)}</div></button>`).join('');
+  [...$('#recent').children].forEach(c => c.onclick = async () => {
+    if (c.dataset.where === 'hub') {
+      c.querySelector('.m').innerHTML = '<span class="pill running">downloading from the hub…</span>'; c.disabled = true;
+      try { await api(`/api/hub/fetch/${c.dataset.id}`, { method: 'POST' }); } catch (e) { alert('Could not download this project: ' + e.message); c.disabled = false; return; }
+    }
+    location.hash = c.dataset.id;
+  });
+  hubLine();
 }
 
 // ---------------- run view ----------------
@@ -647,6 +670,31 @@ $('#replyGo').onclick = async () => {
   await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) }).catch(e => alert(e.message));
 };
 $('#replyIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#replyGo').click(); } });
+
+// ---------------- hub ----------------
+const ago = t => { if (!t) return ''; const m = Math.round((Date.now() - new Date(t)) / 60000); return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : Math.round(m / 60) + ' h ago'; };
+async function hubLine() {
+  const h = await api('/api/hub').catch(() => null); const el = $('#hubLine'); if (!h || !el) return;
+  el.textContent = !h.configured ? '' : h.status === 'syncing' ? 'syncing with the hub…' : h.status === 'error' ? 'hub unreachable, working on this PC' : h.lastSync ? 'synced with the hub ' + ago(h.lastSync) : '';
+  return h;
+}
+async function hubOpen() {
+  const h = await api('/api/hub'); $('#hubUrl').value = h.url || ''; $('#hubToken').value = ''; $('#hubPc').value = h.pc || ''; $('#hubAll').checked = !!h.pullAll;
+  $('#hubToken').placeholder = h.configured ? 'saved (leave blank to keep)' : 'paste the key once';
+  $('#hubState').textContent = !h.configured ? 'not connected' : h.status === 'error' ? 'cannot reach the hub' : h.status === 'syncing' ? 'syncing…' : 'connected' + (h.lastSync ? ', synced ' + ago(h.lastSync) : '');
+  $('#hubMsg').textContent = h.error ? h.error : (h.problems || []).map(p => p.id + ': ' + p.errors[0]).join(' · ');
+  $('#hub').classList.remove('hidden');
+}
+$('#hubBtn').onclick = hubOpen;
+$('#hubCancel').onclick = () => { $('#hub').classList.add('hidden'); loadHome(); };
+$('#hubSave').onclick = async () => {
+  $('#hubMsg').textContent = 'Checking the hub…';
+  try { await api('/api/hub', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: $('#hubUrl').value, token: $('#hubToken').value, pc: $('#hubPc').value, pullAll: $('#hubAll').checked }) }); $('#hubMsg').textContent = 'Connected. Your projects are uploading in the background.'; hubOpen(); }
+  catch (e) { $('#hubMsg').textContent = e.message; }
+};
+$('#hubNow').onclick = async () => { await api('/api/hub/sync', { method: 'POST' }).catch(() => {}); $('#hubMsg').textContent = 'Syncing in the background.'; setTimeout(hubOpen, 1500); };
+$('#hubOff').onclick = async () => { await api('/api/hub', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ disconnect: true }) }); hubOpen(); };
+setInterval(() => { if (!$('#home').classList.contains('hidden')) hubLine(); }, 30000);
 
 $('#settingsBtn').onclick = async () => { const { text } = await api('/api/settings'); $('#settingsText').value = text; $('#settings').classList.remove('hidden'); };
 $('#settingsCancel').onclick = () => $('#settings').classList.add('hidden');
