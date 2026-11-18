@@ -74,6 +74,8 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
   function syncable(rel) {
     const parts = rel.split('/');
     if (parts.slice(0, -1).some(p => SKIP_DIRS.has(p))) return false;
+    // Downloaded programs a run fetched into work/tools (slicers, Java, Freerouting...) are reinstallable, not project work.
+    if (/(^|\/)work\/tools\//.test(rel)) return false;
     if (parts[0] === META_DIR && (SKIP_META.has(parts[1]) || parts.length > 2 && parts[1] === 'conflicts')) return false;
     return !SKIP_FILE.test(rel);
   }
@@ -84,7 +86,7 @@ function create({ ROOT, readMeta, isRunning, onChange }) {
       let ents = []; try { ents = fs.readdirSync(path.join(dir, rel), { withFileTypes: true }); } catch { return; }
       for (const e of ents) {
         const r = rel ? rel + '/' + e.name : e.name;
-        if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name) && !(r === META_DIR + '/conflicts')) await walk(r, depth + 1); continue; }
+        if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name) && r !== META_DIR + '/conflicts' && !/(^|\/)work\/tools$/.test(r)) await walk(r, depth + 1); continue; }
         if (!e.isFile() || !syncable(r)) continue;
         let st; try { st = fs.statSync(path.join(dir, r)); } catch { continue; }
         const mtime = Math.round(st.mtimeMs), b = base[r];
