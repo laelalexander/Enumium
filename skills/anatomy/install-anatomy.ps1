@@ -15,7 +15,8 @@
   Do not check for or install KiCad.
 
 .PARAMETER NoShortcut
-  Do not install the Anatomy app (and Node.js) or its desktop and Start menu icons.
+  Do not install the Anatomy app (and Node.js), its desktop and Start menu icons, or
+  the sign-in entry that starts its server in the background.
 
 .PARAMETER ProjectsRoot
   Folder the Anatomy app keeps projects in. Default C:\Anatomy.
@@ -195,7 +196,7 @@ if (-not $NoShortcut) {
     try { Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:4377/api/quit" -TimeoutSec 2 | Out-Null; Start-Sleep -Milliseconds 600 } catch { }
     $old = Join-Path $appDir "Anatomy.ps1"   # first-version launcher, no longer used
     if (Test-Path -LiteralPath $old) { Remove-Item -LiteralPath $old -Force }
-    foreach ($f in @("server.js", "xometry.js", "sync.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
+    foreach ($f in @("server.js", "xometry.js", "sync.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico", "Launcher.cs")) {
       Copy-Item -LiteralPath (Join-Path $appSrc $f) -Destination $appDir -Force
     }
     $pub = Join-Path $appDir "public"
@@ -203,16 +204,53 @@ if (-not $NoShortcut) {
     Copy-Item -LiteralPath (Join-Path $appSrc "public") -Destination $appDir -Recurse -Force
     New-Item -ItemType Directory -Force -Path $ProjectsRoot | Out-Null
 
+    # Build Anatomy.exe, a windowless launcher with the app icon, with the C# compiler that ships
+    # with Windows (.NET Framework 4). Start menu, desktop and sign-in entries all point at it.
+    $exe = Join-Path $appDir "Anatomy.exe"
+    $csc = @("$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe", "$env:WINDIR\Microsoft.NET\Framework\v4.0.30319\csc.exe") |
+      Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    $built = $false
+    if ($csc -and (Test-Path -LiteralPath (Join-Path $appSrc "Launcher.cs"))) {
+      $tmpExe = Join-Path ([IO.Path]::GetTempPath()) ("Anatomy-" + [Guid]::NewGuid().ToString("N") + ".exe")
+      $out = & $csc /nologo /target:winexe /optimize+ /platform:anycpu "/out:$tmpExe" "/win32icon:$(Join-Path $appSrc 'anatomy.ico')" `
+        /r:System.Windows.Forms.dll /r:System.Drawing.dll (Join-Path $appSrc "Launcher.cs") 2>&1
+      if ($LASTEXITCODE -eq 0 -and (Test-Path -LiteralPath $tmpExe)) {
+        Get-Process -Name Anatomy -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $exe } | Stop-Process -Force -ErrorAction SilentlyContinue
+        Copy-Item -LiteralPath $tmpExe -Destination $exe -Force
+        $built = $true
+      } else {
+        Write-Warning "Could not build Anatomy.exe; using the script launcher instead.`n$($out -join "`n")"
+      }
+      Remove-Item -LiteralPath $tmpExe -Force -ErrorAction SilentlyContinue
+    }
+
     $shell = New-Object -ComObject WScript.Shell
-    foreach ($place in @([Environment]::GetFolderPath("Desktop"), [Environment]::GetFolderPath("Programs"))) {
-      $lnk = $shell.CreateShortcut((Join-Path $place "Anatomy.lnk"))
-      $lnk.TargetPath = Join-Path $env:SystemRoot "System32\wscript.exe"
-      $lnk.Arguments = "`"$(Join-Path $appDir 'Anatomy.vbs')`" `"$ProjectsRoot`""
+    function Set-AnatomyShortcut([string]$path, [string]$launchArgs, [string]$desc) {
+      $lnk = $shell.CreateShortcut($path)
+      if ($built) {
+        $lnk.TargetPath = $exe
+        $lnk.Arguments = ("--root `"$ProjectsRoot`" " + $launchArgs).Trim()
+      } else {
+        $lnk.TargetPath = Join-Path $env:SystemRoot "System32\wscript.exe"
+        $lnk.Arguments = "`"$(Join-Path $appDir 'Anatomy.vbs')`" `"$ProjectsRoot`""
+        $lnk.WindowStyle = 7   # minimized, so nothing flashes on the script fallback
+      }
       $lnk.WorkingDirectory = $appDir
       $lnk.IconLocation = (Join-Path $appDir "anatomy.ico") + ",0"
-      $lnk.Description = "Anatomy: dissect and rebuild a product"
+      $lnk.Description = $desc
       $lnk.Save()
     }
+    $startMenu = [Environment]::GetFolderPath("Programs")
+    Set-AnatomyShortcut (Join-Path ([Environment]::GetFolderPath("Desktop")) "Anatomy.lnk") "" "Anatomy: dissect and rebuild a product"
+    Set-AnatomyShortcut (Join-Path $startMenu "Anatomy.lnk") "" "Anatomy: dissect and rebuild a product"
+    # Start the server quietly at sign-in so the app opens at once (no window, no terminal).
+    $startup = [Environment]::GetFolderPath("Startup")
+    if ($built) {
+      Set-AnatomyShortcut (Join-Path $startup "Anatomy server.lnk") "--server" "Starts the Anatomy server in the background at sign-in"
+    }
+    # Windows indexes new Start menu entries lazily; touching the folder makes it show up right away.
+    try { (Get-Item -LiteralPath $startMenu).LastWriteTime = Get-Date } catch { }
+
     Write-Host "Anatomy app installed. Open it from the Anatomy icon on your desktop or Start menu." -ForegroundColor Green
   }
   if (-not (Get-Command claude -ErrorAction SilentlyContinue) -and -not (Test-Path -LiteralPath (Join-Path $home_ ".local\bin\claude.exe"))) {
