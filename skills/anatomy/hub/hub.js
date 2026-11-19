@@ -21,6 +21,8 @@ const TOKEN = process.env.HUB_TOKEN || '';
 const MAX_FILE = Number(process.env.HUB_MAX_FILE_MB || 1024) * 1024 * 1024;
 const LOCK_TTL = 10 * 60 * 1000; // a run lock expires if its PC stops renewing it
 const TRASH_DAYS = 30;
+const PREFIX = process.env.HUB_PREFIX || '/anatomy-hub';          // where nginx mounts the hub
+const UI = process.env.HUB_UI || path.join(__dirname, 'console', 'public'); // a copy of app/public for the web console
 
 if (!TOKEN || TOKEN.length < 24) { console.error('HUB_TOKEN must be set (24+ chars).'); process.exit(1); }
 const PROJ = path.join(DATA, 'projects'), INDEX = path.join(DATA, 'index'), LOCKS = path.join(DATA, 'locks'), TRASH = path.join(DATA, 'trash'), TMP = path.join(DATA, 'tmp');
@@ -56,9 +58,14 @@ function writeJsonAtomic(f, obj) {
   fs.writeFileSync(tmp, JSON.stringify(obj));
   fs.renameSync(tmp, f);
 }
+function cookie(req, name) {
+  const m = (req.headers.cookie || '').match(new RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1]) : '';
+}
+const COOKIE = 'anatomy_hub';
 function authed(req) {
   const h = req.headers.authorization || '';
-  const got = Buffer.from(h.startsWith('Bearer ') ? h.slice(7) : '');
+  const got = Buffer.from(h.startsWith('Bearer ') ? h.slice(7) : cookie(req, COOKIE));
   const want = Buffer.from(TOKEN);
   return got.length === want.length && crypto.timingSafeEqual(got, want);
 }
@@ -132,14 +139,40 @@ function pruneTrash() {
 }
 setInterval(() => { try { pruneTrash(); } catch {} }, 6 * 3600e3).unref();
 
+let consoleUi = null;
+try { if (fs.existsSync(path.join(UI, 'index.html'))) consoleUi = require('./console').create({ PROJ, UI, PREFIX, loadIndex, ID_RE }); }
+catch (e) { console.error('web console disabled:', e.message); }
+
 // ---------------------------------------------------------------- routes
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, 'http://hub');
     const parts = url.pathname.replace(/^\/+/, '').split('/').filter(Boolean);
-    // The hub has no pages of its own: a browser visiting it goes to the landing page's project browser.
+    // The full Anatomy console, read-only, for any signed-in browser.
+    if (parts[0] === 'console') {
+      if (!authed(req)) {
+        if (parts[1] === 'api' || parts[1] === 'p') return send(res, 401, { error: 'sign in at pyrails.com first' });
+        res.writeHead(302, { Location: '/#projects', 'Cache-Control': 'no-store' }); return res.end();
+      }
+      if (!consoleUi) return send(res, 503, { error: 'web console files are not installed on the hub' });
+      return consoleUi.handle(req, res, parts.slice(1), url);
+    }
+    // The hub has no other pages: a browser visiting it goes to the landing page's project browser.
     if (parts[0] !== 'api') { res.writeHead(302, { Location: '/#projects', 'Cache-Control': 'no-store' }); return res.end(); }
-    if (parts[1] === 'health') return send(res, 200, { ok: true, app: 'anatomy-hub', version: 2 });
+    // Browser sign-in: the key becomes an HttpOnly cookie for the hub and its console.
+    if (parts[1] === 'session') {
+      const secure = process.env.HUB_INSECURE_COOKIE === '1' ? '' : '; Secure'; // the hub is only reached over HTTPS
+      if (req.method === 'POST') {
+        let key = ''; try { key = JSON.parse((await readBody(req, 4096)).toString('utf8')).key || ''; } catch {}
+        req.headers.authorization = 'Bearer ' + String(key).trim();
+        if (!authed(req)) return send(res, 401, { error: 'That key did not work.' });
+        res.setHeader('Set-Cookie', `${COOKIE}=${encodeURIComponent(TOKEN)}; Path=${PREFIX}; HttpOnly; SameSite=Lax; Max-Age=${30 * 86400}${secure}`);
+        return send(res, 200, { ok: true });
+      }
+      if (req.method === 'DELETE') { res.setHeader('Set-Cookie', `${COOKIE}=; Path=${PREFIX}; HttpOnly; SameSite=Lax; Max-Age=0${secure}`); return send(res, 200, { ok: true }); }
+      if (req.method === 'GET') return send(res, authed(req) ? 200 : 401, { ok: authed(req) });
+    }
+    if (parts[1] === 'health') return send(res, 200, { ok: true, app: 'anatomy-hub', version: 3, console: !!consoleUi });
     if (!authed(req)) return send(res, 401, { error: 'bad or missing token' });
     const pc = String(req.headers['x-anatomy-pc'] || 'unknown').slice(0, 60);
 

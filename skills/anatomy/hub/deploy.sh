@@ -14,6 +14,14 @@ id anatomy-hub >/dev/null 2>&1 || useradd --system --home /var/lib/anatomy-hub -
 install -d -o anatomy-hub -g anatomy-hub -m 750 /var/lib/anatomy-hub
 install -d -m 755 /opt/anatomy-hub
 install -m 644 "$SRC/hub.js" /opt/anatomy-hub/hub.js
+install -m 644 "$SRC/console.js" /opt/anatomy-hub/console.js
+# The web console is the Anatomy app's own UI (app/public + xometry.js), served read-only by the hub.
+APP="$SRC/../app"
+if [ -d "$APP/public" ]; then
+  rm -rf /opt/anatomy-hub/console.new && mkdir -p /opt/anatomy-hub/console.new
+  cp -r "$APP/public" /opt/anatomy-hub/console.new/public && cp "$APP/xometry.js" /opt/anatomy-hub/console.new/
+  rm -rf /opt/anatomy-hub/console && mv /opt/anatomy-hub/console.new /opt/anatomy-hub/console
+fi
 if [ ! -f /etc/anatomy-hub.env ]; then
   umask 077
   printf 'HUB_TOKEN=%s\nHUB_DATA=/var/lib/anatomy-hub\nHUB_PORT=4380\n' "$(openssl rand -hex 24)" > /etc/anatomy-hub.env

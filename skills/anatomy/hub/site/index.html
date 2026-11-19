@@ -59,6 +59,7 @@ section { padding: 48px 0; border-top: 1px solid var(--line); }
 .card { text-align: left; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; cursor: pointer; }
 .card:hover { border-color: var(--accent); }
 .card .t { font-weight: 600; }
+.card .qv { margin-left: auto; color: var(--accent); cursor: pointer; } .card .qv:hover { text-decoration: underline; }
 .card .m { font-size: 12px; color: var(--muted); margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
 .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
@@ -168,7 +169,7 @@ footer { color: var(--faint); font-size: 13px; padding: 32px 0 48px; border-top:
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="msg" id="sum" style="flex:1;margin:0"></span><button class="btn" id="out">Sign out</button></div>
         <div class="cards" id="cards"></div>
         <div class="hidden" id="proj">
-          <div class="ptop"><b id="ptitle"></b><button class="btn" id="back">All projects</button></div>
+          <div class="ptop"><b id="ptitle"></b><a class="btn primary" id="openConsole" href="#">Open in console</a><button class="btn" id="back">All projects</button></div>
           <div class="tabs" id="tabs"></div>
           <div id="pane"></div>
         </div>
@@ -214,6 +215,8 @@ async function load() {
     return;
   }
   try { localStorage.setItem('anatomyKey', key); } catch {}
+  // The same key signs this browser in to the full console (an HttpOnly cookie for /anatomy-hub).
+  await fetch(API + '/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key }) }).catch(() => {});
   const ps = await r.json();
   $('#signin').classList.add('hidden'); $('#list').classList.remove('hidden');
   const total = ps.reduce((a, p) => a + (p.size || 0), 0);
@@ -222,7 +225,13 @@ async function load() {
     <div class="m"><span class="pill ${esc(p.lock ? 'running' : p.status)}">${esc(p.lock ? 'running on ' + p.lock.pc : p.status)}</span>
     <span>${esc(new Date(p.updated || p.created).toLocaleDateString())}</span><span>${size(p.size || 0)}</span>${p.changedBy ? `<span>from ${esc(p.changedBy)}</span>` : ''}</div></button>`).join('')
     || '<div class="msg">No projects yet. Connect a PC from Anatomy &gt; Hub and they will upload.</div>';
-  [...document.querySelectorAll('.card')].forEach(c => c.onclick = () => openProject(c.dataset.id, c.dataset.t));
+  // A project opens in the full Anatomy console (Results, Build, BOM, drawings, 3D, Library); Quick view stays on this page.
+  [...document.querySelectorAll('.card')].forEach(c => {
+    c.onclick = () => { location.href = '/anatomy-hub/console/#' + encodeURIComponent(c.dataset.id); };
+    const q = document.createElement('span'); q.textContent = 'Quick view'; q.className = 'qv';
+    q.onclick = e => { e.stopPropagation(); openProject(c.dataset.id, c.dataset.t); };
+    c.querySelector('.m').append(q);
+  });
   const want = decodeURIComponent((location.hash.match(/^#p\/(.+)$/) || [])[1] || '');
   if (want) { const p = ps.find(x => x.id === want); if (p) openProject(p.id, p.title); }
 }
@@ -238,6 +247,7 @@ const KINDS = {
 let files = [], curId = '', curTitle = '', tab = 'overview';
 const byKind = {};
 async function openProject(id, title) {
+  $('#openConsole').href = '/anatomy-hub/console/#' + encodeURIComponent(id);
   curId = id; curTitle = title; history.replaceState(null, '', '#p/' + encodeURIComponent(id));
   $('#ptitle').textContent = title; $('#cards').classList.add('hidden'); $('#sum').parentElement.classList.add('hidden'); $('#proj').classList.remove('hidden');
   $('#pane').innerHTML = '<div class="msg">Loading…</div>'; $('#tabs').innerHTML = '';
@@ -471,7 +481,7 @@ function md(t) {
 // ---------------------------------------------------------------- wiring
 $('#go').onclick = () => { key = $('#key').value.trim(); load(); };
 $('#key').onkeydown = e => { if (e.key === 'Enter') $('#go').click(); };
-$('#out').onclick = () => { key = ''; try { localStorage.removeItem('anatomyKey'); } catch {} $('#msg').textContent = 'Signed out.'; $('#msg').classList.remove('err'); load(); };
+$('#out').onclick = () => { key = ''; fetch(API + '/session', { method: 'DELETE' }).catch(() => {}); try { localStorage.removeItem('anatomyKey'); } catch {} $('#msg').textContent = 'Signed out.'; $('#msg').classList.remove('err'); load(); };
 $('#back').onclick = () => { disposeViewer(); history.replaceState(null, '', '#projects'); $('#proj').classList.add('hidden'); $('#cards').classList.remove('hidden'); $('#sum').parentElement.classList.remove('hidden'); };
 if (key) load();
 </script>
