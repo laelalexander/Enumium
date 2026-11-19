@@ -16,7 +16,7 @@ The first target is a 7.5 inch e-ink desk display (calendar and weather over wif
 | `HANDOFF.md` | Notes and lessons from the first cloud test run |
 | `test-results-summary.md` | Benchmark from that run (self-graded, so treat the delta as optimistic) |
 
-The installer copies `SKILL.md` and `references/` into Claude's skills folder and the app into `%LOCALAPPDATA%\Anatomy`. The rest stays in the repo.
+The installer copies `SKILL.md`, `references/` and `tools/` into Claude's skills folder and the app into `%LOCALAPPDATA%\Anatomy`. The rest stays in the repo.
 
 ## Install on Windows
 
@@ -61,6 +61,8 @@ Double-click the **Anatomy** icon. It opens in its own window, with no terminal.
 5. Use the box at the bottom of Live to follow up ("go deeper on the PCB"). It continues the same session.
 
 Projects live in `C:\Anatomy\<name>\` and show on the start screen.
+
+**Production** (a Results tab) holds the Engineering and Manufacturing Summary: a report for investors and manufacturers on taking the product from prototype to mass production. Click **Prepare production brief** and Claude writes `production/production.json` (verified vs on-paper status, cost per unit at 1/100/1,000/10,000, DFM changes and tooling, supply chain, certification, partners, risks, staged timeline and capital, IP notes, every figure tagged and sourced) and renders it with `tools/production/make_brief.py` to HTML and PDF (`references/production-brief.md`). The SSB-1 battery sample is in `examples/ssb1-production/`.
 
 How it works: `server.js` runs on `127.0.0.1:4377` (this PC only) and starts `claude -p --output-format stream-json` in the project folder, streaming events to the window. Claude runs with file edits and commands allowed in that folder (`--permission-mode acceptEdits` plus an allowed-tools list), because nobody is at a terminal to approve each step. The app needs Claude Code installed and signed in. If the sign-in has expired, the window shows a **Sign in to Claude** button.
 

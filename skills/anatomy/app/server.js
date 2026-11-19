@@ -358,6 +358,10 @@ const server = http.createServer(async (req, res) => {
     // Only accept requests from this machine's own UI.
     const origin = req.headers.origin;
     if (origin && !/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(origin)) return send(res, 403, { error: 'forbidden' });
+    if (req.method === 'GET' && parts[0] === 'production.js') { // Production tab module (Engineering and Manufacturing Summary)
+      res.writeHead(200, { 'Content-Type': MIME['.js'], 'Cache-Control': 'no-store' });
+      return fs.createReadStream(path.join(PUBLIC, 'production.js')).pipe(res);
+    }
 
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);

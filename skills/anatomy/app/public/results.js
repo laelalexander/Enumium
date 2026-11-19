@@ -17,6 +17,8 @@ const MODEL = ['stl', '3mf', 'obj', 'glb', 'gltf', 'step', 'stp'];
 const IMG = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'];
 const CODE = ['py', 'js', 'mjs', 'ts', 'c', 'cpp', 'h', 'hpp', 'ino', 'rs', 'go', 'sh', 'ini', 'toml', 'json', 'yaml', 'yml', 'txt', 'csv', 'net', 'rpt', 'log', 'scad'];
 
+import { productionTab } from './production.js'; // Production tab (Engineering and Manufacturing Summary)
+
 let S = null; // { id, files, md, api, preview, rawUrl }
 
 export async function renderResults(host, ctx) {
@@ -30,6 +32,7 @@ export async function renderResults(host, ctx) {
     ['overview', 'Overview', true],
     ['build', 'Build', true],
     ['sim', 'Simulate', true],
+    ['production', 'Production', true],
     ['run', 'Try it', (manifest.apps || []).length > 0 || has(f => /(^|\/)(index\.html)$/i.test(f.path) && !/assembly/i.test(f.path))],
     ['model', '3D model', has(f => MODEL.includes(ext(f.path)))],
     ['drawings', 'Drawings', has(f => (['pdf', 'svg', 'dxf'].includes(ext(f.path)) && /draw|blueprint|sheet|cut/i.test(f.path)) || (ext(f.path) === 'pdf'))],
@@ -47,7 +50,7 @@ export async function renderResults(host, ctx) {
     host.querySelectorAll('.rtabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
     disposeViewer();
     body.innerHTML = '';
-    ({ overview, build, sim, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
+    ({ overview, build, sim, production, run, model, drawings, renders, bom, print, electronics, software, assembly, docs })[t](body);
     try { localStorage.setItem('anatomy.tab.' + S.id, t); } catch {}
   };
   host.querySelectorAll('.rtabs button').forEach(b => b.onclick = () => show(b.dataset.t));
@@ -97,6 +100,9 @@ async function loadBom() {
   });
   return { file: f.path, head: rows[0], items, total: items.reduce((s, i) => s + i.qty * i.price, 0) };
 }
+
+// ---------------------------------------------------------------- Production
+function production(el) { return productionTab(el, { S, esc, raw, btn, openExt, reveal }); }
 
 // ---------------------------------------------------------------- Overview
 async function overview(el) {
