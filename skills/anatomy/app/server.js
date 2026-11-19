@@ -143,10 +143,19 @@ function systemAppend() {
     'Before each significant action, write one short plain sentence saying what you are doing and why, so the user can follow along.',
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
+    'Never open a window on the user\'s desktop. Run every tool headless: kicad-cli and KiCad\'s python.exe (pcbnew) only, never kicad.exe, pcbnew.exe or eeschema.exe; Freerouting 2.x with --gui.enabled=false, never Freerouting 1.x (it always opens a window); Blender with -b; browsers with --headless; slicers and CAD in CLI mode. Never open files with start, explorer, Invoke-Item or os.startfile. The user opens files from the app.',
     'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
     'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
+}
+
+// Claude runs are unattended: keep Java tools (Freerouting) from opening windows on the desktop.
+// Only for runs; apps the user starts from the Simulate tab may be real GUIs.
+function runEnv() {
+  const env = cleanEnv();
+  if (!/java\.awt\.headless/.test(env.JAVA_TOOL_OPTIONS || '')) env.JAVA_TOOL_OPTIONS = ((env.JAVA_TOOL_OPTIONS || '') + ' -Djava.awt.headless=true').trim();
+  return env;
 }
 
 function cleanEnv() {
@@ -196,7 +205,7 @@ function startRun(id, message, display) {
 
   const isCmd = claude.toLowerCase().endsWith('.cmd');
   const proc = spawn(isCmd ? `"${claude}"` : claude, isCmd ? args.map(a => `"${a.replace(/"/g, '\\"')}"`) : args, {
-    cwd: projectDir(id), env: cleanEnv(), windowsHide: true, shell: isCmd,
+    cwd: projectDir(id), env: runEnv(), windowsHide: true, shell: isCmd,
   });
   const r = runs.get(id) || { clients: new Set() };
   r.proc = proc; runs.set(id, r);
