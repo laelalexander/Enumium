@@ -13,7 +13,8 @@ build/
                         supplier's BOM-upload format (Digi-Key, Mouser, LCSC, McMaster), order-checklist.md
   2-print/              print-list.csv, gcode/ (per plate and per part, Bambu .gcode.3mf when the printer is Bambu),
                         project/ (.3mf for the slicer), print-plan.md with plates, order, time and filament totals
-  3-fabricate/          cut/ DXF in mm and inch, pcb/ Gerber zip + BOM + centroid + order settings,
+  3-fabricate/          cut/ DXF in mm and inch, pcb/ <board>-PCBA-rev<rev>.zip from tools/pcba/pcba_export.py
+                        (references/pcba-export.md: Gerbers, Excel BOM, centroid, drawings, notes, quote sheet),
                         machined parts STEP + drawings, harness cut lists, vendor-notes.md (what to upload where, settings)
   4-assemble/           steps/ images, assembly-guide.html (self-contained) and .pdf, torque and tool lists
   5-firmware-test/      binaries and flash instructions, bring-up checklist, acceptance tests
@@ -36,8 +37,8 @@ build/
       "after": "set 6x M3 inserts", "checks": ["insert bore Ø4.0 +0.1/-0.05", "OD 210.0 ±0.3"] }
   ],
   "fabricate": [
-    { "part": "rcb1 PCB", "process": "PCB fab + assembly", "files": ["path/to/gerbers.zip", "path/bom.csv", "path/centroid.csv"],
-      "vendor": "JLCPCB or PCBWay", "settings": "2 layer, 1.6 mm, HASL lead-free, 1 oz", "qty": 5 },
+    { "part": "rcb1 PCBA", "process": "PCB fab + turnkey assembly", "files": ["build/3-fabricate/pcb/rcb1-PCBA-revA.zip"],
+      "vendor": "RushPCB (or any turnkey PCBA house)", "settings": "2 layer, 1.6 mm, 2 oz, HASL lead-free, 46 SMT + 9 THT, top only", "qty": 5 },
     { "part": "gasket", "process": "knife/laser cut", "files": ["cut/gasket_mm.dxf", "cut/gasket_in.dxf"], "material": "1.5 mm EPDM" }
   ],
   "assembly": [
@@ -58,4 +59,5 @@ All paths are relative to the project root. Every `purchase` line comes from a B
 - Every print entry has G-code that exists, was sliced for the user's printer (see Settings), and has its time and weight from the slicer.
 - Every assembly step has a picture rendered from the CAD assembly, with the parts added in that step highlighted.
 - An `assembly.json` (see SKILL.md step 6) whose `steps` match these assembly steps one-to-one, so the 3D viewer's Assemble button plays the same build the guide describes.
+- Every custom board has a PCBA order package that `pcba_export.py` marks READY, or its blockers are listed in `build/README.md`.
 - Nothing in the package says "TBD", "generic" or "see above".

@@ -37,6 +37,8 @@ kicad-cli pcb export step    --output board.step design.kicad_pcb
 ```
 The board STEP goes into the mechanical assembly to check enclosure fit. View the rendered images yourself before presenting. Zip the Gerbers and drill files with fab notes (layers, thickness, copper weight, finish, min trace/space) ready to upload to a fab.
 
+Then build the turnkey order package with `tools/pcba/pcba_export.py` (see `pcba-export.md`): Gerbers + drill, an Excel BOM with MPNs, a centroid file in mm and inches from the board's lower-left corner, assembly and fab drawings in mm [in] with polarity marked, assembly and test notes, and a quote sheet, zipped and ready for RushPCB or any turnkey PCBA house.
+
 ## 5. Part verification gate
 Before calling the board done, build a table of every critical part with: manufacturer part number, the datasheet URL actually fetched, and the facts relied on (pinout, absolute max voltage, footprint, required external parts). A fact from memory is marked `[assumed - verify]`, and a board that depends on unverified pinouts is "not ready to fabricate". If the datasheet cannot be fetched, ask the user for the PDF.
 
