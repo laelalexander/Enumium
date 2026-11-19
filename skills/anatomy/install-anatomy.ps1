@@ -19,7 +19,8 @@
   the sign-in entry that starts its server in the background.
 
 .PARAMETER ProjectsRoot
-  Folder the Anatomy app keeps projects in. Default C:\Anatomy.
+  Folder the Anatomy app keeps projects in. Default C:\Anatomy. The app itself is
+  installed in its _app subfolder.
 
 .PARAMETER Force
   Update even if a project run is in progress (the run is stopped).
@@ -190,7 +191,10 @@ if (-not $NoShortcut) {
       }
     }
 
-    $appDir = Join-Path $env:LOCALAPPDATA "Anatomy"
+    # The app lives next to the projects (in _app, which the app never lists as a project), not in
+    # AppData: an install run from inside a packaged app such as the Claude desktop app has its new
+    # AppData files redirected into that app's private store, where the Start menu cannot see them.
+    $appDir = Join-Path $ProjectsRoot "_app"
     New-Item -ItemType Directory -Force -Path $appDir | Out-Null
     # Stop a running Anatomy server so its files can be replaced.
     try { Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:4377/api/quit" -TimeoutSec 2 | Out-Null; Start-Sleep -Milliseconds 600 } catch { }
