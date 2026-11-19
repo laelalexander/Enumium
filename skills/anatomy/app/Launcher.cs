@@ -65,7 +65,7 @@ static class AnatomyLauncher
             finally { if (owned) gate.ReleaseMutex(); }
         }
 
-        if (!serverOnly) OpenWindow();
+        if (!serverOnly) { EnsureShortcuts(); OpenWindow(); }
         return 0;
     }
 
@@ -197,6 +197,45 @@ static class AnatomyLauncher
             return string.Join("\n", keep.ToArray());
         }
         catch { return ""; }
+    }
+
+    // ---- shortcuts ---------------------------------------------------------------------
+
+    // An install run from inside a packaged app (such as the Claude desktop app) has its new
+    // AppData files, including Start menu entries, redirected into that app's private store,
+    // where Windows cannot see them. The launcher runs as a normal program, so it (re)creates
+    // the Start menu and sign-in entries itself when they are missing or point elsewhere.
+    static void EnsureShortcuts()
+    {
+        string exe = Application.ExecutablePath;
+        string ico = Path.Combine(AppDir, "anatomy.ico");
+        if (!File.Exists(ico)) ico = exe;
+        string rootArg = "--root \"" + Root + "\"";
+        EnsureShortcut(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Programs), "Anatomy.lnk"),
+            exe, rootArg, ico, "Anatomy: dissect and rebuild a product");
+        EnsureShortcut(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "Anatomy server.lnk"),
+            exe, rootArg + " --server", ico, "Starts the Anatomy server in the background at sign-in");
+    }
+
+    static void EnsureShortcut(string lnkPath, string target, string arguments, string icon, string desc)
+    {
+        try
+        {
+            Type t = Type.GetTypeFromProgID("WScript.Shell");
+            object shell = Activator.CreateInstance(t);
+            object lnk = t.InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { lnkPath });
+            Type lt = lnk.GetType();
+            string curTarget = (lt.InvokeMember("TargetPath", BindingFlags.GetProperty, null, lnk, null) as string) ?? "";
+            string curArgs = (lt.InvokeMember("Arguments", BindingFlags.GetProperty, null, lnk, null) as string) ?? "";
+            if (File.Exists(lnkPath) && string.Equals(curTarget, target, StringComparison.OrdinalIgnoreCase) && curArgs == arguments) return;
+            lt.InvokeMember("TargetPath", BindingFlags.SetProperty, null, lnk, new object[] { target });
+            lt.InvokeMember("Arguments", BindingFlags.SetProperty, null, lnk, new object[] { arguments });
+            lt.InvokeMember("WorkingDirectory", BindingFlags.SetProperty, null, lnk, new object[] { AppDir });
+            lt.InvokeMember("IconLocation", BindingFlags.SetProperty, null, lnk, new object[] { icon + ",0" });
+            lt.InvokeMember("Description", BindingFlags.SetProperty, null, lnk, new object[] { desc });
+            lt.InvokeMember("Save", BindingFlags.InvokeMethod, null, lnk, null);
+        }
+        catch { }
     }
 
     // ---- window ------------------------------------------------------------------------
