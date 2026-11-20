@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy · Pyrails</title>
+<meta name="description" content="Anatomy takes a product apart, writes the blueprint, and builds it back up: CAD, drawings, PCBA, G-code, purchase lists and assembly guides.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Ccircle cx='16' cy='16' r='13' stroke='%237aa2ff' stroke-width='2.4'/%3E%3Cpath d='M8 16h16M16 8v16M10.5 10.5l11 11' stroke='%23a98bff' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>
+:root {
+  --bg: #0e1013; --panel: #15181d; --panel2: #1b1f26; --line: #262b34; --text: #e7e9ee; --muted: #8b93a1;
+  --faint: #5d6574; --accent: #7aa2ff; --accent2: #a98bff; --ok: #4fd18b; --warn: #f2c94c; --err: #ff6b6b;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif; }
+a { color: var(--accent); }
+button, input { font: inherit; color: inherit; }
+.wrap { width: min(1080px, 100%); margin: 0 auto; padding: 0 20px; }
+.hidden { display: none !important; }
+
+nav { display: flex; align-items: center; gap: 12px; padding: 18px 0; }
+nav .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; color: var(--text); }
+nav .logo svg { width: 26px; height: 26px; }
+nav .sp { flex: 1; }
+nav a.lnk { color: var(--muted); text-decoration: none; font-size: 14px; }
+nav a.lnk:hover { color: var(--text); }
+
+.hero { padding: 10vh 0 8vh; text-align: center; }
+.hero svg { width: 64px; height: 64px; }
+.hero h1 { font-size: clamp(36px, 7vw, 64px); letter-spacing: -0.03em; line-height: 1.05; margin: 18px 0 10px; }
+.hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p { color: var(--muted); font-size: clamp(16px, 2.2vw, 19px); max-width: 640px; margin: 0 auto; }
+.hero .by { color: var(--faint); font-size: 13px; margin-top: 14px; }
+.cta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 10px 18px; text-decoration: none; color: var(--text); cursor: pointer; }
+.btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0b0d12; border: 0; font-weight: 600; }
+
+h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 16px; }
+section { padding: 48px 0; border-top: 1px solid var(--line); }
+.phases { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.phase { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.phase b { display: block; margin-bottom: 4px; }
+.phase .n { font: 12px var(--mono); color: var(--accent); }
+.phase p { margin: 0; color: var(--muted); font-size: 13px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.feat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.feat b { display: block; margin-bottom: 4px; }
+.feat p { margin: 0; color: var(--muted); font-size: 14px; }
+
+/* projects */
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.key { display: flex; gap: 8px; flex-wrap: wrap; }
+.key input { flex: 1; min-width: 200px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; outline: 0; }
+.msg { color: var(--muted); font-size: 13px; margin-top: 8px; min-height: 1em; }
+.msg.err { color: var(--err); }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-top: 12px; }
+.card { text-align: left; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; cursor: pointer; }
+.card:hover { border-color: var(--accent); }
+.card .t { font-weight: 600; }
+.card .qv { margin-left: auto; color: var(--accent); cursor: pointer; } .card .qv:hover { text-decoration: underline; }
+.card .m { font-size: 12px; color: var(--muted); margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.pill.running::before { background: var(--accent); } .pill.done::before { background: var(--ok); } .pill.failed::before { background: var(--err); }
+.files { margin-top: 12px; }
+.files .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.files .bar b { flex: 1; min-width: 200px; }
+.files input { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; outline: 0; width: min(280px, 100%); }
+.tree { max-height: 60vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+.row { display: flex; gap: 10px; padding: 7px 12px; border-bottom: 1px solid var(--line); font-size: 13px; align-items: center; }
+.row:last-child { border-bottom: 0; }
+.row .p { flex: 1; font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+.row .s { color: var(--muted); white-space: nowrap; font-size: 12px; }
+.row button { background: none; border: 1px solid var(--line); border-radius: 7px; padding: 3px 9px; cursor: pointer; font-size: 12px; }
+.ptop { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+.ptop b { flex: 1; min-width: 220px; font-size: 17px; }
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; margin: 12px 0; border-bottom: 1px solid var(--line); }
+.tabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 12px; cursor: pointer; color: var(--muted); }
+.tabs button.on { color: var(--text); border-color: var(--accent); }
+.tabs button span { font-size: 11px; color: var(--faint); margin-left: 5px; }
+.gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.tile { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; cursor: pointer; text-align: left; padding: 0; }
+.tile:hover { border-color: var(--accent); }
+.tile .im { aspect-ratio: 4/3; background: #fff; display: grid; place-items: center; overflow: hidden; }
+.tile .im.dark { background: var(--bg); }
+.tile .im img { width: 100%; height: 100%; object-fit: contain; }
+.tile .im .ph { color: var(--faint); font: 600 22px var(--mono); }
+.tile .cap { padding: 8px 10px; font-size: 12px; font-family: var(--mono); overflow-wrap: anywhere; }
+.tile .cap small { display: block; color: var(--muted); font-family: inherit; }
+.models { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; gap: 10px; }
+@media (max-width: 760px) { .models { grid-template-columns: 1fr !important; } }
+.mlist { max-height: 62vh; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+.mlist button { display: block; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 8px 10px; cursor: pointer; font: 12px var(--mono); overflow-wrap: anywhere; }
+.mlist button.on { background: var(--panel2); color: var(--accent); }
+.stage { position: relative; height: 62vh; min-height: 320px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: radial-gradient(circle at 50% 40%, #1d2330, #0b0d11); }
+.stage canvas { display: block; width: 100%; height: 100%; }
+.stage .info { position: absolute; left: 10px; bottom: 8px; right: 10px; font-size: 12px; color: var(--muted); }
+.stage .acts { position: absolute; right: 8px; top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+.stage .acts button { background: #000a; border: 1px solid var(--line); border-radius: 7px; padding: 4px 9px; cursor: pointer; font-size: 12px; }
+.lead { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+.over { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.over div { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.over div:hover { border-color: var(--accent); }
+.over b { display: block; font-size: 22px; }
+.over span { color: var(--muted); font-size: 12px; }
+.doc { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; max-height: 62vh; overflow: auto; }
+.doc h1 { font-size: 20px; } .doc h2 { font-size: 16px; text-transform: none; letter-spacing: 0; color: var(--text); } .doc h3 { font-size: 14px; }
+.doc pre { background: var(--bg); padding: 10px; border-radius: 8px; overflow: auto; font: 12px var(--mono); white-space: pre-wrap; }
+.doc table { border-collapse: collapse; font-size: 13px; margin: 8px 0; } .doc td, .doc th { border: 1px solid var(--line); padding: 4px 8px; }
+#modal { position: fixed; inset: 0; background: #000d; z-index: 20; display: grid; grid-template-rows: auto 1fr; }
+#modal .mh { display: flex; gap: 8px; align-items: center; padding: 10px 14px; background: var(--panel); border-bottom: 1px solid var(--line); }
+#modal .mh b { flex: 1; font: 13px var(--mono); overflow-wrap: anywhere; }
+#modal .mb { overflow: auto; display: grid; place-items: center; padding: 10px; min-height: 0; }
+#modal .mb img { max-width: 100%; max-height: 100%; background: #fff; }
+#modal .mb iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+footer { color: var(--faint); font-size: 13px; padding: 32px 0 48px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#"><svg viewBox="0 0 32 32" fill="none"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7aa2ff"/><stop offset="1" stop-color="#a98bff"/></linearGradient></defs><circle cx="16" cy="16" r="13" stroke="url(#g)" stroke-width="2.2"/><path d="M8 16h16M16 8v16M10.5 10.5l11 11" stroke="url(#g)" stroke-width="2" stroke-linecap="round"/></svg>Anatomy</a>
+    <span class="sp"></span>
+    <a class="lnk" href="#how">How it works</a>
+    <a class="lnk" href="#projects">Projects</a>
+    <a class="lnk" href="#downloads">Downloads</a>
+  </nav>
+
+  <div class="hero">
+    <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="url(#g)" stroke-width="2.2"/><path d="M8 16h16M16 8v16M10.5 10.5l11 11" stroke="url(#g)" stroke-width="2" stroke-linecap="round"/></svg>
+    <h1>Take it apart.<br><span>Build it back better.</span></h1>
+    <p>Describe a product. Anatomy dissects it, writes the blueprint, and rebuilds it as a complete, buildable package: CAD, shop drawings, circuit boards, G-code, purchase lists and step-by-step assembly.</p>
+    <div class="by">By Lael Alexander · Pyrails</div>
+    <div class="cta"><a class="btn primary" href="#projects">Open projects</a><a class="btn" href="#how">How it works</a></div>
+  </div>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <div class="phases">
+      <div class="phase"><span class="n">01</span><b>Scope</b><p>The brief, requirements and what "done" means.</p></div>
+      <div class="phase"><span class="n">02</span><b>Gather evidence</b><p>Datasheets, teardown photos, real market parts.</p></div>
+      <div class="phase"><span class="n">03</span><b>Analyze</b><p>How it works, what it costs, where it fails.</p></div>
+      <div class="phase"><span class="n">04</span><b>Blueprint</b><p>Detailed drawings in mm and inches, schematics, wire lists.</p></div>
+      <div class="phase"><span class="n">05</span><b>Prototype</b><p>3D models, print plates with G-code, PCBA, firmware.</p></div>
+      <div class="phase"><span class="n">06</span><b>Verify</b><p>Simulation, digital twin and tests with margins.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What every project ends with</h2>
+    <div class="grid">
+      <div class="feat"><b>Shop-ready drawings</b><p>Every part, weldment and assembly, with full hole callouts and DXF cut files.</p></div>
+      <div class="feat"><b>Turnkey PCBA</b><p>Gerbers, drill, BOM with MPNs and centroid, ready for the board house.</p></div>
+      <div class="feat"><b>Print and buy lists</b><p>Sliced plates for the printer, and every purchase line traced to the design with live stock.</p></div>
+      <div class="feat"><b>Build wizard</b><p>Illustrated assembly steps and a 3D twin, so anyone can build it.</p></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="panel">
+      <div id="signin">
+        <div class="key"><input id="key" type="password" placeholder="Access key" autocomplete="current-password"><button class="btn primary" id="go">Open</button></div>
+        <div class="msg" id="msg">Every Anatomy project from every PC lives here. Enter your access key to browse and download them.</div>
+      </div>
+      <div id="list" class="hidden">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="msg" id="sum" style="flex:1;margin:0"></span><button class="btn" id="out">Sign out</button></div>
+        <div class="cards" id="cards"></div>
+        <div class="hidden" id="proj">
+          <div class="ptop"><b id="ptitle"></b><a class="btn primary" id="openConsole" href="#">Open in console</a><button class="btn" id="back">All projects</button></div>
+          <div class="tabs" id="tabs"></div>
+          <div id="pane"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="downloads">
+    <h2>Downloads</h2>
+    <div class="grid">
+      <div class="feat"><b>Nero Print Studio</b><p>The Windows installer for Nero Print Studio. <a href="/downloads/">Go to downloads</a></p></div>
+    </div>
+  </section>
+
+  <div id="modal" class="hidden"><div class="mh"><b id="mname"></b><button class="btn" id="mdl">Download</button><button class="btn" id="mx">Close</button></div><div class="mb" id="mbody"></div></div>
+
+  <footer>Anatomy runs on your own PCs. This site keeps the shared copy of every project.</footer>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+const API = '/anatomy-hub/api';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const size = n => n > 1e9 ? (n / 1e9).toFixed(1) + ' GB' : n > 1e6 ? (n / 1e6).toFixed(1) + ' MB' : n > 1e3 ? Math.round(n / 1e3) + ' KB' : n + ' B';
+const ext = p => (p.split('.').pop() || '').toLowerCase();
+const base = p => p.split('/').pop();
+let key = ''; try { key = localStorage.getItem('anatomyKey') || ''; } catch {}
+const call = (p, o = {}) => fetch(API + p, { ...o, headers: { Authorization: 'Bearer ' + key, 'X-Anatomy-PC': 'web' } });
+
+// ---------------------------------------------------------------- project list
+async function load() {
+  const r = await call('/projects').catch(() => null);
+  if (!r || !r.ok) {
+    $('#signin').classList.remove('hidden'); $('#list').classList.add('hidden');
+    if (key) { $('#msg').textContent = r && r.status === 401 ? 'That key did not work.' : 'The hub is not answering right now.'; $('#msg').classList.add('err'); }
+    return;
+  }
+  try { localStorage.setItem('anatomyKey', key); } catch {}
+  // The same key signs this browser in to the full console (an HttpOnly cookie for /anatomy-hub).
+  await fetch(API + '/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key }) }).catch(() => {});
+  const ps = await r.json();
+  $('#signin').classList.add('hidden'); $('#list').classList.remove('hidden');
+  const total = ps.reduce((a, p) => a + (p.size || 0), 0);
+  $('#sum').textContent = `${ps.length} project${ps.length === 1 ? '' : 's'}, ${size(total)}`;
+  $('#cards').innerHTML = ps.map(p => `<button class="card" data-id="${esc(p.id)}" data-t="${esc(p.title)}"><div class="t">${esc(p.title)}</div>
+    <div class="m"><span class="pill ${esc(p.lock ? 'running' : p.status)}">${esc(p.lock ? 'running on ' + p.lock.pc : p.status)}</span>
+    <span>${esc(new Date(p.updated || p.created).toLocaleDateString())}</span><span>${size(p.size || 0)}</span>${p.changedBy ? `<span>from ${esc(p.changedBy)}</span>` : ''}</div></button>`).join('')
+    || '<div class="msg">No projects yet. Connect a PC from Anatomy &gt; Hub and they will upload.</div>';
+  // A project opens in the full Anatomy console (Results, Build, BOM, drawings, 3D, Library); Quick view stays on this page.
+  [...document.querySelectorAll('.card')].forEach(c => {
+    c.onclick = () => { location.href = '/anatomy-hub/console/#' + encodeURIComponent(c.dataset.id); };
+    const q = document.createElement('span'); q.textContent = 'Quick view'; q.className = 'qv';
+    q.onclick = e => { e.stopPropagation(); openProject(c.dataset.id, c.dataset.t); };
+    c.querySelector('.m').append(q);
+  });
+  const want = decodeURIComponent((location.hash.match(/^#p\/(.+)$/) || [])[1] || '');
+  if (want) { const p = ps.find(x => x.id === want); if (p) openProject(p.id, p.title); }
+}
+
+// ---------------------------------------------------------------- one project
+const KINDS = {
+  models: { label: '3D models', test: p => /\.(glb|gltf|stl|3mf|obj|step|stp)$/i.test(p) },
+  drawings: { label: 'Drawings', test: p => /\.(svg|pdf|png|jpe?g|dxf)$/i.test(p) && /(^|\/)(drawings?|dwg|sheets?|blueprints?)\/|(^|\/)(ASM|ELE|DWG|SHT|MEC|PCB|LAY|GA)-?\d|_drawing|drawing-set|\b\d{3}_[a-z]/i.test(p) },
+  images: { label: 'Renders & photos', test: p => /\.(png|jpe?g|webp|gif)$/i.test(p) },
+  docs: { label: 'Documents', test: p => /\.(md|pdf|txt|csv|xlsx|docx|html?)$/i.test(p) },
+  files: { label: 'All files', test: () => true },
+};
+let files = [], curId = '', curTitle = '', tab = 'overview';
+const byKind = {};
+async function openProject(id, title) {
+  $('#openConsole').href = '/anatomy-hub/console/#' + encodeURIComponent(id);
+  curId = id; curTitle = title; history.replaceState(null, '', '#p/' + encodeURIComponent(id));
+  $('#ptitle').textContent = title; $('#cards').classList.add('hidden'); $('#sum').parentElement.classList.add('hidden'); $('#proj').classList.remove('hidden');
+  $('#pane').innerHTML = '<div class="msg">Loading…</div>'; $('#tabs').innerHTML = '';
+  const m = await (await call(`/projects/${encodeURIComponent(id)}/manifest`)).json();
+  files = Object.entries(m.files || {}).filter(([p]) => !p.startsWith('.anatomy/')).map(([p, v]) => ({ p, ...v })).sort((a, b) => a.p.localeCompare(b.p));
+  const isDrawing = f => KINDS.drawings.test(f.p);
+  byKind.models = files.filter(f => KINDS.models.test(f.p) && !/(^|\/)(gcode|plates?)\//i.test(f.p));
+  byKind.drawings = files.filter(isDrawing);
+  byKind.images = files.filter(f => KINDS.images.test(f.p) && !isDrawing(f));
+  byKind.docs = files.filter(f => KINDS.docs.test(f.p) && !isDrawing(f));
+  byKind.files = files;
+  $('#tabs').innerHTML = ['overview', 'models', 'drawings', 'images', 'docs', 'files'].map(k =>
+    `<button data-k="${k}">${k === 'overview' ? 'Overview' : KINDS[k].label}${k !== 'overview' ? `<span>${byKind[k].length}</span>` : ''}</button>`).join('');
+  $('#tabs').querySelectorAll('button').forEach(b => b.onclick = () => show(b.dataset.k));
+  show('overview');
+}
+function show(k) {
+  tab = k; disposeViewer();
+  $('#tabs').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  ({ overview, models, drawings: () => gallery(byKind.drawings, 'No drawings in this project yet.'), images: () => gallery(byKind.images, 'No renders or photos in this project yet.'), docs, files: fileList })[k]();
+}
+
+// Blob URLs for authed files, cached per session.
+const blobs = new Map();
+const TYPES = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', pdf: 'application/pdf', txt: 'text/plain', md: 'text/plain', csv: 'text/plain', json: 'text/plain', html: 'text/plain', htm: 'text/plain' };
+async function fileBuf(p) {
+  const r = await call(`/projects/${encodeURIComponent(curId)}/file?path=${encodeURIComponent(p)}`);
+  if (!r.ok) throw new Error('could not get ' + p);
+  return r.arrayBuffer();
+}
+async function blobUrl(p) {
+  const k = curId + '/' + p;
+  if (!blobs.has(k)) blobs.set(k, fileBuf(p).then(b => URL.createObjectURL(new Blob([b], { type: TYPES[ext(p)] || 'application/octet-stream' }))));
+  return blobs.get(k);
+}
+async function download(p) {
+  const u = await blobUrl(p); const a = document.createElement('a'); a.href = u; a.download = base(p); a.click();
+}
+
+function overview() {
+  const cover = byKind.images.find(f => /render|iso|hero|cover|overall|assembled/i.test(f.p)) || byKind.images[0];
+  const readme = files.find(f => /(^|\/)(readme|00-overview|overview)\.md$/i.test(f.p)) || files.find(f => /\.md$/i.test(f.p));
+  const asm = byKind.models.find(f => /\.glb$/i.test(f.p) && /asm|assembly|assembled|overall/i.test(f.p)) || byKind.models.find(f => /\.glb$/i.test(f.p));
+  $('#pane').innerHTML = `<div class="over">${['models', 'drawings', 'images', 'docs', 'files'].map(k => `<div data-k="${k}"><b>${byKind[k].length}</b><span>${KINDS[k].label}</span></div>`).join('')}</div>
+    ${!byKind.models.length && !byKind.drawings.length ? '<p class="lead">This project has no 3D models or drawings yet. They appear here as soon as a PC finishes the Blueprint and Prototype phases and syncs.</p>' : ''}
+    <div class="models" style="grid-template-columns:${cover && asm ? '1fr 1fr' : '1fr'}">
+      ${asm ? `<div><div class="stage" id="stage"></div></div>` : ''}
+      ${cover ? `<button class="tile" id="cover"><div class="im"><img alt=""></div><div class="cap">${esc(cover.p)}</div></button>` : ''}
+    </div>
+    ${readme ? `<h2 style="margin-top:18px">${esc(readme.p)}</h2><div class="doc" id="readme">Loading…</div>` : ''}`;
+  $('#pane').querySelectorAll('.over div').forEach(d => d.onclick = () => show(d.dataset.k));
+  if (cover) { blobUrl(cover.p).then(u => { const i = $('#cover img'); if (i) i.src = u; }); $('#cover').onclick = () => preview(cover.p); }
+  if (asm) viewModel(asm.p, $('#stage'));
+  if (readme) fileBuf(readme.p).then(b => { const el = $('#readme'); if (el) el.innerHTML = md(new TextDecoder().decode(b)); });
+}
+
+function gallery(list, empty) {
+  if (!list.length) { $('#pane').innerHTML = `<p class="lead">${empty}</p>`; return; }
+  $('#pane').innerHTML = `<div class="bar" style="display:flex;gap:8px;margin-bottom:10px"><input id="gq" placeholder="Filter" style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;outline:0;width:min(280px,100%)"></div><div class="gal" id="gal"></div>`;
+  const render = () => {
+    const q = $('#gq').value.toLowerCase();
+    const show = list.filter(f => f.p.toLowerCase().includes(q)).slice(0, 400);
+    $('#gal').innerHTML = show.map(f => `<button class="tile" data-p="${esc(f.p)}"><div class="im${/svg|png|jpe?g|webp|gif/.test(ext(f.p)) ? '' : ' dark'}">${/svg|png|jpe?g|webp|gif/.test(ext(f.p)) ? '<img alt="" loading="lazy">' : `<span class="ph">${esc(ext(f.p).toUpperCase())}</span>`}</div><div class="cap">${esc(base(f.p))}<small>${esc(f.p.split('/').slice(0, -1).join('/'))} · ${size(f.size)}</small></div></button>`).join('');
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; io.unobserve(e.target);
+      const img = e.target.querySelector('img'); if (img) blobUrl(e.target.dataset.p).then(u => img.src = u).catch(() => {});
+    }), { rootMargin: '200px' });
+    $('#gal').querySelectorAll('.tile').forEach(t => { io.observe(t); t.onclick = () => preview(t.dataset.p); });
+  };
+  $('#gq').oninput = render; render();
+}
+
+function models() {
+  const list = byKind.models;
+  if (!list.length) { $('#pane').innerHTML = '<p class="lead">No 3D models in this project yet.</p>'; return; }
+  const order = f => /\.glb$/i.test(f.p) ? 0 : /\.(stl|3mf|obj)$/i.test(f.p) ? 1 : 2;
+  const sorted = [...list].sort((a, b) => order(a) - order(b) || a.p.localeCompare(b.p));
+  $('#pane').innerHTML = `<div class="models"><div class="mlist" id="ml">${sorted.map(f => `<button data-p="${esc(f.p)}">${esc(f.p)}<br><small style="color:var(--muted)">${size(f.size)}</small></button>`).join('')}</div><div class="stage" id="stage"></div></div>`;
+  const pick = p => { $('#ml').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.p === p)); viewModel(p, $('#stage')); };
+  $('#ml').querySelectorAll('button').forEach(b => b.onclick = () => pick(b.dataset.p));
+  pick(sorted[0].p);
+}
+
+function docs() {
+  const list = byKind.docs;
+  if (!list.length) { $('#pane').innerHTML = '<p class="lead">No documents in this project yet.</p>'; return; }
+  $('#pane').innerHTML = `<div class="models"><div class="mlist" id="ml">${list.map(f => `<button data-p="${esc(f.p)}">${esc(f.p)}<br><small style="color:var(--muted)">${size(f.size)}</small></button>`).join('')}</div><div class="doc" id="dv" style="height:62vh"></div></div>`;
+  const pick = async p => {
+    $('#ml').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.p === p));
+    const e = ext(p);
+    if (e === 'pdf') { $('#dv').innerHTML = `<iframe style="width:100%;height:100%;border:0;background:#fff" src="${await blobUrl(p)}"></iframe>`; $('#dv').style.padding = '0'; return; }
+    $('#dv').style.padding = '';
+    if (/^(xlsx|docx)$/.test(e)) { $('#dv').innerHTML = `<p class="lead">${esc(base(p))} opens in Excel or Word.</p><button class="btn primary" id="dd">Download</button>`; $('#dd').onclick = () => download(p); return; }
+    const t = new TextDecoder().decode(await fileBuf(p));
+    $('#dv').innerHTML = e === 'md' ? md(t) : `<pre>${esc(t.slice(0, 400000))}</pre>`;
+  };
+  $('#ml').querySelectorAll('button').forEach(b => b.onclick = () => pick(b.dataset.p));
+  pick(list[0].p);
+}
+
+function fileList() {
+  $('#pane').innerHTML = `<div style="display:flex;gap:8px;margin-bottom:8px"><input id="filter" placeholder="Filter files" style="background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;outline:0;width:min(280px,100%)"></div><div class="tree" id="tree"></div>`;
+  const render = () => {
+    const q = $('#filter').value.toLowerCase();
+    const list = files.filter(f => f.p.toLowerCase().includes(q)).slice(0, 2000);
+    $('#tree').innerHTML = list.map(f => `<div class="row"><span class="p">${esc(f.p)}</span><span class="s">${size(f.size)}</span>
+      ${canPreview(f.p) ? `<button data-v="${esc(f.p)}">View</button>` : ''}<button data-d="${esc(f.p)}">Download</button></div>`).join('') || '<div class="row">No files match.</div>';
+    $('#tree').querySelectorAll('button').forEach(b => b.onclick = () => b.dataset.v ? preview(b.dataset.v) : download(b.dataset.d));
+  };
+  $('#filter').oninput = render; render();
+}
+const canPreview = p => /\.(png|jpe?g|gif|webp|svg|pdf|txt|md|json|csv|html?|glb|gltf|stl|3mf|obj|step|stp|py|js|ino|c|h|cpp|yaml|yml|gcode)$/i.test(p);
+
+// ---------------------------------------------------------------- preview modal
+async function preview(p) {
+  const e = ext(p);
+  $('#mname').textContent = p; $('#mdl').onclick = () => download(p);
+  $('#modal').classList.remove('hidden'); $('#mbody').innerHTML = '<div class="msg">Loading…</div>';
+  if (KINDS.models.test(p)) { $('#mbody').innerHTML = '<div class="stage" id="mstage" style="width:100%;height:100%"></div>'; viewModel(p, $('#mstage')); return; }
+  if (/^(png|jpe?g|gif|webp|svg)$/.test(e)) { $('#mbody').innerHTML = `<img alt="" src="${await blobUrl(p)}">`; return; }
+  if (e === 'pdf') { $('#mbody').innerHTML = `<iframe src="${await blobUrl(p)}"></iframe>`; return; }
+  const t = new TextDecoder().decode(await fileBuf(p));
+  $('#mbody').innerHTML = `<div class="doc" style="width:min(980px,100%);max-height:none;place-self:start center">${e === 'md' ? md(t) : `<pre>${esc(t.slice(0, 400000))}</pre>`}</div>`;
+}
+$('#mx').onclick = () => { $('#modal').classList.add('hidden'); $('#mbody').innerHTML = ''; disposeViewer(true); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#modal').classList.contains('hidden')) $('#mx').click(); });
+
+// ---------------------------------------------------------------- 3D viewer
+let viewers = [];
+function disposeViewer(modalOnly) {
+  viewers = viewers.filter(v => { if (modalOnly && !v.modal) return true; v.stop(); return false; });
+}
+let occtP = null;
+function loadOcct() {
+  if (!occtP) occtP = new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/occt-import-js.js';
+    s.onload = () => window.occtimportjs({ locateFile: f => 'https://cdn.jsdelivr.net/npm/occt-import-js@0.0.22/dist/' + f }).then(res, rej); s.onerror = rej; document.head.append(s);
+  });
+  return occtP;
+}
+const MAT = () => new THREE.MeshStandardMaterial({ color: 0xb8c4d8, metalness: 0.25, roughness: 0.55 });
+async function loadModel(p) {
+  const e = ext(p); const buf = await fileBuf(p);
+  if (e === 'stl') { const g = new STLLoader().parse(buf); g.computeVertexNormals(); const w = new THREE.Group(); w.add(new THREE.Mesh(g, MAT())); return w; }
+  if (e === '3mf') return new ThreeMFLoader().parse(buf);
+  if (e === 'obj') return new OBJLoader().parse(new TextDecoder().decode(buf));
+  if (e === 'glb' || e === 'gltf') {
+    const g = await new GLTFLoader().parseAsync(buf, '');
+    const js = g.parser?.json || {}; const gen = String(js.asset?.generator || '');
+    const roots = (js.scenes?.[js.scene || 0]?.nodes || []).map(i => js.nodes?.[i] || {});
+    const rootXf = roots.some(n => n.matrix || n.rotation);
+    const wrap = new THREE.Group(); if (!/trimesh/i.test(gen) || rootXf) g.scene.rotation.x = Math.PI / 2; wrap.add(g.scene); return wrap;
+  }
+  if (e === 'step' || e === 'stp') {
+    const occt = await loadOcct(); const r = occt.ReadStepFile(new Uint8Array(buf), null); const grp = new THREE.Group();
+    for (const m of r.meshes) {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(m.attributes.position.array, 3));
+      if (m.attributes.normal) g.setAttribute('normal', new THREE.Float32BufferAttribute(m.attributes.normal.array, 3));
+      g.setIndex(new THREE.Uint32BufferAttribute(Uint32Array.from(m.index.array), 1));
+      const mat = MAT(); if (m.color) mat.color.setRGB(m.color[0], m.color[1], m.color[2]);
+      grp.add(new THREE.Mesh(g, mat));
+    }
+    return grp;
+  }
+  throw new Error('This file type cannot be shown in 3D.');
+}
+async function viewModel(p, el) {
+  disposeViewer(); if (!el) return;
+  const modal = !!el.closest('#modal');
+  el.innerHTML = `<div class="info">Loading ${esc(base(p))}…</div>`;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(40, 1, 0.1, 1e6); cam.up.set(0, 0, 1);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x334055, 1.4));
+  const d = new THREE.DirectionalLight(0xffffff, 1.6); d.position.set(1, -1.5, 2); scene.add(d);
+  const controls = new OrbitControls(cam, renderer.domElement); controls.enableDamping = true;
+  let alive = true, raf = 0, wire = false, obj = null;
+  const resize = () => { const w = el.clientWidth || 600, h = el.clientHeight || 400; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+  const ro = new ResizeObserver(resize); ro.observe(el);
+  const v = { modal, stop() { alive = false; cancelAnimationFrame(raf); ro.disconnect(); controls.dispose(); renderer.dispose(); scene.traverse(o => { o.geometry?.dispose?.(); }); } };
+  viewers.push(v);
+  try {
+    obj = await loadModel(p); if (!alive) return;
+    scene.add(obj);
+    const box = new THREE.Box3().setFromObject(obj); const c = box.getCenter(new THREE.Vector3()); const s = box.getSize(new THREE.Vector3());
+    const r = Math.max(s.x, s.y, s.z) || 1;
+    controls.target.copy(c); cam.position.copy(c).add(new THREE.Vector3(r * 1.3, -r * 1.6, r * 1.1)); cam.near = r / 1000; cam.far = r * 100; cam.updateProjectionMatrix();
+    let tris = 0; obj.traverse(o => { if (o.isMesh) tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; });
+    el.innerHTML = ''; el.append(renderer.domElement);
+    el.insertAdjacentHTML('beforeend', `<div class="info">${esc(base(p))} · ${s.x.toFixed(1)} × ${s.y.toFixed(1)} × ${s.z.toFixed(1)} (model units) · ${Math.round(tris).toLocaleString()} triangles · drag to orbit, scroll to zoom</div>
+      <div class="acts"><button data-a="w">Wireframe</button><button data-a="f">Fit</button>${modal ? '' : '<button data-a="x">Full screen</button>'}<button data-a="d">Download</button></div>`);
+    const home = cam.position.clone();
+    el.querySelectorAll('.acts button').forEach(b => b.onclick = () => {
+      if (b.dataset.a === 'w') { wire = !wire; obj.traverse(o => { if (o.isMesh) [].concat(o.material).forEach(m => m.wireframe = wire); }); }
+      if (b.dataset.a === 'f') { cam.position.copy(home); controls.target.copy(c); }
+      if (b.dataset.a === 'd') download(p);
+      if (b.dataset.a === 'x') preview(p);
+    });
+    resize();
+    const loop = () => { if (!alive) return; controls.update(); renderer.render(scene, cam); raf = requestAnimationFrame(loop); };
+    loop();
+  } catch (e) {
+    if (alive) el.innerHTML = `<div class="info" style="pointer-events:auto">${esc(e.message || String(e))} <button class="btn" id="dlf">Download</button></div>`;
+    const b = el.querySelector('#dlf'); if (b) b.onclick = () => download(p);
+  }
+}
+
+// ---------------------------------------------------------------- tiny markdown
+function md(t) {
+  const lines = t.replace(/\r/g, '').split('\n'); let out = '', inCode = false, list = '', table = [];
+  const inline = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<i>$1</i>').replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  const flushList = () => { if (list) { out += `</${list}>`; list = ''; } };
+  const flushTable = () => { if (table.length) { const rows = table.filter(r => !/^\|?\s*:?-{2,}/.test(r)); out += '<table>' + rows.map((r, i) => '<tr>' + r.replace(/^\||\|$/g, '').split('|').map(c => `<${i ? 'td' : 'th'}>${inline(c.trim())}</${i ? 'td' : 'th'}>`).join('') + '</tr>').join('') + '</table>'; table = []; } };
+  for (const l of lines) {
+    if (/^```/.test(l)) { flushList(); flushTable(); out += inCode ? '</pre>' : '<pre>'; inCode = !inCode; continue; }
+    if (inCode) { out += esc(l) + '\n'; continue; }
+    if (/^\s*\|/.test(l)) { flushList(); table.push(l.trim()); continue; } else flushTable();
+    let m;
+    if ((m = l.match(/^(#{1,6})\s+(.*)/))) { flushList(); const n = Math.min(m[1].length, 3); out += `<h${n}>${inline(m[2])}</h${n}>`; }
+    else if ((m = l.match(/^\s*[-*]\s+(.*)/))) { if (list !== 'ul') { flushList(); out += '<ul>'; list = 'ul'; } out += `<li>${inline(m[1])}</li>`; }
+    else if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))) { if (list !== 'ol') { flushList(); out += '<ol>'; list = 'ol'; } out += `<li>${inline(m[1])}</li>`; }
+    else if (!l.trim()) { flushList(); }
+    else { flushList(); out += `<p>${inline(l)}</p>`; }
+  }
+  flushList(); flushTable(); if (inCode) out += '</pre>';
+  return out;
+}
+
+// ---------------------------------------------------------------- wiring
+$('#go').onclick = () => { key = $('#key').value.trim(); load(); };
+$('#key').onkeydown = e => { if (e.key === 'Enter') $('#go').click(); };
+$('#out').onclick = () => { key = ''; fetch(API + '/session', { method: 'DELETE' }).catch(() => {}); try { localStorage.removeItem('anatomyKey'); } catch {} $('#msg').textContent = 'Signed out.'; $('#msg').classList.remove('err'); load(); };
+$('#back').onclick = () => { disposeViewer(); history.replaceState(null, '', '#projects'); $('#proj').classList.add('hidden'); $('#cards').classList.remove('hidden'); $('#sum').parentElement.classList.remove('hidden'); };
+if (key) load();
+</script>
+</body>
+</html>

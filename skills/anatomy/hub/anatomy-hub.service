@@ -1,0 +1,22 @@
+[Unit]
+Description=Anatomy Hub (central project storage for the Anatomy app)
+After=network.target
+
+[Service]
+Type=simple
+User=anatomy-hub
+Group=anatomy-hub
+EnvironmentFile=/etc/anatomy-hub.env
+ExecStart=/usr/bin/env node /opt/anatomy-hub/hub.js
+Restart=always
+RestartSec=3
+# Hardening: the service can only write its data folder.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/anatomy-hub
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

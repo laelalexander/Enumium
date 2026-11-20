@@ -10,6 +10,7 @@ const path = require('path');
 const { spawn, execFile } = require('child_process');
 const os = require('os');
 const xometry = require('./xometry');
+const hubSync = require('./sync');
 
 const PORT = Number(process.env.ANATOMY_PORT || 4377);
 const ROOT = process.env.ANATOMY_ROOT || (process.platform === 'win32' ? 'C:\\Anatomy' : path.join(os.homedir(), 'Anatomy'));
@@ -18,6 +19,9 @@ const META_DIR = '.anatomy';
 const HIDDEN = new Set([META_DIR, 'CLAUDE.md', '.tools', 'venv', 'env', '.pio', '.mypy_cache', '.pytest_cache', 'dist-info', '.git', 'node_modules', '.claude', '__pycache__', '.venv']);
 
 fs.mkdirSync(ROOT, { recursive: true });
+
+// Central project storage on the Anatomy Hub (the Droplet). Off until a hub address and token are saved in the app.
+let hub = null; // created below, once readMeta and runs exist
 
 // ---------------------------------------------------------------- helpers
 const runs = new Map(); // id -> { proc, clients:Set<res> }
@@ -240,6 +244,7 @@ function startRun(id, message, display) {
     }
     emit(id, { type: 'anatomy', kind: 'run-end', status: m.status });
     r.proc = null; r.stopping = false;
+    if (hub.config()) hub.syncProject(id).catch(() => {}).finally(() => hub.unlock(id));
   });
 }
 
@@ -291,6 +296,21 @@ function listProjects() {
     if (m.status === 'running' && !runs.get(e.name)?.proc) m.status = 'stopped';
     return { id: e.name, ...m };
   }).filter(Boolean).sort((a, b) => (b.updated || '').localeCompare(a.updated || ''));
+}
+
+hub = hubSync.create({ ROOT, readMeta, isRunning: id => !!runs.get(id)?.proc });
+hub.start();
+
+// Projects on this PC plus the ones that so far live only on the hub (other PCs' projects).
+function listAllProjects() {
+  const local = listProjects();
+  const have = new Set(local.map(p => p.id));
+  const remote = hub.remoteProjects();
+  const byId = new Map(remote.map(p => [p.id, p]));
+  for (const p of local) { const r = byId.get(p.id); p.where = r ? 'synced' : 'here'; if (r && r.lock && r.lock.pc !== hub.status().pc) { p.runningOn = r.lock.pc; } }
+  const only = remote.filter(p => !have.has(p.id)).map(p => ({ id: p.id, title: p.title, status: p.lock ? 'running' : (p.status === 'running' ? 'stopped' : p.status),
+    created: p.created, updated: p.updated, where: 'hub', size: p.size, changedBy: p.changedBy, runningOn: p.lock ? p.lock.pc : null }));
+  return local.concat(only).sort((a, b) => (b.updated || '').localeCompare(a.updated || ''));
 }
 
 // ---------------------------------------------------------------- project apps (the "experience" of a finished project)
@@ -395,14 +415,38 @@ const server = http.createServer(async (req, res) => {
 
     if (parts[1] === 'health') return send(res, 200, { ok: true, app: 'anatomy', root: ROOT, claude: !!findClaude(), kicad: findKiCadBin() });
 
+    if (parts[1] === 'hub') {
+      if (!parts[2] && req.method === 'GET') return send(res, 200, hub.status());
+      if (!parts[2] && req.method === 'PUT') {
+        const b = JSON.parse((await readBody(req, 64 * 1024)).toString('utf8') || '{}');
+        if (b.disconnect) { hub.saveConfig({ url: '', token: '' }); return send(res, 200, hub.status()); }
+        const cur = hub.config() || {};
+        const url = String(b.url || cur.url || '').trim(), token = String(b.token || cur.token || '').trim();
+        if (!/^https?:\/\//.test(url) || !token) return send(res, 400, { error: 'Enter the hub address (https://...) and its access key.' });
+        const t = await hub.test(url, token);
+        if (!t.ok) return send(res, 400, { error: 'Could not reach the hub: ' + t.error });
+        hub.saveConfig({ url, token, pc: String(b.pc || cur.pc || os.hostname()).trim().slice(0, 60), pullAll: !!b.pullAll });
+        hub.syncAll().catch(() => {});
+        return send(res, 200, hub.status());
+      }
+      if (parts[2] === 'sync' && req.method === 'POST') { hub.syncAll().catch(() => {}); return send(res, 200, hub.status()); }
+      // Download a project that so far lives only on the hub, so it can be opened here.
+      if (parts[2] === 'fetch' && parts[3] && req.method === 'POST') {
+        projectDir(parts[3]);
+        const r = await hub.syncProject(parts[3], { pullOnly: true });
+        return send(res, readMeta(parts[3]) ? 200 : 502, readMeta(parts[3]) ? { ok: true, ...r } : { error: (r.errors || ['download failed']).join('; ') });
+      }
+    }
+
     if (parts[1] === 'projects' && parts.length === 2) {
-      if (req.method === 'GET') return send(res, 200, listProjects());
+      if (req.method === 'GET') return send(res, 200, listAllProjects());
       if (req.method === 'POST') {
         const { prompt, model } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
         if (!prompt || !prompt.trim()) return send(res, 400, { error: 'prompt required' });
         const base = slugify(prompt.split(/\s+/).slice(0, 6).join(' '));
         let id = base, n = 2;
-        while (fs.existsSync(path.join(ROOT, id))) id = `${base}-${n++}`;
+        const taken = new Set(hub.remoteProjects().map(p => p.id));
+        while (fs.existsSync(path.join(ROOT, id)) || taken.has(id)) id = `${base}-${n++}`;
         fs.mkdirSync(path.join(ROOT, id, 'inputs'), { recursive: true });
         const title = prompt.trim().split('\n')[0].slice(0, 80);
         writeMeta(id, { title, prompt: prompt.trim(), model: model || 'claude-fable-5-2', status: 'new',
@@ -432,7 +476,14 @@ const server = http.createServer(async (req, res) => {
         const { message } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
         const text = message && message.trim() ? message.trim() :
           `Run the anatomy skill on this brief:\n\n${meta.prompt}\n\nRead CLAUDE.md and everything in inputs/ first.`;
-        try { startRun(id, text, message && message.trim() ? message.trim() : meta.prompt); } catch (e) { return send(res, 409, { error: e.message }); }
+        if (runs.get(id)?.proc) return send(res, 409, { error: 'already running' });
+        // Pull the latest copy from the hub and claim the project, so two PCs never run it at the same time.
+        if (hub.config()) {
+          const l = await hub.lock(id);
+          if (!l.ok) return send(res, 409, { error: `This project is running on ${l.by || 'another PC'} right now. Wait for it to finish there.` });
+          await hub.syncProject(id).catch(() => {});
+        }
+        try { startRun(id, text, message && message.trim() ? message.trim() : meta.prompt); } catch (e) { hub.unlock(id); return send(res, 409, { error: e.message }); }
         return send(res, 200, { ok: true });
       }
       if (action === 'stop' && req.method === 'POST') { stopRun(id); return send(res, 200, { ok: true }); }
