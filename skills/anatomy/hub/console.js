@@ -72,8 +72,8 @@ function create({ PROJ, UI, PREFIX, loadIndex, ID_RE }) {
   }
 
   // The app UI, with its absolute URLs moved under the console and a read-only skin.
-  const SKIN = `<style>
-#home .composer, #examples, #hubBtn, #settingsBtn, #warn, #stop, #reveal, #replyGo, #replyIn, .reply { display: none !important; }
+  const SKIN = `<script>window.ANATOMY_WEB = true;</script><style>
+#home .composer, #examples, #hubBtn, #settingsBtn, #warn, #stop, #reveal, #pvReveal, #replyGo, #replyIn, .reply { display: none !important; }
 #webbar { position: sticky; top: 0; z-index: 30; display: flex; gap: 12px; align-items: center; padding: 8px 16px; background: #15181d; border-bottom: 1px solid #262b34; font-size: 13px; color: #8b93a1; }
 #webbar a { color: #7aa2ff; text-decoration: none; } #webbar b { color: #e7e9ee; font-weight: 600; } #webbar span { flex: 1; }
 </style>`;
