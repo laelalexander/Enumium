@@ -38,7 +38,7 @@ curl -fsS http://127.0.0.1:4380/api/health
 # nginx: the location block lives in a snippet; the site file for HUB_HOST includes it.
 install -m 644 "$SRC/nginx-anatomy-hub.conf" /etc/nginx/snippets/anatomy-hub.conf
 SITE=/etc/nginx/sites-available/anatomy-hub-$HUB_HOST
-if ! grep -rqs "server_name[^;]*\b$HUB_HOST\b" /etc/nginx/sites-enabled/ || [ -f "$SITE" ]; then
+if ! grep -Rqs "server_name[^;]*\b$HUB_HOST\b" /etc/nginx/sites-enabled/ || [ -f "$SITE" ]; then
   if [ ! -f "$SITE" ]; then
     cat > "$SITE" <<NGX
 server {
