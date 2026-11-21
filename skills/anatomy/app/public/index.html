@@ -316,6 +316,7 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
     <div class="spacer"></div>
     <div class="vswitch" id="vswitch"><button data-v="live" class="on">Live</button><button data-v="results">Results</button></div>
     <button class="ghost" id="holoBtn" title="Pop-out 3D view that updates as Anatomy works">3D view ↗</button>
+    <button class="ghost" id="designBtn" title="Open the 3D Design Studio: change parts, dimensions, materials and styling, then rebuild as a new revision">Design ✎</button>
     <button class="ghost hidden" id="filesBtn">Files</button>
     <button class="ghost" id="reveal">Open folder</button>
     <button class="ghost hidden" id="stop">Stop</button>
@@ -684,6 +685,7 @@ $('#reveal').onclick = () => api(`/api/projects/${cur}/reveal`, { method: 'POST'
 $('#filesBtn').onclick = () => { const a = document.querySelector('aside.right'); a.style.display = a.style.display === 'block' ? '' : 'block'; };
 $('#back').onclick = () => location.hash = '';
 $('#holoBtn').onclick = () => window.open(`/viewer.html?id=${encodeURIComponent(cur)}`, 'anatomy3d-' + cur, 'width=980,height=720');
+$('#designBtn').onclick = () => window.open(`/editor.html?id=${encodeURIComponent(cur)}`, 'anatomydesign-' + cur, 'width=1500,height=920');
 $('#stop').onclick = () => api(`/api/projects/${cur}/stop`, { method: 'POST' });
 // Live chat: works while the run is going (the message steers it) and after it ends (a follow-up run).
 // Attached files go to the project's inputs/ folder and the message tells Claude where they are.

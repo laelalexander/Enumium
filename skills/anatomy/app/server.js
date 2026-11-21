@@ -149,7 +149,7 @@ function systemAppend() {
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
     'Never open a window on the user\'s desktop. Run every tool headless: kicad-cli and KiCad\'s python.exe (pcbnew) only, never kicad.exe, pcbnew.exe or eeschema.exe; Freerouting 2.x with --gui.enabled=false, never Freerouting 1.x (it always opens a window); Blender with -b; browsers with --headless; slicers and CAD in CLI mode. Never open files with start, explorer, Invoke-Item or os.startfile. The user opens files from the app.',
-    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
+    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), industrial design and visual fidelity (references/industrial-design.md: no plain boxes, fillets and curved styled surfaces on every BUILD part, real manufacturer shapes for BUY parts, materials in assembly.json, tight tessellation, photoreal renders), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
     'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
@@ -195,6 +195,7 @@ const ALLOWED_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'MultiEdit', 'Glob', 'Gr
   'Skill', 'TodoWrite', 'Task', 'NotebookEdit'];
 
 const models = require('./models');
+const design = require('./design');
 
 // opts.model: run on this model (set when falling back); opts.tried: models already tried in this run;
 // opts.auto: started by the server itself, so no "You" bubble.
@@ -474,7 +475,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);
     }
-    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html')) {
+    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html' || parts[0] === 'editor.html')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
       return streamFile(res, p, parts[0] === 'vendor' ? 'max-age=3600' : 'no-store');
     }
@@ -632,6 +633,74 @@ const server = http.createServer(async (req, res) => {
         p.on('close', code => { clearTimeout(killer); send(res, 200, { code, log, results: t.results ? path.posix.join(m._base || '', t.results) : null }); });
         p.on('error', e => { clearTimeout(killer); send(res, 200, { code: -1, log: e.message }); });
         return;
+      }
+      // Design Studio: the 3D design editor (editor.html). See design.js.
+      if (action === 'design') {
+        const sub = parts[4];
+        if (!sub && req.method === 'GET') return send(res, 200, { id, title: meta.title, revision: meta.revision || null, revisionOf: meta.revisionOf || null, running: !!runs.get(id)?.proc, ...design.info(dir) });
+        if (sub === 'edits' && req.method === 'PUT') return send(res, 200, design.saveEdits(dir, JSON.parse((await readBody(req, 20 * 1024 * 1024)).toString('utf8') || '{}')));
+        if (sub === 'scene' && req.method === 'PUT') { // the edited scene as GLB, for Blender
+          const dd = design.designDir(dir); fs.mkdirSync(dd, { recursive: true });
+          fs.writeFileSync(path.join(dd, 'scene.glb'), await readBody(req, 1024 * 1024 * 1024));
+          return send(res, 200, { ok: true });
+        }
+        if (sub === 'sculpt' && req.method === 'GET') { // a mesh sculpted in Blender, written by the save hook
+          const name = path.basename(url.searchParams.get('file') || '');
+          return streamFile(res, path.join(design.designDir(dir), 'sculpt', name), 'no-store');
+        }
+        if (sub === 'blender' && req.method === 'POST') {
+          const b = JSON.parse((await readBody(req, 64 * 1024)).toString('utf8') || '{}');
+          try { return send(res, 200, design.runBlender(dir, b.mode === 'render' ? 'render' : 'open', b, cleanEnv)); }
+          catch (e) { return send(res, 400, { error: e.message }); }
+        }
+        if (sub === 'blender' && req.method === 'GET') return send(res, 200, design.blenderStatus(dir));
+        if (sub === 'revision' && req.method === 'POST') {
+          // Rebuild: a NEW project (rev B, C, ...) copied from this one, regenerated by the skill from the edits.
+          // The completed version is never changed.
+          const b = JSON.parse((await readBody(req, 60 * 1024 * 1024)).toString('utf8') || '{}');
+          const edits = b.edits || design.loadEdits(dir);
+          if (!edits) return send(res, 400, { error: 'No edits to rebuild from.' });
+          design.saveEdits(dir, edits);
+          const rootId = meta.revisionRoot || id;
+          const L = design.nextRevision(listProjects, rootId);
+          const baseId = slugify(rootId).slice(0, 32).replace(/-+$/, '');
+          let nid = `${baseId}-rev-${L.toLowerCase()}`, k = 2;
+          const taken = new Set(hub.remoteProjects().map(p => p.id));
+          while (fs.existsSync(path.join(ROOT, nid)) || taken.has(nid)) nid = `${baseId}-rev-${L.toLowerCase()}${k++}`;
+          const ndir = path.join(ROOT, nid);
+          fs.mkdirSync(path.join(ndir, 'inputs'), { recursive: true });
+          const rootTitle = (readMeta(rootId) || meta).title || meta.title || id;
+          const title = `${String(rootTitle).replace(/\s*·\s*rev [A-Z]+$/, '')} · rev ${L}`;
+          const md = design.editsMarkdown(meta, id, edits);
+          const brief = `Revision ${L} of the Anatomy project "${meta.title}" (folder ../${id}), made from the user's edits in the 3D design editor.\n\n` +
+            `The edits are in inputs/design-edits.md (readable) and inputs/design-edits.json (exact values)` + (b.snapshot ? ', with a picture of the edited model in inputs/design-edits.png' : '') + '.\n\n' + md;
+          writeMeta(nid, { title, prompt: brief, model: meta.model || 'claude-fable-5-2', status: 'new', created: new Date().toISOString(), updated: new Date().toISOString(),
+            revisionOf: id, revisionRoot: rootId, revision: L });
+          fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.json'), JSON.stringify({ ...edits, source: id, revision: L }, null, 1));
+          fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.md'), md);
+          if (b.snapshot && /^data:image\/png;base64,/.test(b.snapshot)) fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.png'), Buffer.from(b.snapshot.split(',')[1], 'base64'));
+          // Sculpted meshes from Blender travel with the edits.
+          const sd = path.join(design.designDir(dir), 'sculpt');
+          if (fs.existsSync(sd)) { fs.mkdirSync(path.join(ndir, 'inputs', 'sculpt'), { recursive: true }); for (const f of fs.readdirSync(sd)) try { fs.copyFileSync(path.join(sd, f), path.join(ndir, 'inputs', 'sculpt', f)); } catch {} }
+          emit(nid, { type: 'anatomy', kind: 'notice', text: `Revision ${L} of "${meta.title}". Copying the design from the original (the original is not changed)...` });
+          send(res, 200, { id: nid, revision: L });
+          (async () => {
+            const n = await design.copyProject(dir, ndir, c => emit(nid, { type: 'anatomy', kind: 'notice', text: `Copied ${c} files...` }));
+            // The copy brought the original's inputs along; keep the edits on top.
+            fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.json'), JSON.stringify({ ...edits, source: id, revision: L }, null, 1));
+            fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.md'), md);
+            fs.writeFileSync(path.join(ndir, 'CLAUDE.md'),
+              `# Anatomy project: revision ${L}\n\nUse the \`anatomy\` skill for all work in this folder, and follow its references/design-revisions.md.\n\n` +
+              `This folder is revision ${L} of \`../${id}\` ("${meta.title}"), copied from it on ${new Date().toISOString().slice(0, 10)} (${n} files). ` +
+              `Never write to \`../${id}\` or any other project folder: it is a completed version and must stay exactly as it is. You may run its tools read-only (e.g. its .venv Python or .tools) if that saves time.\n\n` +
+              `The user's design edits are in inputs/design-edits.md and inputs/design-edits.json` + (b.snapshot ? ' (picture: inputs/design-edits.png)' : '') + '.\n\nOriginal brief:\n\n' + (meta.prompt || '') + '\n');
+            emit(nid, { type: 'anatomy', kind: 'notice', text: `Copied ${n} files. Starting the rebuild.` });
+            const msg = `This is revision ${L} of ../${id}. Read CLAUDE.md, inputs/design-edits.md and inputs/design-edits.json, then follow the anatomy skill's references/design-revisions.md: ` +
+              `apply every edit to the parametric source in THIS folder, raise the styling and detail as asked, and regenerate everything that depends on the geometry (CAD and STEP, assembly.json and meshes, drawings and cut files, BOM, G-code, assembly guide, build package, renders). Never write to ../${id}.`;
+            try { startRun(nid, msg, `Rebuild as revision ${L} from the design editor`); } catch (e) { emit(nid, { type: 'anatomy', kind: 'error', text: e.message }); }
+          })().catch(e => emit(nid, { type: 'anatomy', kind: 'error', text: 'Could not copy the design: ' + e.message }));
+          return;
+        }
       }
       if (action === 'manifest' && req.method === 'GET') {
         const m = findManifest(dir);

@@ -195,12 +195,15 @@ if (-not $NoShortcut) {
     try { Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:4377/api/quit" -TimeoutSec 2 | Out-Null; Start-Sleep -Milliseconds 600 } catch { }
     $old = Join-Path $appDir "Anatomy.ps1"   # first-version launcher, no longer used
     if (Test-Path -LiteralPath $old) { Remove-Item -LiteralPath $old -Force }
-    foreach ($f in @("server.js", "xometry.js", "sync.js", "models.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
+    foreach ($f in @("server.js", "xometry.js", "sync.js", "models.js", "design.js", "Start-Anatomy.ps1", "Anatomy.vbs", "anatomy.ico")) {
       Copy-Item -LiteralPath (Join-Path $appSrc $f) -Destination $appDir -Force
     }
     $pub = Join-Path $appDir "public"
     if (Test-Path -LiteralPath $pub) { Remove-Item -LiteralPath $pub -Recurse -Force }
     Copy-Item -LiteralPath (Join-Path $appSrc "public") -Destination $appDir -Recurse -Force
+    $bl = Join-Path $appDir "blender"
+    if (Test-Path -LiteralPath $bl) { Remove-Item -LiteralPath $bl -Recurse -Force }
+    Copy-Item -LiteralPath (Join-Path $appSrc "blender") -Destination $appDir -Recurse -Force
     New-Item -ItemType Directory -Force -Path $ProjectsRoot | Out-Null
 
     $shell = New-Object -ComObject WScript.Shell
