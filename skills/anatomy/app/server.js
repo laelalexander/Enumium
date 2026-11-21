@@ -191,6 +191,18 @@ function cleanEnv() {
   return env;
 }
 
+// Reference files the app's own features rely on (Design Studio revisions, industrial-design standard). Keep the
+// installed skill's copies current, so runs can read them even when the skill was installed before these existed.
+(function syncSkillRefs() {
+  const dst = path.join(os.homedir(), '.claude', 'skills', 'anatomy', 'references');
+  if (!fs.existsSync(dst)) return;
+  for (const src of [path.join(__dirname, 'skill-refs'), path.join(__dirname, '..', 'references')]) {
+    for (const f of ['industrial-design.md', 'design-revisions.md']) {
+      try { const t = fs.readFileSync(path.join(src, f), 'utf8'); let cur = ''; try { cur = fs.readFileSync(path.join(dst, f), 'utf8'); } catch {} if (cur !== t) fs.writeFileSync(path.join(dst, f), t); } catch {}
+    }
+  }
+})();
+
 const ALLOWED_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'MultiEdit', 'Glob', 'Grep', 'WebFetch', 'WebSearch',
   'Skill', 'TodoWrite', 'Task', 'NotebookEdit'];
 

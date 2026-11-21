@@ -204,6 +204,9 @@ if (-not $NoShortcut) {
     $bl = Join-Path $appDir "blender"
     if (Test-Path -LiteralPath $bl) { Remove-Item -LiteralPath $bl -Recurse -Force }
     Copy-Item -LiteralPath (Join-Path $appSrc "blender") -Destination $appDir -Recurse -Force
+    $refs = Join-Path $appDir "skill-refs"
+    New-Item -ItemType Directory -Force -Path $refs | Out-Null
+    foreach ($f in @("industrial-design.md", "design-revisions.md")) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot "references\$f") -Destination $refs -Force }
     New-Item -ItemType Directory -Force -Path $ProjectsRoot | Out-Null
 
     $shell = New-Object -ComObject WScript.Shell
