@@ -149,7 +149,7 @@ function systemAppend() {
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
     'Never open a window on the user\'s desktop. Run every tool headless: kicad-cli and KiCad\'s python.exe (pcbnew) only, never kicad.exe, pcbnew.exe or eeschema.exe; Freerouting 2.x with --gui.enabled=false, never Freerouting 1.x (it always opens a window); Blender with -b; browsers with --headless; slicers and CAD in CLI mode. Never open files with start, explorer, Invoke-Item or os.startfile. The user opens files from the app.',
-    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), industrial design and visual fidelity (references/industrial-design.md: no plain boxes, fillets and curved styled surfaces on every BUILD part, real manufacturer shapes for BUY parts, materials in assembly.json, tight tessellation, photoreal renders), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
+    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), industrial design and visual fidelity (references/industrial-design.md: no plain boxes, fillets and curved styled surfaces on every BUILD part, real manufacturer shapes for BUY parts, materials in assembly.json, tight tessellation, photoreal renders), precision engineering (references/precision-engineering.md: Blender and meshes are looks only; every BUILD part is feature-based build123d CAD exported as STEP with real holes, fillets, material, process and DFM; precision parts add datums, ISO 286 fits, GD&T and finish; structural parts add load cases and an FEA margin; bought parts use the vendor STEP; every part is graded Concept/Engineered/Verified in prototype/mechanical/engineering.json and checked with tools/eng/check_engineering.py), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
     'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
@@ -194,13 +194,15 @@ function cleanEnv() {
 // Reference files the app's own features rely on (Design Studio revisions, industrial-design standard). Keep the
 // installed skill's copies current, so runs can read them even when the skill was installed before these existed.
 (function syncSkillRefs() {
-  const dst = path.join(os.homedir(), '.claude', 'skills', 'anatomy', 'references');
+  const skill = path.join(os.homedir(), '.claude', 'skills', 'anatomy');
+  const dst = path.join(skill, 'references');
   if (!fs.existsSync(dst)) return;
-  for (const src of [path.join(__dirname, 'skill-refs'), path.join(__dirname, '..', 'references')]) {
-    for (const f of ['industrial-design.md', 'design-revisions.md']) {
-      try { const t = fs.readFileSync(path.join(src, f), 'utf8'); let cur = ''; try { cur = fs.readFileSync(path.join(dst, f), 'utf8'); } catch {} if (cur !== t) fs.writeFileSync(path.join(dst, f), t); } catch {}
-    }
-  }
+  const put = (from, to) => { try { const t = fs.readFileSync(from, 'utf8'); let cur = ''; try { cur = fs.readFileSync(to, 'utf8'); } catch {} if (cur !== t) { fs.mkdirSync(path.dirname(to), { recursive: true }); fs.writeFileSync(to, t); } } catch {} };
+  for (const src of [path.join(__dirname, 'skill-refs'), path.join(__dirname, '..', 'references')])
+    for (const f of ['industrial-design.md', 'design-revisions.md', 'precision-engineering.md']) put(path.join(src, f), path.join(dst, f));
+  // The grade checker and STEP feature scanner the precision-engineering standard tells runs to use.
+  for (const src of [path.join(__dirname, 'eng-tools'), path.join(__dirname, '..', 'tools', 'eng')])
+    for (const f of ['check_engineering.py', 'step_features.py']) put(path.join(src, f), path.join(skill, 'tools', 'eng', f));
 })();
 
 const ALLOWED_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'MultiEdit', 'Glob', 'Grep', 'WebFetch', 'WebSearch',
@@ -666,6 +668,14 @@ const server = http.createServer(async (req, res) => {
           catch (e) { return send(res, 400, { error: e.message }); }
         }
         if (sub === 'blender' && req.method === 'GET') return send(res, 200, design.blenderStatus(dir));
+        if (sub === 'features' && req.method === 'GET') {
+          try { return send(res, 200, await design.stepFeatures(dir, ROOT, url.searchParams.get('step') || '', cleanEnv)); }
+          catch (e) { return send(res, 400, { error: e.message }); }
+        }
+        if (sub === 'grade' && req.method === 'POST') {
+          try { return send(res, 200, await design.gradeCheck(dir, ROOT, cleanEnv)); }
+          catch (e) { return send(res, 400, { error: e.message }); }
+        }
         if (sub === 'revision' && req.method === 'POST') {
           // Rebuild: a NEW project (rev B, C, ...) copied from this one, regenerated by the skill from the edits.
           // The completed version is never changed.

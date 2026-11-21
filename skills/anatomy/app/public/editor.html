@@ -41,7 +41,12 @@ aside.left { border-right: 1px solid var(--line); } aside.right { border-left: 1
 .prow.off .nm { opacity: .4; text-decoration: line-through; }
 .badge { font-size: 10px; padding: 0 5px; border-radius: 6px; background: #30353d; color: var(--muted); }
 .badge.buy { background: #2c3b2f; color: #9fe0b0; } .badge.build { background: #3a3326; color: #ffd28a; }
-.badge.boxy { background: #4a2b2b; color: #ffb3b3; } .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); flex: none; }
+.badge.boxy { background: #4a2b2b; color: #ffb3b3; }
+.g { font-size: 10px; font-weight: 700; width: 16px; text-align: center; border-radius: 4px; padding: 0 2px; }
+.g.concept { background: #4a2b2b; color: #ffb3b3; } .g.engineered { background: #4a3d1f; color: #ffd28a; } .g.verified { background: #1f4a2e; color: #9fe0b0; }
+.miss { margin: 4px 0 0; padding-left: 16px; font-size: 12px; color: #d8c2a0; } .miss li { margin: 2px 0; }
+table.ft { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; } table.ft td { padding: 2px 4px; border-bottom: 1px solid var(--line); }
+.bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 6px 0; background: #30353d; } .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); flex: none; }
 .sec { color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin: 14px 0 6px; }
 .sec:first-child { margin-top: 2px; }
 .field { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; margin: 3px 0; }
@@ -98,22 +103,23 @@ input[type=color] { width: 34px; height: 28px; border: 1px solid var(--line); bo
   <div class="tb"><button id="space" title="Gizmo axes: world or the part's own">World</button><button id="snap" title="Snap: 5 mm, 15°, 5 %">Snap</button></div>
   <div class="tb"><button id="undo" title="Undo (Ctrl+Z)" disabled>↶</button><button id="redo" title="Redo (Ctrl+Y)" disabled>↷</button></div>
   <div class="sp"></div>
-  <button class="btn" id="blenderOpen" title="Open the edited model in Blender to sculpt and restyle by hand">Open in Blender</button>
+  <button class="btn" id="blenderOpen" title="Blender is for looks and concept sketching only: anything sculpted there is rebuilt as real CAD">Open in Blender</button>
   <button class="btn" id="blenderBack" title="Bring the changes you saved in Blender back into the editor">Bring back</button>
   <button class="btn" id="render" title="Photoreal Cycles render in Blender (runs in the background)">Photoreal render</button>
   <button class="btn primary" id="rebuild" title="Make a new revision from these edits: CAD, drawings, BOM and G-code are regenerated">Rebuild as rev …</button>
 </header>
 
 <aside class="left">
-  <div class="tabs" id="ltabs"><button data-p="parts" class="on">Parts</button><button data-p="params">Dimensions</button><button data-p="style">Styling</button></div>
+  <div class="tabs" id="ltabs"><button data-p="parts" class="on">Parts</button><button data-p="params">Dimensions</button><button data-p="eng">Engineering</button><button data-p="style">Styling</button></div>
   <div class="pane" id="p-parts"><input class="search" id="q" placeholder="Search parts"><div id="tree"></div></div>
   <div class="pane hidden" id="p-params"><input class="search" id="pq" placeholder="Search dimensions"><div id="params"></div></div>
+  <div class="pane hidden" id="p-eng"></div>
   <div class="pane hidden" id="p-style"></div>
 </aside>
 
 <main id="main"><div class="load" id="load">Loading the design…</div>
   <div class="overlay">
-    <div class="tb" id="look"><button data-l="studio" class="on" title="Materials and studio light">Studio</button><button data-l="clay" title="Plain clay, to judge the shapes">Clay</button><button data-l="lines" title="Clay with edges, to spot boxy parts">Lines</button><button data-l="xray" title="See through the shells">X-ray</button></div>
+    <div class="tb" id="look"><button data-l="studio" class="on" title="Materials and studio light">Studio</button><button data-l="clay" title="Plain clay, to judge the shapes">Clay</button><button data-l="lines" title="Clay with edges, to spot boxy parts">Lines</button><button data-l="xray" title="See through the shells">X-ray</button><button data-l="grade" title="Colour every part by its engineering grade: red concept, amber engineered, green verified">Grade</button></div>
     <div class="tb"><button id="ao" class="on" title="Ambient occlusion (soft contact shadows)">AO</button><button id="fit" title="Fit the whole product (F)">Fit</button><button id="shot" title="Save a picture of this view to the project">Snapshot</button></div>
   </div>
   <div class="hint" id="hint">Click a part · Shift-click to add · drag to orbit · right-drag to pan · W/E/R move/rotate/scale · F fit · Del remove</div>
@@ -234,6 +240,7 @@ function makeMaterial(name, color, look) {
   if (matCache.has(key)) return matCache.get(key);
   let m;
   if (look === 'clay' || look === 'lines') m = new THREE.MeshStandardMaterial({ color: 0xd7d4cf, roughness: 0.75, metalness: 0, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  else if (look === 'grade') m = new THREE.MeshStandardMaterial({ color: { concept: '#d65a5a', engineered: '#e3b04b', verified: '#4cc38a' }[name] || '#8a9099', roughness: 0.6, metalness: 0 });
   else if (look === 'xray') m = new THREE.MeshStandardMaterial({ color: color || MATS[name]?.color || '#9ab', transparent: true, opacity: 0.22, depthWrite: false, roughness: 0.4, side: THREE.DoubleSide });
   else {
     const d = MATS[name] || MATS['Painted body, gloss'];
@@ -288,6 +295,16 @@ const P = new Map();        // file -> part { file, name, kind, line, group, piv
 let edits = { version: 1, units: 'mm', up: 'Z', parts: {}, params: {}, global: { style: '', detail: 'Showroom', autoStyle: true, notes: '' } };
 let sel = new Set(), look = 'studio', tool = 'select', dirty = false;
 const undoStack = [], redoStack = [];
+let ENG = { records: null, report: null, provisional: false, tools: false, busy: false, err: '' };
+const GRADES = ['concept', 'engineered', 'verified'];
+const CLASSES = { precision: 'Precision (fits, bearing seats, tolerances under ±0.1 mm)', structural: 'Structural (carries a primary load)', cosmetic: 'Cosmetic (covers, fairings, trim)', bought: 'Bought (vendor owns the geometry)' };
+function gradeOf(file) { const r = ENG.report?.parts?.[file]; return r ? r.evidence : (ENG.records?.[file]?.grade || null); }
+function engRec(file) { return ENG.records?.[file] || null; }
+function setEng(info) {
+  if (!info) return;
+  ENG.report = info.report || null; ENG.tools = !!info.tools;
+  ENG.records = info.records || info.report?.records || null; ENG.provisional = !info.records && !!info.report?.provisional;
+}
 
 const ldr = { stl: new STLLoader(), glb: new GLTFLoader(), obj: new OBJLoader(), '3mf': new ThreeMFLoader() };
 function geosOf(obj) { const gs = []; obj.updateMatrixWorld(true); obj.traverse(o => { if (o.isMesh) { const g = o.geometry.clone(); g.applyMatrix4(o.matrixWorld); for (const k of Object.keys(g.attributes)) if (k !== 'position') g.deleteAttribute(k); gs.push(g.index ? g.toNonIndexed() : g); } }); return gs; }
@@ -327,7 +344,7 @@ function meshStats(g) {
 }
 // textures are authored per mm: scale UV repeat to the material's tile size
 function setMat(p) {
-  const e = p.e(); const name = e.material || p.autoMat;
+  const e = p.e(); const name = look === 'grade' ? (gradeOf(p.file) || 'none') : e.material || p.autoMat;
   let m = makeMaterial(name, e.color, look);
   if (m.map || m.roughnessMap) { const t = m.map || m.roughnessMap; const r = 1 / (m.userData.mapMm || 50); t.repeat.set(r, r); }
   p.mesh.material = m;
@@ -358,15 +375,15 @@ function applyEdit(p) { // edits -> pivot
 }
 function isEdited(e) {
   if (!e) return false;
-  return !!(e.removed || e.material || e.color || e.note || e.mesh || (e.styles && e.styles.length) ||
+  return !!(e.removed || e.material || e.color || e.note || e.mesh || e.engineer || e.partClass || (e.styles && e.styles.length) ||
     (e.translate || []).some(v => Math.abs(v) > 0.05) || (e.rotate || []).some(v => Math.abs(v) > 0.05) || (e.scale || []).some(v => Math.abs(v - 1) > 0.0005));
 }
 function tidy(file) { if (!isEdited(edits.parts[file])) delete edits.parts[file]; }
-function editCount() { return Object.values(edits.parts).filter(isEdited).length + Object.keys(edits.params).length + (edits.global.notes || edits.global.style ? 1 : 0); }
+function editCount() { return Object.values(edits.parts).filter(isEdited).length + Object.keys(edits.params).length + (edits.global.notes || edits.global.style ? 1 : 0) + (edits.global.targetGrade && edits.global.targetGrade !== 'Verified' ? 1 : 0); }
 
 function snapshot() { return JSON.stringify(edits); }
 function pushUndo() { undoStack.push(snapshot()); if (undoStack.length > 200) undoStack.shift(); redoStack.length = 0; btnUndo(); }
-function restore(s) { edits = JSON.parse(s); for (const p of P.values()) applyEdit(p); renderTree(); renderParams(); renderStyle(); renderInspector(); attachGizmo(); changed(false); }
+function restore(s) { edits = JSON.parse(s); for (const p of P.values()) applyEdit(p); renderTree(); renderParams(); renderEng(); renderStyle(); renderInspector(); attachGizmo(); changed(false); }
 function btnUndo() { $('#undo').disabled = !undoStack.length; $('#redo').disabled = !redoStack.length; }
 $('#undo').onclick = () => { if (!undoStack.length) return; redoStack.push(snapshot()); restore(undoStack.pop()); btnUndo(); };
 $('#redo').onclick = () => { if (!redoStack.length) return; undoStack.push(snapshot()); restore(redoStack.pop()); btnUndo(); };
@@ -388,6 +405,7 @@ async function init() {
   document.title = `${D.title} · Design Studio`;
   $('#title').textContent = D.title; if (D.revision) { $('#rev').textContent = 'rev ' + D.revision; $('#rev').classList.remove('hidden'); }
   $('#st-src').textContent = D.assembly ? `Model: ${D.assembly}` : 'Model: part files (no assembly.json)';
+  setEng(D.engineering);
   if (D.edits) edits = { ...edits, ...D.edits, global: { ...edits.global, ...(D.edits.global || {}) }, parts: D.edits.parts || {}, params: D.edits.params || {} };
   $('#rebuild').textContent = 'Rebuild as new revision';
   $('#blenderOpen').disabled = $('#render').disabled = !D.blender;
@@ -410,7 +428,7 @@ async function init() {
   await Promise.all(workers);
   $('#load').classList.add('hidden');
   for (const p of P.values()) applyEdit(p);
-  frame(); renderTree(); renderParams(); renderStyle(); renderInspector();
+  frame(); renderTree(); renderParams(); renderEng(); renderStyle(); renderInspector();
   $('#st-edits').innerHTML = `<b>${editCount()}</b> edits`; $('#st-save').textContent = D.edits?.saved ? 'Saved ' + new Date(D.edits.saved).toLocaleString() : 'Not saved yet';
   updateRebuildLabel();
 }
@@ -541,7 +559,7 @@ function renderTree() {
       h += `<div class="prow ${sel.has(p.file) ? 'sel' : ''} ${e.removed || p.hidden ? 'off' : ''}" data-f="${esc(p.file)}" title="${esc(p.file)}">
         <span class="dot" style="visibility:${isEdited(e) ? 'visible' : 'hidden'}"></span><span class="nm">${esc(p.name)}</span>
         ${p.boxy || p.lowpoly ? '<span class="badge boxy" title="Plain block or low-detail stand-in">▢</span>' : ''}
-        ${p.kind ? `<span class="badge ${p.kind}">${p.kind.toUpperCase()}</span>` : ''}<span class="eye" title="Hide/show (H)">${p.hidden ? '◌' : '●'}</span></div>`;
+        ${gradeOf(p.file) ? `<span class="g ${gradeOf(p.file)}" title="Engineering grade: ${gradeOf(p.file)}">${gradeOf(p.file)[0].toUpperCase()}</span>` : ''}${p.kind ? `<span class="badge ${p.kind}">${p.kind.toUpperCase()}</span>` : ''}<span class="eye" title="Hide/show (H)">${p.hidden ? '◌' : '●'}</span></div>`;
     }
     h += '</div>';
   }
@@ -619,6 +637,9 @@ function renderStyle() {
     <p class="in">Showroom: every visible part is modelled as the real thing, with fillets, curved surfaces, real fasteners and connectors, and proper finishes.</p>
     <div class="sec">No more boxes</div>
     <label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="gAuto" ${g.autoStyle ? 'checked' : ''}> <span>Restyle every square, boxy part on rebuild: fillets on all edges, curves and drafts where it makes sense, and real catalogue shapes for bought parts.</span></label>
+    <div class="sec">Engineering grade target</div>
+    <select id="gGrade">${['Concept', 'Engineered', 'Verified'].map(x => `<option ${(g.targetGrade || 'Verified') === x ? 'selected' : ''}>${x}</option>`).join('')}</select>
+    <p class="in">The rebuild engineers every part to this grade: feature-based CAD with real holes and fillets, material and process, DFM, and for precision parts datums, ISO 286 fits, GD&amp;T and finish. Verified adds FEA margins, tolerance stack-ups and an inspection plan. Looks from Blender never count as engineering.</p>
     <div class="sec">Notes for the rebuild</div>
     <textarea id="gNotes" rows="7" placeholder="Describe the look and any changes to the whole product. For example: give the ducts a thick rounded intake lip, make the side rails one flowing carbon beam, hide the wiring, use a red and white livery.">${esc(g.notes || '')}</textarea>
     <div class="sec">Accent colour for painted parts</div>
@@ -628,6 +649,7 @@ function renderStyle() {
   $('#gStyle').onchange = e => { pushUndo(); g.style = e.target.value; changed(); };
   $('#gDetail').onclick = e => { const d = e.target.closest('[data-d]'); if (!d) return; pushUndo(); g.detail = d.dataset.d; changed(); renderStyle(); };
   $('#gAuto').onchange = e => { pushUndo(); g.autoStyle = e.target.checked; changed(); };
+  $('#gGrade').onchange = e => { pushUndo(); g.targetGrade = e.target.value; changed(); };
   $('#gNotes').onchange = e => { pushUndo(); g.notes = e.target.value; changed(); };
   $('#gPaint').onclick = e => { const c = e.target.closest('[data-c]'); if (!c) return; pushUndo();
     for (const p of P.values()) { const m = p.e().material || p.autoMat; if (/^Painted body/.test(m)) { const ed = partEdit(p.file); ed.color = c.dataset.c; syncEdit(p); applyEdit(p); } }
@@ -640,7 +662,47 @@ function renderRenders() {
   el.innerHTML = rs.length ? rs.slice(0, 6).map(r => `<img src="/p/${encodeURIComponent(id)}/${enc(r)}" data-r="${esc(r)}">`).join('') : '<div class="in">None yet. Use Photoreal render.</div>';
   el.onclick = e => { const i = e.target.closest('img'); if (i) window.open(i.src, '_blank'); };
 }
-$('#ltabs').onclick = e => { const p = e.target.dataset.p; if (!p) return; document.querySelectorAll('#ltabs button').forEach(b => b.classList.toggle('on', b.dataset.p === p)); for (const k of ['parts', 'params', 'style']) $('#p-' + k).classList.toggle('hidden', k !== p); };
+// ================================================================ left: engineering grade
+function renderEng() {
+  const el = $('#p-eng'); if (!el) return;
+  const rep = ENG.report, parts = [...P.values()];
+  const cnt = { concept: 0, engineered: 0, verified: 0, none: 0 };
+  for (const p of parts) cnt[gradeOf(p.file) || 'none']++;
+  const tot = parts.length || 1;
+  const col = { concept: '#d65a5a', engineered: '#e3b04b', verified: '#4cc38a', none: '#5b616b' };
+  const byG = g => parts.filter(p => (gradeOf(p.file) || 'none') === g);
+  const list = g => { const ps = byG(g); if (!ps.length) return '';
+    return `<div class="sec"><span class="g ${g}">${g[0].toUpperCase()}</span> ${g === 'none' ? 'Not graded' : g[0].toUpperCase() + g.slice(1)} · ${ps.length}</div>` +
+      ps.slice(0, 60).map(p => { const m = rep?.parts?.[p.file]?.missing || []; const c = engRec(p.file)?.class;
+        return `<div class="erow" data-f="${esc(p.file)}" style="cursor:pointer;padding:3px 0;border-bottom:1px solid var(--line)"><b>${esc(p.name)}</b> <span class="in">${c ? esc(c) : ''}${rep?.parts?.[p.file]?.overclaimed ? ' · <span style="color:#ffb3b3">over-claimed</span>' : ''}</span>${m.length ? `<ul class="miss">${m.slice(0, 3).map(x => `<li>${esc(x)}</li>`).join('')}${m.length > 3 ? `<li>and ${m.length - 3} more</li>` : ''}</ul>` : ''}</div>`; }).join('') +
+      (ps.length > 60 ? `<p class="in">and ${ps.length - 60} more</p>` : ''); };
+  el.innerHTML = `
+    <div class="sec">Engineering grade</div>
+    <p class="in">A part is real when a machinist, print bureau or supplier can make it from the package and it fits and carries its load. Each part is graded from its evidence, measured from its STEP file, never from how it looks.</p>
+    <div class="bar">${['verified', 'engineered', 'concept', 'none'].map(g => cnt[g] ? `<div style="width:${100 * cnt[g] / tot}%;background:${col[g]}" title="${g}: ${cnt[g]}"></div>` : '').join('')}</div>
+    <div class="kv"><div>Verified</div><div>${cnt.verified}</div><div>Engineered</div><div>${cnt.engineered}</div><div>Concept</div><div>${cnt.concept}</div>${cnt.none ? `<div>Not graded</div><div>${cnt.none}</div>` : ''}
+      <div>Build-ready</div><div>${rep ? (rep.build_ready ? '<span style="color:#9fe0b0">yes</span>' : '<span style="color:#ffb3b3">no</span>') : 'not checked yet'}</div></div>
+    ${ENG.provisional ? '<p class="in">The project has no engineering record yet, so this is a first pass: bought parts and structural parts guessed from the BOM, every part at Concept. The rebuild writes the real record.</p>' : ''}
+    ${ENG.err ? `<p class="in" style="color:#ffb3b3">${esc(ENG.err)}</p>` : ''}
+    <div class="row"><button class="btn primary" id="eRun" ${ENG.busy || !ENG.tools ? 'disabled' : ''}>${ENG.busy ? 'Checking every STEP…' : 'Run engineering check'}</button>
+      <button class="btn" id="eLook">Colour by grade</button></div>
+    ${!ENG.tools ? '<p class="in">The engineering tools are not installed with the app.</p>' : ''}
+    <div class="row"><button class="btn" id="eAll">Engineer all to ${esc(edits.global.targetGrade || 'Verified')} on rebuild</button></div>
+    ${list('concept')}${list('engineered')}${list('verified')}${list('none')}`;
+  $('#eRun').onclick = runGrade;
+  $('#eLook').onclick = () => document.querySelector('#look [data-l="grade"]').click();
+  $('#eAll').onclick = () => { pushUndo(); const t = edits.global.targetGrade || 'Verified';
+    for (const p of parts) if (GRADES.indexOf(gradeOf(p.file) || 'concept') < GRADES.indexOf(t.toLowerCase())) { partEdit(p.file).engineer = t; syncEdit(p); }
+    changed(); renderTree(); renderInspector(); toast(`Parts below ${t} will be engineered on rebuild`); };
+  el.querySelectorAll('.erow').forEach(r => r.onclick = ev => { pick(r.dataset.f, ev.shiftKey); });
+}
+async function runGrade() {
+  ENG.busy = true; ENG.err = ''; renderEng();
+  try { const r = await api(`/api/projects/${id}/design/grade`, { method: 'POST' }); ENG.report = r; ENG.records = r.records || ENG.records; ENG.provisional = !!r.provisional && !D.engineering?.records; }
+  catch (e) { ENG.err = e.message; }
+  ENG.busy = false; renderEng(); renderTree(); renderInspector(); if (look === 'grade') for (const p of P.values()) setMat(p);
+}
+$('#ltabs').onclick = e => { const p = e.target.dataset.p; if (!p) return; document.querySelectorAll('#ltabs button').forEach(b => b.classList.toggle('on', b.dataset.p === p)); for (const k of ['parts', 'params', 'eng', 'style']) $('#p-' + k).classList.toggle('hidden', k !== p); };
 
 // ================================================================ right: inspector
 const STYLE_CHIPS = {
@@ -664,7 +726,8 @@ function renderInspector() {
       <div class="kv"><div>Parts</div><div>${P.size}</div><div>Edits</div><div>${n}</div><div>Dimensions</div><div>${D && D.params.length ? D.params.reduce((a, f) => a + f.items.length, 0) : 'none found'}</div></div>
       <div class="sec">How it works</div>
       <p class="in">Your edits are saved here as you go. <b>Rebuild as new revision</b> makes a copy of this project as the next revision and has Anatomy apply every edit to the real CAD, then regenerate the drawings, BOM, cut files, G-code, assembly guide and build package. This version is never changed.</p>
-      <p class="in"><b>Open in Blender</b> sends the edited model to Blender for hand sculpting and restyling; press Ctrl+S in Blender, then <b>Bring back</b> here.</p>`;
+      <p class="in"><b>Open in Blender</b> sends the edited model to Blender for looks and concept sculpting only; press Ctrl+S in Blender, then <b>Bring back</b> here. Blender gives shapes, not parts: the rebuild turns every sculpt into feature-based CAD with real holes, fits and fillets.</p>
+      <p class="in"><b>Engineering</b> shows each part's grade (Concept, Engineered, Verified) measured from its STEP file. Pick a part and press <b>Measure from STEP</b> to see its real holes, fillets and faces.</p>`;
     return;
   }
   const ps = [...sel].map(f => P.get(f));
@@ -689,6 +752,7 @@ function renderInspector() {
     <div class="sec">Styling</div>
     <div class="chips" id="iStyles">${Object.entries(STYLE_CHIPS).map(([k, t]) => `<span class="chip ${styles.has(t) ? 'on' : ''}" data-s="${k}" title="${esc(t)}">${esc(t.split(/[:(]/)[0].trim())}</span>`).join('')}
       ${[...styles].filter(s => !Object.values(STYLE_CHIPS).includes(s)).map(s => `<span class="chip on" data-raw="${esc(s)}" title="${esc(s)}">${esc(s.split(':')[0])}</span>`).join('')}</div>
+    ${engSection(ps, one)}
     <div class="sec">Describe the change</div>
     <textarea id="iNote" rows="5" placeholder="Tell Anatomy what to do with ${one ? 'this part' : 'these parts'}. For example: make it 20 % thinner with a curved top, swap for a ${p.kind === 'buy' ? 'smaller model from the same supplier' : 'machined aluminium version'}, add a cable pass-through.">${esc(one ? (e.note || '') : '')}</textarea>
     <div class="row">
@@ -720,6 +784,45 @@ function renderInspector() {
   let iso = false; $('#iIso').onclick = () => { iso = !iso; for (const x of P.values()) x.pivot.visible = (iso ? sel.has(x.file) : true) && !x.e().removed && !x.hidden; $('#iIso').textContent = iso ? 'Show all' : 'Isolate'; };
   $('#iReset').onclick = () => { pushUndo(); for (const x of ps) { delete edits.parts[x.file]; applyEdit(x); } changed(); renderInspector(); renderTree(); attachGizmo(); };
   $('#iDel').onclick = removeSel;
+  wireEng(ps, one);
+}
+function engSection(ps, one) {
+  const p = ps[0], e = p.e(), rec = engRec(p.file), r = ENG.report?.parts?.[p.file], g = gradeOf(p.file);
+  const cls = one ? (e.partClass || rec?.class || (p.kind === 'buy' ? 'bought' : '')) : '';
+  const tgt = one ? (e.engineer || '') : (ps.every(x => x.e().engineer === p.e().engineer) ? p.e().engineer || '' : '');
+  return `<div class="sec">Engineering</div>
+    ${one ? `<div class="kv"><div>Grade</div><div>${g ? `<span class="g ${g}">${g}</span>${r?.overclaimed ? ' <span style="color:#ffb3b3">record claims ' + esc(r.claimed) + '</span>' : ''}` : 'not checked'}</div>
+      ${rec?.material ? `<div>Material</div><div>${esc(rec.material)}</div>` : ''}${rec?.process ? `<div>Process</div><div>${esc(rec.process)}</div>` : ''}
+      ${rec?.drawing ? `<div>Drawing</div><div>${esc(rec.drawing)}</div>` : ''}${rec?.mass_kg != null && rec?.mass_kg !== '' ? `<div>Mass</div><div>${rec.mass_kg} kg [${r1(rec.mass_kg * 2.20462)} lb]</div>` : ''}
+      ${rec?.fea?.margin != null ? `<div>FEA margin</div><div>${rec.fea.margin}</div>` : ''}<div>STEP</div><div style="word-break:break-all">${rec?.step ? esc(rec.step) : '<span style="color:#ffb3b3">none</span>'}</div></div>
+      ${r?.missing?.length ? `<div class="in" style="margin-top:4px">Missing for the next grade:</div><ul class="miss">${r.missing.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}` : ''}
+    <div class="xyz" style="grid-template-columns:60px 1fr"><span>Class</span><select id="iClass">${one ? '' : '<option value="">(keep each)</option>'}${Object.entries(CLASSES).map(([k, t]) => `<option value="${k}" ${k === cls ? 'selected' : ''} title="${esc(t)}">${k}</option>`).join('')}${one && !cls ? '<option value="" selected>(not set)</option>' : ''}</select></div>
+    <div class="chips" id="iEng">${['Engineered', 'Verified'].map(x => `<span class="chip ${tgt === x ? 'on' : ''}" data-g="${x}" title="On rebuild: engineer to grade ${x}">Engineer to ${x}</span>`).join('')}</div>
+    ${one && rec?.step ? `<div class="row"><button class="btn" id="iMeasure">Measure from STEP</button></div><div id="iFeat"></div>` : ''}`;
+}
+function wireEng(ps, one) {
+  $('#iClass').onchange = ev => { const v = ev.target.value; if (!v && !one) return; pushUndo();
+    for (const x of ps) { const ed = partEdit(x.file); if (v && v !== engRec(x.file)?.class) ed.partClass = v; else delete ed.partClass; syncEdit(x); } changed(); renderInspector(); };
+  $('#iEng').onclick = ev => { const c = ev.target.closest('[data-g]'); if (!c) return; pushUndo(); const on = !c.classList.contains('on');
+    for (const x of ps) { const ed = partEdit(x.file); if (on) ed.engineer = c.dataset.g; else delete ed.engineer; syncEdit(x); } changed(); renderInspector(); renderTree(); };
+  const mb = $('#iMeasure'); if (mb) mb.onclick = async () => {
+    const step = engRec(ps[0].file).step; const out = $('#iFeat'); mb.disabled = true; out.innerHTML = '<p class="in">Reading the B-rep…</p>';
+    try { out.innerHTML = featHtml(await api(`/api/projects/${id}/design/features?step=${encodeURIComponent(step)}`)); }
+    catch (e) { out.innerHTML = `<p class="in" style="color:#ffb3b3">${esc(e.message)}</p>`; }
+    mb.disabled = false;
+  };
+}
+const inch = mm => (mm / 25.4).toFixed(3);
+function featHtml(f) {
+  const bb = f.bbox_mm || [0, 0, 0];
+  const holes = (f.holes || []).slice(0, 14);
+  return `<div class="kv" style="margin-top:6px"><div>Envelope</div><div>${bb.map(v => r1(v)).join(' × ')} mm [${bb.map(inch).join(' × ')} in]</div>
+    <div>Volume</div><div>${(f.volume_mm3 / 1000).toFixed(1)} cm³ [${(f.volume_mm3 / 16387.064).toFixed(2)} in³]</div>
+    <div>Faces</div><div>${f.faces} (${Object.entries(f.face_types || {}).map(([k, n]) => n + ' ' + k.toLowerCase()).join(', ')})</div>
+    <div>Fillets</div><div>${f.fillets}${f.fillet_radii_mm?.length ? ' · R ' + f.fillet_radii_mm.slice(0, 6).join(', ') + ' mm' : ''}</div><div>Chamfers</div><div>${f.chamfers}</div>
+    <div>Holes</div><div>${f.hole_count}</div></div>
+    ${f.primitive ? '<p class="in" style="color:#ffb3b3">This STEP is still a bare box or cylinder. It is a placeholder, not a part.</p>' : ''}
+    ${holes.length ? `<table class="ft"><tr><td><b>Ø mm</b></td><td><b>Ø in</b></td><td><b>Depth mm [in]</b></td><td><b>Faces</b></td></tr>${holes.map(h => `<tr><td>${h.diameter_mm}</td><td>${h.diameter_in.toFixed(4)}</td><td>${h.depth_mm != null ? h.depth_mm + ' [' + inch(h.depth_mm) + ']' : ''}</td><td>${h.faces}</td></tr>`).join('')}</table>${f.holes.length > 14 ? `<p class="in">and ${f.holes.length - 14} more sizes</p>` : ''}` : ''}`;
 }
 function removeSel() {
   const ps = [...sel].map(f => P.get(f)); const restore = ps.every(x => x.e().removed);
@@ -769,7 +872,7 @@ async function sendToBlender(mode) {
     const r = await api(`/api/projects/${id}/design/blender`, { method: 'POST', body: JSON.stringify({ mode, samples: 192 }) });
     if (mode === 'render') watchRender(r.out);
     else showModal(`<h2>Blender is opening</h2><p>The edited model opens in Blender with a studio already set up (floor, lights, camera). Sculpt, reshape, move parts or change materials there.</p>
-      <p>When you are done, press <b>Ctrl+S</b> in Blender, then press <b>Bring back</b> here. Moved parts and new colours come straight into the editor; a sculpted part comes back as the shape the rebuild has to match with real CAD.</p><div class="row"><button class="btn primary" onclick="this.closest('.modal').classList.add('hidden')">OK</button></div>`);
+      <p>When you are done, press <b>Ctrl+S</b> in Blender, then press <b>Bring back</b> here. Moved parts and new colours come straight into the editor; a sculpted part comes back as concept intent only: the rebuild rebuilds it as feature-based CAD (real holes, fits, fillets, material and process) and grades it from the STEP.</p><div class="row"><button class="btn primary" onclick="this.closest('.modal').classList.add('hidden')">OK</button></div>`);
   } catch (e) { showModal(`<h2>Blender could not start</h2><pre>${esc(e.message)}</pre><div class="row"><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">Close</button></div>`); }
 }
 let renderWatch = null;

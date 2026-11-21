@@ -147,7 +147,7 @@ function info(dir) {
     assembly: asm, base: asm ? (path.posix.dirname(asm) === '.' ? '' : path.posix.dirname(asm) + '/') : '',
     units: (assembly && assembly.units) || 'mm', up: (assembly && assembly.up) || 'Z', parts,
     params: findParams(dir), hints: materialHints(dir, asm, parts), edits: loadEdits(dir),
-    blender: !!findBlender(), renders: listRenders(dir),
+    blender: !!findBlender(), renders: listRenders(dir), engineering: engineeringInfo(dir),
   };
 }
 
@@ -161,6 +161,7 @@ function editsMarkdown(meta, id, e) {
     if (e.global.autoStyle) L.push('- **No more boxes:** restyle every square, boxy or low-detail part, not only the ones listed below: fillets on every edge, curved and drafted surfaces where they make sense, and the real manufacturer shape for every bought part (references/industrial-design.md).');
     if (e.global.style) L.push(`- Styling language: **${e.global.style}**`);
     if (e.global.detail) L.push(`- Detail level: **${e.global.detail}**`);
+    if (e.global.targetGrade) L.push(`- **Engineering grade target: ${e.global.targetGrade}** for every precision and structural part (references/precision-engineering.md): feature-based CAD with real holes and fillets, datums, ISO fits, GD&T, finish, material and process, DFM${/verified/i.test(e.global.targetGrade) ? ', FEA margins, tolerance stack-ups and an inspection plan' : ''}. Bought parts get the vendor STEP. Record it all in prototype/mechanical/engineering.json and run tools/eng/check_engineering.py until the evidence supports the grade. Blender shapes are concept intent only.`);
     if (e.global.notes) L.push('', e.global.notes);
     L.push('');
   }
@@ -183,6 +184,8 @@ function editsMarkdown(meta, id, e) {
       else if (p.color) t.push(`Colour ${p.color}.`);
       if (p.styles && p.styles.length) t.push(`Styling: ${p.styles.join('; ')}.`);
       if (p.mesh) t.push(`Sculpted in Blender: match the shape in \`${p.mesh}\` (mesh in the part's local frame, mm, centred on the part's centre). Rebuild it as real CAD, do not ship the mesh.`);
+      if (p.engineer) t.push(`**Engineer this part to grade ${p.engineer}** (references/precision-engineering.md)${p.partClass ? ` as a ${p.partClass} part` : ''}.`);
+      else if (p.partClass) t.push(`Class: ${p.partClass}.`);
       if (p.note) t.push(`Note: ${p.note}`);
       if (!t.length) continue;
       L.push(`### ${p.name || file}`, '', `File \`${file}\`${p.line ? `, BOM line ${p.line}` : ''}.`, '', ...t.map(s => '- ' + s), '');
@@ -274,4 +277,77 @@ function blenderStatus(dir) {
   };
 }
 
-module.exports = { info, saveEdits, loadEdits, editsMarkdown, nextRevision, copyProject, designDir, runBlender, blenderStatus, findBlender, parseParams };
+// ---------------------------------------------------------------- engineering grade (references/precision-engineering.md)
+const ENG_TOOLS = [path.join(__dirname, 'eng-tools'), path.join(__dirname, '..', 'tools', 'eng')].find(d => fs.existsSync(path.join(d, 'check_engineering.py')));
+function engineeringInfo(dir) {
+  const eng = walk(dir, (r, n) => n === 'engineering.json' && !/scale_model/i.test(r)).sort((a, b) => depth(a) - depth(b))[0] || null;
+  let records = null; if (eng) try { records = readJson(path.join(dir, eng)).parts || null; } catch {}
+  // The app's own check result (hidden folder) wins over a report the run wrote, when it is newer.
+  const cands = [path.join(designDir(dir), 'engineering-report.json')];
+  if (eng) cands.push(path.join(dir, path.posix.dirname(eng), 'engineering-report.json'));
+  let report = null, at = 0;
+  for (const c of cands) try { const st = fs.statSync(c); if (st.mtimeMs > at) { report = readJson(c); at = st.mtimeMs; } } catch {}
+  return { file: eng, records, report, reportAt: at || null, tools: !!ENG_TOOLS };
+}
+// A Python that has build123d: the project's venv, any other project's venv, then python on PATH.
+let pyCache = null;
+function findCadPython(dir, root) {
+  const { execFileSync } = require('child_process');
+  const ok = py => { try { execFileSync(py, ['-c', 'import build123d'], { timeout: 60000, windowsHide: true, stdio: 'ignore' }); return true; } catch { return false; } };
+  const venv = d => [path.join(d, '.venv', 'Scripts', 'python.exe'), path.join(d, '.venv', 'bin', 'python')].find(p => fs.existsSync(p));
+  const own = venv(dir); if (own && ok(own)) return own;
+  if (pyCache && ok(pyCache)) return pyCache;
+  let ents = []; try { ents = fs.readdirSync(root, { withFileTypes: true }).filter(e => e.isDirectory()); } catch {}
+  for (const e of ents) { const p = venv(path.join(root, e.name)); if (p && ok(p)) return (pyCache = p); }
+  for (const p of process.platform === 'win32' ? ['python', 'py'] : ['python3', 'python']) if (ok(p)) return (pyCache = p);
+  return null;
+}
+function runPy(py, args, cwd, cleanEnv, timeoutMs) {
+  return new Promise(resolve => {
+    let out = '', err = '';
+    const p = spawn(py, args, { cwd, env: cleanEnv(), windowsHide: true });
+    const k = setTimeout(() => { try { p.kill(); } catch {} }, timeoutMs);
+    p.stdout.on('data', d => { out += d; }); p.stderr.on('data', d => { err = (err + d).slice(-4000); });
+    p.on('close', code => { clearTimeout(k); resolve({ code, out, err }); });
+    p.on('error', e => { clearTimeout(k); resolve({ code: -1, out, err: e.message }); });
+  });
+}
+// Exact features of a part's STEP (holes, fillets, chamfers, faces), cached by file time.
+async function stepFeatures(dir, root, rel, cleanEnv) {
+  if (!ENG_TOOLS) throw new Error('The engineering tools are not installed with the app.');
+  const f = path.resolve(dir, rel); if (!f.startsWith(dir + path.sep) || !fs.existsSync(f)) throw new Error('STEP file not found: ' + rel);
+  const cdir = path.join(designDir(dir), 'features'); fs.mkdirSync(cdir, { recursive: true });
+  const cf = path.join(cdir, rel.replace(/[\/:]/g, '_') + '.json');
+  const mt = fs.statSync(f).mtimeMs;
+  try { const c = readJson(cf); if (c._mtime === mt) return c; } catch {}
+  const py = findCadPython(dir, root); if (!py) throw new Error('No Python with build123d was found on this PC.');
+  const r = await runPy(py, [path.join(ENG_TOOLS, 'step_features.py'), f], dir, cleanEnv, 180000);
+  if (r.code !== 0) throw new Error('Could not measure the STEP: ' + (r.err || r.out).slice(-600));
+  const j = JSON.parse(r.out); j._mtime = mt; j.file = rel;
+  fs.writeFileSync(cf, JSON.stringify(j));
+  return j;
+}
+// Run the grade check without touching the project: a starting record is made in the hidden design folder
+// when the project has no engineering.json yet.
+async function gradeCheck(dir, root, cleanEnv) {
+  if (!ENG_TOOLS) throw new Error('The engineering tools are not installed with the app.');
+  const py = findCadPython(dir, root); if (!py) throw new Error('No Python with build123d was found on this PC.');
+  const dd = designDir(dir); fs.mkdirSync(dd, { recursive: true });
+  let eng = engineeringInfo(dir).file ? path.join(dir, engineeringInfo(dir).file) : null;
+  if (!eng) {
+    const asm = findAssembly(dir); if (!asm) throw new Error('The project has no assembly.json to grade.');
+    eng = path.join(dd, 'engineering.init.json');
+    const r0 = await runPy(py, [path.join(ENG_TOOLS, 'check_engineering.py'), '--init', path.join(dir, asm), '--root', dir, '--out', eng], dir, cleanEnv, 120000);
+    if (r0.code !== 0) throw new Error((r0.err || r0.out).slice(-600));
+  }
+  const out = path.join(dd, 'engineering-report.json');
+  const r = await runPy(py, [path.join(ENG_TOOLS, 'check_engineering.py'), eng, '--root', dir, '--json', out, '--out', path.join(dd, 'engineering-report.md')], dir, cleanEnv, 900000);
+  if (!fs.existsSync(out)) throw new Error('The check did not finish: ' + (r.err || r.out).slice(-600));
+  const rep = readJson(out);
+  try { rep.records = readJson(eng).parts; } catch {}
+  rep.provisional = !engineeringInfo(dir).file;
+  fs.writeFileSync(out, JSON.stringify(rep));
+  return rep;
+}
+
+module.exports = { engineeringInfo, stepFeatures, gradeCheck, info, saveEdits, loadEdits, editsMarkdown, nextRevision, copyProject, designDir, runBlender, blenderStatus, findBlender, parseParams };

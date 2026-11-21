@@ -206,7 +206,10 @@ if (-not $NoShortcut) {
     Copy-Item -LiteralPath (Join-Path $appSrc "blender") -Destination $appDir -Recurse -Force
     $refs = Join-Path $appDir "skill-refs"
     New-Item -ItemType Directory -Force -Path $refs | Out-Null
-    foreach ($f in @("industrial-design.md", "design-revisions.md")) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot "references\$f") -Destination $refs -Force }
+    foreach ($f in @("industrial-design.md", "design-revisions.md", "precision-engineering.md")) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot "references\$f") -Destination $refs -Force }
+    $eng = Join-Path $appDir "eng-tools"
+    New-Item -ItemType Directory -Force -Path $eng | Out-Null
+    foreach ($f in @("check_engineering.py", "step_features.py")) { Copy-Item -LiteralPath (Join-Path $PSScriptRoot "tools\eng\$f") -Destination $eng -Force }
     New-Item -ItemType Directory -Force -Path $ProjectsRoot | Out-Null
 
     $shell = New-Object -ComObject WScript.Shell
