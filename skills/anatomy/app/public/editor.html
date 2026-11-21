@@ -798,7 +798,7 @@ function engSection(ps, one) {
       ${r?.missing?.length ? `<div class="in" style="margin-top:4px">Missing for the next grade:</div><ul class="miss">${r.missing.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}` : ''}
     <div class="xyz" style="grid-template-columns:60px 1fr"><span>Class</span><select id="iClass">${one ? '' : '<option value="">(keep each)</option>'}${Object.entries(CLASSES).map(([k, t]) => `<option value="${k}" ${k === cls ? 'selected' : ''} title="${esc(t)}">${k}</option>`).join('')}${one && !cls ? '<option value="" selected>(not set)</option>' : ''}</select></div>
     <div class="chips" id="iEng">${['Engineered', 'Verified'].map(x => `<span class="chip ${tgt === x ? 'on' : ''}" data-g="${x}" title="On rebuild: engineer to grade ${x}">Engineer to ${x}</span>`).join('')}</div>
-    ${one && rec?.step ? `<div class="row"><button class="btn" id="iMeasure">Measure from STEP</button></div><div id="iFeat"></div>` : ''}`;
+    ${one && rec?.step ? `<div class="row"><button class="btn" id="iMeasure">Measure from STEP</button></div><div id="iFeat">${FEAT.has(p.file) ? featHtml(FEAT.get(p.file)) : ''}</div>` : ''}`;
 }
 function wireEng(ps, one) {
   $('#iClass').onchange = ev => { const v = ev.target.value; if (!v && !one) return; pushUndo();
@@ -807,12 +807,12 @@ function wireEng(ps, one) {
     for (const x of ps) { const ed = partEdit(x.file); if (on) ed.engineer = c.dataset.g; else delete ed.engineer; syncEdit(x); } changed(); renderInspector(); renderTree(); };
   const mb = $('#iMeasure'); if (mb) mb.onclick = async () => {
     const step = engRec(ps[0].file).step; const out = $('#iFeat'); mb.disabled = true; out.innerHTML = '<p class="in">Reading the B-rep…</p>';
-    try { out.innerHTML = featHtml(await api(`/api/projects/${id}/design/features?step=${encodeURIComponent(step)}`)); }
+    try { const f = await api(`/api/projects/${id}/design/features?step=${encodeURIComponent(step)}`); FEAT.set(ps[0].file, f); out.innerHTML = featHtml(f); }
     catch (e) { out.innerHTML = `<p class="in" style="color:#ffb3b3">${esc(e.message)}</p>`; }
     mb.disabled = false;
   };
 }
-const inch = mm => (mm / 25.4).toFixed(3);
+const FEAT = new Map();
 function featHtml(f) {
   const bb = f.bbox_mm || [0, 0, 0];
   const holes = (f.holes || []).slice(0, 14);
