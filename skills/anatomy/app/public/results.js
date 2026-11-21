@@ -57,19 +57,6 @@ export async function renderResults(host, ctx) {
 }
 
 const raw = p => `/p/${S.id}/${p.split('/').map(encodeURIComponent).join('/')}`;
-const WEB = !!window.ANATOMY_WEB; // the read-only web console on pyrails.com: nothing runs on a PC here
-// The page an app opens with, so it can run straight in the browser from the stored files: the app's "web" entry
-// in anatomy.json, else the shallowest index.html in its folder (twins keep their simulation in the page itself).
-function webPage(a) {
-  const m = S.manifest || {}, pre = m._base ? m._base + '/' : '';
-  if (a && a.web) return pre + String(a.web).replace(/^\.?\//, '');
-  const cwd = a && a.cwd && a.cwd !== '.' ? (pre + a.cwd).replace(/\/+$/, '') : (pre ? pre.slice(0, -1) : '');
-  const within = f => !cwd || f.path.startsWith(cwd + '/');
-  const pages = S.files.filter(f => within(f) && /(^|\/)index\.html?$/i.test(f.path) && !/node_modules|vendor\/|assembly|drawings?\//i.test(f.path));
-  const depth = f => f.path.split('/').length;
-  pages.sort((x, y) => (/(^|\/)(sim|twin|control|ui|public|web|static|www)\//i.test(y.path) - /(^|\/)(sim|twin|control|ui|public|web|static|www)\//i.test(x.path)) || depth(x) - depth(y));
-  return pages[0] ? pages[0].path : null;
-}
 const fetchText = p => fetch(`/api/projects/${S.id}/file?path=${encodeURIComponent(p)}`).then(r => r.text());
 const openExt = p => S.api(`/api/projects/${S.id}/open?path=${encodeURIComponent(p)}`, { method: 'POST' });
 const reveal = p => S.api(`/api/projects/${S.id}/reveal?path=${encodeURIComponent(p)}`, { method: 'POST' });
@@ -148,18 +135,12 @@ async function overview(el) {
 async function run(el) {
   const m = S.manifest || {};
   const html = S.files.filter(f => /(^|\/)index\.html$/i.test(f.path) && !/assembly|node_modules/i.test(f.path));
-  el.innerHTML = `<div class="tryit"><p class="lead">${WEB ? 'Run what this project built, right here in the browser. Apps that need a server or hardware run in Anatomy on your PC.' : 'Run what this project built. Apps start on this PC and open in their own window.'}</p><div id="apps"></div><div id="statics"></div><pre class="applog hidden" id="applog"></pre></div>`;
+  el.innerHTML = `<div class="tryit"><p class="lead">Run what this project built. Apps start on this PC and open in their own window.</p><div id="apps"></div><div id="statics"></div><pre class="applog hidden" id="applog"></pre></div>`;
   const appsEl = el.querySelector('#apps');
   (m.apps || []).forEach((a, n) => {
     const card = document.createElement('div'); card.className = 'appcard';
     card.innerHTML = `<div class="t">${esc(a.name)}</div><div class="d">${esc(a.description || '')}</div>${(a.needs || []).length ? `<div class="n">Needs: ${esc(a.needs.join(', '))}</div>` : ''}<div class="b"></div>`;
     const b = card.querySelector('.b');
-    if (WEB) {
-      const pg = webPage(a);
-      if (pg) { const o = document.createElement('a'); o.className = 'primary btnlink'; o.href = raw(pg); o.target = '_blank'; o.textContent = 'Open in browser'; b.append(o); }
-      else b.innerHTML = `<span class="empty">This app runs as a program (${esc([].concat(a.run || []).join(' ') || 'a server')}), so open it in Anatomy on your PC.</span>`;
-      appsEl.append(card); return;
-    }
     const start = btn(a.running ? 'Open' : 'Start', async () => {
       if (!a.running) { start.disabled = true; start.textContent = 'Starting…'; await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }); a.running = true; await new Promise(r => setTimeout(r, a.startup_ms || 4000)); start.disabled = false; start.textContent = 'Open'; }
       if (a.url) window.open(a.url, '_blank', 'width=1400,height=900');
@@ -347,13 +328,12 @@ function gallery(el, files, intro) {
   }).join('')}</div>`).join('');
   el.querySelectorAll('.gi').forEach(x => x.onclick = () => {
     const p = x.dataset.p, e = ext(p);
-    if (e === 'dxf') S.preview(p);
-    else if (['kicad_pro', 'kicad_pcb', 'kicad_sch', 'zip', 'step', 'stp', 'gcode.3mf', '3mf'].includes(e)) { if (WEB) window.open(raw(p), '_blank'); else openExt(p); } else S.preview(p);
+    if (['dxf', 'kicad_pro', 'kicad_pcb', 'kicad_sch', 'zip', 'step', 'stp', 'gcode.3mf', '3mf'].includes(e)) openExt(p); else S.preview(p);
   });
 }
 function drawings(el) {
   const fs = S.files.filter(f => ['pdf', 'svg', 'dxf'].includes(ext(f.path)) && !/render/i.test(f.path));
-  gallery(el, fs, 'Click a drawing to view it. DXF cut files show their outlines here too.');
+  gallery(el, fs, 'Click a PDF or SVG to view it. DXF cut files open in your CAD or cutting program.');
 }
 function renders(el) { gallery(el, S.files.filter(f => IMG.includes(ext(f.path))), ''); }
 
@@ -518,7 +498,6 @@ async function sim(el) {
   if (n < 0) n = apps.findIndex(a => /simulator|digital twin|test table/i.test(a.name + ' ' + (a.description || '')));
   const resPath = (m.tests && m.tests.results ? ((m._base ? m._base + '/' : '') + m.tests.results) : null)
     || (S.files.find(f => /(^|\/)sim\/results\/latest\.json$/i.test(f.path)) || S.files.find(f => /results\/latest\.json$/i.test(f.path)) || {}).path;
-  if (WEB) return simWeb(el, n < 0 ? null : apps[n], resPath);
   if (n < 0) {
     el.innerHTML = `<div class="buildintro"><h2>Simulate and test before you build</h2>
       <p class="lead">Anatomy builds a working digital twin of this product. It's made from the same assembly, parts and firmware as the build package, so you can drive it, load it and run its tests on this PC with no hardware. When the real device is connected, the same window drives it too.</p>
@@ -557,26 +536,6 @@ async function sim(el) {
       <table class="bom"><tr><th>Test</th><th>Requirement</th><th>Result</th><th>Margin</th><th>Detail</th></tr>${R.tests.map(t => `<tr><td>${esc(t.name)}</td><td>${esc(t.requirement || '')}</td><td style="color:${col[t.result] || 'inherit'};font-weight:600">${esc(t.result)}</td><td>${esc(t.margin ?? '')}</td><td>${esc(t.detail || '')}</td></tr>`).join('')}</table>`;
   }
   showRes(resPath);
-}
-
-// The web console runs the twin itself in the page, from the files stored on the hub.
-async function simWeb(el, a, resPath) {
-  const pg = a ? webPage(a) : webPage({ cwd: (S.files.find(f => /(^|\/)sim\/index\.html$/i.test(f.path)) || {}).path?.replace(/\/index\.html$/i, '') || 'sim', web: null });
-  if (!a && !pg) { el.innerHTML = `<div class="buildintro"><h2>No simulator yet</h2><p class="lead">This project doesn't have a digital twin yet. Open it in Anatomy on your PC and use Simulate → Build the simulator; once it syncs to the hub, it runs here in the browser.</p></div>`; return; }
-  el.innerHTML = `<div class="tryit wide"><div class="simhead"><div><div class="t">${esc(a ? a.name : 'Simulator')}</div><div class="d">${esc(a ? a.description || '' : '')}</div></div><div class="b"></div></div>
-    <div id="simframe"></div><p class="sect" style="margin-top:18px">Test results</p><div id="simres"></div></div>`;
-  const b = el.querySelector('.b'), fr = el.querySelector('#simframe');
-  if (pg) {
-    const o = document.createElement('a'); o.className = 'primary btnlink'; o.href = raw(pg); o.target = '_blank'; o.textContent = 'Open full screen'; b.append(o);
-    fr.innerHTML = `<iframe class="simframe" src="${raw(pg)}" allow="fullscreen; gamepad; serial; usb" allowfullscreen></iframe><p class="empty">Running in your browser from the hub's copy. The hardware link works where the browser supports Web Serial (Chrome or Edge on a PC with the device plugged in). Headless test runs and anything that needs the twin's own server happen in Anatomy on your PC.</p>`;
-  } else fr.innerHTML = `<p class="empty">This simulator runs as a program (${esc([].concat(a.run || []).join(' ') || 'a server')})) and has no page that runs on its own, so open it in Anatomy on your PC. Its latest test results are below.</p>`;
-  const box = el.querySelector('#simres');
-  const R = resPath ? await fetch(`/api/projects/${S.id}/file?path=${encodeURIComponent(resPath)}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null) : null;
-  if (!R || !Array.isArray(R.tests)) { box.innerHTML = '<p class="empty">No headless results stored yet. Run the tests in Anatomy on your PC, or inside the simulator above.</p>'; return; }
-  const cnt = k => R.tests.filter(t => t.result === k).length;
-  const col = { pass: 'var(--ok, #4ade80)', fail: 'var(--bad, #f87171)', warn: '#fbbf24' };
-  box.innerHTML = `<p class="lead">${cnt('pass')} passed · ${cnt('fail')} failed · ${cnt('warn')} warnings${R.when ? ` · ${esc(new Date(R.when).toLocaleString())}` : ''}</p>
-    <table class="bom"><tr><th>Test</th><th>Requirement</th><th>Result</th><th>Margin</th><th>Detail</th></tr>${R.tests.map(t => `<tr><td>${esc(t.name)}</td><td>${esc(t.requirement || '')}</td><td style="color:${col[t.result] || 'inherit'};font-weight:600">${esc(t.result)}</td><td>${esc(t.margin ?? '')}</td><td>${esc(t.detail || '')}</td></tr>`).join('')}</table>`;
 }
 
 // ---------------------------------------------------------------- Build wizard

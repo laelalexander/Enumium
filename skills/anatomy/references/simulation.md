@@ -17,7 +17,6 @@ Match that depth for the product at hand.
 1. **The twin.** A local web app (three.js for anything physical), served by a small server with no extra dependencies, listed in `anatomy.json` `apps` with `"kind": "simulator"`.
    - It loads the same assembled model as the package (`assembly.json`), so the simulation is the design, not a lookalike.
    - Moving parts move about their real axes, within their real limits.
-   - **It runs in a plain browser from its files alone.** Keep the simulation, tests-in-the-UI and hardware link in the page's own JavaScript, load everything by relative URLs, and treat the server as optional (static files plus extras such as headless jobs). The pyrails.com web console opens the twin straight from the hub's copy with no server behind it. Name the entry page in the app's `"web"` field (for example `"web": "sim/index.html"`).
 2. **A behaviour model, from the design's own numbers.** Each parameter comes from the BOM, the datasheets or the calculations; none is invented for the sim.
    - **Actuators:** step rate and acceleration limits, motor torque curves or rated torque, gear ratios, servo speed, deadband.
    - **Sensors:** limit switches, encoders, IMU, current, temperature, with noise where it matters.
@@ -53,13 +52,12 @@ Match that depth for the product at hand.
 ## Wiring it into the Anatomy app
 `anatomy.json` gets the simulator as an app, plus a `tests` entry for the headless run. The app's **Simulate** tab opens the twin, runs the tests and shows the results table:
 ```json
-{"apps": [{"name": "TwinArm simulator", "kind": "simulator", "description": "...", "cwd": "sim", "run": ["node server.js"], "url": "http://127.0.0.1:8770/", "web": "sim/index.html", "startup_ms": 3000}],
+{"apps": [{"name": "TwinArm simulator", "kind": "simulator", "description": "...", "cwd": "sim", "run": ["node server.js"], "url": "http://127.0.0.1:8770/", "startup_ms": 3000}],
  "tests": {"cwd": "sim", "run": "node run-tests.js", "results": "sim/results/latest.json"}}
 ```
 
 ## Quality bar
 - It starts with one click from the Anatomy app (an `anatomy.json` entry) and works with no hardware attached.
-- It also opens and runs in the pyrails.com web console (static files, relative URLs, no server needed).
 - Every number in the model traces to the design. Put a `sim/README.md` table of parameters, each with its source.
 - All tests run headless, and their results are in `sim/results/latest.json`. Any failure is reported as a design finding, not hidden.
 - Start it yourself, run every scenario, and take screenshots of the twin and the test results before you present it.
