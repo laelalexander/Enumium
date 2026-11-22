@@ -93,6 +93,13 @@ aside.right { border-right: 0; border-left: 1px solid var(--line); }
 
 main.feed { display: flex; flex-direction: column; min-height: 0; }
 #stream { flex: 1; overflow: auto; padding: 22px clamp(16px, 4vw, 48px) 40px; }
+.models { font-size: 13px; } .models table { width: 100%; border-collapse: collapse; } .models td { padding: 4px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.models .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; } .models .ready { background: #3fb950; } .models .skipped { background: #d29922; } .models .off { background: #6e7681; }
+.models .mrun { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin: 0 0 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.models select { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px; }
+.models .hint { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+.notice { margin: 0 0 14px; max-width: 820px; padding: 8px 12px; border-left: 3px solid var(--line); color: var(--muted); font-size: 13px; }
+.alert details { margin-top: 8px; font-size: 12px; opacity: .8; } .alert details pre { white-space: pre-wrap; max-height: 200px; overflow: auto; }
 .msg { margin: 0 0 14px; max-width: 820px; }
 .msg.user { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; color: var(--muted); }
 .msg.user b { color: var(--text); font-weight: 600; }
@@ -125,7 +132,11 @@ main.feed { display: flex; flex-direction: column; min-height: 0; }
 .summary .h { font-weight: 600; margin-bottom: 8px; display: flex; gap: 10px; align-items: center; }
 .thinking { color: var(--faint); font-size: 13px; display: flex; gap: 8px; align-items: center; margin: 8px 0; }
 .thinking i { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1s infinite; }
-.reply { border-top: 1px solid var(--line); padding: 12px clamp(16px, 4vw, 48px); background: var(--panel); display: flex; gap: 10px; }
+.reply { border-top: 1px solid var(--line); padding: 12px clamp(16px, 4vw, 48px); background: var(--panel); display: flex; flex-direction: column; gap: 8px; }
+.reply .rrow { display: flex; gap: 10px; align-items: stretch; } .reply #replyAttach { width: 42px; padding: 0; font-size: 18px; }
+.rchips { display: flex; flex-wrap: wrap; gap: 6px; } .rchips:empty { display: none; }
+.rchips .chip { font-size: 12px; } .msg.user .tag { font-size: 11px; color: var(--accent); margin-left: 6px; font-weight: 500; }
+.reply.drag { outline: 2px dashed var(--accent); outline-offset: -4px; }
 .reply textarea { flex: 1; resize: none; height: 42px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
   color: var(--text); padding: 10px 12px; font: inherit; outline: 0; }
 
@@ -215,6 +226,10 @@ pre.code.small { max-height: 260px; white-space: pre-wrap; }
 a.btnlink { display: inline-block; padding: 8px 14px; border-radius: 9px; text-decoration: none; font-weight: 600; }
 .simhead { display: flex; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .simhead .t { font-weight: 600; font-size: 16px; } .simhead .d { color: var(--muted); margin-top: 4px; }
+.simwrap { position: relative; } .simload { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #0b0d12e6; border-radius: 12px; color: var(--text, #e6e8eb); }
+.simload > div { width: min(380px, 80%); } .simload span { color: var(--muted); font-size: 13px; }
+.simbar { height: 8px; border-radius: 5px; background: #2a2f38; overflow: hidden; margin: 10px 0 8px; } .simbar i { display: block; width: 30%; height: 100%; background: var(--accent, #4a9eff); border-radius: 5px; animation: simind 1.2s ease-in-out infinite; }
+@keyframes simind { 0% { margin-left: -30%; } 100% { margin-left: 100%; } }
 .simframe { width: 100%; height: calc(100vh - 220px); min-height: 520px; border: 1px solid var(--line); border-radius: 12px; background: #0b0d12; }
 .applog { font-family: var(--mono); font-size: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; max-height: 300px; overflow: auto; white-space: pre-wrap; margin-top: 14px; }
 .buildintro { max-width: 760px; } .buildintro h2, .bhead h2 { margin: 0 0 6px; }
@@ -284,7 +299,7 @@ a.btnlink { display: inline-block; padding: 8px 14px; border-radius: 9px; text-d
       <button class="ghost" id="attach" title="Datasheets, photos, specs">＋ Attach files</button>
       <input type="file" id="fileIn" multiple class="hidden">
       <div class="seg" id="model" title="Model">
-        <button data-m="claude-fable-5-2" class="on" title="Most capable. Uses your plan's limits fastest.">Fable</button><button data-m="opus">Opus</button><button data-m="sonnet">Sonnet</button>
+        <button data-m="claude-fable-5-2" class="on" title="Most capable. Uses usage credits; if they run out, Anatomy carries on with Opus automatically.">Fable</button><button data-m="opus">Opus</button><button data-m="sonnet">Sonnet</button>
       </div>
       <div class="spacer"></div>
       <button class="ghost" id="hubBtn" title="Shared project storage on your server, so every PC sees every project">Hub</button>
@@ -309,6 +324,7 @@ a.btnlink { display: inline-block; padding: 8px 14px; border-radius: 9px; text-d
     <div class="spacer"></div>
     <div class="vswitch" id="vswitch"><button data-v="live" class="on">Live</button><button data-v="results">Results</button></div>
     <button class="ghost" id="holoBtn" title="Pop-out 3D view that updates as Anatomy works">3D view ↗</button>
+    <button class="ghost" id="designBtn" title="Open the 3D Design Studio: change parts, dimensions, materials and styling, then rebuild as a new revision">Design ✎</button>
     <button class="ghost hidden" id="filesBtn">Files</button>
     <button class="ghost" id="reveal">Open folder</button>
     <button class="ghost hidden" id="stop">Stop</button>
@@ -324,8 +340,13 @@ a.btnlink { display: inline-block; padding: 8px 14px; border-radius: 9px; text-d
     <main class="feed">
       <div id="stream"></div>
       <div class="reply">
-        <textarea id="replyIn" placeholder="Ask a follow-up or give direction (e.g. go deeper on the PCB)"></textarea>
-        <button class="primary" id="replyGo">Send</button>
+        <div id="replyChips" class="rchips"></div>
+        <div class="rrow">
+          <button class="ghost" id="replyAttach" title="Attach photos, PDFs, datasheets or other files">＋</button>
+          <input type="file" id="replyFile" multiple class="hidden">
+          <textarea id="replyIn" placeholder="Ask a follow-up or give direction (e.g. go deeper on the PCB)"></textarea>
+          <button class="primary" id="replyGo">Send</button>
+        </div>
       </div>
     </main>
     <aside class="right">
@@ -349,9 +370,12 @@ a.btnlink { display: inline-block; padding: 8px 14px; border-radius: 9px; text-d
 </div>
 
 <div id="settings" class="hidden" style="position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:11">
-  <div style="width:min(720px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><b style="flex:1">Settings</b><span class="empty">Claude reads this at the start of every project.</span></div>
-    <textarea id="settingsText" style="width:100%;height:50vh;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:13px/1.5 var(--mono);outline:0"></textarea>
+  <div style="width:min(760px,94vw);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><b style="flex:1">Settings</b></div>
+    <p class="sect" style="margin:0 0 6px">Models</p>
+    <div id="modelsBox" class="models"><span class="empty">Checking models…</span></div>
+    <p class="sect" style="margin:14px 0 6px">Printer, materials, suppliers <span class="empty" style="font-weight:400;text-transform:none;letter-spacing:0">· Claude reads this at the start of every project.</span></p>
+    <textarea id="settingsText" style="width:100%;height:34vh;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:13px/1.5 var(--mono);outline:0"></textarea>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px"><button class="ghost" id="settingsCancel">Cancel</button><button class="primary" id="settingsSave">Save</button></div>
   </div>
 </div>
@@ -500,8 +524,7 @@ function setStatus(s) {
   running = s === 'running';
   const p = $('#rStatus'); p.className = 'pill ' + s; p.textContent = { running: 'working', done: 'done', failed: 'failed', stopped: 'stopped', new: 'ready' }[s] || s;
   $('#stop').classList.toggle('hidden', !running);
-  $('#replyGo').disabled = running; $('#replyIn').disabled = running;
-  $('#replyIn').placeholder = running ? 'Anatomy is working. You can follow up when it finishes.' : 'Ask a follow-up or give direction (e.g. go deeper on the PCB)';
+  $('#replyIn').placeholder = running ? 'Add insight or ask a question. Anatomy reads it at its next step and keeps working.' : 'Ask a follow-up or give direction (e.g. go deeper on the PCB)';
   setThinking(running);
 }
 function renderPhases() {
@@ -552,10 +575,13 @@ function handleText(text) {
 }
 function handle(ev) {
   if (ev.type === 'anatomy') {
-    if (ev.kind === 'run-start') { add(div('msg user', `<b>You</b><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); startTs = ev.ts; setStatus('running'); }
+    if (ev.kind === 'run-start') { if (!ev.auto) add(div('msg user', `<b>You</b><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); startTs = startTs && ev.auto ? startTs : ev.ts; setStatus('running'); }
+    else if (ev.kind === 'notice') add(div('notice', esc(ev.text)));
+    else if (ev.kind === 'steer') { add(div('msg user', `<b>You</b><span class="tag">while working</span><br>${esc(ev.text).replace(/\n/g, '<br>')}`)); if (running) setThinking(true); }
     else if (ev.kind === 'run-end') { setStatus(ev.status); if (ev.status === 'done' && phase) renderPhases(); refreshFiles(); }
     else if (ev.kind === 'error') {
       const d = div('alert', esc(ev.text));
+      if (ev.details) { const x = document.createElement('details'); x.innerHTML = '<summary>Details</summary><pre></pre>'; x.querySelector('pre').textContent = ev.details; d.append(x); }
       if (/sign in/i.test(ev.text)) { const b = document.createElement('button'); b.className = 'primary'; b.textContent = 'Sign in to Claude'; b.onclick = () => api('/api/login', { method: 'POST' }); d.append(document.createElement('br'), b); }
       add(d);
     }
@@ -717,11 +743,35 @@ $('#reveal').onclick = () => api(`/api/projects/${cur}/reveal`, { method: 'POST'
 $('#filesBtn').onclick = () => { const a = document.querySelector('aside.right'); a.style.display = a.style.display === 'block' ? '' : 'block'; };
 $('#back').onclick = () => location.hash = '';
 $('#holoBtn').onclick = () => window.open(`/viewer.html?id=${encodeURIComponent(cur)}`, 'anatomy3d-' + cur, 'width=980,height=720');
+$('#designBtn').onclick = () => window.open(`/editor.html?id=${encodeURIComponent(cur)}`, 'anatomydesign-' + cur, 'width=1500,height=920');
 $('#stop').onclick = () => api(`/api/projects/${cur}/stop`, { method: 'POST' });
+// Live chat: works while the run is going (the message steers it) and after it ends (a follow-up run).
+// Attached files go to the project's inputs/ folder and the message tells Claude where they are.
+let replyFiles = [];
+function renderReplyChips() {
+  $('#replyChips').innerHTML = replyFiles.map((f, i) => `<span class="chip">📎 ${esc(f.name)} <button data-i="${i}">✕</button></span>`).join('');
+  [...$('#replyChips').querySelectorAll('button')].forEach(b => b.onclick = () => { replyFiles.splice(+b.dataset.i, 1); renderReplyChips(); });
+}
+function addReplyFiles(list) { replyFiles.push(...list); renderReplyChips(); }
+$('#replyAttach').onclick = () => $('#replyFile').click();
+$('#replyFile').onchange = e => { addReplyFiles(e.target.files); e.target.value = ''; };
+const replyBox = $('.reply');
+replyBox.addEventListener('dragover', e => { e.preventDefault(); replyBox.classList.add('drag'); });
+replyBox.addEventListener('dragleave', () => replyBox.classList.remove('drag'));
+replyBox.addEventListener('drop', e => { e.preventDefault(); replyBox.classList.remove('drag'); if (e.dataTransfer.files.length) addReplyFiles(e.dataTransfer.files); });
+$('#replyIn').addEventListener('paste', e => { const fs = [...(e.clipboardData?.files || [])]; if (fs.length) { e.preventDefault(); addReplyFiles(fs.map((f, i) => f.name && f.name !== 'image.png' ? f : new File([f], `pasted-${Date.now()}-${i}.png`, { type: f.type }))); } });
 $('#replyGo').onclick = async () => {
-  const m = $('#replyIn').value.trim(); if (!m || running) return;
-  $('#replyIn').value = '';
-  await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) }).catch(e => alert(e.message));
+  let m = $('#replyIn').value.trim(); const files = replyFiles.slice();
+  if (!m && !files.length) return;
+  $('#replyGo').disabled = true;
+  try {
+    const paths = [];
+    for (const f of files) { const r = await api(`/api/projects/${cur}/upload?name=${encodeURIComponent(f.name)}`, { method: 'POST', body: f }); paths.push(r.path); }
+    if (paths.length) m = (m || 'Please look at the attached file(s).') + `\n\nAttached (saved in this project): ${paths.join(', ')}. Read them before you answer.`;
+    $('#replyIn').value = ''; replyFiles = []; renderReplyChips();
+    await api(`/api/projects/${cur}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: m }) });
+  } catch (e) { alert(e.message); }
+  finally { $('#replyGo').disabled = false; }
 };
 $('#replyIn').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#replyGo').click(); } });
 
@@ -750,7 +800,35 @@ $('#hubNow').onclick = async () => { await api('/api/hub/sync', { method: 'POST'
 $('#hubOff').onclick = async () => { await api('/api/hub', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ disconnect: true }) }); hubOpen(); };
 setInterval(() => { if (!$('#home').classList.contains('hidden')) hubLine(); }, 30000);
 
-$('#settingsBtn').onclick = async () => { const { text } = await api('/api/settings'); $('#settingsText').value = text; $('#settings').classList.remove('hidden'); };
+
+$('#settingsBtn').onclick = async () => { const { text } = await api('/api/settings'); $('#settingsText').value = text; $('#settings').classList.remove('hidden'); renderModels(); };
+async function renderModels() {
+  const box = $('#modelsBox');
+  let o; try { o = await api('/api/models'); } catch { box.innerHTML = '<span class="empty">Could not read model status.</span>'; return; }
+  const usable = (o.local || []).filter(m => m.tools !== false);
+  const all = [...o.claude, ...usable];
+  const opts = sel => all.map(m => `<option value="${esc(m.id)}"${m.id === sel ? ' selected' : ''}>${esc(m.label)}${m.status === 'skipped' ? ' (paused)' : ''}</option>`).join('');
+  const when = t => t ? new Date(t).toLocaleString(undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' }) : '';
+  const runs = o.running.length ? o.running.map(r => `<div class="mrun" data-id="${esc(r.id)}"><span style="flex:1;min-width:200px"><b>Running now:</b> ${esc(r.title)}<br><span class="empty">on ${esc((all.find(m => m.id === r.model) || {}).label || r.model || 'unknown')}</span></span>
+    <select>${opts(r.model)}</select><button class="primary mswitch">Switch now</button></div>`).join('') : '<div class="hint" style="margin:0 0 8px">No project is running right now.</div>';
+  const row = m => `<tr><td><span class="dot ${m.status}"></span>${m.html || esc(m.label)}</td><td class="empty">${m.status === 'off' ? 'Can\'t use tools, so it can\'t run Anatomy' : m.status === 'ready' ? 'Available' : `Paused until ${when(m.until)} · ${esc(({ model_requires_usage_credits: 'usage credits used up', 'plan limit reached': 'plan limit reached' })[m.reason] || 'unavailable')}`}</td>
+    <td style="text-align:right">${m.status === 'skipped' ? `<button class="ghost clr" data-m="${esc(m.id)}">Try again</button>` : ''}</td></tr>`;
+  const local = o.local == null ? '<tr><td colspan="3"><span class="dot off"></span>Ollama isn\'t running on this PC, so local models are hidden.</td></tr>'
+    : o.local.length ? o.local.map(m => row({ ...m, html: `${esc(m.name)} <span class="empty">${esc(m.params || '')}</span>` })).join('') : '<tr><td colspan="3" class="empty">Ollama has no models installed.</td></tr>';
+  box.innerHTML = runs + `<table><tr><td colspan="3" class="empty"><b>Claude</b> · tried in this order when one can't run</td></tr>${o.claude.map(row).join('')}
+    <tr><td colspan="3" class="empty" style="padding-top:10px"><b>Local (free, on this PC)</b></td></tr>${local}</table>
+    <label style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="locFb"${o.settings.localFallback ? ' checked' : ''}${usable.length ? '' : ' disabled'}>
+    When no Claude model can run, carry on with <select id="locModel">${usable.map(m => `<option${m.name === (o.settings.localModel || (usable.some(x => x.name === 'qwen3:8b') ? 'qwen3:8b' : '')) ? ' selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>
+    <p class="hint">On this PC qwen3:8b keeps up; qwen3:14b is too slow while the GPU is busy. Local models are much less capable. They only do light steps (research notes, summaries, BOM tidying, docs) and leave CAD, drawings and PCB work in WAITING-FOR-CLAUDE.md for Claude to pick up.</p>`;
+  box.querySelectorAll(".mrun .mswitch").forEach(b => b.onclick = async () => {
+    const r = b.closest(".mrun"); b.disabled = true; b.textContent = 'Switching…';
+    await api(`/api/projects/${r.dataset.id}/switch`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: r.querySelector('select').value }) }).catch(() => {});
+    setTimeout(renderModels, 2500);
+  });
+  box.querySelectorAll('.clr').forEach(b => b.onclick = async () => { await api('/api/models/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: b.dataset.m }) }); renderModels(); });
+  const saveLoc = () => api('/api/models', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ localFallback: $('#locFb').checked, localModel: $('#locModel').value || '' }) });
+  $('#locFb').onchange = saveLoc; $('#locModel').onchange = saveLoc;
+}
 $('#settingsCancel').onclick = () => $('#settings').classList.add('hidden');
 $('#settingsSave').onclick = async () => { await api('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: $('#settingsText').value }) }); $('#settings').classList.add('hidden'); };
 

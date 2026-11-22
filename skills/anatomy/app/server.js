@@ -148,10 +148,19 @@ function systemAppend() {
     'Before each significant action, write one short plain sentence saying what you are doing and why, so the user can follow along.',
     kicad ? `KiCad is installed at ${kicad} (kicad-cli.exe and KiCad's python.exe with pcbnew are there). The KiCad PCB step is experimental: run ERC/DRC and report results honestly.` :
       'KiCad was not found on this machine. If a PCB is needed, say so and fall back to a layout spec labeled specified only.',
-    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
+    'Never open a window on the user\'s desktop. Run every tool headless: kicad-cli and KiCad\'s python.exe (pcbnew) only, never kicad.exe, pcbnew.exe or eeschema.exe; Freerouting 2.x with --gui.enabled=false, never Freerouting 1.x (it always opens a window); Blender with -b; browsers with --headless; slicers and CAD in CLI mode. Never open files with start, explorer, Invoke-Item or os.startfile. The user opens files from the app.',
+    'Hardware standards are mandatory: every part is BUY or BUILD (references/parts-and-bom.md, run the BOM check), industrial design and visual fidelity (references/industrial-design.md: no plain boxes, fillets and curved styled surfaces on every BUILD part, real manufacturer shapes for BUY parts, materials in assembly.json, tight tessellation, photoreal renders), precision engineering (references/precision-engineering.md: Blender and meshes are looks only; every BUILD part is feature-based build123d CAD exported as STEP with real holes, fillets, material, process and DFM; precision parts add datums, ISO 286 fits, GD&T and finish; structural parts add load cases and an FEA margin; bought parts use the vendor STEP; every part is graded Concept/Engineered/Verified in prototype/mechanical/engineering.json and checked with tools/eng/check_engineering.py), production-quality drawings (references/drawings.md), and every 3D printed part ends in verified G-code for the user\'s printer (references/3d-print-gcode.md). If the product runs any code, firmware/BIOS/software is a full development phase (references/software-phase.md).',
     'The user\'s settings (printer, materials, suppliers, tools) follow. Use them; if the printer is not filled in, use a stated default profile and say the G-code must be re-sliced.\n<user-settings>\n' + readSettings() + '\n</user-settings>',
     'At the end, print a short summary: what you built, where the key files are, what was verified, and what is still unverified.',
   ].join('\n');
+}
+
+// Claude runs are unattended: keep Java tools (Freerouting) from opening windows on the desktop.
+// Only for runs; apps the user starts from the Simulate tab may be real GUIs.
+function runEnv() {
+  const env = cleanEnv();
+  if (!/java\.awt\.headless/.test(env.JAVA_TOOL_OPTIONS || '')) env.JAVA_TOOL_OPTIONS = ((env.JAVA_TOOL_OPTIONS || '') + ' -Djava.awt.headless=true').trim();
+  return env;
 }
 
 function cleanEnv() {
@@ -172,6 +181,9 @@ function cleanEnv() {
       let pys = []; try { pys = fs.readdirSync(path.join(process.env.APPDATA, 'Python')); } catch {}
       for (const v of pys) { const sc = path.join(process.env.APPDATA, 'Python', v, 'Scripts'); if (fs.existsSync(path.join(sc, 'pio.exe'))) extra.push(sc); }
     }
+  // The Node.js running this server, so project apps whose run command is `node ...` work even when the
+  // launcher started us with a PATH that has no Node.js on it.
+  extra.unshift(path.dirname(process.execPath));
   if (extra.length) env.PATH = extra.join(path.delimiter) + path.delimiter + (env.PATH || '');
   const kicad = findKiCadBin();
   // KiCad last, so its bundled Python does not shadow the system Python for venvs.
@@ -179,38 +191,68 @@ function cleanEnv() {
   return env;
 }
 
+// Reference files the app's own features rely on (Design Studio revisions, industrial-design standard). Keep the
+// installed skill's copies current, so runs can read them even when the skill was installed before these existed.
+(function syncSkillRefs() {
+  const skill = path.join(os.homedir(), '.claude', 'skills', 'anatomy');
+  const dst = path.join(skill, 'references');
+  if (!fs.existsSync(dst)) return;
+  const put = (from, to) => { try { const t = fs.readFileSync(from, 'utf8'); let cur = ''; try { cur = fs.readFileSync(to, 'utf8'); } catch {} if (cur !== t) { fs.mkdirSync(path.dirname(to), { recursive: true }); fs.writeFileSync(to, t); } } catch {} };
+  for (const src of [path.join(__dirname, 'skill-refs'), path.join(__dirname, '..', 'references')])
+    for (const f of ['industrial-design.md', 'design-revisions.md', 'precision-engineering.md']) put(path.join(src, f), path.join(dst, f));
+  // The grade checker and STEP feature scanner the precision-engineering standard tells runs to use.
+  for (const src of [path.join(__dirname, 'eng-tools'), path.join(__dirname, '..', 'tools', 'eng')])
+    for (const f of ['check_engineering.py', 'step_features.py']) put(path.join(src, f), path.join(skill, 'tools', 'eng', f));
+})();
+
 const ALLOWED_TOOLS = ['Bash', 'Read', 'Write', 'Edit', 'MultiEdit', 'Glob', 'Grep', 'WebFetch', 'WebSearch',
   'Skill', 'TodoWrite', 'Task', 'NotebookEdit'];
 
-function startRun(id, message, display) {
+const models = require('./models');
+const design = require('./design');
+
+// opts.model: run on this model (set when falling back); opts.tried: models already tried in this run;
+// opts.auto: started by the server itself, so no "You" bubble.
+function startRun(id, message, display, opts = {}) {
   if (runs.get(id)?.proc) throw new Error('already running');
   const meta = readMeta(id);
+  const tried = opts.tried || [];
+  const model = opts.model || models.pickModel(ROOT, meta.model, tried);
   const claude = findClaude();
   if (!claude) {
     emit(id, { type: 'anatomy', kind: 'error', text: 'Claude Code was not found on this PC. Install it from https://claude.com/claude-code and try again.' });
     return;
   }
-  const args = ['-p', '--output-format', 'stream-json', '--verbose',
+  // stream-json input keeps stdin open, so the user can steer the run while it works (see steerRun).
+  const args = ['-p', '--input-format', 'stream-json', '--output-format', 'stream-json', '--verbose',
     '--permission-mode', 'acceptEdits',
     '--allowedTools', ALLOWED_TOOLS.join(','),
     '--append-system-prompt', systemAppend()];
   const skillDir = path.join(os.homedir(), '.claude', 'skills', 'anatomy');
   if (fs.existsSync(skillDir)) args.push('--add-dir', skillDir);
-  if (meta.model) args.push('--model', meta.model);
+  if (model) args.push('--model', models.cliModel(model));
   if (meta.sessionId) args.push('--resume', meta.sessionId);
 
   const isCmd = claude.toLowerCase().endsWith('.cmd');
   const proc = spawn(isCmd ? `"${claude}"` : claude, isCmd ? args.map(a => `"${a.replace(/"/g, '\\"')}"`) : args, {
-    cwd: projectDir(id), env: cleanEnv(), windowsHide: true, shell: isCmd,
+    cwd: projectDir(id), env: models.isLocal(model) ? models.applyLocalEnv(runEnv(), model) : runEnv(), windowsHide: true, shell: isCmd,
   });
   const r = runs.get(id) || { clients: new Set() };
   r.proc = proc; runs.set(id, r);
 
-  meta.status = 'running'; meta.updated = new Date().toISOString(); writeMeta(id, meta);
-  emit(id, { type: 'anatomy', kind: 'run-start', text: display || message });
+  meta.currentModel = model; meta.status = 'running'; meta.updated = new Date().toISOString(); writeMeta(id, meta);
+  emit(id, { type: 'anatomy', kind: 'run-start', text: display || message, model, auto: !!opts.auto });
 
-  proc.stdin.write(message);
-  proc.stdin.end();
+  r.stdinOpen = true; r.lastWrite = Date.now(); r.idleTimer = null;
+  proc.stdin.on('error', () => { r.stdinOpen = false; });
+  proc.stdin.write(userLine(message));
+  // Claude Code waits for more input until stdin closes. Close it once a result has come in and
+  // nothing else happened for a moment (no new turn started, no message from the user).
+  r.finishSoon = () => {
+    clearTimeout(r.idleTimer);
+    const at = Date.now();
+    r.idleTimer = setTimeout(() => { if (r.proc === proc && r.stdinOpen && r.lastWrite <= at && r.lastEvent <= at) { r.stdinOpen = false; try { proc.stdin.end(); } catch {} } }, 2500);
+  };
 
   let buf = '';
   proc.stdout.on('data', d => {
@@ -221,37 +263,85 @@ function startRun(id, message, display) {
       if (!line) continue;
       let ev; try { ev = JSON.parse(line); } catch { emit(id, { type: 'anatomy', kind: 'log', text: line }); continue; }
       if (ev.session_id && ev.session_id !== meta.sessionId) { meta.sessionId = ev.session_id; writeMeta(id, meta); }
-      if (ev.type === 'result' && (ev.is_error || ev.terminal_reason === 'api_error' || ev.subtype !== 'success' || /spend limit|usage limit|session limit/i.test(ev.result || ''))) {
-        resultErr = String(ev.result || (ev.errors || []).join('\n') || ev.subtype || '').trim();
-      }
+      r.lastEvent = Date.now();
+      if (ev.type === 'result') r.finishSoon(); else if (ev.type !== 'rate_limit_event') clearTimeout(r.idleTimer);
+      watch.see(ev);
       emit(id, ev);
     }
   });
-  let errTail = '', resultErr = '';
+  let errTail = '';
+  const watch = new models.RunWatch();
   proc.stderr.on('data', d => { errTail = (errTail + d.toString('utf8')).slice(-4000); });
   proc.on('error', e => emit(id, { type: 'anatomy', kind: 'error', text: 'Could not start Claude Code: ' + e.message }));
   proc.on('close', code => {
     const m = readMeta(id) || meta;
+    // Settings > Models > "Switch now": the run was stopped on purpose, resume on the chosen model.
+    if (r.switchTo) {
+      const to = r.switchTo; r.switchTo = null; r.proc = null; r.stopping = false;
+      emit(id, { type: 'anatomy', kind: 'notice', text: `Switched from ${models.label(model)} to ${models.label(to)} as you asked. Carrying on where it stopped.` });
+      try { return startRun(id, models.continuePrompt(model, to, 'You asked to switch models'), '', { model: to, tried: [], auto: true }); }
+      catch (e) { /* fall through */ }
+    }
     const stopped = r.stopping;
-    m.status = stopped ? 'stopped' : (code === 0 ? 'done' : 'failed');
+    const failed = !stopped && (code !== 0 || !!watch.resultErr);
+    // The reason is usually in the last result event (usage limit, API error), not on stderr.
+    const kind = failed ? watch.kind(errTail) : '';
+    const triedNow = [...tried, model].filter(Boolean);
+    if (!failed && model) models.markOk(ROOT, model);
+    // 'plan': the whole Claude plan is at its limit, so only a local model (if turned on in Settings) can carry on.
+    if ((kind === 'model' || kind === 'plan') && model) {
+      models.markUnavailable(ROOT, model, kind === 'plan' ? 'plan limit reached' : (watch.apiError || 'unavailable'), watch.resetsAt);
+      const cand = models.pickModel(ROOT, m.model, triedNow);
+      const next = kind === 'plan' ? models.chainFor(m.model, ROOT).find(x => models.isLocal(x) && !triedNow.includes(x)) : cand;
+      if (next && !triedNow.includes(next)) {
+        emit(id, { type: 'anatomy', kind: 'notice', text: `${models.reasonText(kind, model)}, so Anatomy switched to ${models.label(next)} and is carrying on.` });
+        r.proc = null; r.stopping = false;
+        try { return startRun(id, models.continuePrompt(model, next), '', { model: next, tried: triedNow, auto: true }); }
+        catch (e) { /* fall through to the normal failure path */ }
+      }
+    }
+    m.status = stopped ? 'stopped' : (failed ? 'failed' : 'done');
     m.updated = new Date().toISOString(); writeMeta(id, m);
-    if (code !== 0 && !stopped) {
-      // The reason is usually in the last result event (usage limit, API error), not on stderr.
-      let text = [resultErr, errTail.trim()].filter(Boolean).join('\n\n') || `Claude Code exited with code ${code}.`;
-      if (/rate.?limit|usage limit|session limit|spend limit|429|resets/i.test(text)) text += '\n\nYour Claude usage limit was reached. Raise it at claude.ai/settings/usage or wait for the reset; then open this project and send \"continue\" to pick up where it stopped.';
-      else if (/login|log in|auth/i.test(text)) text += '\n\nClaude Code needs you to sign in again. Click "Sign in" at the top of the window.';
-      emit(id, { type: 'anatomy', kind: 'error', text });
+    if (failed) {
+      const details = [watch.resultErr, errTail.trim()].filter(Boolean).join('\n\n') || `Claude Code exited with code ${code}.`;
+      emit(id, { type: 'anatomy', kind: 'error', text: models.friendlyError(kind, watch, triedNow), details });
+    }
+    r.proc = null; r.stopping = false; r.stdinOpen = false; clearTimeout(r.idleTimer);
+    // A message sent just as the run was wrapping up: carry on with it instead of dropping it.
+    if (r.pending && r.pending.length && !stopped) {
+      const msgs = r.pending.splice(0);
+      try { return startRun(id, msgs.join('\n\n'), '', { auto: true }); } catch {}
     }
     emit(id, { type: 'anatomy', kind: 'run-end', status: m.status });
-    r.proc = null; r.stopping = false;
+    // The run is really over (not handed to a fallback model or a queued message): push it to the hub and release the lock.
     if (hub.config()) hub.syncProject(id).catch(() => {}).finally(() => hub.unlock(id));
   });
+}
+
+function userLine(text) {
+  return JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text }] } }) + '\n';
+}
+
+// A message from the user while the run is working. It goes straight into the running session;
+// Claude Code picks it up at its next step. If the run is already closing, it starts the next run.
+function steerRun(id, text, display) {
+  const r = runs.get(id);
+  if (!r || !r.proc) return false;
+  const msg = 'Message from the user while you are working. Take it into account now: adjust the plan if it changes anything, ' +
+    'answer any question in a short reply, then carry on with the run.\n\n' + text;
+  emit(id, { type: 'anatomy', kind: 'steer', text: display || text });
+  if (r.stdinOpen) {
+    clearTimeout(r.idleTimer); r.lastWrite = Date.now();
+    try { r.proc.stdin.write(userLine(msg)); return true; } catch {}
+  }
+  (r.pending = r.pending || []).push(msg);
+  return true;
 }
 
 function stopRun(id) {
   const r = runs.get(id);
   if (!r?.proc) return;
-  r.stopping = true;
+  r.stopping = true; r.pending = [];
   if (process.platform === 'win32') execFile('taskkill', ['/pid', String(r.proc.pid), '/T', '/F'], () => {});
   else r.proc.kill('SIGTERM');
 }
@@ -366,7 +456,7 @@ function stopApp(key) {
   apps.delete(key);
 }
 function openWithDefault(p) {
-  if (process.platform === 'win32') spawn('cmd.exe', ['/c', 'start', '""', p], { detached: true, windowsHide: true });
+  if (process.platform === 'win32') spawn('cmd.exe', ['/c', 'start', '""', `"${p}"`], { detached: true, windowsHide: true, windowsVerbatimArguments: true });
   else spawn('xdg-open', [p], { detached: true });
 }
 
@@ -399,7 +489,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
       return send(res, 200, fs.readFileSync(path.join(PUBLIC, 'index.html')), MIME['.html']);
     }
-    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html')) {
+    if (req.method === 'GET' && (parts[0] === 'vendor' || parts[0] === 'results.js' || parts[0] === 'xometry.js' || parts[0] === 'viewer.html' || parts[0] === 'editor.html')) {
       const p = safeJoin(PUBLIC, decodeURIComponent(url.pathname.slice(1)));
       return streamFile(res, p, parts[0] === 'vendor' ? 'max-age=3600' : 'no-store');
     }
@@ -476,6 +566,7 @@ const server = http.createServer(async (req, res) => {
         const { message } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
         const text = message && message.trim() ? message.trim() :
           `Run the anatomy skill on this brief:\n\n${meta.prompt}\n\nRead CLAUDE.md and everything in inputs/ first.`;
+        if (runs.get(id)?.proc && message && message.trim()) { steerRun(id, text, message.trim()); return send(res, 200, { ok: true, steered: true }); }
         if (runs.get(id)?.proc) return send(res, 409, { error: 'already running' });
         // Pull the latest copy from the hub and claim the project, so two PCs never run it at the same time.
         if (hub.config()) {
@@ -487,6 +578,15 @@ const server = http.createServer(async (req, res) => {
         return send(res, 200, { ok: true });
       }
       if (action === 'stop' && req.method === 'POST') { stopRun(id); return send(res, 200, { ok: true }); }
+      if (action === 'switch' && req.method === 'POST') {
+        const { model } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
+        if (!model) return send(res, 400, { error: 'model required' });
+        models.clearSkip(ROOT, model);
+        const r = runs.get(id);
+        if (r?.proc) { r.switchTo = model; stopRun(id); return send(res, 200, { ok: true, switching: true }); }
+        meta.model = model; writeMeta(id, meta);
+        return send(res, 200, { ok: true, switching: false });
+      }
 
       if (action === 'events' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' });
@@ -548,6 +648,82 @@ const server = http.createServer(async (req, res) => {
         p.on('error', e => { clearTimeout(killer); send(res, 200, { code: -1, log: e.message }); });
         return;
       }
+      // Design Studio: the 3D design editor (editor.html). See design.js.
+      if (action === 'design') {
+        const sub = parts[4];
+        if (!sub && req.method === 'GET') return send(res, 200, { id, title: meta.title, revision: meta.revision || null, revisionOf: meta.revisionOf || null, running: !!runs.get(id)?.proc, ...design.info(dir) });
+        if (sub === 'edits' && req.method === 'PUT') return send(res, 200, design.saveEdits(dir, JSON.parse((await readBody(req, 20 * 1024 * 1024)).toString('utf8') || '{}')));
+        if (sub === 'scene' && req.method === 'PUT') { // the edited scene as GLB, for Blender
+          const dd = design.designDir(dir); fs.mkdirSync(dd, { recursive: true });
+          fs.writeFileSync(path.join(dd, 'scene.glb'), await readBody(req, 1024 * 1024 * 1024));
+          return send(res, 200, { ok: true });
+        }
+        if (sub === 'sculpt' && req.method === 'GET') { // a mesh sculpted in Blender, written by the save hook
+          const name = path.basename(url.searchParams.get('file') || '');
+          return streamFile(res, path.join(design.designDir(dir), 'sculpt', name), 'no-store');
+        }
+        if (sub === 'blender' && req.method === 'POST') {
+          const b = JSON.parse((await readBody(req, 64 * 1024)).toString('utf8') || '{}');
+          try { return send(res, 200, design.runBlender(dir, b.mode === 'render' ? 'render' : 'open', b, cleanEnv)); }
+          catch (e) { return send(res, 400, { error: e.message }); }
+        }
+        if (sub === 'blender' && req.method === 'GET') return send(res, 200, design.blenderStatus(dir));
+        if (sub === 'features' && req.method === 'GET') {
+          try { return send(res, 200, await design.stepFeatures(dir, ROOT, url.searchParams.get('step') || '', cleanEnv)); }
+          catch (e) { return send(res, 400, { error: e.message }); }
+        }
+        if (sub === 'grade' && req.method === 'POST') {
+          try { return send(res, 200, await design.gradeCheck(dir, ROOT, cleanEnv)); }
+          catch (e) { return send(res, 400, { error: e.message }); }
+        }
+        if (sub === 'revision' && req.method === 'POST') {
+          // Rebuild: a NEW project (rev B, C, ...) copied from this one, regenerated by the skill from the edits.
+          // The completed version is never changed.
+          const b = JSON.parse((await readBody(req, 60 * 1024 * 1024)).toString('utf8') || '{}');
+          const edits = b.edits || design.loadEdits(dir);
+          if (!edits) return send(res, 400, { error: 'No edits to rebuild from.' });
+          design.saveEdits(dir, edits);
+          const rootId = meta.revisionRoot || id;
+          const L = design.nextRevision(listProjects, rootId);
+          const baseId = slugify(rootId).slice(0, 32).replace(/-+$/, '');
+          let nid = `${baseId}-rev-${L.toLowerCase()}`, k = 2;
+          const taken = new Set(hub.remoteProjects().map(p => p.id));
+          while (fs.existsSync(path.join(ROOT, nid)) || taken.has(nid)) nid = `${baseId}-rev-${L.toLowerCase()}${k++}`;
+          const ndir = path.join(ROOT, nid);
+          fs.mkdirSync(path.join(ndir, 'inputs'), { recursive: true });
+          const rootTitle = (readMeta(rootId) || meta).title || meta.title || id;
+          const title = `${String(rootTitle).replace(/\s*·\s*rev [A-Z]+$/, '')} · rev ${L}`;
+          const md = design.editsMarkdown(meta, id, edits);
+          const brief = `Revision ${L} of the Anatomy project "${meta.title}" (folder ../${id}), made from the user's edits in the 3D design editor.\n\n` +
+            `The edits are in inputs/design-edits.md (readable) and inputs/design-edits.json (exact values)` + (b.snapshot ? ', with a picture of the edited model in inputs/design-edits.png' : '') + '.\n\n' + md;
+          writeMeta(nid, { title, prompt: brief, model: meta.model || 'claude-fable-5-2', status: 'new', created: new Date().toISOString(), updated: new Date().toISOString(),
+            revisionOf: id, revisionRoot: rootId, revision: L });
+          fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.json'), JSON.stringify({ ...edits, source: id, revision: L }, null, 1));
+          fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.md'), md);
+          if (b.snapshot && /^data:image\/png;base64,/.test(b.snapshot)) fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.png'), Buffer.from(b.snapshot.split(',')[1], 'base64'));
+          // Sculpted meshes from Blender travel with the edits.
+          const sd = path.join(design.designDir(dir), 'sculpt');
+          if (fs.existsSync(sd)) { fs.mkdirSync(path.join(ndir, 'inputs', 'sculpt'), { recursive: true }); for (const f of fs.readdirSync(sd)) try { fs.copyFileSync(path.join(sd, f), path.join(ndir, 'inputs', 'sculpt', f)); } catch {} }
+          emit(nid, { type: 'anatomy', kind: 'notice', text: `Revision ${L} of "${meta.title}". Copying the design from the original (the original is not changed)...` });
+          send(res, 200, { id: nid, revision: L });
+          (async () => {
+            const n = await design.copyProject(dir, ndir, c => emit(nid, { type: 'anatomy', kind: 'notice', text: `Copied ${c} files...` }));
+            // The copy brought the original's inputs along; keep the edits on top.
+            fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.json'), JSON.stringify({ ...edits, source: id, revision: L }, null, 1));
+            fs.writeFileSync(path.join(ndir, 'inputs', 'design-edits.md'), md);
+            fs.writeFileSync(path.join(ndir, 'CLAUDE.md'),
+              `# Anatomy project: revision ${L}\n\nUse the \`anatomy\` skill for all work in this folder, and follow its references/design-revisions.md.\n\n` +
+              `This folder is revision ${L} of \`../${id}\` ("${meta.title}"), copied from it on ${new Date().toISOString().slice(0, 10)} (${n} files). ` +
+              `Never write to \`../${id}\` or any other project folder: it is a completed version and must stay exactly as it is. You may run its tools read-only (e.g. its .venv Python or .tools) if that saves time.\n\n` +
+              `The user's design edits are in inputs/design-edits.md and inputs/design-edits.json` + (b.snapshot ? ' (picture: inputs/design-edits.png)' : '') + '.\n\nOriginal brief:\n\n' + (meta.prompt || '') + '\n');
+            emit(nid, { type: 'anatomy', kind: 'notice', text: `Copied ${n} files. Starting the rebuild.` });
+            const msg = `This is revision ${L} of ../${id}. Read CLAUDE.md, inputs/design-edits.md and inputs/design-edits.json, then follow the anatomy skill's references/design-revisions.md: ` +
+              `apply every edit to the parametric source in THIS folder, raise the styling and detail as asked, and regenerate everything that depends on the geometry (CAD and STEP, assembly.json and meshes, drawings and cut files, BOM, G-code, assembly guide, build package, renders). Never write to ../${id}.`;
+            try { startRun(nid, msg, `Rebuild as revision ${L} from the design editor`); } catch (e) { emit(nid, { type: 'anatomy', kind: 'error', text: e.message }); }
+          })().catch(e => emit(nid, { type: 'anatomy', kind: 'error', text: 'Could not copy the design: ' + e.message }));
+          return;
+        }
+      }
       if (action === 'manifest' && req.method === 'GET') {
         const m = findManifest(dir);
         if (m && m.apps) m.apps = m.apps.map((a, n) => ({ ...a, running: !!apps.get(`${id}/${n}`) }));
@@ -571,6 +747,19 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
+    if (parts[1] === 'models') {
+      if (req.method === 'GET') {
+        const o = await models.overview(ROOT);
+        o.running = listProjects().filter(p => runs.get(p.id)?.proc).map(p => ({ id: p.id, title: p.title, model: (readMeta(p.id) || {}).currentModel || null }));
+        return send(res, 200, o);
+      }
+      if (req.method === 'PUT') return send(res, 200, models.writeSettings(ROOT, JSON.parse((await readBody(req)).toString('utf8') || '{}')));
+      if (req.method === 'POST' && parts[2] === 'clear') {
+        const { model } = JSON.parse((await readBody(req)).toString('utf8') || '{}');
+        models.clearSkip(ROOT, model); return send(res, 200, { ok: true });
+      }
+    }
+
     if (parts[1] === 'settings') {
       if (req.method === 'GET') return send(res, 200, { text: readSettings() });
       if (req.method === 'PUT') {
@@ -584,7 +773,7 @@ const server = http.createServer(async (req, res) => {
       // Opens a visible window running Claude Code's sign-in, the only step that needs a terminal.
       const claude = findClaude();
       if (claude && process.platform === 'win32') {
-        spawn('cmd.exe', ['/c', 'start', '"Sign in to Claude"', claude, '/login'], { env: cleanEnv(), detached: true, windowsHide: false });
+        spawn('cmd.exe', ['/c', 'start', '"Sign in to Claude"', `"${claude}"`, '/login'], { env: cleanEnv(), detached: true, windowsHide: false, windowsVerbatimArguments: true });
       }
       return send(res, 200, { ok: !!claude });
     }

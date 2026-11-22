@@ -12,16 +12,16 @@ html, body { margin: 0; height: 100%; background: radial-gradient(ellipse at 50%
   font: 13px/1.5 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
 canvas { display: block; } .hidden { display: none !important; }
 .hud { position: fixed; pointer-events: none; text-shadow: 0 0 8px #5ff3ff88; }
-.tl { top: 14px; left: 16px; } .tr { top: 14px; right: 16px; text-align: right; max-width: min(300px, 40vw); } .bl { bottom: 14px; left: 16px; } .br { bottom: 14px; right: 16px; }
+.tl { top: 14px; left: 16px; } .tr { top: 14px; right: 16px; text-align: right; } .bl { bottom: 14px; left: 16px; } .br { bottom: 14px; right: 16px; }
 .title { font-size: 15px; font-weight: 600; letter-spacing: .04em; max-width: 60vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .live { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; letter-spacing: .2em; color: var(--holo); }
 .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--holo); box-shadow: 0 0 10px var(--holo); animation: p 1.2s infinite; }
 .live.idle { color: var(--muted); } .live.idle i { background: var(--muted); box-shadow: none; animation: none; }
 @keyframes p { 50% { opacity: .25; } }
 .sub { color: var(--muted); font-size: 11px; letter-spacing: .08em; }
-.parts { margin-top: 8px; max-height: 40vh; overflow-y: auto; overflow-x: hidden; pointer-events: auto; font-size: 11px; color: var(--muted); }
-.parts div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; transition: color 2s; }
-.parts div.new { color: var(--holo); } .parts div.done { color: var(--text); }
+.parts { margin-top: 8px; max-height: 40vh; overflow: auto; pointer-events: auto; font-size: 11px; color: var(--muted); }
+.parts div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; transition: color 2s; }
+.parts div.new { color: var(--holo); }
 .ctl { pointer-events: auto; display: flex; gap: 6px; }
 .ctl button { background: #06303a99; border: 1px solid #1f6b78; color: var(--text); border-radius: 8px; padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer; }
 .ctl button.on { border-color: var(--holo); box-shadow: 0 0 10px #5ff3ff55 inset; }
@@ -36,16 +36,13 @@ canvas { display: block; } .hidden { display: none !important; }
 .info a { color: var(--holo); cursor: pointer; display: block; font-size: 12px; word-break: break-all; }
 .info .x { position: absolute; top: 8px; right: 10px; cursor: pointer; color: var(--muted); }
 .parts div { pointer-events: auto; cursor: pointer; } .parts div.sel { color: #ffd36b; }
-.toast { position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%); max-width: 520px; background: #04161cee; border: 1px solid #1f6b78; border-radius: 10px; padding: 8px 14px; font-size: 12px; color: var(--text); box-shadow: 0 0 20px #5ff3ff22; }
-.card { position: fixed; left: 16px; top: 92px; width: 340px; max-height: calc(100vh - 230px); overflow: auto; pointer-events: auto;
-  background: #04161cdd; border: 1px solid #1f6b78; border-radius: 14px; padding: 12px 14px; box-shadow: 0 0 30px #5ff3ff22; backdrop-filter: blur(4px); font-size: 12px; }
-.card .k { color: var(--muted); font-size: 10px; letter-spacing: .15em; margin: 10px 0 4px; } .card h3 { margin: 2px 0 6px; font-size: 15px; }
-.card img { width: 100%; border-radius: 8px; border: 1px solid #0f3a42; cursor: zoom-in; background: #fff; }
-.card label { display: flex; gap: 8px; align-items: flex-start; padding: 3px 0; border-bottom: 1px solid #0f3a42; cursor: pointer; } .card label input { accent-color: #ffd36b; margin-top: 2px; }
-.card label.got { color: var(--muted); text-decoration: line-through; } .card .src { color: var(--muted); font-size: 10px; }
-.card .ctlrow { display: flex; gap: 6px; margin-top: 10px; } .card .ctlrow button { flex: 1; background: #06303a99; border: 1px solid #1f6b78; color: var(--text); border-radius: 8px; padding: 6px 4px; font: inherit; cursor: pointer; }
-.card .ctlrow button.on { border-color: var(--holo); box-shadow: 0 0 10px #5ff3ff55 inset; } .card .ctlrow button:disabled { opacity: .35; cursor: default; }
-.zoom { position: fixed; inset: 0; background: #000c; display: grid; place-items: center; z-index: 10; cursor: zoom-out; } .zoom img { max-width: 94vw; max-height: 94vh; background: #fff; border-radius: 8px; }
+.card { position: fixed; left: 16px; top: 84px; width: 340px; max-height: calc(100vh - 230px); overflow: auto; pointer-events: auto;
+  background: #04161cee; border: 1px solid #6b5a1f; border-radius: 14px; padding: 14px; box-shadow: 0 0 30px #ffd36b22; backdrop-filter: blur(4px); }
+.card h3 { margin: 2px 0 8px; font-size: 15px; color: #ffe7a8; } .card .k { color: #c9a24a; font-size: 10px; letter-spacing: .15em; margin: 10px 0 4px; }
+.card .k:first-child { margin-top: 0; } .card img { width: 100%; border-radius: 8px; background: #fff; cursor: zoom-in; margin-bottom: 4px; }
+.card ul { margin: 0; padding-left: 18px; font-size: 12px; } .card li { margin: 2px 0; } .card .ln { color: var(--muted); font-size: 11px; }
+.card .t { margin: 0; font-size: 12px; white-space: pre-wrap; }
+.ctl button:disabled { opacity: .4; cursor: default; }
 .empty { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); letter-spacing: .1em; pointer-events: none; text-align: center; }
 .scan { position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, #ffffff05 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
 </style>
@@ -53,15 +50,14 @@ canvas { display: block; } .hidden { display: none !important; }
 <body>
 <div class="scan"></div>
 <div class="hud tl"><div class="live" id="live"><i></i>LIVE</div><div class="title" id="title">Anatomy</div><div class="sub" id="sub">waiting for geometry…</div></div>
-<div class="hud tr"><div class="sub" id="partsHdr">PARTS</div><div class="parts" id="parts"></div></div>
+<div class="hud tr"><div class="sub">PARTS</div><div class="parts" id="parts"></div></div>
 <div class="hud bl"><div class="ctl" id="mode"><button data-m="holo" class="on">Hologram</button><button data-m="outline">Outline</button><button data-m="solid">Solid</button></div>
   <div class="style"><label>Color <input type="color" id="col" value="#5ff3ff"></label><label>Tint <input type="color" id="tint" value="#8a7dff"></label>
   <label>Glow <input type="range" id="glow" min="0.2" max="2" step="0.05" value="1"></label><label>Shade <input type="range" id="shade" min="0" max="1" step="0.02" value="0.35"></label><button class="ctl" id="reset" style="background:none;border:0;color:var(--muted);cursor:pointer;pointer-events:auto">reset</button></div></div>
 <div class="info hidden" id="info"></div>
 <div class="card hidden" id="card"></div>
-<div class="hud br"><div class="ctl"><button id="spin" class="on">Auto-rotate</button><button id="tbl" title="Lay every part out side by side on the table">Table</button><button id="asm" title="Move every part into its place in the finished product">Assemble</button><button id="fit">Fit</button></div></div>
-<div class="toast hidden" id="toast"></div>
-<div class="empty" id="empty"><span id="emptyT">NO 3D GEOMETRY YET</span><br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
+<div class="hud br"><div class="ctl"><button id="exitAsm" class="hidden" title="Back to the project's part files">Parts table</button><button id="stepBack" class="hidden" title="Take the last step off (←)">◀ Back</button><button id="stepPlay" class="hidden" title="Play or pause the build (space)">▶ Play</button><button id="stepNext" class="hidden" title="Do the next step (→)">Next ▶</button><button id="center" class="hidden" title="Put the assembled product in the middle of the stage">Center on stage</button><button id="assemble" class="hidden" title="Fly the parts into place step by step, or take the product apart again">Assemble</button><button id="spread" title="Lay the parts out side by side, or show them where the CAD placed them">Spread parts</button><button id="spin" class="on">Auto-rotate</button><button id="fit">Fit</button><button id="design" title="Open the Design Studio to change this design">Design ✎</button></div></div>
+<div class="empty" id="empty">NO 3D GEOMETRY YET<br><span style="font-size:11px">Parts appear here as Anatomy writes STL, 3MF, OBJ or GLB files.</span></div>
 
 <script type="module">
 import * as THREE from 'three';
@@ -76,9 +72,8 @@ const $ = s => document.querySelector(s);
 const api = p => fetch(p, { cache: 'no-store' }).then(r => r.json());
 const ext = p => p.toLowerCase().split('.').pop();
 const MESH = ['stl', '3mf', 'obj', 'glb'];
-// Print-ready copies (sliced plates, build/2-print, PR-* files) sit at the bed origin; prefer the design parts when there are any.
-const PRINTCOPY = /(^|\/)(build\/\d*-?print|print|prints|gcode|plates?|slic\w*)\/|\.gcode\.3mf$|(^|\/)PR-[^/]*$/i;
 const SKIP = /(^|\/)(\.venv|venv|\.tools|node_modules|\.anatomy|__pycache__)\//;
+const PRINTCOPY = /(^|\/)(build\/\d*-?print|print|prints|gcode|plates?|slic\w*)\/|\.gcode\.3mf$|(^|\/)PR-[^/]*$/i;
 
 // ---------------------------------------------------------------- scene
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -91,7 +86,13 @@ const ctl = new OrbitControls(cam, renderer.domElement); ctl.enableDamping = tru
 scene.add(new THREE.HemisphereLight(0xbff8ff, 0x0a2a33, 1.0));
 const dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(1, -1, 2); scene.add(dl);
 const root = new THREE.Group(); scene.add(root);
-const asmRoot = new THREE.Group(); asmRoot.visible = false; scene.add(asmRoot); // assembly.json view
+// The assembled product (from assembly.json: in-place meshes plus build steps), shown by "Assemble".
+const asmRoot = new THREE.Group(); asmRoot.visible = false; scene.add(asmRoot);
+const asmParts = new Map(); // file -> { group, born }
+let asmMode = false, asmJson = null, asmTimer = null, asmSteps = [], asmStep = 0;
+let asmView = null, asmLift = 50, asmState = 'apart', asmBusy = false; // asmState: 'apart' | 'together'
+const ZERO = new THREE.Vector3();
+const tweens = new Map(); // group -> { from, to, t0, dur } (declared before the render loop starts)
 
 // holographic floor: polar grid and a glowing ring
 const floor = new THREE.Group(); scene.add(floor);
@@ -127,10 +128,6 @@ const solidMat = () => new THREE.MeshStandardMaterial({ color: 0x9fd8e6, metalne
 
 let mode = 'holo';
 const parts = new Map(); // path -> { group, mtime, born }
-const asmParts = new Map(); // assembly.json parts: path -> { group, born, step }
-let inAsm = false;
-const allParts = () => [...parts.entries(), ...asmParts.entries()];
-const activeRoot = () => inAsm ? asmRoot : root;
 
 function geometriesOf(obj) { const gs = []; obj.updateMatrixWorld(true); obj.traverse(o => { if (o.isMesh) { const g = o.geometry.clone(); g.applyMatrix4(o.matrixWorld); gs.push(g); } }); return gs; }
 async function load(p) {
@@ -140,8 +137,6 @@ async function load(p) {
   if (e === '3mf') return geometriesOf(new ThreeMFLoader().parse(await (await fetch(url, { cache: 'no-store' })).arrayBuffer()));
   if (e === 'obj') return geometriesOf(new OBJLoader().parse(await (await fetch(url, { cache: 'no-store' })).text()));
   if (e === 'glb') {
-    // glTF is Y-up; this viewer is Z-up. Same rule as results.js: CAD exporters (OCCT/cadquery) convert
-    // Z-up to Y-up, so turn the scene back; only a trimesh export with no root transform is left as-is.
     const g = await new GLTFLoader().loadAsync(url);
     const js = g.parser?.json || {};
     const roots = (js.scenes?.[js.scene || 0]?.nodes || []).map(i => js.nodes?.[i] || {});
@@ -164,17 +159,45 @@ function build(geos) {
   return g;
 }
 function applyMode() {
-  for (const [, { group }] of allParts()) group.traverse(o => {
+  for (const { group } of [...parts.values(), ...asmParts.values()]) group.traverse(o => {
     if (o.userData.kind === 'holo') o.visible = mode === 'holo';
     if (o.userData.kind === 'solid') o.visible = mode === 'solid';
     if (o.userData.kind === 'edges') o.visible = mode !== 'solid' || true;
     if (o.userData.kind === 'edges') o.material.color.copy(mode === 'solid' ? new THREE.Color(0x0b3b44) : uniforms.uColor.value);
   });
 }
-function bounds() { return new THREE.Box3().setFromObject(activeRoot()); }
+function bounds() { return new THREE.Box3().setFromObject(asmMode ? asmRoot : root); }
+// Parts exported in place (an assembly) stay where they are. Parts that were each exported at the
+// origin overlap into one block; lay those out on a grid instead, largest first, sitting on z = 0.
+function layout() {
+  const gs = [...parts.values()].map(v => v.group);
+  gs.forEach(g => g.position.set(0, 0, 0));
+  if (gs.length < 3) return;
+  const boxes = gs.map(g => new THREE.Box3().setFromObject(g));
+  // A part saved on its own sits on its own origin; a part saved in place in an assembly usually does not.
+  const o = new THREE.Vector3();
+  const atOrigin = boxes.filter(b => b.clone().expandByScalar(1).containsPoint(o)).length;
+  const auto = atOrigin >= gs.length * 0.5;
+  const doSpread = spread === null ? auto : spread;
+  $('#spread').classList.toggle('on', doSpread);
+  if (!doSpread) { framed = false; return; } // mostly placed: show as the assembly it is
+  const order = gs.map((g, i) => ({ g, b: boxes[i], s: boxes[i].getSize(new THREE.Vector3()) }))
+    .sort((a, c) => Math.max(c.s.x, c.s.y) - Math.max(a.s.x, a.s.y));
+  // Shelf packing: fill rows left to right, wrap at roughly a square layout.
+  const gap = Math.max(5, Math.max(...order.map(o => Math.max(o.s.x, o.s.y))) * 0.06);
+  const area = order.reduce((a, o) => a + (o.s.x + gap) * (o.s.y + gap), 0);
+  const rowW = Math.max(Math.sqrt(area) * 1.2, order[0].s.x + gap);
+  let x = 0, y = 0, rowH = 0;
+  for (const o of order) {
+    if (x > 0 && x + o.s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
+    o.g.position.set(x - o.b.min.x, y - o.b.max.y, -o.b.min.z);
+    x += o.s.x + gap; rowH = Math.max(rowH, o.s.y);
+  }
+  framed = false;
+}
 let framed = false;
-function frame(box) {
-  const b = box && box.isBox3 ? box : bounds(); if (b.isEmpty()) return;
+function frame(b0) {
+  const b = b0 || (asmMode && asmView ? (centered && asmBox ? asmBox : asmView).clone() : bounds()); if (b.isEmpty()) return;
   const s = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3()); const r = Math.max(s.x, s.y, s.z) || 1;
   ctl.target.copy(c); cam.position.copy(c).add(new THREE.Vector3(r * 1.25, -r * 1.55, r * 0.95));
   cam.near = r / 500; cam.far = r * 60; cam.updateProjectionMatrix();
@@ -183,25 +206,33 @@ function frame(box) {
   framed = true;
 }
 function updateZ() {
-  const b = bounds(); if (b.isEmpty()) return;
-  activeRoot().traverse(o => { if (o.material && o.material.uniforms) { o.material.uniforms.uMinZ.value = b.min.z; o.material.uniforms.uMaxZ.value = b.max.z; } });
+  const b = asmMode && asmView ? asmView.clone().expandByScalar(asmLift * 2) : bounds(); if (b.isEmpty()) return;
+  for (const r of [root, asmRoot]) r.traverse(o => { if (o.material && o.material.uniforms) { o.material.uniforms.uMinZ.value = b.min.z; o.material.uniforms.uMaxZ.value = b.max.z; } });
 }
 
 // ---------------------------------------------------------------- polling the project
-let lastChange = 0, running = false; const failed = new Map();
+let lastChange = 0, running = false, manTitle;
+let spread = null; // null = decide automatically; true/false once the user presses "Spread parts"
 async function poll() {
   try {
-    const [list, meta] = await Promise.all([api(`/api/projects/${id}/meshes`), api(`/api/projects/${id}`)]);
-    $('#title').textContent = meta.title || 'Anatomy';
+    const [list, meta] = await Promise.all([api(`/api/projects/${id}/files`), api(`/api/projects/${id}`)]);
+    if (manTitle === undefined) manTitle = (await api(`/api/projects/${id}/manifest`).catch(() => ({}))).title || null;
+    $('#title').textContent = manTitle || meta.title || 'Anatomy';
+    document.title = `${manTitle || meta.title || 'Anatomy'} · Live 3D`;
     running = !!meta.running;
     $('#live').classList.toggle('idle', !running); $('#live').lastChild.textContent = running ? 'LIVE' : 'IDLE';
-    const docs = list.filter(f => /(^|\/)assembly\.json$/i.test(f.path) && !SKIP.test(f.path)).sort((a, b) => a.path.split('/').length - b.path.split('/').length);
-    asmDoc = docs[0] || null; const asmDir = asmDoc ? asmDoc.path.replace(/(^|\/)assembly\.json$/i, '') : null;
-    let meshes = list.filter(f => MESH.includes(ext(f.path)) && !SKIP.test(f.path) && !(asmDir !== null && (asmDir === '' ? false : f.path.startsWith(asmDir + '/'))));
+    // assembly.json (shallowest) describes the assembled product; its meshes belong to "Assemble", not the parts table.
+    const aj = list.filter(f => /(^|\/)assembly\.json$/i.test(f.path) && !SKIP.test(f.path)).sort((a, b) => a.path.split('/').length - b.path.split('/').length)[0] || null;
+    asmJson = aj; $('#assemble').classList.toggle('hidden', !aj);
+    const asmDir = aj ? aj.path.slice(0, aj.path.lastIndexOf('/') + 1) : null;
+    let meshes = list.filter(f => MESH.includes(ext(f.path)) && !SKIP.test(f.path) && !(asmDir !== null && f.path.startsWith(asmDir) && asmDir !== ''));
+    // Print-ready copies (slicer orientation, every part at the bed origin) pile on top of each other;
+    // show the design meshes instead whenever the project has them.
+    const design = meshes.filter(f => !PRINTCOPY.test(f.path));
+    if (design.length) meshes = design;
     // Prefer an assembled export when the project has one.
     const asm = meshes.filter(f => /assembl/i.test(f.path));
-    isAsm = asm.length > 0; if (isAsm) meshes = asm;
-    else { const design = meshes.filter(f => !PRINTCOPY.test(f.path)); if (design.length) meshes = design; }
+    if (asm.length) meshes = asm;
     meshes = meshes.sort((a, b) => b.mtime - a.mtime).slice(0, 80);
     const keep = new Set(meshes.map(f => f.path));
     for (const [p, v] of parts) if (!keep.has(p)) { root.remove(v.group); parts.delete(p); }
@@ -209,25 +240,25 @@ async function poll() {
     for (const f of meshes) {
       const have = parts.get(f.path);
       if (have && have.mtime === f.mtime) continue;
-      const age = Date.now() - f.mtime; if (age >= 0 && age < 1500) continue; // still being written (future mtimes, e.g. from an extracted zip, are fine)
+      const age = Date.now() - f.mtime;
+      if (age >= 0 && age < 1500) continue; // still being written (future mtimes, e.g. from an extracted zip, are not)
       try {
         const g = build(await load(f.path));
         if (have) root.remove(have.group);
         g.userData.path = f.path; root.add(g); parts.set(f.path, { group: g, mtime: f.mtime, born: performance.now() });
-        changed = true; lastChange = Date.now(); failed.delete(f.path);
-      } catch (e) { failed.set(f.path, e.message || String(e)); }
+        changed = true; lastChange = Date.now();
+      } catch {}
     }
-    if (changed) { files = []; await loadPoses().catch(() => {}); layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3 || isSpread()) frame(); renderParts(); }
-    $('#empty').style.display = parts.size || inAsm ? 'none' : '';
-    if (!parts.size && failed.size) $("#emptyT").textContent = `${failed.size} 3D file${failed.size === 1 ? '' : 's'} found but could not be read`;
+    if (changed) { files = list; layout(); applyMode(); if (selected) highlight(selected); updateZ(); if (!framed || parts.size <= 3) frame(); renderParts(); }
+    $('#empty').style.display = parts.size ? 'none' : '';
     const ago = lastChange ? Math.round((Date.now() - lastChange) / 1000) : null;
-    $('#sub').textContent = `${parts.size} part${parts.size === 1 ? '' : 's'}${ago !== null ? ` · updated ${ago < 60 ? ago + 's' : Math.round(ago / 60) + 'm'} ago` : ''}`;
+    if (!asmMode) $('#sub').textContent = `${parts.size} part${parts.size === 1 ? '' : 's'}${ago !== null ? ` · updated ${ago < 60 ? ago + 's' : Math.round(ago / 60) + 'm'} ago` : ''}`;
   } catch {}
   setTimeout(poll, 2500);
 }
-let selected = null, files = [], bom = null, anim = null; const partsMeta = new Map(), posesKnown = new Map();
+let selected = null, files = [], bom = null; const partsMeta = new Map();
 function renderParts() {
-  if (inAsm) return renderSteps();
+  if (asmMode) return renderSteps();
   const list = [...parts.entries()].sort((a, b) => b[1].born - a[1].born);
   $('#parts').innerHTML = list.map(([p, v]) => `<div data-p="${p.replace(/"/g, '&quot;')}" class="${performance.now() - v.born < 8000 ? 'new' : ''} ${p === selected ? 'sel' : ''}">${p.split('/').pop()}</div>`).join('');
   setTimeout(() => $('#parts').querySelectorAll('.new').forEach(d => d.classList.remove('new')), 8000);
@@ -238,271 +269,192 @@ function resize() { renderer.setSize(innerWidth, innerHeight); cam.aspect = inne
 addEventListener('resize', resize); resize();
 const clock = new THREE.Clock();
 (function loop() {
-  requestAnimationFrame(loop); stepAnim(performance.now());
+  requestAnimationFrame(loop);
   const t = clock.getElapsedTime(); uniforms.uTime.value = t;
   const now = performance.now();
-  for (const [, { group, born }] of allParts()) {
-    if (!group.visible) continue;
-    const k = Math.min(1, (now - born) / 2200); // materialize bottom-up over ~2 s
+  for (const { group, born } of [...parts.values(), ...asmParts.values()]) {
+    const k = born === -Infinity ? 1 : Math.min(1, (now - born) / 2200); // materialize bottom-up over ~2 s
     group.traverse(o => {
       if (o.material && o.material.uniforms) o.material.uniforms.uReveal.value = k;
       if (o.userData.kind === 'edges') o.material.opacity = (mode === 'solid' ? 0.35 : 0.85) * k;
     });
   }
+  stepTweens(now);
   ring.material.opacity = 0.45 + 0.25 * Math.sin(t * 2);
   ctl.update(); renderer.render(scene, cam);
 })();
 
-$('#mode').onclick = e => { const m = e.target.dataset.m; if (!m) return; mode = m; $('#mode').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); applyMode(); };
+$('#mode').onclick = e => { const m = e.target.dataset.m; if (!m) return; mode = m; $('#mode').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); applyMode(); if (asmMode) highlightNext(); };
 $('#spin').onclick = () => { ctl.autoRotate = !ctl.autoRotate; $('#spin').classList.toggle('on', ctl.autoRotate); };
-$('#fit').onclick = frame;
-// Two views. Table: every part side by side. Assembled: every part moved to its place in the product.
-// Parts saved one at a time (for printing, or as separate CAD files) all sit at the origin, so the default is
-// Table for those and Assembled for files already saved in place. Assembly positions come from "pose" in
-// parts.json (see references/build-package.md); without poses, Assembled shows the parts where their files put them.
-let view = null, isAsm = false; // view: null = automatic, 'table' or 'assembled' once a button is pressed
-$('#tbl').onclick = () => { if (inAsm) exitAsm(); view = 'table'; layout(true); frame(); };
-$('#asm').onclick = async () => {
-  if (asmDoc) return enterAsm();
-  if (!isSpread()) { view = 'table'; layout(true); asmBtn(); return; } // Disassemble back onto the table
-  const poses = await loadPoses();
-  if (!poses.size && atOrigin()) return toast('This project has no assembly positions yet, so the parts stay on the table. Ask Anatomy to "add assembly poses to parts.json" and the Assemble button will put them together.');
-  if (poses.size && poses.size < parts.size) toast(`${parts.size - poses.size} of ${parts.size} parts have no assembly position and stay where their files put them.`);
-  view = 'assembled'; layout(true);
-};
-// ---------------------------------------------------------------- assembly.json: step-by-step build
-// {units: "mm", in_place: true, parts: [{file, name, matrix?: 16 numbers column-major}], steps: [{n, title, add: [file]}]}
-// Files are relative to assembly.json. Parts in no step appear first. Meshes in its folder stay off the parts table.
-let asmDoc = null, asmLoaded = null, asmData = null, asmShown = 0, asmTimer = null;
-const asmBase = () => asmDoc.path.replace(/assembly\.json$/i, '');
-async function loadAsm() {
-  const key = asmDoc.path + '@' + asmDoc.mtime; if (asmLoaded === key) return;
-  const doc = await fetch(`/api/projects/${id}/file?path=${encodeURIComponent(asmDoc.path)}`, { cache: 'no-store' }).then(r => r.json());
-  for (const [, v] of asmParts) asmRoot.remove(v.group); asmParts.clear();
-  const steps = (doc.steps || []).map((st, i) => ({ n: st.n ?? i + 1, title: st.title || `Step ${st.n ?? i + 1}`, add: st.add || [] }));
-  const stepOf = new Map(); steps.forEach((st, i) => st.add.forEach(f => stepOf.has(f) || stepOf.set(f, i + 1)));
-  let bad = 0;
-  await Promise.all((doc.parts || []).map(async pt => {
-    const path = asmBase() + pt.file;
-    try {
-      const g = build(await load(path)); g.userData.path = path; g.userData.step = stepOf.get(pt.file) ?? 0; g.userData.name = pt.name;
-      if (Array.isArray(pt.matrix) && pt.matrix.length === 16 && doc.in_place !== true) { g.matrix.fromArray(pt.matrix.map(Number)); g.matrix.decompose(g.position, g.quaternion, g.scale); }
-      asmRoot.add(g); asmParts.set(path, { group: g, born: performance.now(), step: g.userData.step });
-    } catch { bad++; }
-  }));
-  asmData = { steps, name: doc.name || doc.title }; asmLoaded = key; asmTable = false; applyMode();
-  if (bad) toast(`${bad} part file${bad === 1 ? '' : 's'} in assembly.json could not be read.`);
+$('#fit').onclick = () => frame();
+$('#design').onclick = () => window.open(`/editor.html?id=${encodeURIComponent(id)}`, 'anatomydesign-' + id, 'width=1500,height=920');
+// ---------------------------------------------------------------- Assemble: build the product step by step
+// assembly.json: { units: "mm", parts: [{ file, name, matrix?: [16, column-major] }], steps: [{ n, title, add: [file] }] }
+// Part files are relative to assembly.json and usually exported in place (matrix omitted = identity).
+// Parts start laid out on the floor in front of the product; Assemble flies them into place step by step,
+// Disassemble takes them apart in reverse order and flies them back.
+const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+function tweenTo(v, to, delay) { const g = v.group; tweens.set(g, { from: g.position.clone(), to: to.clone(), t0: performance.now() + delay, dur: 1000 }); }
+function stepTweens(now) {
+  for (const [g, tw] of tweens) {
+    const t = (now - tw.t0) / tw.dur; if (t < 0) continue;
+    const u = Math.min(1, t); g.position.lerpVectors(tw.from, tw.to, ease(u));
+    if (tw.from.distanceTo(tw.to) > 1) g.position.z += Math.sin(Math.PI * u) * asmLift; // arc up and over
+    if (t >= 1) { g.position.copy(tw.to); tweens.delete(g); }
+  }
 }
-// Assemble: parts start laid out on the table and fly into place one step at a time (step order from assembly.json).
-// Disassemble: the reverse, last step first, back to the table. Clicking a step builds up to exactly that step.
-let asmState = 'table', asmGen = 0; // 'table' | 'assembled' (where the parts are heading)
-async function enterAsm() {
-  if (inAsm) { pause(); return asmState === 'assembled' ? goToStep(0) : play(); }
-  toast('Loading the assembly…');
-  try { await loadAsm(); } catch (e) { return toast('Could not read assembly.json: ' + e.message); }
-  $('#toast').classList.add('hidden');
-  inAsm = true; root.visible = false; asmRoot.visible = true; select(null);
-  $('#tbl').classList.remove('on'); $('#partsHdr').textContent = 'ASSEMBLY STEPS';
-  if (!asmTable) tableSlots();
-  for (const [, v] of asmParts) { v.group.visible = true; v.group.position.copy(v.slot.pos); v.group.quaternion.identity(); }
-  await loadBuild(); asmShown = 0; playing = false; asmState = 'table'; asmBtn(); renderSteps(); updateZ(); frameUnion();
-}
-function exitAsm() {
-  clearTimeout(asmTimer); asmGen++; playing = false; clearTimeout(playTimer); $('#card').classList.add('hidden'); anim = null; inAsm = false; asmRoot.visible = false; root.visible = true; select(null);
-  $('#partsHdr').textContent = 'PARTS'; asmBtn(); updateZ(); renderParts();
-}
-// Table slots for every assembly part, laid out in build order beside the assembled product.
-let asmTable = false, asmArc = 0;
-function tableSlots() {
-  const items = [...asmParts.values()].sort((a, b) => a.step - b.step || a.group.userData.path.localeCompare(b.group.userData.path));
-  const home = new THREE.Box3(); for (const v of items) { v.home = { pos: v.group.position.clone(), q: v.group.quaternion.clone() }; home.expandByObject(v.group); }
-  const boxes = items.map(v => partBox(v.group)), sz = b => b.getSize(new THREE.Vector3());
-  const area = boxes.reduce((a, b) => a + sz(b).x * sz(b).y, 0), gap = Math.max(4, Math.sqrt(area / Math.max(1, items.length)) * 0.15);
-  const rowW = Math.max(...boxes.map(b => sz(b).x), Math.sqrt(area) * 1.6);
-  const x0 = home.isEmpty() ? 0 : home.max.x + gap * 4, y0 = home.isEmpty() ? 0 : home.max.y;
+function asmLayout() {
+  const all = [...asmParts.values()]; all.forEach(v => v.group.position.set(0, 0, 0)); asmRoot.updateMatrixWorld(true);
+  const A = new THREE.Box3().setFromObject(asmRoot);
+  const items = all.map(v => { const b = new THREE.Box3().setFromObject(v.group); return { v, b, s: b.getSize(new THREE.Vector3()) }; })
+    .sort((a, c) => Math.max(c.s.x, c.s.y) - Math.max(a.s.x, a.s.y));
+  const gap = Math.max(4, Math.max(...items.map(o => Math.max(o.s.x, o.s.y))) * 0.05);
+  const area = items.reduce((a, o) => a + (o.s.x + gap) * (o.s.y + gap), 0);
+  const rowW = Math.max(Math.sqrt(area) * 1.4, items[0].s.x + gap);
+  const x0 = (A.min.x + A.max.x) / 2 - rowW / 2, y0 = A.min.y - gap * 6, z0 = A.min.z;
   let x = 0, y = 0, rowH = 0;
-  items.forEach((v, i) => {
-    const b = boxes[i], s = sz(b);
-    if (x > 0 && x + s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
-    v.slot = { pos: new THREE.Vector3(x0 + x - b.min.x, y0 + y - s.y - b.min.y, -b.min.z) };
-    x += s.x + gap; rowH = Math.max(rowH, s.y);
-  });
-  asmArc = home.isEmpty() ? 0 : (home.max.z - home.min.z) * 0.3; asmTable = true;
+  for (const o of items) {
+    if (x > 0 && x + o.s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
+    o.v.apart = new THREE.Vector3(x0 + x - o.b.min.x, y0 + y - o.b.max.y, z0 - o.b.min.z);
+    x += o.s.x + gap; rowH = Math.max(rowH, o.s.y);
+  }
+  asmBox = A.clone();
+  asmView = A.clone(); asmView.expandByPoint(new THREE.Vector3(x0, y0 + y - rowH, z0)); asmView.expandByPoint(new THREE.Vector3(x0 + rowW, y0, z0));
+  asmLift = Math.max(20, (A.max.z - A.min.z) * 0.3);
 }
-function frameUnion() { // frame both the table and the assembled product so nothing flies off screen
-  const saved = [...asmParts.values()].map(v => [v, v.group.position.clone(), v.group.quaternion.clone()]);
-  const b = new THREE.Box3();
-  for (const [v] of saved) { v.group.position.copy(v.slot.pos); v.group.quaternion.identity(); b.expandByObject(v.group); v.group.position.copy(v.home.pos); v.group.quaternion.copy(v.home.q); b.expandByObject(v.group); }
-  for (const [v, p, q] of saved) { v.group.position.copy(p); v.group.quaternion.copy(q); }
-  frame(b); framed = true;
-}
-// Move to step k: parts of steps 1..k (and step 0) in place, the rest on the table. Steps play one after another.
-const STEP_MS = 1100, PLAY_DWELL = 2600; let playing = false, playTimer = null;
-function goToStep(k) {
-  clearTimeout(asmTimer);
-  const total = asmData.steps.length, from = asmShown, dir = k >= from ? 1 : -1;
-  const order = []; // steps to play, in order
-  if (dir > 0) for (let s = from === 0 ? 0 : from + 1; s <= k; s++) order.push(s); else for (let s = from; s > k; s--) order.push(s);
-  if (dir < 0 && k === 0) order.push(0);
-  const used = new Set([...asmParts.values()].map(v => v.step));
-  for (let i = order.length - 1; i >= 0; i--) if (!used.has(order[i])) order.splice(i, 1); // skip steps with no parts
-  const gen = ++asmGen;
-  const list = [];
-  order.forEach((st, i) => {
-    for (const [, v] of asmParts) if (v.step === st) {
-      const t = dir > 0 ? { pos: v.home.pos, q: v.home.q } : { pos: v.slot.pos, q: new THREE.Quaternion() };
-      list.push({ g: v.group, t, p0: v.group.position.clone(), q0: v.group.quaternion.clone(), d: i * STEP_MS, arc: asmArc });
-    }
-  });
-  asmState = k >= total ? 'assembled' : k === 0 ? 'table' : 'partial'; asmBtn();
-  if (!list.length) { asmShown = k; return renderSteps(); }
-  const t0 = performance.now(), dur = 900;
-  anim = { t0, list, end: t0 + (order.length - 1) * STEP_MS + dur, dur, noFrame: true };
-  // tick the step list as each step lands
-  order.forEach((st, i) => setTimeout(() => { if (!inAsm || gen !== asmGen) return; asmShown = Math.max(0, dir > 0 ? st : st - 1); renderSteps(); }, i * STEP_MS + dur));
-  asmTimer = setTimeout(() => { if (gen !== asmGen) return; asmShown = k; renderSteps(); }, (order.length - 1) * STEP_MS + dur + 20);
-}
-// ---------------------------------------------------------------- build-along: step card + play / pause / next / back
-let buildJson = null;
-async function loadBuild() {
-  if (buildJson) return buildJson;
-  buildJson = await fetch(`/api/projects/${id}/build`, { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
-  const lines = new Map();
-  for (const x of buildJson.purchase || []) lines.set(x.line, { name: x.desc, src: `Buy · ${x.supplier || ''}${x.mpn ? ' · ' + x.mpn : ''}` });
-  for (const x of buildJson.print || []) lines.set(x.line || x.part, { name: x.part, src: `Print · plate ${x.plate ?? '?'} · ${x.material || ''}` });
-  for (const x of buildJson.fabricate || []) lines.set(x.line || x.part, { name: x.part, src: `Fabricate · ${x.process || ''}` });
-  buildJson._lines = lines; return buildJson;
-}
-function guideStepFor(k) { // the build.json assembly step that goes with assembly.json step k
-  const st = asmData.steps[k - 1], g = buildJson?.assembly || []; if (!st || !g.length) return null;
-  if (st.build_step != null) return g.find(b => b.step == st.build_step) || null;
-  if (g.length === asmData.steps.length) return g[k - 1];
-  const t = String(st.title || '').toLowerCase().trim(); // counts differ: only trust a matching title
-  return g.find(b => String(b.title || '').toLowerCase().trim() === t) || null;
-}
-const gotKey = `anatomy.buildalong.${id}`;
-const gotLoad = () => { try { return JSON.parse(localStorage.getItem(gotKey) || '{}'); } catch { return {}; } };
-const gotSave = o => { try { localStorage.setItem(gotKey, JSON.stringify(o)); } catch {} };
-function renderCard() {
-  const card = $('#card'); if (!inAsm || !asmData) return card.classList.add('hidden');
-  const total = asmData.steps.length, k = Math.min(total, asmShown + (playing ? 0 : 1)) || 1, st = asmData.steps[k - 1], g = guideStepFor(k) || {};
-  const done = asmShown >= total, got = gotLoad();
-  const src = (k2, fallback) => st[k2] ?? g[k2] ?? fallback;
-  let items = [];
-  if (Array.isArray(st.parts) || Array.isArray(g.parts)) items = (st.parts || g.parts).map(x => { const l = buildJson?._lines?.get(x.line) || {}; return { key: x.line || x.name, name: x.name || l.name || x.line, qty: x.qty || 1, src: [x.line, l.src].filter(Boolean).join(' · ') }; });
-  else { const c = new Map(); for (const [, v] of asmParts) if (v.step === k) { const n = v.group.userData.name || v.group.userData.path.split('/').pop().replace(/\.[^.]+$/, ''); c.set(n, (c.get(n) || 0) + 1); } items = [...c].map(([n, q]) => ({ key: n, name: n, qty: q, src: '' })); }
-  const tools = src('tools', []), image = src('image', ''), text = src('text', ''), torque = src('torque', ''), check = src('check', '');
-  card.innerHTML = done ? `<div class="k">BUILD COMPLETE</div><h3>All ${total} steps done</h3><div style="color:var(--muted)">Press Back to step through again, or Disassemble to take it apart.</div>` : `
-    <div class="k">${playing ? 'NOW' : asmShown === 0 ? 'FIRST STEP' : 'NEXT STEP'} · ${k} OF ${total}</div><h3>${esc(st.title)}</h3>
-    ${image ? `<img src="/p/${id}/${image.split('/').map(encodeURIComponent).join('/')}" alt="" id="cardImg">` : ''}
-    <div class="k">GET READY</div>${items.map(it => `<label class="${got[k + '|' + it.key] ? 'got' : ''}"><input type="checkbox" data-got="${esc(k + '|' + it.key)}" ${got[k + '|' + it.key] ? 'checked' : ''}><span><b>${esc(it.qty)}×</b> ${esc(it.name)}${it.src ? `<div class="src">${esc(it.src)}</div>` : ''}</span></label>`).join('') || '<div style="color:var(--muted)">No parts listed for this step.</div>'}
-    ${tools.length ? `<div class="k">TOOLS</div><div>${tools.map(esc).join(' · ')}</div>` : ''}
-    ${text ? `<div class="k">DO</div><div>${esc(text)}</div>` : ''}${torque ? `<div class="k">TORQUE</div><div>${esc(torque)}</div>` : ''}${check ? `<div class="k">CHECK</div><div>${esc(check)}</div>` : ''}`;
-  card.innerHTML += `<div class="ctlrow"><button id="bkBtn" ${asmShown <= 0 ? 'disabled' : ''}>⏮ Back</button><button id="plBtn" class="${playing ? 'on' : ''}">${playing ? '⏸ Pause' : '▶ Play'}</button><button id="nxBtn" ${done ? 'disabled' : ''}>Next ⏭</button></div>`;
-  card.classList.remove('hidden');
-  card.querySelectorAll('[data-got]').forEach(c => c.onchange = () => { const o = gotLoad(); if (c.checked) o[c.dataset.got] = 1; else delete o[c.dataset.got]; gotSave(o); c.closest('label').classList.toggle('got', c.checked); });
-  const im = $('#cardImg'); if (im) { im.onerror = () => im.remove(); im.onclick = () => { const z = document.createElement('div'); z.className = 'zoom'; z.innerHTML = `<img src="${im.src}">`; z.onclick = () => z.remove(); document.body.append(z); }; }
-  $('#bkBtn').onclick = () => { pause(); goToStep(Math.max(0, asmShown - 1)); };
-  $('#nxBtn').onclick = () => { pause(); goToStep(Math.min(total, asmShown + 1)); };
-  $('#plBtn').onclick = () => playing ? pause() : play();
-  markNext();
-}
-function markNext() { // the parts to get ready glow amber on the table
-  const next = playing ? -1 : asmShown + 1;
-  for (const [, v] of asmParts) v.group.traverse(o => { if (o.material && o.material.uniforms) o.material.uniforms.uSel.value = v.step === next ? 1 : 0; });
-}
-function play() {
-  const total = asmData.steps.length; if (asmShown >= total) goToStep(0);
-  playing = true; clearTimeout(playTimer);
-  const tick = () => { if (!playing || !inAsm) return; if (asmShown >= total) return pause(); goToStep(asmShown + 1); playTimer = setTimeout(tick, PLAY_DWELL); };
-  playTimer = setTimeout(tick, asmShown >= total ? STEP_MS * total + 300 : 0); renderCard();
-}
-function pause() { playing = false; clearTimeout(playTimer); renderCard(); }
-function asmBtn() {
-  const assembled = inAsm ? asmState === 'assembled' : !isSpread();
-  $('#asm').textContent = assembled ? 'Disassemble' : 'Assemble'; $('#asm').classList.toggle('on', inAsm || !isSpread());
+// Build-along: asmStep = number of steps done. The card always shows the NEXT step (what to get ready),
+// and that step's parts glow amber on the floor. Next flies them into place; Back takes the last step off.
+// Steps come from build/build.json (the full guide, including bench-only steps) merged with assembly.json
+// (which 3D parts each step adds, by step number).
+let playing = false, reverse = false, asmBox = null, centered = false;
+// Once fully assembled: frame the product alone and move the stage (floor ring) under it, so it sits
+// in the middle and auto-rotate spins it in place. Going back a step returns to the whole build area.
+function centerStage(on) {
+  centered = on; $('#center').classList.toggle('on', on);
+  frame((on ? asmBox : asmView).clone());
+  for (const v of asmParts.values()) v.group.visible = true;
 }
 function renderSteps() {
-  if (!asmData) return; renderCard();
-  const counts = new Map(); for (const [, v] of asmParts) counts.set(v.step, (counts.get(v.step) || 0) + 1);
-  $('#parts').innerHTML = asmData.steps.map((st, i) => `<div data-step="${i + 1}" class="${i + 1 <= asmShown ? 'done' : ''} ${i + 1 === asmShown ? 'sel' : ''}">${i + 1 <= asmShown ? '✓' : '○'} ${esc(st.n)}. ${esc(st.title)} <span style="opacity:.6">(${counts.get(i + 1) || 0})</span></div>`).join('')
-    + `<div data-step="0" style="color:var(--muted);margin-top:6px">${asmShown === 0 ? '✓' : '○'} All parts on the table</div>`;
+  $('#parts').innerHTML = asmSteps.map((s, i) => `<div style="color:${i === asmStep ? '#ffd36b' : i < asmStep ? 'var(--text)' : 'var(--muted)'}">${i < asmStep ? '✓' : i === asmStep ? '▸' : '·'} ${esc(s.n ?? i + 1)}. ${esc(s.title || '')}${(s.add || []).length ? '' : ' <span style="opacity:.6">(bench)</span>'}</div>`).join('');
+  const cur = $('#parts').children[Math.min(asmStep, asmSteps.length - 1)]; if (cur) cur.scrollIntoView({ block: 'nearest' });
 }
-$('#parts').addEventListener('click', e => {
-  if (!inAsm) return; e.stopImmediatePropagation();
-  const d = e.target.closest('[data-step]'); if (d) { pause(); goToStep(Number(d.dataset.step)); }
+function asmButtons() {
+  const done = asmStep >= asmSteps.length;
+  $('#assemble').textContent = !asmMode ? 'Assemble' : 'Disassemble';
+  $('#assemble').disabled = asmMode && asmStep === 0;
+  $('#exitAsm').classList.toggle('hidden', !asmMode); $('#spread').classList.toggle('hidden', asmMode);
+  for (const b of ['#stepBack', '#stepPlay', '#stepNext']) $(b).classList.toggle('hidden', !asmMode);
+  $('#stepPlay').textContent = playing && !reverse ? '❚❚ Pause' : '▶ Play';
+  $('#stepNext').disabled = done; $('#stepBack').disabled = asmStep === 0;
+  $('#center').classList.toggle('hidden', !(asmMode && done)); $('#center').classList.toggle('on', centered);
+}
+function highlightNext() {
+  const next = new Set(asmSteps[asmStep]?.add || []);
+  for (const [f, { group }] of asmParts) group.traverse(o => {
+    const on = next.has(f);
+    if (o.material && o.material.uniforms) { o.material.uniforms.uSel.value = on ? 1 : 0; o.material.uniforms.uDim.value = 1; }
+    if (o.userData.kind === 'edges') o.material.color.copy(on ? new THREE.Color(0xffd36b) : (mode === 'solid' ? new THREE.Color(0x0b3b44) : uniforms.uColor.value));
+    if (o.userData.kind === 'solid') o.material.color.set(on ? 0xffd36b : 0x9fd8e6);
+  });
+}
+function renderCard() {
+  const c = $('#card'); if (!asmMode) { c.classList.add('hidden'); return; }
+  c.classList.remove('hidden');
+  if (asmStep >= asmSteps.length) { c.innerHTML = `<div class="k">BUILD COMPLETE</div><h3>All ${asmSteps.length} steps done</h3><p class="t">Use Back to step through it again, or Disassemble to take it apart.</p>`; return; }
+  const s = asmSteps[asmStep], b = s.card || {};
+  const list = (b.parts || []).map(p => `<li><b>${esc(p.qty ?? 1)} ×</b> ${esc(p.desc || p.name || p.line || '')}${p.line && p.line !== '-' ? ` <span class="ln">${esc(p.line)}</span>` : ''}</li>`).join('')
+    || (s.add || []).map(f => `<li>${esc(f.replace(/\.[^.]+$/, '').replace(/_/g, ' '))}</li>`).join('');
+  const img = b.image ? `/p/${id}/${(buildBase + b.image).split('/').map(encodeURIComponent).join('/')}` : '';
+  c.innerHTML = `<div class="k">NEXT · STEP ${esc(s.n ?? asmStep + 1)} OF ${asmSteps.length}</div><h3>${esc(s.title || '')}</h3>
+    ${img ? `<img src="${img}" title="Open the full picture">` : ''}
+    ${list ? `<div class="k">GET READY</div><ul>${list}</ul>` : ''}
+    ${(b.tools || []).length ? `<div class="k">TOOLS</div><p class="t">${esc(b.tools.join(' · '))}</p>` : ''}
+    ${b.text ? `<div class="k">HOW</div><p class="t">${esc(b.text)}</p>` : ''}
+    ${b.torque ? `<div class="k">TORQUE</div><p class="t">${esc(b.torque)}</p>` : ''}
+    ${b.check ? `<div class="k">CHECK</div><p class="t">${esc(b.check)}</p>` : ''}
+    ${(s.add || []).length ? '' : '<p class="t" style="color:var(--muted)">Bench step: nothing moves in the 3D view. Press Next when it is done.</p>'}`;
+  const im = c.querySelector('img'); if (im) im.onclick = () => window.open(img, '_blank');
+}
+function goTo(k) { // everything before step k assembled, the rest on the floor
+  k = Math.max(0, Math.min(asmSteps.length, k));
+  asmSteps.forEach((s, j) => (s.add || []).forEach((f, i) => { const v = asmParts.get(f); if (!v) return;
+    const to = j < k ? ZERO : v.apart; if (v.group.position.distanceTo(to) > 0.01 || tweens.has(v.group)) tweenTo(v, to, i * 35); }));
+  asmStep = k; asmState = k >= asmSteps.length ? 'together' : 'apart';
+  if (centered && k < asmSteps.length) centerStage(false);
+  const s = asmSteps[Math.min(k, asmSteps.length - 1)];
+  $('#sub').textContent = k >= asmSteps.length ? `Assembled · ${asmSteps.length} steps` : `Step ${asmStep + 1} of ${asmSteps.length} next · ${s.title || ''}`;
+  renderSteps(); renderCard(); highlightNext(); asmButtons();
+}
+function stopPlay() { playing = false; reverse = false; clearTimeout(asmTimer); asmButtons(); }
+function play(rev = false) {
+  playing = true; reverse = rev; asmButtons();
+  const tick = () => {
+    if (!asmMode || !playing) return;
+    if (rev ? asmStep === 0 : asmStep >= asmSteps.length) return stopPlay();
+    const moving = (asmSteps[rev ? asmStep - 1 : asmStep]?.add || []).length;
+    goTo(asmStep + (rev ? -1 : 1));
+    asmTimer = setTimeout(tick, rev ? 700 : (moving ? 2600 : 1400));
+  };
+  tick();
+}
+let buildBase = '';
+async function startAssemble() {
+  if (!asmJson) return;
+  asmMode = true; root.visible = false; asmRoot.visible = true; $('#info').classList.add('hidden'); stopPlay();
+  const base = asmJson.path.slice(0, asmJson.path.lastIndexOf('/') + 1);
+  const doc = await fetch(`/api/projects/${id}/file?path=${encodeURIComponent(asmJson.path)}`, { cache: 'no-store' }).then(r => r.json()).catch(() => null);
+  if (!doc || !Array.isArray(doc.parts)) { $('#sub').textContent = 'assembly.json could not be read'; return; }
+  if (!asmParts.size) {
+    let n = 0;
+    await Promise.all(doc.parts.map(async p => {
+      try {
+        const geos = await load(base + p.file);
+        if (Array.isArray(p.matrix) && p.matrix.length === 16) { const m = new THREE.Matrix4().fromArray(p.matrix); geos.forEach(g => g.applyMatrix4(m)); }
+        const g = build(geos); asmRoot.add(g); asmParts.set(p.file, { group: g, born: -Infinity });
+      } catch {}
+      if (asmMode) $('#sub').textContent = `Loading assembly · ${++n} of ${doc.parts.length} parts`;
+    }));
+    // The build guide (build/build.json) gives the full step list and the card text.
+    const files = await api(`/api/projects/${id}/files`).catch(() => []);
+    const bj = files.filter(f => /(^|\/)build\/build\.json$/i.test(f.path) && !SKIP.test(f.path)).sort((a, b) => a.path.split('/').length - b.path.split('/').length)[0];
+    let guide = [];
+    if (bj) {
+      const b = await fetch(`/api/projects/${id}/file?path=${encodeURIComponent(bj.path)}`, { cache: 'no-store' }).then(r => r.json()).catch(() => null);
+      guide = (b && (Array.isArray(b.assembly) ? b.assembly : b.assembly?.steps)) || [];
+      const d = bj.path.split('/'); buildBase = d.slice(0, -2).join('/'); if (buildBase) buildBase += '/';
+    }
+    const byN = new Map((doc.steps || []).map(s => [String(s.n), s]));
+    if (guide.length) asmSteps = guide.map((g, i) => ({ n: g.step ?? i + 1, title: g.title, add: (byN.get(String(g.step ?? i + 1))?.add || []).filter(f => asmParts.has(f)), card: g }));
+    else asmSteps = (doc.steps || []).map(s => ({ ...s, add: (s.add || []).filter(f => asmParts.has(f)) }));
+    const inStep = new Set(asmSteps.flatMap(s => s.add));
+    const rest = [...asmParts.keys()].filter(f => !inStep.has(f));
+    if (rest.length) asmSteps.push({ n: asmSteps.length + 1, title: 'Remaining parts', add: rest });
+    asmLayout();
+  }
+  if (!asmMode) return;
+  tweens.clear(); for (const v of asmParts.values()) { v.born = -Infinity; v.group.position.copy(v.apart); }
+  applyMode(); updateZ(); frame(asmView.clone());
+  goTo(0); // paused on step 1: read the card, get the parts ready, press Next (or Play)
+}
+function stopAssemble() {
+  asmMode = false; stopPlay(); tweens.clear(); asmButtons(); renderCard();
+  for (const { group } of asmParts.values()) group.traverse(o => { if (o.material && o.material.uniforms) o.material.uniforms.uSel.value = 0; });
+  asmRoot.visible = false; root.visible = true; framed = false; updateZ(); frame(); renderParts();
+  $('#sub').textContent = `${parts.size} parts`;
+}
+$('#assemble').onclick = () => { if (!asmMode) return startAssemble(); play(true); };
+$('#exitAsm').onclick = () => { centered = false; stopAssemble(); };
+$('#center').onclick = () => centerStage(!centered);
+$('#stepNext').onclick = () => { stopPlay(); goTo(asmStep + 1); };
+$('#stepBack').onclick = () => { stopPlay(); goTo(asmStep - 1); };
+$('#stepPlay').onclick = () => playing && !reverse ? stopPlay() : play(false);
+addEventListener('keydown', e => { if (!asmMode || e.target.closest('input')) return;
+  if (e.key === 'ArrowRight') $('#stepNext').click(); else if (e.key === 'ArrowLeft') $('#stepBack').click(); else if (e.key === ' ') { e.preventDefault(); $('#stepPlay').click(); } });
+$('#parts').addEventListener('click', e => { // click a step: everything before it assembled, it is next
+  if (!asmMode) return; const d = e.target.closest('div'); const k = [...$('#parts').children].indexOf(d); if (k < 0) return;
+  e.stopImmediatePropagation(); stopPlay(); goTo(k);
 }, true);
-function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 7000); }
-function isSpread() { return view ? view === 'table' : atOrigin() && !posesKnown.size; }
-function partBox(g) {
-  const p = g.position.clone(), q = g.quaternion.clone(); g.position.set(0, 0, 0); g.quaternion.identity(); g.updateMatrixWorld(true);
-  const b = new THREE.Box3().setFromObject(g); g.position.copy(p); g.quaternion.copy(q); g.updateMatrixWorld(true); return b;
-}
-function atOrigin() {
-  const bs = [...parts.values()].map(v => partBox(v.group)); if (bs.length < 3) return false;
-  const o = new THREE.Vector3(); return bs.filter(b => b.clone().expandByScalar(1).containsPoint(o)).length / bs.length >= 0.5;
-}
-// pose: {"matrix": [16 numbers, row-major 4x4, mm]} or {"position": [x, y, z] mm, "rotation": [rx, ry, rz] degrees, XYZ order}
-// posesKnown: path -> {m: Matrix4, step}
-function poseOf(meta) {
-  const q = meta && (meta.pose || meta);
-  if (!q) return null;
-  if (Array.isArray(q.matrix) && q.matrix.length === 16) return new THREE.Matrix4().set(...q.matrix.map(Number));
-  if (Array.isArray(q.position) || Array.isArray(q.rotation)) {
-    const r = (q.rotation || [0, 0, 0]).map(d => Number(d) * Math.PI / 180), pos = (q.position || [0, 0, 0]).map(Number);
-    return new THREE.Matrix4().compose(new THREE.Vector3(...pos), new THREE.Quaternion().setFromEuler(new THREE.Euler(r[0], r[1], r[2], 'XYZ')), new THREE.Vector3(1, 1, 1));
-  }
-  return null;
-}
-async function loadPoses() {
-  for (const p of parts.keys()) {
-    if (posesKnown.has(p)) continue;
-    const m = await loadPartsMeta(p).catch(() => null), mat = poseOf(m);
-    if (mat) posesKnown.set(p, { m: mat, step: Number(m.step ?? m.pose?.step ?? 999) });
-  }
-  return posesKnown;
-}
-
-function layout(animate = false) {
-  const on = isSpread(); $('#tbl').classList.toggle('on', on); $('#asm').classList.toggle('on', !on); $('#asm').textContent = on ? 'Assemble' : 'Disassemble';
-  const items = [...parts.entries()].map(([p, v]) => ({ p, g: v.group, b: partBox(v.group) }));
-  const target = new Map();
-  if (!on) {
-    for (const it of items) {
-      const k = posesKnown.get(it.p), pos = new THREE.Vector3(), q = new THREE.Quaternion(), sc = new THREE.Vector3();
-      if (k) k.m.decompose(pos, q, sc);
-      target.set(it.g, { pos, q, order: k ? k.step : 999 });
-    }
-  } else {
-    items.sort((a, b) => a.p.localeCompare(b.p, undefined, { numeric: true }));
-    const sz = it => it.b.getSize(new THREE.Vector3());
-    const area = items.reduce((a, it) => { const s = sz(it); return a + s.x * s.y; }, 0);
-    const maxW = Math.max(...items.map(it => sz(it).x)), gap = Math.max(4, Math.sqrt(area / items.length) * 0.15);
-    const rowW = Math.max(maxW, Math.sqrt(area) * 1.6);
-    let x = 0, y = 0, rowH = 0, i = 0;
-    for (const it of items) {
-      const s = sz(it);
-      if (x > 0 && x + s.x > rowW) { x = 0; y -= rowH + gap; rowH = 0; }
-      target.set(it.g, { pos: new THREE.Vector3(x - it.b.min.x, y - s.y - it.b.min.y, -it.b.min.z), q: new THREE.Quaternion(), order: i++ });
-      x += s.x + gap; rowH = Math.max(rowH, s.y);
-    }
-  }
-  if (!animate) { for (const [g, t] of target) { g.position.copy(t.pos); g.quaternion.copy(t.q); } return; }
-  // Animate: parts move one after another (in assembly step order when parts.json gives one), then reframe.
-  const list = [...target.entries()].sort((a, b) => a[1].order - b[1].order);
-  const stagger = Math.min(60, 1600 / Math.max(1, list.length)), dur = 900, t0 = performance.now();
-  anim = { t0, list: list.map(([g, t], i) => ({ g, t, p0: g.position.clone(), q0: g.quaternion.clone(), d: i * stagger })), end: t0 + list.length * stagger + dur, dur };
-  framed = false;
-}
-function stepAnim(now) {
-  if (!anim) return;
-  for (const a of anim.list) {
-    let k = Math.min(1, Math.max(0, (now - anim.t0 - a.d) / anim.dur)); k = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-    a.g.position.lerpVectors(a.p0, a.t.pos, k); a.g.quaternion.slerpQuaternions(a.q0, a.t.q, k);
-    if (a.arc) a.g.position.z += Math.sin(Math.PI * k) * a.arc; // lift up and over
-  }
-  if (now >= anim.end) { const nf = anim.noFrame; anim = null; if (!nf) { updateZ(); frame(); } }
-}
+$('#spread').onclick = () => { spread = !$('#spread').classList.contains('on'); layout(); updateZ(); frame(); };
 renderer.domElement.addEventListener('pointerdown', () => { /* user takes over; keep spinning only if they re-enable */ });
 // ---------------------------------------------------------------- style controls (saved per viewer)
 const STYLE_KEY = 'anatomy.holo.style';
@@ -522,16 +474,16 @@ $('#reset').onclick = () => { style = { ...DEFAULT_STYLE }; setStyle(style); };
 const ray = new THREE.Raycaster(); const ptr = new THREE.Vector2(); let downAt = null;
 renderer.domElement.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
 renderer.domElement.addEventListener('pointerup', e => {
-  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 4) return; // a drag, not a click
+  if (asmMode || !downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 4) return; // a drag, not a click
   ptr.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ptr, cam);
-  const targets = []; activeRoot().traverse(o => { if (o.isMesh && o.userData.kind === 'solid') targets.push(o); });
+  const targets = []; root.traverse(o => { if (o.isMesh && o.userData.kind === 'solid') targets.push(o); });
   const hit = ray.intersectObjects(targets, false)[0];
   if (!hit) return select(null);
   let g = hit.object; while (g && !g.userData.path) g = g.parent; select(g ? g.userData.path : null);
 });
 $('#parts').onclick = e => { const d = e.target.closest('[data-p]'); if (d) select(d.dataset.p === selected ? null : d.dataset.p, true); };
 function highlight(p) {
-  for (const [path, { group }] of allParts()) group.traverse(o => {
+  for (const [path, { group }] of parts) group.traverse(o => {
     if (o.material && o.material.uniforms) { o.material.uniforms.uSel.value = path === p ? 1 : 0; o.material.uniforms.uDim.value = !p || path === p ? 1 : 0.25; }
     if (o.userData.kind === 'edges') { o.material.color.copy(path === p ? new THREE.Color(0xffd36b) : (mode === 'solid' ? new THREE.Color(0x0b3b44) : uniforms.uColor.value)); }
     if (o.userData.kind === 'solid') { o.material.color.set(path === p ? 0xffd36b : 0x9fd8e6); o.material.transparent = !!p && path !== p; o.material.opacity = !p || path === p ? 1 : 0.2; }
@@ -555,7 +507,7 @@ async function select(p, focus = false) {
   selected = p; highlight(p); renderParts();
   const info = $('#info');
   if (!p) { info.classList.add('hidden'); return; }
-  const { group } = parts.get(p) || asmParts.get(p); const st = partStats(group);
+  const { group } = parts.get(p); const st = partStats(group);
   if (focus) { const bx = new THREE.Box3().setFromObject(group), c = bx.getCenter(new THREE.Vector3()); ctl.target.copy(c); }
   const stem = p.split('/').pop().replace(/\.[^.]+$/, '').toLowerCase();
   if (!files.length) files = await api(`/api/projects/${id}/files`).catch(() => []);
@@ -575,7 +527,7 @@ async function select(p, focus = false) {
   $('#ix').onclick = () => select(null);
   info.querySelectorAll('[data-open]').forEach(a => a.onclick = () => fetch(`/api/projects/${id}/open?path=${encodeURIComponent(a.dataset.open)}`, { method: 'POST' }));
   info.querySelectorAll('[data-reveal]').forEach(a => a.onclick = () => fetch(`/api/projects/${id}/reveal?path=${encodeURIComponent(a.dataset.reveal)}`, { method: 'POST' }));
-  let iso = false; $('#iso').onclick = () => { iso = !iso; for (const [path, { group }] of (inAsm ? asmParts : parts)) group.visible = (!iso || path === p) && !(inAsm && group.userData.step > asmShown); };
+  let iso = false; $('#iso').onclick = () => { iso = !iso; for (const [path, { group }] of parts) group.visible = !iso || path === p; };
   info.classList.remove('hidden');
 }
 // parts.json next to the part files, keyed by file name: {name, part_no, category, qty, material, note, drawing}

@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomy · Design Studio</title>
+<script type="importmap">{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/"}}</script>
+<style>
+:root { --bg: #15171b; --panel: #1c1f24; --panel2: #23272d; --line: #2f343b; --text: #e7e9ec; --muted: #8b939e; --accent: #4da3ff; --accent2: #ffb648; --ok: #4cc38a; --bad: #ff6b6b; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 13px/1.45 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+button, input, select, textarea { font: inherit; color: inherit; }
+.hidden { display: none !important; }
+#app { display: grid; grid-template-rows: 48px 1fr 28px; grid-template-columns: 290px 1fr 320px; height: 100vh; }
+header { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: var(--panel); border-bottom: 1px solid var(--line); min-width: 0; }
+header .title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 32vw; }
+header .rev { font-size: 11px; padding: 1px 7px; border-radius: 9px; background: #2d3a4d; color: #b9d6ff; white-space: nowrap; }
+header .sp { flex: 1; }
+.tb { display: flex; gap: 2px; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 2px; }
+.tb button, .btn { background: none; border: 0; border-radius: 6px; padding: 5px 9px; cursor: pointer; white-space: nowrap; }
+.tb button:hover, .btn:hover { background: #2c3138; }
+.tb button.on { background: #2b4a6e; color: #fff; }
+.btn { border: 1px solid var(--line); background: var(--panel2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.btn.primary:hover { background: #3b8fe8; }
+.btn:disabled, .tb button:disabled { opacity: .4; cursor: default; }
+aside { background: var(--panel); overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+aside.left { border-right: 1px solid var(--line); } aside.right { border-left: 1px solid var(--line); }
+.tabs { display: flex; border-bottom: 1px solid var(--line); }
+.tabs button { flex: 1; background: none; border: 0; padding: 9px 4px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; }
+.tabs button.on { color: var(--text); border-bottom-color: var(--accent); }
+.pane { flex: 1; overflow: auto; padding: 10px; min-height: 0; }
+.search { width: 100%; background: var(--panel2); border: 1px solid var(--line); border-radius: 7px; padding: 6px 9px; margin-bottom: 8px; }
+.grp { margin-bottom: 6px; }
+.grp > .gh { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 2px; cursor: pointer; user-select: none; }
+.grp > .gh:hover { color: var(--text); }
+.prow { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+.prow:hover { background: #262a31; } .prow.sel { background: #24405f; }
+.prow .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.prow .eye { opacity: .55; cursor: pointer; width: 18px; text-align: center; } .prow .eye:hover { opacity: 1; }
+.prow.off .nm { opacity: .4; text-decoration: line-through; }
+.badge { font-size: 10px; padding: 0 5px; border-radius: 6px; background: #30353d; color: var(--muted); }
+.badge.buy { background: #2c3b2f; color: #9fe0b0; } .badge.build { background: #3a3326; color: #ffd28a; }
+.badge.boxy { background: #4a2b2b; color: #ffb3b3; }
+.g { font-size: 10px; font-weight: 700; width: 16px; text-align: center; border-radius: 4px; padding: 0 2px; }
+.g.concept { background: #4a2b2b; color: #ffb3b3; } .g.engineered { background: #4a3d1f; color: #ffd28a; } .g.verified { background: #1f4a2e; color: #9fe0b0; }
+.miss { margin: 4px 0 0; padding-left: 16px; font-size: 12px; color: #d8c2a0; } .miss li { margin: 2px 0; }
+table.ft { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; } table.ft td { padding: 2px 4px; border-bottom: 1px solid var(--line); }
+.bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 6px 0; background: #30353d; } .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); flex: none; }
+.sec { color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin: 14px 0 6px; }
+.sec:first-child { margin-top: 2px; }
+.field { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; margin: 3px 0; }
+.field label { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.num { width: 78px; background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; text-align: right; }
+.num.chg { border-color: var(--accent2); color: #ffd9a0; }
+.xyz { display: grid; grid-template-columns: 34px repeat(3, 1fr); gap: 4px; align-items: center; margin: 4px 0; }
+.xyz .num { width: 100%; } .xyz span { color: var(--muted); font-size: 12px; }
+.in { color: var(--muted); font-size: 11px; }
+.param { padding: 5px 6px; border-radius: 6px; } .param:hover { background: #22262c; }
+.param .pn { display: flex; justify-content: space-between; gap: 6px; align-items: baseline; }
+.param .pn b { font-weight: 600; font-family: Consolas, monospace; font-size: 12px; }
+.param .note { color: var(--muted); font-size: 11px; margin: 1px 0 3px; }
+.param .vals { display: flex; flex-wrap: wrap; gap: 4px; }
+.param .vals .num { width: 74px; } .param .vals em { color: var(--muted); font-style: normal; font-size: 11px; align-self: center; }
+.tag { font-size: 10px; color: #9fb4cc; }
+.derived { color: var(--muted); font-family: Consolas, monospace; font-size: 11px; }
+select, textarea, .txt { width: 100%; background: var(--panel2); border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; }
+textarea { resize: vertical; min-height: 64px; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { border: 1px solid var(--line); background: var(--panel2); border-radius: 14px; padding: 3px 10px; cursor: pointer; font-size: 12px; user-select: none; }
+.chip.on { background: #2b4a6e; border-color: var(--accent); color: #fff; }
+.kv { display: grid; grid-template-columns: 82px 1fr; gap: 3px 8px; font-size: 12px; }
+.kv div:nth-child(odd) { color: var(--muted); }
+.row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.empty { color: var(--muted); padding: 30px 14px; text-align: center; }
+main { position: relative; min-width: 0; min-height: 0; background: #d9dce1; }
+main canvas { display: block; width: 100%; height: 100%; outline: none; }
+.overlay { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 6px; }
+.overlay .tb { background: #1c1f24e6; }
+.hint { position: absolute; right: 12px; bottom: 12px; color: #3b4250; font-size: 11px; text-align: right; pointer-events: none; }
+.load { position: absolute; inset: 0; display: grid; place-items: center; color: #3b4250; font-size: 14px; pointer-events: none; }
+footer { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding: 0 12px; background: var(--panel); border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; }
+footer b { color: var(--text); font-weight: 600; }
+.modal { position: fixed; inset: 0; background: #000a; display: grid; place-items: center; z-index: 10; }
+.modal .box { width: min(860px, 94vw); max-height: 90vh; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.modal h2 { margin: 0 0 6px; font-size: 17px; } .modal p { color: #c3c8cf; margin: 6px 0; }
+.modal pre { white-space: pre-wrap; background: var(--panel2); border-radius: 8px; padding: 10px; max-height: 40vh; overflow: auto; font-size: 12px; }
+.gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.gal img { width: 100%; border-radius: 8px; cursor: zoom-in; background: #fff; }
+.toast { position: fixed; left: 50%; top: 60px; transform: translateX(-50%); background: #262b33; border: 1px solid var(--line); border-radius: 9px; padding: 8px 14px; z-index: 20; box-shadow: 0 6px 24px #0008; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; border: 1px solid #0005; }
+input[type=color] { width: 34px; height: 28px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel2); padding: 2px; cursor: pointer; }
+.warn { background: #3a2a1a; border: 1px solid #6b4a1f; color: #ffd9a0; border-radius: 8px; padding: 8px 10px; font-size: 12px; margin: 6px 0; }
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="title" id="title">Design Studio</div><span class="rev hidden" id="rev"></span>
+  <div class="tb" id="tools" title="Tool (Q W E R)">
+    <button data-t="select" class="on" title="Select (Q)">Select</button><button data-t="translate" title="Move (W)">Move</button><button data-t="rotate" title="Rotate (E)">Rotate</button><button data-t="scale" title="Scale (R)">Scale</button>
+  </div>
+  <div class="tb"><button id="space" title="Gizmo axes: world or the part's own">World</button><button id="snap" title="Snap: 5 mm, 15°, 5 %">Snap</button></div>
+  <div class="tb"><button id="undo" title="Undo (Ctrl+Z)" disabled>↶</button><button id="redo" title="Redo (Ctrl+Y)" disabled>↷</button></div>
+  <div class="sp"></div>
+  <button class="btn" id="blenderOpen" title="Blender is for looks and concept sketching only: anything sculpted there is rebuilt as real CAD">Open in Blender</button>
+  <button class="btn" id="blenderBack" title="Bring the changes you saved in Blender back into the editor">Bring back</button>
+  <button class="btn" id="render" title="Photoreal Cycles render in Blender (runs in the background)">Photoreal render</button>
+  <button class="btn primary" id="rebuild" title="Make a new revision from these edits: CAD, drawings, BOM and G-code are regenerated">Rebuild as rev …</button>
+</header>
+
+<aside class="left">
+  <div class="tabs" id="ltabs"><button data-p="parts" class="on">Parts</button><button data-p="params">Dimensions</button><button data-p="eng">Engineering</button><button data-p="style">Styling</button></div>
+  <div class="pane" id="p-parts"><input class="search" id="q" placeholder="Search parts"><div id="tree"></div></div>
+  <div class="pane hidden" id="p-params"><input class="search" id="pq" placeholder="Search dimensions"><div id="params"></div></div>
+  <div class="pane hidden" id="p-eng"></div>
+  <div class="pane hidden" id="p-style"></div>
+</aside>
+
+<main id="main"><div class="load" id="load">Loading the design…</div>
+  <div class="overlay">
+    <div class="tb" id="look"><button data-l="studio" class="on" title="Materials and studio light">Studio</button><button data-l="clay" title="Plain clay, to judge the shapes">Clay</button><button data-l="lines" title="Clay with edges, to spot boxy parts">Lines</button><button data-l="xray" title="See through the shells">X-ray</button><button data-l="grade" title="Colour every part by its engineering grade: red concept, amber engineered, green verified">Grade</button></div>
+    <div class="tb"><button id="ao" class="on" title="Ambient occlusion (soft contact shadows)">AO</button><button id="fit" title="Fit the whole product (F)">Fit</button><button id="shot" title="Save a picture of this view to the project">Snapshot</button></div>
+  </div>
+  <div class="hint" id="hint">Click a part · Shift-click to add · drag to orbit · right-drag to pan · W/E/R move/rotate/scale · F fit · Del remove</div>
+</main>
+
+<aside class="right"><div class="pane" id="insp"></div></aside>
+
+<footer><span id="st-edits"><b>0</b> edits</span><span id="st-save">Not saved yet</span><span id="st-sel"></span><span style="flex:1"></span><span id="st-src"></span></footer>
+</div>
+
+<div class="modal hidden" id="modal"><div class="box" id="mbox"></div></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { ThreeMFLoader } from 'three/addons/loaders/3MFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { toCreasedNormals, mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+const id = new URLSearchParams(location.search).get('id');
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const api = (p, o) => fetch(p, { cache: 'no-store', ...o }).then(async r => { const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || r.statusText); return j; });
+const enc = p => p.split('/').map(encodeURIComponent).join('/');
+const r1 = v => Math.round(v * 10) / 10;
+const inch = mm => (mm / 25.4).toFixed(3);
+const toast = (t, ms = 3200) => { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.append(d); setTimeout(() => d.remove(), ms); };
+
+// ================================================================ materials
+// Real finishes instead of flat placeholder colours. Each part gets one from its BOM/material text,
+// and the user can change it; the choice travels to the rebuild and to Blender.
+function canvasTex(draw, n = 256) {
+  const c = document.createElement('canvas'); c.width = c.height = n; draw(c.getContext('2d'), n);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; return t;
+}
+const TEX = {
+  carbon: canvasTex((g, n) => { // 2x2 twill weave
+    const s = n / 8; g.fillStyle = '#1d1f23'; g.fillRect(0, 0, n, n);
+    for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) {
+      const warp = ((i + j) >> 1) % 2 === 0, x = i * s, y = j * s;
+      const gr = warp ? g.createLinearGradient(x, y, x + s, y) : g.createLinearGradient(x, y, x, y + s);
+      gr.addColorStop(0, '#24262a'); gr.addColorStop(0.5, warp ? '#4a4e56' : '#383b42'); gr.addColorStop(1, '#24262a');
+      g.fillStyle = gr; g.fillRect(x + 0.5, y + 0.5, s - 1, s - 1);
+    }
+  }),
+  brushed: canvasTex((g, n) => {
+    g.fillStyle = '#8a8a8a'; g.fillRect(0, 0, n, n);
+    for (let i = 0; i < 1400; i++) { const y = Math.random() * n; g.strokeStyle = `rgba(${Math.random() < 0.5 ? '255,255,255' : '0,0,0'},${Math.random() * 0.08})`; g.beginPath(); g.moveTo(0, y); g.lineTo(n, y + (Math.random() - 0.5) * 2); g.stroke(); }
+  }),
+  layers: canvasTex((g, n) => { // FDM layer lines
+    g.fillStyle = '#9a9a9a'; g.fillRect(0, 0, n, n);
+    for (let y = 0; y < n; y += 4) { g.fillStyle = 'rgba(0,0,0,0.10)'; g.fillRect(0, y, n, 1.4); }
+  }),
+};
+const MATS = {
+  'Painted body, gloss':     { color: '#f2f3f5', metalness: 0.0, roughness: 0.22, clearcoat: 1, clearcoatRoughness: 0.05 },
+  'Painted body, satin':     { color: '#3d4148', metalness: 0.0, roughness: 0.45, clearcoat: 0.4, clearcoatRoughness: 0.3 },
+  'Carbon fibre (CFRP)':     { color: '#ffffff', swatch: '#2b2d31', map: 'carbon', mapMm: 24, metalness: 0.15, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.06 },
+  'Aluminium, machined':     { color: '#c8ccd2', roughnessMap: 'brushed', mapMm: 60, metalness: 1.0, roughness: 0.32 },
+  'Aluminium, anodised black': { color: '#2a2c31', metalness: 0.85, roughness: 0.38 },
+  'Titanium (LPBF / machined)': { color: '#8f8b84', metalness: 1.0, roughness: 0.42 },
+  'Steel, zinc plated':      { color: '#b9bcc0', metalness: 1.0, roughness: 0.3 },
+  'Stainless steel':         { color: '#d3d6d9', roughnessMap: 'brushed', mapMm: 40, metalness: 1.0, roughness: 0.22 },
+  'Steel, powder coated':    { color: '#33363b', metalness: 0.1, roughness: 0.55 },
+  'Copper':                  { color: '#c27a48', metalness: 1.0, roughness: 0.3 },
+  'Brass':                   { color: '#c9a24a', metalness: 1.0, roughness: 0.3 },
+  'Printed plastic (PETG/PLA)': { color: '#e8e8e8', map: 'layers', mapMm: 3, metalness: 0.0, roughness: 0.62 },
+  'Moulded plastic':         { color: '#2b2d31', metalness: 0.0, roughness: 0.5 },
+  'Rubber':                  { color: '#1b1c1e', metalness: 0.0, roughness: 0.92 },
+  'Glass / polycarbonate':   { color: '#dfeef7', metalness: 0.0, roughness: 0.04, transmission: 0.92, thickness: 4, ior: 1.5 },
+  'Smoked polycarbonate':    { color: '#5a6672', metalness: 0.0, roughness: 0.05, transmission: 0.7, thickness: 4, ior: 1.5 },
+  'PCB (green solder mask)': { color: '#1f5c39', metalness: 0.2, roughness: 0.45 },
+  'Motor / electronics, dark': { color: '#2e3136', metalness: 0.6, roughness: 0.42 },
+  'Battery / pack wrap':     { color: '#2d5e8f', metalness: 0.1, roughness: 0.5 },
+  'Composite tank (white)':  { color: '#ecebe6', metalness: 0.0, roughness: 0.35, clearcoat: 0.6 },
+  'Foam / insulation':       { color: '#d8cfae', metalness: 0.0, roughness: 0.95 },
+  'Wood':                    { color: '#a7774a', metalness: 0.0, roughness: 0.6 },
+};
+// keyword -> finish; first match wins. Text = part name + material + BOM spec.
+const GUESS = [
+  [/windscreen|canopy|glass|polycarb|acrylic|lens|visor|window/i, 'Glass / polycarbonate'],
+  [/pcba?\b|circuit board|\bboard\b|fr-?4/i, 'PCB (green solder mask)'],
+  [/tyre|tire|rubber|grommet|gasket|seal\b|o-ring|bumper|foot pad|epdm|silicone/i, 'Rubber'],
+  [/cfrp|carbon|prepreg|t700|composite tub|monocoque/i, 'Carbon fibre (CFRP)'],
+  [/titan|ti-?6al|ti6al/i, 'Titanium (LPBF / machined)'],
+  [/stainless|304\b|316\b|17-4/i, 'Stainless steel'],
+  [/anodi[sz]ed black|black anod/i, 'Aluminium, anodised black'],
+  [/alumin|6061|7075|5052|6082|extrusion/i, 'Aluminium, machined'],
+  [/copper|winding|busbar|stator coil/i, 'Copper'],
+  [/brass|bronze/i, 'Brass'],
+  [/petg|pla\b|asa\b|abs\b|printed|fdm|3d print|nylon|pa12|tpu/i, 'Printed plastic (PETG/PLA)'],
+  [/battery|cells?\b|pack\b|molicel|21700|18650|lipo/i, 'Battery / pack wrap'],
+  [/hydrogen|tank|cylinder.*type iv|pressure vessel/i, 'Composite tank (white)'],
+  [/motor|inverter|generator|actuator|controller|ecu|computer|sensor|lidar|radar|gnss|display|camera|turbine|harmonic|servo|stepper|driver|psu|power supply/i, 'Motor / electronics, dark'],
+  [/bearing|bolt|screw|nut\b|washer|shaft|spring|pin\b|steel|4130|1018|a36/i, 'Steel, zinc plated'],
+  [/seat|cushion|foam/i, 'Painted body, satin'],
+  [/wood|plywood|mdf/i, 'Wood'],
+  [/duct|cowl|fairing|shell|cover|body|nose|hood|panel|wing|housing/i, 'Painted body, gloss'],
+];
+const ACCENTS = ['#f2f3f5', '#c8102e', '#ff7a1a', '#ffd400', '#1e88e5', '#0b3d91', '#2e7d32', '#111317', '#7a7f87'];
+function guessMaterial(text, kind) {
+  for (const [re, m] of GUESS) if (re.test(text)) return m;
+  return kind === 'buy' ? 'Motor / electronics, dark' : 'Painted body, gloss';
+}
+const matCache = new Map();
+function makeMaterial(name, color, look) {
+  const key = `${name}|${color || ''}|${look}`;
+  if (matCache.has(key)) return matCache.get(key);
+  let m;
+  if (look === 'clay' || look === 'lines') m = new THREE.MeshStandardMaterial({ color: 0xd7d4cf, roughness: 0.75, metalness: 0, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  else if (look === 'grade') m = new THREE.MeshStandardMaterial({ color: { concept: '#d65a5a', engineered: '#e3b04b', verified: '#4cc38a' }[name] || '#8a9099', roughness: 0.6, metalness: 0 });
+  else if (look === 'xray') m = new THREE.MeshStandardMaterial({ color: color || MATS[name]?.color || '#9ab', transparent: true, opacity: 0.22, depthWrite: false, roughness: 0.4, side: THREE.DoubleSide });
+  else {
+    const d = MATS[name] || MATS['Painted body, gloss'];
+    const o = { color: color || d.color, metalness: d.metalness, roughness: d.roughness, envMapIntensity: 1.5 };
+    for (const k of ['clearcoat', 'clearcoatRoughness', 'transmission', 'thickness', 'ior']) if (d[k] !== undefined) o[k] = d[k];
+    if (d.map) { o.map = TEX[d.map].clone(); o.map.needsUpdate = true; o.map.colorSpace = THREE.SRGBColorSpace; }
+    if (d.roughnessMap) { o.roughnessMap = TEX[d.roughnessMap]; }
+    m = new THREE.MeshPhysicalMaterial(o);
+    if (d.transmission) { m.transparent = false; }
+    m.userData.mapMm = d.mapMm || 50;
+  }
+  matCache.set(key, m); return m;
+}
+
+// ================================================================ scene
+const main = $('#main');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.25;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+main.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xdfe2e6);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const cam = new THREE.PerspectiveCamera(35, 1, 1, 100000); cam.up.set(0, 0, 1);
+const orbit = new OrbitControls(cam, renderer.domElement); orbit.enableDamping = true; orbit.dampingFactor = 0.12;
+const key = new THREE.DirectionalLight(0xffffff, 2.8); key.castShadow = true; key.shadow.mapSize.set(4096, 4096); key.shadow.bias = -0.0002; key.shadow.normalBias = 0.5;
+scene.add(key, key.target);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb9b4aa, 0.35));
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShadowMaterial({ opacity: 0.3 })); floor.receiveShadow = true; scene.add(floor);
+const grid = new THREE.GridHelper(1, 20, 0xb0b5bc, 0xc6cad0); grid.rotation.x = Math.PI / 2; grid.material.transparent = true; grid.material.opacity = 0.5; scene.add(grid);
+const world = new THREE.Group(); scene.add(world);
+const helper = new THREE.Object3D(); scene.add(helper); // pivot for multi-selection
+const gizmo = new TransformControls(cam, renderer.domElement); gizmo.setSize(0.9); scene.add(gizmo);
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, cam));
+const gtao = new GTAOPass(scene, cam, 1, 1); gtao.blendIntensity = 0.9; composer.addPass(gtao);
+const outline = new OutlinePass(new THREE.Vector2(1, 1), scene, cam); outline.edgeStrength = 4; outline.edgeThickness = 1.5; outline.visibleEdgeColor.set('#4da3ff'); outline.hiddenEdgeColor.set('#1d4b7a'); composer.addPass(outline);
+composer.addPass(new OutputPass());
+
+function resize() {
+  const w = main.clientWidth, h = main.clientHeight;
+  renderer.setSize(w, h, false); composer.setSize(w, h); cam.aspect = w / h; cam.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(main);
+
+// ================================================================ state
+let D = null;               // /design response
+const P = new Map();        // file -> part { file, name, kind, line, group, pivot, mesh, center0, size0, hint, boxy, tris, edits }
+let edits = { version: 1, units: 'mm', up: 'Z', parts: {}, params: {}, global: { style: '', detail: 'Showroom', autoStyle: true, notes: '' } };
+let sel = new Set(), look = 'studio', tool = 'select', dirty = false;
+const undoStack = [], redoStack = [];
+let ENG = { records: null, report: null, provisional: false, tools: false, busy: false, err: '' };
+const GRADES = ['concept', 'engineered', 'verified'];
+const CLASSES = { precision: 'Precision (fits, bearing seats, tolerances under ±0.1 mm)', structural: 'Structural (carries a primary load)', cosmetic: 'Cosmetic (covers, fairings, trim)', bought: 'Bought (vendor owns the geometry)' };
+function gradeOf(file) { const r = ENG.report?.parts?.[file]; return r ? r.evidence : (ENG.records?.[file]?.grade || null); }
+function engRec(file) { return ENG.records?.[file] || null; }
+function setEng(info) {
+  if (!info) return;
+  ENG.report = info.report || null; ENG.tools = !!info.tools;
+  ENG.records = info.records || info.report?.records || null; ENG.provisional = !info.records && !!info.report?.provisional;
+}
+
+const ldr = { stl: new STLLoader(), glb: new GLTFLoader(), obj: new OBJLoader(), '3mf': new ThreeMFLoader() };
+function geosOf(obj) { const gs = []; obj.updateMatrixWorld(true); obj.traverse(o => { if (o.isMesh) { const g = o.geometry.clone(); g.applyMatrix4(o.matrixWorld); for (const k of Object.keys(g.attributes)) if (k !== 'position') g.deleteAttribute(k); gs.push(g.index ? g.toNonIndexed() : g); } }); return gs; }
+async function loadGeo(path) {
+  const url = `/p/${encodeURIComponent(id)}/${enc(path)}`, e = path.toLowerCase().split('.').pop();
+  if (e === 'stl') return [ldr.stl.parse(await (await fetch(url, { cache: 'no-store' })).arrayBuffer())];
+  if (e === 'obj') return geosOf(ldr.obj.parse(await (await fetch(url)).text()));
+  if (e === '3mf') return geosOf(ldr['3mf'].parse(await (await fetch(url)).arrayBuffer()));
+  if (e === 'glb' || e === 'gltf') { const g = await ldr.glb.loadAsync(url); const w = new THREE.Group(); if (D.up === 'Z' && !/trimesh/i.test(g.parser?.json?.asset?.generator || '')) g.scene.rotation.x = Math.PI / 2; w.add(g.scene); return geosOf(w); }
+  return [];
+}
+// One smooth-shaded geometry per part: crease-angle normals (round things look round, edges stay crisp)
+// and box-projected UVs in millimetres so weave/brush textures sit at real scale.
+function prepGeometry(geos) {
+  const parts = geos.map(g => { for (const k of Object.keys(g.attributes)) if (k !== 'position') g.deleteAttribute(k); return g.index ? g.toNonIndexed() : g; });
+  let g = parts.length > 1 ? mergeGeometries(parts, false) : parts[0];
+  g = toCreasedNormals(g, THREE.MathUtils.degToRad(32));
+  const pos = g.attributes.position, nor = g.attributes.normal, uv = new Float32Array(pos.count * 2);
+  for (let i = 0; i < pos.count; i += 3) { // per triangle, dominant face normal axis
+    const ax = Math.abs(nor.getX(i) + nor.getX(i + 1) + nor.getX(i + 2)), ay = Math.abs(nor.getY(i) + nor.getY(i + 1) + nor.getY(i + 2)), az = Math.abs(nor.getZ(i) + nor.getZ(i + 1) + nor.getZ(i + 2));
+    for (let k = i; k < i + 3; k++) {
+      const x = pos.getX(k), y = pos.getY(k), z = pos.getZ(k);
+      const [u, v] = az >= ax && az >= ay ? [x, y] : ax >= ay ? [y, z] : [x, z];
+      uv[2 * k] = u; uv[2 * k + 1] = v;
+    }
+  }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  g.computeBoundingBox(); g.computeBoundingSphere();
+  return g;
+}
+function meshStats(g) {
+  const pos = g.attributes.position, n = pos.count / 3; let vol = 0;
+  const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+  for (let i = 0; i < n; i++) { a.fromBufferAttribute(pos, 3 * i); b.fromBufferAttribute(pos, 3 * i + 1); c.fromBufferAttribute(pos, 3 * i + 2); vol += a.dot(b.cross(c)) / 6; }
+  const s = g.boundingBox.getSize(new THREE.Vector3());
+  return { tris: n, vol: Math.abs(vol), fill: Math.abs(vol) / Math.max(1e-9, s.x * s.y * s.z) };
+}
+// textures are authored per mm: scale UV repeat to the material's tile size
+function setMat(p) {
+  const e = p.e(); const name = look === 'grade' ? (gradeOf(p.file) || 'none') : e.material || p.autoMat;
+  let m = makeMaterial(name, e.color, look);
+  if (m.map || m.roughnessMap) { const t = m.map || m.roughnessMap; const r = 1 / (m.userData.mapMm || 50); t.repeat.set(r, r); }
+  p.mesh.material = m;
+  p.mesh.castShadow = look !== 'xray'; p.mesh.receiveShadow = look !== 'xray';
+  if (p.lines) p.lines.visible = look === 'lines';
+  if (look === 'lines' && !p.lines) { p.lines = new THREE.LineSegments(new THREE.EdgesGeometry(p.mesh.geometry, 28), new THREE.LineBasicMaterial({ color: 0x30343a })); p.mesh.add(p.lines); }
+}
+
+// ================================================================ edits <-> scene
+function blankEdit() { return {}; }
+function partEdit(file) { return edits.parts[file] || (edits.parts[file] = blankEdit()); }
+function syncEdit(p) { // pivot -> edits
+  const e = partEdit(p.file);
+  const t = p.pivot.position.clone().sub(p.center0);
+  e.translate = [r1(t.x), r1(t.y), r1(t.z)];
+  e.rotate = [p.pivot.rotation.x, p.pivot.rotation.y, p.pivot.rotation.z].map(v => r1(THREE.MathUtils.radToDeg(v)));
+  e.scale = [p.pivot.scale.x, p.pivot.scale.y, p.pivot.scale.z].map(v => Math.round(v * 1000) / 1000);
+  e.center = p.center0.toArray().map(r1); e.size = p.size0.toArray().map(r1); e.name = p.name; if (p.line) e.line = p.line;
+  tidy(p.file);
+}
+function applyEdit(p) { // edits -> pivot
+  const e = edits.parts[p.file] || {};
+  p.pivot.position.copy(p.center0).add(new THREE.Vector3(...(e.translate || [0, 0, 0])));
+  p.pivot.rotation.set(...(e.rotate || [0, 0, 0]).map(THREE.MathUtils.degToRad));
+  p.pivot.scale.set(...(e.scale || [1, 1, 1]));
+  p.pivot.visible = !e.removed && !p.hidden;
+  setMat(p);
+}
+function isEdited(e) {
+  if (!e) return false;
+  return !!(e.removed || e.material || e.color || e.note || e.mesh || e.engineer || e.partClass || (e.styles && e.styles.length) ||
+    (e.translate || []).some(v => Math.abs(v) > 0.05) || (e.rotate || []).some(v => Math.abs(v) > 0.05) || (e.scale || []).some(v => Math.abs(v - 1) > 0.0005));
+}
+function tidy(file) { if (!isEdited(edits.parts[file])) delete edits.parts[file]; }
+function editCount() { return Object.values(edits.parts).filter(isEdited).length + Object.keys(edits.params).length + (edits.global.notes || edits.global.style ? 1 : 0) + (edits.global.targetGrade && edits.global.targetGrade !== 'Verified' ? 1 : 0); }
+
+function snapshot() { return JSON.stringify(edits); }
+function pushUndo() { undoStack.push(snapshot()); if (undoStack.length > 200) undoStack.shift(); redoStack.length = 0; btnUndo(); }
+function restore(s) { edits = JSON.parse(s); for (const p of P.values()) applyEdit(p); renderTree(); renderParams(); renderEng(); renderStyle(); renderInspector(); attachGizmo(); changed(false); }
+function btnUndo() { $('#undo').disabled = !undoStack.length; $('#redo').disabled = !redoStack.length; }
+$('#undo').onclick = () => { if (!undoStack.length) return; redoStack.push(snapshot()); restore(undoStack.pop()); btnUndo(); };
+$('#redo').onclick = () => { if (!redoStack.length) return; undoStack.push(snapshot()); restore(redoStack.pop()); btnUndo(); };
+
+let saveT = null;
+function changed(undoable = true) {
+  dirty = true; $('#st-edits').innerHTML = `<b>${editCount()}</b> edit${editCount() === 1 ? '' : 's'}`;
+  $('#st-save').textContent = 'Saving…'; clearTimeout(saveT); saveT = setTimeout(save, 700);
+  for (const p of P.values()) { const r = document.querySelector(`.prow[data-f="${CSS.escape(p.file)}"] .dot`); if (r) r.style.visibility = isEdited(edits.parts[p.file]) ? 'visible' : 'hidden'; }
+}
+async function save() {
+  try { await api(`/api/projects/${id}/design/edits`, { method: 'PUT', body: JSON.stringify(edits) }); dirty = false; $('#st-save').textContent = 'Saved ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+  catch (e) { $('#st-save').textContent = 'Could not save: ' + e.message; }
+}
+
+// ================================================================ load
+async function init() {
+  D = await api(`/api/projects/${id}/design`);
+  document.title = `${D.title} · Design Studio`;
+  $('#title').textContent = D.title; if (D.revision) { $('#rev').textContent = 'rev ' + D.revision; $('#rev').classList.remove('hidden'); }
+  $('#st-src').textContent = D.assembly ? `Model: ${D.assembly}` : 'Model: part files (no assembly.json)';
+  setEng(D.engineering);
+  if (D.edits) edits = { ...edits, ...D.edits, global: { ...edits.global, ...(D.edits.global || {}) }, parts: D.edits.parts || {}, params: D.edits.params || {} };
+  $('#rebuild').textContent = 'Rebuild as new revision';
+  $('#blenderOpen').disabled = $('#render').disabled = !D.blender;
+  if (!D.blender) { $('#blenderOpen').title = $('#render').title = 'Blender was not found on this PC (install it from blender.org)'; }
+  if (!D.parts.length) { $('#load').textContent = 'This project has no 3D parts yet.'; return; }
+  let n = 0;
+  const queue = D.parts.slice(); const workers = [];
+  for (let w = 0; w < 6; w++) workers.push((async () => {
+    while (queue.length) {
+      const it = queue.shift();
+      try {
+        const geos = await loadGeo(D.base + it.file);
+        if (Array.isArray(it.matrix) && it.matrix.length === 16) { const m = new THREE.Matrix4().fromArray(it.matrix); geos.forEach(g => g.applyMatrix4(m)); }
+        if (!geos.length) continue;
+        addPart(it, prepGeometry(geos));
+      } catch (e) { console.warn(it.file, e); }
+      $('#load').textContent = `Loading the design · ${++n} of ${D.parts.length} parts`;
+    }
+  })());
+  await Promise.all(workers);
+  $('#load').classList.add('hidden');
+  for (const p of P.values()) applyEdit(p);
+  frame(); renderTree(); renderParams(); renderEng(); renderStyle(); renderInspector();
+  $('#st-edits').innerHTML = `<b>${editCount()}</b> edits`; $('#st-save').textContent = D.edits?.saved ? 'Saved ' + new Date(D.edits.saved).toLocaleString() : 'Not saved yet';
+  updateRebuildLabel();
+}
+function addPart(it, geo) {
+  const center0 = geo.boundingBox.getCenter(new THREE.Vector3()), size0 = geo.boundingBox.getSize(new THREE.Vector3());
+  geo.translate(-center0.x, -center0.y, -center0.z); geo.computeBoundingBox();
+  const st = meshStats(geo);
+  const mesh = new THREE.Mesh(geo); const pivot = new THREE.Group(); pivot.add(mesh); pivot.position.copy(center0);
+  const hint = [it.name, D.hints[it.file] || '', it.material || ''].join(' · ');
+  const p = { file: it.file, name: it.name || it.file.replace(/\.[^.]+$/, ''), kind: (it.kind || '').toLowerCase(), line: it.line || '', group: groupOf(it),
+    supplier: it.supplier, mpn: it.mpn, pivot, mesh, center0, size0, hint, tris: st.tris, vol: st.vol,
+    boxy: st.fill > 0.93 && st.tris <= 140, lowpoly: st.tris < 300 && Math.max(size0.x, size0.y, size0.z) > 40,
+    autoMat: it.material && MATS[it.material] ? it.material : guessMaterial(hint, (it.kind || '').toLowerCase()), hidden: false };
+  p.e = () => edits.parts[p.file] || {};
+  mesh.userData.part = p; pivot.userData.part = p;
+  world.add(pivot); P.set(it.file, p);
+}
+function groupOf(it) {
+  if (it.group) return it.group.replace(/_/g, ' ');
+  const m = String(it.name || '').match(/\(([^)]*(?:duct|side|left|right|front|rear|arm|axis|module|unit|assembly)[^)]*)\)\s*$/i);
+  if (m) return m[1];
+  const pre = String(it.file).match(/^([A-Z]{1,3}\d?)_/); if (pre) return pre[1];
+  return 'Main';
+}
+function frame(objs) {
+  const b = new THREE.Box3();
+  if (objs && objs.length) objs.forEach(o => b.expandByObject(o)); else world.children.forEach(o => { if (o.visible) b.expandByObject(o); });
+  if (b.isEmpty()) return;
+  const s = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3()), R = Math.max(s.x, s.y, s.z) || 1;
+  orbit.target.copy(c); cam.position.copy(c).add(new THREE.Vector3(R * 1.1, -R * 1.45, R * 0.8));
+  if (!objs) {
+    cam.near = R / 400; cam.far = R * 50; cam.updateProjectionMatrix();
+    gtao.gtaoMaterial.uniforms.cameraNear.value = cam.near; gtao.gtaoMaterial.uniforms.cameraFar.value = cam.far;
+    if (gtao.pdMaterial.uniforms.cameraNear) { gtao.pdMaterial.uniforms.cameraNear.value = cam.near; gtao.pdMaterial.uniforms.cameraFar.value = cam.far; }
+    gtao.updateGtaoMaterial({ radius: R * 0.04, distanceExponent: 1, thickness: R * 0.02, scale: 1 });
+    floor.scale.setScalar(R * 8); floor.position.set(c.x, c.y, b.min.z - 0.5);
+    grid.scale.setScalar(R * 3); grid.position.set(c.x, c.y, b.min.z - 0.3);
+    key.position.copy(c).add(new THREE.Vector3(-R * 0.8, -R * 1.0, R * 1.8)); key.target.position.copy(c);
+    const sc = key.shadow.camera; sc.left = sc.bottom = -R * 0.9; sc.right = sc.top = R * 0.9; sc.near = R * 0.1; sc.far = R * 5; sc.updateProjectionMatrix();
+    gizmo.setSize(0.9);
+  }
+}
+
+// ================================================================ selection + gizmo
+const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(); let down = null;
+renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4 || gizmo.dragging) return;
+  const r = renderer.domElement.getBoundingClientRect();
+  ptr.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ptr, cam);
+  const hit = ray.intersectObjects([...P.values()].filter(p => p.pivot.visible).map(p => p.mesh), false)[0];
+  const f = hit ? hit.object.userData.part.file : null;
+  pick(f, e.shiftKey || e.ctrlKey);
+});
+function pick(f, add = false) {
+  if (!add) sel.clear();
+  if (f) { if (add && sel.has(f)) sel.delete(f); else sel.add(f); }
+  selChanged();
+}
+function selChanged() {
+  outline.selectedObjects = [...sel].map(f => P.get(f).mesh);
+  attachGizmo(); renderInspector();
+  document.querySelectorAll('.prow').forEach(r => r.classList.toggle('sel', sel.has(r.dataset.f)));
+  $('#st-sel').textContent = sel.size ? `${sel.size} selected` : '';
+}
+let dragStart = null;
+function attachGizmo() {
+  gizmo.detach();
+  if (tool === 'select' || !sel.size) return;
+  const ps = [...sel].map(f => P.get(f)).filter(p => p.pivot.visible);
+  if (!ps.length) return;
+  if (ps.length === 1) { gizmo.attach(ps[0].pivot); return; }
+  const b = new THREE.Box3(); ps.forEach(p => b.expandByObject(p.pivot));
+  helper.position.copy(b.getCenter(new THREE.Vector3())); helper.rotation.set(0, 0, 0); helper.scale.set(1, 1, 1); helper.updateMatrixWorld();
+  gizmo.attach(helper);
+}
+gizmo.addEventListener('dragging-changed', e => {
+  orbit.enabled = !e.value;
+  if (e.value) { pushUndo(); dragStart = { helper: helper.matrixWorld.clone(), mats: [...sel].map(f => [f, P.get(f).pivot.matrix.clone()]) }; }
+  else { dragStart = null; for (const f of sel) syncEdit(P.get(f)); changed(); renderInspector(); }
+});
+gizmo.addEventListener('objectChange', () => {
+  if (gizmo.object === helper && dragStart) {
+    helper.updateMatrixWorld();
+    const delta = helper.matrixWorld.clone().multiply(dragStart.helper.clone().invert());
+    for (const [f, m0] of dragStart.mats) { const pv = P.get(f).pivot; delta.clone().multiply(m0).decompose(pv.position, pv.quaternion, pv.scale); }
+  }
+  if (gizmo.object !== helper && tool === 'scale' && uniformLock) { const s = gizmo.object.scale; const k = gizmo.axis && gizmo.axis.length === 1 ? s[gizmo.axis.toLowerCase()] : s.x; s.set(k, k, k); }
+  liveInspector();
+});
+let uniformLock = false;
+function setTool(t) {
+  tool = t; document.querySelectorAll('#tools button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  if (t !== 'select') gizmo.setMode(t); attachGizmo();
+}
+$('#tools').onclick = e => { const t = e.target.dataset.t; if (t) setTool(t); };
+$('#space').onclick = () => { const w = gizmo.space === 'world'; gizmo.setSpace(w ? 'local' : 'world'); $('#space').textContent = w ? 'Local' : 'World'; };
+$('#snap').onclick = () => { const on = !$('#snap').classList.contains('on'); $('#snap').classList.toggle('on', on);
+  gizmo.setTranslationSnap(on ? 5 : null); gizmo.setRotationSnap(on ? THREE.MathUtils.degToRad(15) : null); gizmo.setScaleSnap(on ? 0.05 : null); };
+addEventListener('keydown', e => {
+  if (e.target.closest('input, textarea, select')) return;
+  const k = e.key.toLowerCase();
+  if ((e.ctrlKey || e.metaKey) && k === 'z') { e.preventDefault(); $('#undo').click(); return; }
+  if ((e.ctrlKey || e.metaKey) && (k === 'y' || (e.shiftKey && k === 'z'))) { e.preventDefault(); $('#redo').click(); return; }
+  if (k === 'q') setTool('select'); else if (k === 'w') setTool('translate'); else if (k === 'e') setTool('rotate'); else if (k === 'r') setTool('scale');
+  else if (k === 'f') sel.size ? frame([...sel].map(f => P.get(f).pivot)) : frame();
+  else if (k === 'escape') pick(null);
+  else if (k === 'delete' && sel.size) removeSel();
+  else if (k === 'h' && sel.size) { for (const f of sel) { const p = P.get(f); p.hidden = !p.hidden; applyEdit(p); } renderTree(); }
+});
+
+// ================================================================ left: parts tree
+let collapsed = new Set();
+function renderTree() {
+  const q = $('#q').value.trim().toLowerCase();
+  const groups = new Map();
+  for (const p of P.values()) {
+    if (q && !(`${p.name} ${p.file} ${p.line} ${p.group}`.toLowerCase().includes(q))) continue;
+    if (!groups.has(p.group)) groups.set(p.group, []); groups.get(p.group).push(p);
+  }
+  const boxy = [...P.values()].filter(p => p.boxy || p.lowpoly).length;
+  let h = boxy ? `<div class="warn">${boxy} part${boxy === 1 ? ' looks' : 's look'} like a plain block or a low-detail stand-in (marked ▢). <a href="#" id="fixBoxy" style="color:#ffd28a">Mark them all for restyling</a></div>` : '';
+  for (const [g, ps] of [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    const c = collapsed.has(g);
+    h += `<div class="grp"><div class="gh" data-g="${esc(g)}"><span>${c ? '▸' : '▾'}</span><span style="flex:1">${esc(g)}</span><span>${ps.length}</span></div>`;
+    if (!c) for (const p of ps.sort((a, b) => a.name.localeCompare(b.name))) {
+      const e = p.e();
+      h += `<div class="prow ${sel.has(p.file) ? 'sel' : ''} ${e.removed || p.hidden ? 'off' : ''}" data-f="${esc(p.file)}" title="${esc(p.file)}">
+        <span class="dot" style="visibility:${isEdited(e) ? 'visible' : 'hidden'}"></span><span class="nm">${esc(p.name)}</span>
+        ${p.boxy || p.lowpoly ? '<span class="badge boxy" title="Plain block or low-detail stand-in">▢</span>' : ''}
+        ${gradeOf(p.file) ? `<span class="g ${gradeOf(p.file)}" title="Engineering grade: ${gradeOf(p.file)}">${gradeOf(p.file)[0].toUpperCase()}</span>` : ''}${p.kind ? `<span class="badge ${p.kind}">${p.kind.toUpperCase()}</span>` : ''}<span class="eye" title="Hide/show (H)">${p.hidden ? '◌' : '●'}</span></div>`;
+    }
+    h += '</div>';
+  }
+  $('#tree').innerHTML = h || '<div class="empty">No parts match.</div>';
+  const fb = $('#fixBoxy'); if (fb) fb.onclick = ev => { ev.preventDefault(); markBoxy(); };
+}
+$('#q').oninput = renderTree;
+$('#tree').onclick = e => {
+  const gh = e.target.closest('.gh');
+  if (gh) { // click a group header: select the whole group (Alt-click collapses)
+    const g = gh.dataset.g;
+    if (e.altKey || e.target.textContent === '▾' || e.target.textContent === '▸') { collapsed.has(g) ? collapsed.delete(g) : collapsed.add(g); renderTree(); return; }
+    if (!e.shiftKey) sel.clear(); for (const p of P.values()) if (p.group === g && p.pivot.visible) sel.add(p.file); selChanged(); return;
+  }
+  const row = e.target.closest('.prow'); if (!row) return;
+  const p = P.get(row.dataset.f);
+  if (e.target.classList.contains('eye')) { p.hidden = !p.hidden; applyEdit(p); renderTree(); return; }
+  pick(p.file, e.shiftKey || e.ctrlKey);
+  if (e.detail === 2) frame([p.pivot]);
+};
+const RESTYLE = 'Restyle: replace the plain block with a real shaped part (fillets on every edge, curved/drafted faces, real features)';
+function markBoxy() {
+  pushUndo(); let n = 0;
+  for (const p of P.values()) if (p.boxy || p.lowpoly) { const e = partEdit(p.file); e.styles = [...new Set([...(e.styles || []), p.kind === 'buy' ? STYLE_CHIPS.real : RESTYLE])]; syncEdit(p); n++; }
+  changed(); renderTree(); renderInspector(); toast(`${n} parts marked for restyling`);
+}
+
+// ================================================================ left: dimensions
+function renderParams() {
+  const q = $('#pq').value.trim().toLowerCase();
+  if (!D.params.length) { $('#params').innerHTML = '<div class="empty">No parameter file found.<br><br>Anatomy keeps every dimension in one file (for example <code>*_params.py</code>). Projects made with older versions may not have one; describe dimension changes on the part instead.</div>'; return; }
+  let h = '<p class="in" style="margin-top:0">These are the numbers the CAD is built from. Changes are applied when you Rebuild: every part, drawing, BOM line and G-code file that depends on them is regenerated.</p>';
+  for (const f of D.params) {
+    h += `<div class="sec">${esc(f.file.split('/').pop())}</div>`;
+    let sec = null;
+    for (const it of f.items) {
+      if (q && !`${it.name} ${it.note} ${it.section}`.toLowerCase().includes(q)) continue;
+      if (it.section !== sec) { sec = it.section; if (sec) h += `<div class="in" style="margin:10px 0 2px;color:#b9c2cc">${esc(sec)}</div>`; }
+      const ch = edits.params[it.name];
+      const cur = ch ? ch.to : it.value;
+      let vals = '';
+      if (it.type === 'number') vals = `<input class="num ${ch ? 'chg' : ''}" data-n="${esc(it.name)}" data-k="" value="${cur}">${unitHint(it.name, cur)}`;
+      else if (it.type === 'tuple') vals = cur.map((v, k) => `<input class="num ${ch && ch.to[k] !== it.value[k] ? 'chg' : ''}" data-n="${esc(it.name)}" data-k="${k}" value="${v}">`).join('');
+      else if (it.type === 'dict') vals = Object.entries(cur).map(([k, v]) => `<em>${esc(k)}</em><input class="num ${ch && ch.to[k] !== it.value[k] ? 'chg' : ''}" data-n="${esc(it.name)}" data-k="${esc(k)}" value="${v}">`).join('');
+      else vals = `<span class="derived">= ${esc(it.expr.slice(0, 80))}</span>`;
+      h += `<div class="param"><div class="pn"><b>${esc(it.name)}</b>${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ''}${ch ? `<a href="#" class="tag" data-reset="${esc(it.name)}" style="color:#ffb648">reset</a>` : ''}</div>
+        ${it.note ? `<div class="note">${esc(it.note.slice(0, 160))}</div>` : ''}<div class="vals">${vals}</div></div>`;
+    }
+  }
+  $('#params').innerHTML = h;
+}
+function unitHint(name, v) { return /(_D|_L|_T|_W|_H|_X|_Y|_Z|LENGTH|WIDTH|HEIGHT|GAP|CHORD|SPAN|OD|ID|_R)\b/i.test(name) && Math.abs(v) >= 1 ? `<em>mm · ${inch(v)} in</em>` : ''; }
+$('#pq').oninput = renderParams;
+$('#params').addEventListener('change', e => {
+  const inp = e.target.closest('input[data-n]'); if (!inp) return;
+  const it = D.params.flatMap(f => f.items.map(x => ({ ...x, file: f.file }))).find(x => x.name === inp.dataset.n); if (!it) return;
+  const v = Number(inp.value); if (!isFinite(v)) { toast('Enter a number'); renderParams(); return; }
+  pushUndo();
+  const ch = edits.params[it.name] || { file: it.file, from: JSON.parse(JSON.stringify(it.value)), to: JSON.parse(JSON.stringify(it.value)) };
+  if (it.type === 'number') ch.to = v; else if (it.type === 'tuple') ch.to[+inp.dataset.k] = v; else ch.to[inp.dataset.k] = v;
+  if (JSON.stringify(ch.to) === JSON.stringify(ch.from)) delete edits.params[it.name]; else edits.params[it.name] = ch;
+  changed(); renderParams();
+});
+$('#params').addEventListener('click', e => { const a = e.target.closest('[data-reset]'); if (!a) return; e.preventDefault(); pushUndo(); delete edits.params[a.dataset.reset]; changed(); renderParams(); });
+
+// ================================================================ left: styling (whole product)
+const STYLES = ['', 'Sleek automotive (flowing surfaces, tight shut lines)', 'Aerospace (aerofoil fairings, flush fasteners)', 'Motorsport (exposed carbon, machined billet)', 'Premium consumer product (soft radii, matte/gloss contrast)', 'Rugged industrial (chunky radii, guards, powder coat)', 'Medical / lab (clean, wipe-down, white and grey)'];
+function renderStyle() {
+  const g = edits.global;
+  $('#p-style').innerHTML = `
+    <div class="sec">Design language</div>
+    <select id="gStyle">${STYLES.map(s => `<option value="${esc(s)}" ${g.style === s ? 'selected' : ''}>${s ? esc(s) : '(keep the current look)'}</option>`).join('')}</select>
+    <div class="sec">Detail level</div>
+    <div class="chips" id="gDetail">${['Engineering', 'Production', 'Showroom'].map(d => `<span class="chip ${g.detail === d ? 'on' : ''}" data-d="${d}">${d}</span>`).join('')}</div>
+    <p class="in">Showroom: every visible part is modelled as the real thing, with fillets, curved surfaces, real fasteners and connectors, and proper finishes.</p>
+    <div class="sec">No more boxes</div>
+    <label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="gAuto" ${g.autoStyle ? 'checked' : ''}> <span>Restyle every square, boxy part on rebuild: fillets on all edges, curves and drafts where it makes sense, and real catalogue shapes for bought parts.</span></label>
+    <div class="sec">Engineering grade target</div>
+    <select id="gGrade">${['Concept', 'Engineered', 'Verified'].map(x => `<option ${(g.targetGrade || 'Verified') === x ? 'selected' : ''}>${x}</option>`).join('')}</select>
+    <p class="in">The rebuild engineers every part to this grade: feature-based CAD with real holes and fillets, material and process, DFM, and for precision parts datums, ISO 286 fits, GD&amp;T and finish. Verified adds FEA margins, tolerance stack-ups and an inspection plan. Looks from Blender never count as engineering.</p>
+    <div class="sec">Notes for the rebuild</div>
+    <textarea id="gNotes" rows="7" placeholder="Describe the look and any changes to the whole product. For example: give the ducts a thick rounded intake lip, make the side rails one flowing carbon beam, hide the wiring, use a red and white livery.">${esc(g.notes || '')}</textarea>
+    <div class="sec">Accent colour for painted parts</div>
+    <div class="chips" id="gPaint">${ACCENTS.map(c => `<span class="chip" data-c="${c}"><span class="swatch" style="background:${c}"></span>${c}</span>`).join('')}</div>
+    <p class="in">Applies the colour to every part with a painted finish.</p>
+    <div class="sec">Recent renders</div><div id="gRenders" class="gal"></div>`;
+  $('#gStyle').onchange = e => { pushUndo(); g.style = e.target.value; changed(); };
+  $('#gDetail').onclick = e => { const d = e.target.closest('[data-d]'); if (!d) return; pushUndo(); g.detail = d.dataset.d; changed(); renderStyle(); };
+  $('#gAuto').onchange = e => { pushUndo(); g.autoStyle = e.target.checked; changed(); };
+  $('#gGrade').onchange = e => { pushUndo(); g.targetGrade = e.target.value; changed(); };
+  $('#gNotes').onchange = e => { pushUndo(); g.notes = e.target.value; changed(); };
+  $('#gPaint').onclick = e => { const c = e.target.closest('[data-c]'); if (!c) return; pushUndo();
+    for (const p of P.values()) { const m = p.e().material || p.autoMat; if (/^Painted body/.test(m)) { const ed = partEdit(p.file); ed.color = c.dataset.c; syncEdit(p); applyEdit(p); } }
+    changed(); renderInspector(); };
+  renderRenders();
+}
+function renderRenders() {
+  const el = $('#gRenders'); if (!el) return;
+  const rs = (D && D.renders) || [];
+  el.innerHTML = rs.length ? rs.slice(0, 6).map(r => `<img src="/p/${encodeURIComponent(id)}/${enc(r)}" data-r="${esc(r)}">`).join('') : '<div class="in">None yet. Use Photoreal render.</div>';
+  el.onclick = e => { const i = e.target.closest('img'); if (i) window.open(i.src, '_blank'); };
+}
+// ================================================================ left: engineering grade
+function renderEng() {
+  const el = $('#p-eng'); if (!el) return;
+  const rep = ENG.report, parts = [...P.values()];
+  const cnt = { concept: 0, engineered: 0, verified: 0, none: 0 };
+  for (const p of parts) cnt[gradeOf(p.file) || 'none']++;
+  const tot = parts.length || 1;
+  const col = { concept: '#d65a5a', engineered: '#e3b04b', verified: '#4cc38a', none: '#5b616b' };
+  const byG = g => parts.filter(p => (gradeOf(p.file) || 'none') === g);
+  const list = g => { const ps = byG(g); if (!ps.length) return '';
+    return `<div class="sec"><span class="g ${g}">${g[0].toUpperCase()}</span> ${g === 'none' ? 'Not graded' : g[0].toUpperCase() + g.slice(1)} · ${ps.length}</div>` +
+      ps.slice(0, 60).map(p => { const m = rep?.parts?.[p.file]?.missing || []; const c = engRec(p.file)?.class;
+        return `<div class="erow" data-f="${esc(p.file)}" style="cursor:pointer;padding:3px 0;border-bottom:1px solid var(--line)"><b>${esc(p.name)}</b> <span class="in">${c ? esc(c) : ''}${rep?.parts?.[p.file]?.overclaimed ? ' · <span style="color:#ffb3b3">over-claimed</span>' : ''}</span>${m.length ? `<ul class="miss">${m.slice(0, 3).map(x => `<li>${esc(x)}</li>`).join('')}${m.length > 3 ? `<li>and ${m.length - 3} more</li>` : ''}</ul>` : ''}</div>`; }).join('') +
+      (ps.length > 60 ? `<p class="in">and ${ps.length - 60} more</p>` : ''); };
+  el.innerHTML = `
+    <div class="sec">Engineering grade</div>
+    <p class="in">A part is real when a machinist, print bureau or supplier can make it from the package and it fits and carries its load. Each part is graded from its evidence, measured from its STEP file, never from how it looks.</p>
+    <div class="bar">${['verified', 'engineered', 'concept', 'none'].map(g => cnt[g] ? `<div style="width:${100 * cnt[g] / tot}%;background:${col[g]}" title="${g}: ${cnt[g]}"></div>` : '').join('')}</div>
+    <div class="kv"><div>Verified</div><div>${cnt.verified}</div><div>Engineered</div><div>${cnt.engineered}</div><div>Concept</div><div>${cnt.concept}</div>${cnt.none ? `<div>Not graded</div><div>${cnt.none}</div>` : ''}
+      <div>Build-ready</div><div>${rep ? (rep.build_ready ? '<span style="color:#9fe0b0">yes</span>' : '<span style="color:#ffb3b3">no</span>') : 'not checked yet'}</div></div>
+    ${ENG.provisional ? '<p class="in">The project has no engineering record yet, so this is a first pass: bought parts and structural parts guessed from the BOM, every part at Concept. The rebuild writes the real record.</p>' : ''}
+    ${ENG.err ? `<p class="in" style="color:#ffb3b3">${esc(ENG.err)}</p>` : ''}
+    <div class="row"><button class="btn primary" id="eRun" ${ENG.busy || !ENG.tools ? 'disabled' : ''}>${ENG.busy ? 'Checking every STEP…' : 'Run engineering check'}</button>
+      <button class="btn" id="eLook">Colour by grade</button></div>
+    ${!ENG.tools ? '<p class="in">The engineering tools are not installed with the app.</p>' : ''}
+    <div class="row"><button class="btn" id="eAll">Engineer all to ${esc(edits.global.targetGrade || 'Verified')} on rebuild</button></div>
+    ${list('concept')}${list('engineered')}${list('verified')}${list('none')}`;
+  $('#eRun').onclick = runGrade;
+  $('#eLook').onclick = () => document.querySelector('#look [data-l="grade"]').click();
+  $('#eAll').onclick = () => { pushUndo(); const t = edits.global.targetGrade || 'Verified';
+    for (const p of parts) if (GRADES.indexOf(gradeOf(p.file) || 'concept') < GRADES.indexOf(t.toLowerCase())) { partEdit(p.file).engineer = t; syncEdit(p); }
+    changed(); renderTree(); renderInspector(); toast(`Parts below ${t} will be engineered on rebuild`); };
+  el.querySelectorAll('.erow').forEach(r => r.onclick = ev => { pick(r.dataset.f, ev.shiftKey); });
+}
+async function runGrade() {
+  ENG.busy = true; ENG.err = ''; renderEng();
+  try { const r = await api(`/api/projects/${id}/design/grade`, { method: 'POST' }); ENG.report = r; ENG.records = r.records || ENG.records; ENG.provisional = !!r.provisional && !D.engineering?.records; }
+  catch (e) { ENG.err = e.message; }
+  ENG.busy = false; renderEng(); renderTree(); renderInspector(); if (look === 'grade') for (const p of P.values()) setMat(p);
+}
+$('#ltabs').onclick = e => { const p = e.target.dataset.p; if (!p) return; document.querySelectorAll('#ltabs button').forEach(b => b.classList.toggle('on', b.dataset.p === p)); for (const k of ['parts', 'params', 'eng', 'style']) $('#p-' + k).classList.toggle('hidden', k !== p); };
+
+// ================================================================ right: inspector
+const STYLE_CHIPS = {
+  fillet: 'Fillet all edges (R ≥ 3 mm on small parts, R ≥ 10 mm on large ones)',
+  chamfer: 'Chamfer exposed edges 1 mm × 45°',
+  aero: 'Aerodynamic shape: aerofoil sections, rounded leading edges, tapered trailing edges',
+  shell: 'Styled shell: flowing curved surfaces instead of flat faces',
+  lip: 'Rounded intake lip / bell-mouth',
+  pocket: 'Lightening pockets and ribs (keep the stiffness)',
+  real: 'Real catalogue model: model the bought part as the manufacturer\'s actual shape (fins, flanges, connectors, labels), not a box',
+  fasteners: 'Show real fasteners (bolt heads, washers, inserts)',
+  hide: 'Hide wiring and hoses inside the structure',
+  brand: 'Add brand detailing (badges, panel lines, vents)',
+};
+function renderInspector() {
+  const el = $('#insp');
+  if (!sel.size) {
+    const n = editCount();
+    el.innerHTML = `<div class="sec">Design Studio</div>
+      <p>Click a part in the 3D view or the list to change it. Shift-click to pick several, or click a group name to pick the whole group.</p>
+      <div class="kv"><div>Parts</div><div>${P.size}</div><div>Edits</div><div>${n}</div><div>Dimensions</div><div>${D && D.params.length ? D.params.reduce((a, f) => a + f.items.length, 0) : 'none found'}</div></div>
+      <div class="sec">How it works</div>
+      <p class="in">Your edits are saved here as you go. <b>Rebuild as new revision</b> makes a copy of this project as the next revision and has Anatomy apply every edit to the real CAD, then regenerate the drawings, BOM, cut files, G-code, assembly guide and build package. This version is never changed.</p>
+      <p class="in"><b>Open in Blender</b> sends the edited model to Blender for looks and concept sculpting only; press Ctrl+S in Blender, then <b>Bring back</b> here. Blender gives shapes, not parts: the rebuild turns every sculpt into feature-based CAD with real holes, fits and fillets.</p>
+      <p class="in"><b>Engineering</b> shows each part's grade (Concept, Engineered, Verified) measured from its STEP file. Pick a part and press <b>Measure from STEP</b> to see its real holes, fillets and faces.</p>`;
+    return;
+  }
+  const ps = [...sel].map(f => P.get(f));
+  const p = ps[0], e = p.e(), one = ps.length === 1;
+  const matNow = one ? (e.material || p.autoMat) : '';
+  const styles = new Set(one ? (e.styles || []) : ps.flatMap(x => x.e().styles || []).filter(s => ps.every(y => (y.e().styles || []).includes(s))));
+  el.innerHTML = `
+    <div class="sec">${one ? 'Part' : ps.length + ' parts'}</div>
+    ${one ? `<div style="font-weight:600;font-size:14px">${esc(p.name)}</div>
+      <div class="kv" style="margin-top:6px"><div>File</div><div style="word-break:break-all">${esc(p.file)}</div>
+      ${p.line ? `<div>BOM line</div><div>${esc(p.line)}</div>` : ''}${p.kind ? `<div>Type</div><div>${p.kind.toUpperCase()}${p.mpn ? ' · ' + esc(p.mpn) : ''}</div>` : ''}
+      <div>Size</div><div id="iSize"></div><div>Detail</div><div>${p.tris.toLocaleString()} triangles${p.boxy ? ' · <span style="color:#ffb3b3">plain block</span>' : p.lowpoly ? ' · <span style="color:#ffb3b3">low detail</span>' : ''}</div></div>
+      ${D.hints[p.file] ? `<p class="in">${esc(D.hints[p.file].slice(0, 220))}</p>` : ''}` : `<p class="in">${ps.map(x => esc(x.name)).slice(0, 8).join(', ')}${ps.length > 8 ? '…' : ''}</p>`}
+    ${one ? `<div class="sec">Position (mm, moved by)</div>
+    <div class="xyz"><span>Move</span>${[0, 1, 2].map(k => `<input class="num" data-t="translate" data-k="${k}">`).join('')}</div>
+    <div class="xyz"><span>Rotate</span>${[0, 1, 2].map(k => `<input class="num" data-t="rotate" data-k="${k}">`).join('')}</div>
+    <div class="xyz"><span>Scale</span>${[0, 1, 2].map(k => `<input class="num" data-t="scale" data-k="${k}">`).join('')}</div>
+    <label class="in" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="iLock" ${uniformLock ? 'checked' : ''}> Keep proportions when scaling</label>` : '<p class="in">Use Move / Rotate / Scale (W / E / R) to change all of them together.</p>'}
+    <div class="sec">Material and finish</div>
+    <select id="iMat">${one ? '' : '<option value="">(mixed)</option>'}${Object.keys(MATS).map(m => `<option ${m === matNow ? 'selected' : ''}>${esc(m)}</option>`).join('')}</select>
+    <div class="row" style="align-items:center"><input type="color" id="iCol" value="${one ? (e.color || MATS[matNow]?.color || '#cccccc') : '#cccccc'}"><span class="in">Colour</span>${one && (e.material || e.color) ? '<a href="#" id="iMatReset" class="in" style="margin-left:auto">use automatic</a>' : ''}</div>
+    <div class="sec">Styling</div>
+    <div class="chips" id="iStyles">${Object.entries(STYLE_CHIPS).map(([k, t]) => `<span class="chip ${styles.has(t) ? 'on' : ''}" data-s="${k}" title="${esc(t)}">${esc(t.split(/[:(]/)[0].trim())}</span>`).join('')}
+      ${[...styles].filter(s => !Object.values(STYLE_CHIPS).includes(s)).map(s => `<span class="chip on" data-raw="${esc(s)}" title="${esc(s)}">${esc(s.split(':')[0])}</span>`).join('')}</div>
+    ${engSection(ps, one)}
+    <div class="sec">Describe the change</div>
+    <textarea id="iNote" rows="5" placeholder="Tell Anatomy what to do with ${one ? 'this part' : 'these parts'}. For example: make it 20 % thinner with a curved top, swap for a ${p.kind === 'buy' ? 'smaller model from the same supplier' : 'machined aluminium version'}, add a cable pass-through.">${esc(one ? (e.note || '') : '')}</textarea>
+    <div class="row">
+      <button class="btn" id="iFocus">Focus (F)</button><button class="btn" id="iIso">Isolate</button>
+      <button class="btn" id="iReset">Reset</button><button class="btn" id="iDel" style="color:#ffb3b3">${ps.every(x => x.e().removed) ? 'Restore' : 'Remove'}</button>
+    </div>`;
+  liveInspector();
+  el.querySelectorAll('.xyz input').forEach(inp => inp.onchange = () => {
+    const v = Number(inp.value); if (!isFinite(v)) return liveInspector();
+    pushUndo(); const k = +inp.dataset.k, t = inp.dataset.t;
+    if (t === 'translate') p.pivot.position.setComponent(k, p.center0.getComponent(k) + v);
+    if (t === 'rotate') { const r = p.pivot.rotation; const a = [r.x, r.y, r.z]; a[k] = THREE.MathUtils.degToRad(v); r.set(...a); }
+    if (t === 'scale') { const s = v / 100; if (uniformLock) p.pivot.scale.setScalar(s); else p.pivot.scale.setComponent(k, s); }
+    syncEdit(p); changed(); liveInspector();
+  });
+  const lk = $('#iLock'); if (lk) lk.onchange = () => { uniformLock = lk.checked; };
+  $('#iMat').onchange = ev => { if (!ev.target.value) return; pushUndo(); for (const x of ps) { const ed = partEdit(x.file); ed.material = ev.target.value; delete ed.color; syncEdit(x); applyEdit(x); } changed(); renderInspector(); };
+  $('#iCol').oninput = ev => { for (const x of ps) { const ed = partEdit(x.file); ed.color = ev.target.value; applyEdit(x); } };
+  $('#iCol').onchange = ev => { pushUndo(); for (const x of ps) { const ed = partEdit(x.file); ed.color = ev.target.value; syncEdit(x); applyEdit(x); } changed(); };
+  const mr = $('#iMatReset'); if (mr) mr.onclick = ev => { ev.preventDefault(); pushUndo(); const ed = partEdit(p.file); delete ed.material; delete ed.color; syncEdit(p); applyEdit(p); changed(); renderInspector(); };
+  $('#iStyles').onclick = ev => {
+    const c = ev.target.closest('.chip'); if (!c) return; pushUndo();
+    const t = c.dataset.s ? STYLE_CHIPS[c.dataset.s] : c.dataset.raw; const on = !c.classList.contains('on');
+    for (const x of ps) { const ed = partEdit(x.file); const s = new Set(ed.styles || []); on ? s.add(t) : s.delete(t); ed.styles = [...s]; syncEdit(x); }
+    changed(); renderInspector(); renderTree();
+  };
+  $('#iNote').onchange = ev => { pushUndo(); for (const x of ps) { const ed = partEdit(x.file); ed.note = ev.target.value.trim(); syncEdit(x); } changed(); renderTree(); };
+  $('#iFocus').onclick = () => frame(ps.map(x => x.pivot));
+  let iso = false; $('#iIso').onclick = () => { iso = !iso; for (const x of P.values()) x.pivot.visible = (iso ? sel.has(x.file) : true) && !x.e().removed && !x.hidden; $('#iIso').textContent = iso ? 'Show all' : 'Isolate'; };
+  $('#iReset').onclick = () => { pushUndo(); for (const x of ps) { delete edits.parts[x.file]; applyEdit(x); } changed(); renderInspector(); renderTree(); attachGizmo(); };
+  $('#iDel').onclick = removeSel;
+  wireEng(ps, one);
+}
+function engSection(ps, one) {
+  const p = ps[0], e = p.e(), rec = engRec(p.file), r = ENG.report?.parts?.[p.file], g = gradeOf(p.file);
+  const cls = one ? (e.partClass || rec?.class || (p.kind === 'buy' ? 'bought' : '')) : '';
+  const tgt = one ? (e.engineer || '') : (ps.every(x => x.e().engineer === p.e().engineer) ? p.e().engineer || '' : '');
+  return `<div class="sec">Engineering</div>
+    ${one ? `<div class="kv"><div>Grade</div><div>${g ? `<span class="g ${g}">${g}</span>${r?.overclaimed ? ' <span style="color:#ffb3b3">record claims ' + esc(r.claimed) + '</span>' : ''}` : 'not checked'}</div>
+      ${rec?.material ? `<div>Material</div><div>${esc(rec.material)}</div>` : ''}${rec?.process ? `<div>Process</div><div>${esc(rec.process)}</div>` : ''}
+      ${rec?.drawing ? `<div>Drawing</div><div>${esc(rec.drawing)}</div>` : ''}${rec?.mass_kg != null && rec?.mass_kg !== '' ? `<div>Mass</div><div>${rec.mass_kg} kg [${r1(rec.mass_kg * 2.20462)} lb]</div>` : ''}
+      ${rec?.fea?.margin != null ? `<div>FEA margin</div><div>${rec.fea.margin}</div>` : ''}<div>STEP</div><div style="word-break:break-all">${rec?.step ? esc(rec.step) : '<span style="color:#ffb3b3">none</span>'}</div></div>
+      ${r?.missing?.length ? `<div class="in" style="margin-top:4px">Missing for the next grade:</div><ul class="miss">${r.missing.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}` : ''}
+    <div class="xyz" style="grid-template-columns:60px 1fr"><span>Class</span><select id="iClass">${one ? '' : '<option value="">(keep each)</option>'}${Object.entries(CLASSES).map(([k, t]) => `<option value="${k}" ${k === cls ? 'selected' : ''} title="${esc(t)}">${k}</option>`).join('')}${one && !cls ? '<option value="" selected>(not set)</option>' : ''}</select></div>
+    <div class="chips" id="iEng">${['Engineered', 'Verified'].map(x => `<span class="chip ${tgt === x ? 'on' : ''}" data-g="${x}" title="On rebuild: engineer to grade ${x}">Engineer to ${x}</span>`).join('')}</div>
+    ${one && rec?.step ? `<div class="row"><button class="btn" id="iMeasure">Measure from STEP</button></div><div id="iFeat">${FEAT.has(p.file) ? featHtml(FEAT.get(p.file)) : ''}</div>` : ''}`;
+}
+function wireEng(ps, one) {
+  $('#iClass').onchange = ev => { const v = ev.target.value; if (!v && !one) return; pushUndo();
+    for (const x of ps) { const ed = partEdit(x.file); if (v && v !== engRec(x.file)?.class) ed.partClass = v; else delete ed.partClass; syncEdit(x); } changed(); renderInspector(); };
+  $('#iEng').onclick = ev => { const c = ev.target.closest('[data-g]'); if (!c) return; pushUndo(); const on = !c.classList.contains('on');
+    for (const x of ps) { const ed = partEdit(x.file); if (on) ed.engineer = c.dataset.g; else delete ed.engineer; syncEdit(x); } changed(); renderInspector(); renderTree(); };
+  const mb = $('#iMeasure'); if (mb) mb.onclick = async () => {
+    const step = engRec(ps[0].file).step; const out = $('#iFeat'); mb.disabled = true; out.innerHTML = '<p class="in">Reading the B-rep…</p>';
+    try { const f = await api(`/api/projects/${id}/design/features?step=${encodeURIComponent(step)}`); FEAT.set(ps[0].file, f); out.innerHTML = featHtml(f); }
+    catch (e) { out.innerHTML = `<p class="in" style="color:#ffb3b3">${esc(e.message)}</p>`; }
+    mb.disabled = false;
+  };
+}
+const FEAT = new Map();
+function featHtml(f) {
+  const bb = f.bbox_mm || [0, 0, 0];
+  const holes = (f.holes || []).slice(0, 14);
+  return `<div class="kv" style="margin-top:6px"><div>Envelope</div><div>${bb.map(v => r1(v)).join(' × ')} mm [${bb.map(inch).join(' × ')} in]</div>
+    <div>Volume</div><div>${(f.volume_mm3 / 1000).toFixed(1)} cm³ [${(f.volume_mm3 / 16387.064).toFixed(2)} in³]</div>
+    <div>Faces</div><div>${f.faces} (${Object.entries(f.face_types || {}).map(([k, n]) => n + ' ' + k.toLowerCase()).join(', ')})</div>
+    <div>Fillets</div><div>${f.fillets}${f.fillet_radii_mm?.length ? ' · R ' + f.fillet_radii_mm.slice(0, 6).join(', ') + ' mm' : ''}</div><div>Chamfers</div><div>${f.chamfers}</div>
+    <div>Holes</div><div>${f.hole_count}</div></div>
+    ${f.primitive ? '<p class="in" style="color:#ffb3b3">This STEP is still a bare box or cylinder. It is a placeholder, not a part.</p>' : ''}
+    ${holes.length ? `<table class="ft"><tr><td><b>Ø mm</b></td><td><b>Ø in</b></td><td><b>Depth mm [in]</b></td><td><b>Faces</b></td></tr>${holes.map(h => `<tr><td>${h.diameter_mm}</td><td>${h.diameter_in.toFixed(4)}</td><td>${h.depth_mm != null ? h.depth_mm + ' [' + inch(h.depth_mm) + ']' : ''}</td><td>${h.faces}</td></tr>`).join('')}</table>${f.holes.length > 14 ? `<p class="in">and ${f.holes.length - 14} more sizes</p>` : ''}` : ''}`;
+}
+function removeSel() {
+  const ps = [...sel].map(f => P.get(f)); const restore = ps.every(x => x.e().removed);
+  pushUndo(); for (const x of ps) { const ed = partEdit(x.file); if (restore) delete ed.removed; else ed.removed = true; syncEdit(x); applyEdit(x); }
+  changed(); renderTree(); if (!restore) { gizmo.detach(); } renderInspector();
+}
+function liveInspector() {
+  if (sel.size !== 1) return; const p = P.get([...sel][0]); const el = $('#insp');
+  const t = p.pivot.position.clone().sub(p.center0), r = p.pivot.rotation, s = p.pivot.scale;
+  const vals = { translate: [t.x, t.y, t.z].map(r1), rotate: [r.x, r.y, r.z].map(v => r1(THREE.MathUtils.radToDeg(v))), scale: [s.x, s.y, s.z].map(v => r1(v * 100)) };
+  el.querySelectorAll('.xyz input').forEach(inp => { if (document.activeElement !== inp) { inp.value = vals[inp.dataset.t][+inp.dataset.k]; inp.classList.toggle('chg', inp.dataset.t === 'scale' ? Math.abs(inp.value - 100) > 0.05 : Math.abs(inp.value) > 0.05); } });
+  const sz = $('#iSize'); if (sz) { const n = [p.size0.x * s.x, p.size0.y * s.y, p.size0.z * s.z]; sz.innerHTML = n.map(v => `${r1(v)}`).join(' × ') + ` mm<br><span class="in">${n.map(inch).join(' × ')} in</span>`; }
+}
+
+// ================================================================ looks
+$('#look').onclick = e => { const l = e.target.dataset.l; if (!l) return; look = l; document.querySelectorAll('#look button').forEach(b => b.classList.toggle('on', b.dataset.l === l)); for (const p of P.values()) setMat(p); };
+$('#ao').onclick = () => { gtao.enabled = !gtao.enabled; $('#ao').classList.toggle('on', gtao.enabled); };
+$('#fit').onclick = () => frame();
+function capture() { gizmo.visible = false; const o = outline.selectedObjects; outline.selectedObjects = []; composer.render(); const url = renderer.domElement.toDataURL('image/png'); gizmo.visible = true; outline.selectedObjects = o; return url; }
+$('#shot').onclick = () => { const a = document.createElement('a'); a.href = capture(); a.download = `${id}-design.png`; a.click(); };
+
+// ================================================================ Blender
+function exportScene() { // Z-up mm -> glTF Y-up metres, one node per part with its origin at the part centre
+  const root = new THREE.Scene();
+  for (const p of P.values()) {
+    if (p.e().removed) continue;
+    const g = p.mesh.geometry.clone(); const pos = g.attributes.position, nor = g.attributes.normal;
+    for (let i = 0; i < pos.count; i++) { const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i); pos.setXYZ(i, x / 1000, z / 1000, -y / 1000); if (nor) { const a = nor.getX(i), b = nor.getY(i), c = nor.getZ(i); nor.setXYZ(i, a, c, -b); } }
+    const src = makeMaterial(p.e().material || p.autoMat, p.e().color, 'studio');
+    const sw = p.e().color || MATS[p.e().material || p.autoMat]?.swatch;
+    const m = new THREE.MeshPhysicalMaterial({ color: sw ? new THREE.Color(sw) : src.color, metalness: src.metalness, roughness: src.roughness, clearcoat: src.clearcoat || 0, clearcoatRoughness: src.clearcoatRoughness || 0, transmission: src.transmission || 0, ior: src.ior || 1.5 }); // no KHR_materials_volume: Blender's importer fails on it without an attenuation distance
+    m.name = p.e().material || p.autoMat;
+    const node = new THREE.Mesh(g, m);
+    const pp = p.pivot.position, q = p.pivot.quaternion, s = p.pivot.scale;
+    node.position.set(pp.x / 1000, pp.z / 1000, -pp.y / 1000); node.quaternion.set(q.x, q.z, -q.y, q.w); node.scale.set(s.x, s.z, s.y);
+    node.name = p.file.replace(/\.[^.]+$/, '');
+    node.userData = { anatomy_file: p.file, anatomy_name: p.name, anatomy_material: m.name };
+    root.add(node);
+  }
+  return new Promise((res, rej) => new GLTFExporter().parse(root, b => res(b), rej, { binary: true }));
+}
+async function sendToBlender(mode) {
+  try {
+    toast(mode === 'render' ? 'Preparing the photoreal render…' : 'Opening Blender…');
+    const glb = await exportScene();
+    await api(`/api/projects/${id}/design/scene`, { method: 'PUT', body: glb });
+    const r = await api(`/api/projects/${id}/design/blender`, { method: 'POST', body: JSON.stringify({ mode, samples: 192 }) });
+    if (mode === 'render') watchRender(r.out);
+    else showModal(`<h2>Blender is opening</h2><p>The edited model opens in Blender with a studio already set up (floor, lights, camera). Sculpt, reshape, move parts or change materials there.</p>
+      <p>When you are done, press <b>Ctrl+S</b> in Blender, then press <b>Bring back</b> here. Moved parts and new colours come straight into the editor; a sculpted part comes back as concept intent only: the rebuild rebuilds it as feature-based CAD (real holes, fits, fillets, material and process) and grades it from the STEP.</p><div class="row"><button class="btn primary" onclick="this.closest('.modal').classList.add('hidden')">OK</button></div>`);
+  } catch (e) { showModal(`<h2>Blender could not start</h2><pre>${esc(e.message)}</pre><div class="row"><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">Close</button></div>`); }
+}
+let renderWatch = null;
+function watchRender(out) {
+  $('#render').disabled = true; $('#render').textContent = 'Rendering…';
+  clearInterval(renderWatch);
+  renderWatch = setInterval(async () => {
+    const s = await api(`/api/projects/${id}/design/blender`).catch(() => null); if (!s || !s.render) return;
+    if (s.render.running) { $('#render').textContent = s.render.progress ? `Rendering · ${s.render.progress.replace('Sample ', '')}` : 'Rendering…'; return; }
+    clearInterval(renderWatch); $('#render').disabled = false; $('#render').textContent = 'Photoreal render';
+    D.renders = s.renders; renderRenders();
+    if (s.render.ok) showModal(`<h2>Photoreal render</h2><img src="/p/${encodeURIComponent(id)}/${enc(s.render.out)}" style="width:100%;border-radius:8px"><p class="in">Saved in the project at ${esc(s.render.out)}.</p><div class="row"><button class="btn" id="mOpen">Open full size</button><button class="btn primary" onclick="this.closest('.modal').classList.add('hidden')">Close</button></div>`, () => { $('#mOpen').onclick = () => window.open(`/p/${encodeURIComponent(id)}/${enc(s.render.out)}`, '_blank'); });
+    else showModal(`<h2>The render did not finish</h2><pre>${esc(s.render.tail || 'Blender stopped without an image.')}</pre><div class="row"><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">Close</button></div>`);
+  }, 2500);
+}
+$('#blenderOpen').onclick = () => sendToBlender('open');
+$('#render').onclick = () => sendToBlender('render');
+const colorDiff = (a, b) => { const x = new THREE.Color(a), y = new THREE.Color(b); return 255 * Math.max(Math.abs(x.r - y.r), Math.abs(x.g - y.g), Math.abs(x.b - y.b)); };
+$('#blenderBack').onclick = async () => {
+  const s = await api(`/api/projects/${id}/design/blender`).catch(() => null);
+  const back = s && s.blenderReturn;
+  if (!back || !back.parts) return showModal(`<h2>Nothing to bring back yet</h2><p>Open the model in Blender, make your changes, press <b>Ctrl+S</b> there, then try again.</p><div class="row"><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">OK</button></div>`);
+  pushUndo(); let moved = 0, sculpted = 0, painted = 0;
+  for (const [file, r] of Object.entries(back.parts)) {
+    const p = P.get(file); if (!p) continue;
+    const before = p.pivot.matrix.clone();
+    p.pivot.position.set(...r.position); p.pivot.quaternion.set(...r.quaternion); p.pivot.scale.set(...r.scale); p.pivot.updateMatrix();
+    { const a = new THREE.Vector3(), q = new THREE.Quaternion(), sc = new THREE.Vector3(); before.decompose(a, q, sc); if (a.distanceTo(p.pivot.position) > 0.05 || q.angleTo(p.pivot.quaternion) > 1e-4 || sc.distanceTo(p.pivot.scale) > 1e-4) moved++; }
+    const ed = partEdit(file);
+    if (r.color) { const mm = MATS[ed.material || p.autoMat] || {}; const was = ed.color || mm.swatch || mm.color; const now = r.color_linear ? '#' + new THREE.Color().setRGB(...r.color_linear).getHexString() : r.color; if (!was || colorDiff(was, now) > 12) { ed.color = now; painted++; } }
+    if (r.hidden) ed.removed = true;
+    if (r.mesh) {
+      try {
+        const buf = await (await fetch(`/api/projects/${id}/design/sculpt?file=${encodeURIComponent(r.mesh)}`, { cache: 'no-store' })).arrayBuffer();
+        const g = prepGeometry([ldr.stl.parse(buf)]); p.mesh.geometry.dispose(); p.mesh.geometry = g; if (p.lines) { p.mesh.remove(p.lines); p.lines = null; }
+        const st = meshStats(g); p.tris = st.tris; p.boxy = false; p.lowpoly = false;
+        ed.mesh = 'inputs/sculpt/' + r.mesh; sculpted++;
+      } catch {}
+    }
+    syncEdit(p); applyEdit(p);
+  }
+  changed(); renderTree(); renderInspector(); attachGizmo();
+  toast(`From Blender: ${moved} moved, ${sculpted} sculpted, ${painted} recoloured`);
+};
+
+// ================================================================ rebuild
+function updateRebuildLabel() { $('#rebuild').textContent = 'Rebuild as new revision'; }
+function showModal(html, after) { $('#mbox').innerHTML = html; $('#modal').classList.remove('hidden'); if (after) after(); }
+$('#modal').onclick = e => { if (e.target.id === 'modal') $('#modal').classList.add('hidden'); };
+$('#rebuild').onclick = async () => {
+  await save();
+  const n = editCount();
+  const lines = [];
+  const pe = Object.entries(edits.parts).filter(([, e]) => isEdited(e));
+  if (Object.keys(edits.params).length) lines.push(`${Object.keys(edits.params).length} dimension change${Object.keys(edits.params).length === 1 ? '' : 's'}: ` + Object.entries(edits.params).slice(0, 6).map(([k, v]) => `${k} ${JSON.stringify(v.from)} → ${JSON.stringify(v.to)}`).join(', '));
+  if (pe.length) lines.push(`${pe.length} part${pe.length === 1 ? '' : 's'} changed (moved, resized, restyled, re-materialed or removed)`);
+  if (edits.global.style) lines.push('Design language: ' + edits.global.style);
+  if (edits.global.autoStyle) lines.push('Restyle every boxy part: fillets, curves, real bought-part shapes');
+  if (edits.global.notes) lines.push('Notes: ' + edits.global.notes.slice(0, 200));
+  if (!n && !edits.global.autoStyle) return showModal(`<h2>No edits yet</h2><p>Change a part, a dimension or the styling first.</p><div class="row"><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">OK</button></div>`);
+  showModal(`<h2>Rebuild as a new revision?</h2>
+    <p>Anatomy will copy this project as the next revision and apply your edits to the real CAD. Then it regenerates everything that depends on the shape: STEP and meshes, drawings and cut files (mm and inches), the BOM, G-code for printed parts, the assembly guide and the build package.</p>
+    <p><b>This version is not changed.</b> Both versions show in your project list.</p>
+    <pre>${esc(lines.join('\n'))}</pre>
+    <p class="in">It runs like any Anatomy project, so you can watch it and steer it from the main window. A large product can take an hour or more.</p>
+    <div class="row"><button class="btn primary" id="mGo">Rebuild</button><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">Cancel</button></div>`, () => {
+    $('#mGo').onclick = async () => {
+      $('#mGo').disabled = true; $('#mGo').textContent = 'Starting…';
+      try {
+        sel.clear(); selChanged(); frame();
+        await new Promise(r => setTimeout(r, 300));
+        const r = await api(`/api/projects/${id}/design/revision`, { method: 'POST', body: JSON.stringify({ edits, snapshot: capture() }) });
+        showModal(`<h2>Revision ${esc(r.revision)} started</h2><p>Anatomy is copying the design and will then rebuild it. Follow it in the main window, where it now shows as its own project.</p>
+          <div class="row"><button class="btn primary" id="mShow">Show it in Anatomy</button><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">Stay here</button></div>`, () => {
+          $('#mShow').onclick = () => { try { if (window.opener && !window.opener.closed) { window.opener.location.hash = r.id; window.opener.focus(); } else window.open('/#' + r.id, '_blank'); } catch { window.open('/#' + r.id, '_blank'); } $('#modal').classList.add('hidden'); };
+        });
+      } catch (e) { showModal(`<h2>Could not start the rebuild</h2><pre>${esc(e.message)}</pre><div class="row"><button class="btn" onclick="this.closest('.modal').classList.add('hidden')">Close</button></div>`); }
+    };
+  });
+};
+addEventListener('beforeunload', () => { if (dirty) navigator.sendBeacon && fetch(`/api/projects/${id}/design/edits`, { method: 'PUT', body: JSON.stringify(edits), keepalive: true }); });
+
+// ================================================================ loop
+(function loop() { requestAnimationFrame(loop); orbit.update(); composer.render(); })();
+if (!id) $('#load').textContent = 'No project given.'; else init().catch(e => { $('#load').textContent = 'Could not load the design: ' + e.message; });
+</script>
+</body>
+</html>
