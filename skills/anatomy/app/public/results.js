@@ -510,7 +510,8 @@ Build a digital twin in sim/ from this project's own assembly and numbers. It ne
 - controls, live checks and an E-stop;
 - automated test scenarios traced to the blueprint's requirements, with pass/fail and margins;
 - headless test runs that write sim/results/latest.json;
-- a hardware link that drives the real device from the same UI.
+- a hardware link that drives the real device from the same UI;
+- a loading screen with a real progress bar, the current stage and MB downloaded, and a clear error with Try again if anything fails (never a bare "loading...").
 Add it to anatomy.json as an app with "kind": "simulator", plus a "tests" entry {"cwd", "run", "results"} for the headless run. Start it, run every scenario, look at the result, and report any failures as design findings.`;
 async function sim(el) {
   const m = S.manifest || {}, apps = m.apps || [];
@@ -568,7 +569,10 @@ async function simWeb(el, a, resPath) {
   const b = el.querySelector('.b'), fr = el.querySelector('#simframe');
   if (pg) {
     const o = document.createElement('a'); o.className = 'primary btnlink'; o.href = raw(pg); o.target = '_blank'; o.textContent = 'Open full screen'; b.append(o);
-    fr.innerHTML = `<iframe class="simframe" src="${raw(pg)}" allow="fullscreen; gamepad; serial; usb" allowfullscreen></iframe><p class="empty">Running in your browser from the hub's copy. The hardware link works where the browser supports Web Serial (Chrome or Edge on a PC with the device plugged in). Headless test runs and anything that needs the twin's own server happen in Anatomy on your PC.</p>`;
+    fr.innerHTML = `<div class="simwrap"><iframe class="simframe" src="${raw(pg)}" allow="fullscreen; gamepad; serial; usb" allowfullscreen></iframe><div class="simload"><div><b>Opening the simulator</b><div class="simbar"><i></i></div><span>Downloading the twin from the hub…</span></div></div></div><p class="empty">Running in your browser from the hub's copy. The hardware link works where the browser supports Web Serial (Chrome or Edge on a PC with the device plugged in). Headless test runs and anything that needs the twin's own server happen in Anatomy on your PC.</p>`;
+    const ifr = fr.querySelector('iframe'), ov = fr.querySelector('.simload');
+    ifr.addEventListener('load', () => ov.remove(), { once: true });
+    setTimeout(() => { if (ov.isConnected) ov.querySelector('span').textContent = 'Still downloading. Large plant models can take a minute on a slow connection…'; }, 15000);
   } else fr.innerHTML = `<p class="empty">This simulator runs as a program (${esc([].concat(a.run || []).join(' ') || 'a server')})) and has no page that runs on its own, so open it in Anatomy on your PC. Its latest test results are below.</p>`;
   const box = el.querySelector('#simres');
   const R = resPath ? await fetch(`/api/projects/${S.id}/file?path=${encodeURIComponent(resPath)}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null) : null;
