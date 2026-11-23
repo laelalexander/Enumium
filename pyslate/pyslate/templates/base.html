@@ -25,6 +25,7 @@
             {% endfor %}
           </div>
         </div>
+        <a href="/designs" {% if path.startswith('/designs') %}aria-current="page"{% endif %}>Design library</a>
         <a href="/studio" {% if path == '/studio' %}aria-current="page"{% endif %}>Design studio</a>
         <a href="/how-it-works" {% if path == '/how-it-works' %}aria-current="page"{% endif %}>How it works</a>
         <a href="/materials" {% if path == '/materials' %}aria-current="page"{% endif %}>Materials</a>
@@ -38,6 +39,7 @@
           <nav aria-label="Mobile">
             <a href="/capabilities">Capabilities</a>
             {% for c in capabilities %}<a class="sub" href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
+            <a href="/designs">Design library</a>
             <a href="/studio">Design studio</a>
             <a href="/how-it-works">How it works</a>
             <a href="/materials">Materials</a>
@@ -66,6 +68,7 @@
         <h4>Make</h4>
         {% for c in capabilities if c.kind == 'instant' %}<a href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
         <a href="/quote">Get an instant quote</a>
+        <a href="/designs">Design library</a>
         <a href="/studio">Design studio</a>
       </div>
       <div>
