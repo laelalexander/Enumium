@@ -30,9 +30,25 @@ class ServiceError(ValueError):
 # ---- shop profile -------------------------------------------------------
 
 
+def _with_new_machines(data: dict) -> dict:
+    """Add machines that shipped after the owner saved their profile (e.g. the F2).
+
+    Each default machine is added once; "known_machine_ids" records which ones the
+    owner has seen, so a machine they delete later stays deleted.
+    """
+    defaults = default_profile()["machines"]
+    known = set(data.get("known_machine_ids") or [m["id"] for m in data.get("machines", [])])
+    have = {m["id"] for m in data.get("machines", [])}
+    for m in defaults:
+        if m["id"] not in known and m["id"] not in have:
+            data = {**data, "machines": [*data.get("machines", []), m]}
+    data["known_machine_ids"] = sorted(known | {m["id"] for m in defaults})
+    return data
+
+
 def get_profile(db: Session) -> Profile:
     row = db.get(Setting, PROFILE_KEY)
-    return Profile(row.value if row else default_profile())
+    return Profile(_with_new_machines(dict(row.value)) if row else default_profile())
 
 
 def save_profile(db: Session, data: dict) -> None:

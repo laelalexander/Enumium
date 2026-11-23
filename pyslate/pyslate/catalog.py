@@ -31,7 +31,7 @@ CAPABILITIES = [
         "title": "Laser Cutting and Engraving",
         "icon": "laser",
         "kind": "instant",
-        "blurb": "Wood, acrylic and MDF cut and engraved on the xTool X1 and M2.",
+        "blurb": "Wood, acrylic and MDF cut and engraved on the xTool X1, M2 and F2.",
     },
     {
         "slug": "metal-fabrication",
@@ -108,17 +108,17 @@ DETAILS = {
     },
     "laser-cutting": {
         "headline": "Laser cut and engraved parts in wood, acrylic and MDF.",
-        "intro": "Flat parts go to our xTool X1 and M2 lasers. Upload a DXF or a flat model and we measure the cut length, nest it on the sheet and price it.",
+        "intro": "Flat parts go to our xTool X1 and M2 lasers, and small parts and metal engraving to the xTool F2. Upload a DXF or a flat model and we measure the cut length, nest it on the sheet and price it.",
         "points": [
             "Signs, panels, enclosures, inlays and templates",
             "Engraving for logos, labels and serial numbers",
             "Cut length and sheet use priced line by line",
             "Parts thicker or larger than our stock go to review",
         ],
-        "specs": [("Work area", "X1: 615 × 320 mm · M2: 426 × 320 mm"), ("Materials", "Plywood, cast acrylic, MDF"),
+        "specs": [("Work area", "X1: 615 × 320 mm · M2: 426 × 320 mm · F2: 115 × 115 mm"), ("Materials", "Plywood, cast acrylic, MDF"),
                   ("Files", "DXF, or a flat STL / 3MF"), ("Lead time", "About 7 days, 3 with rush")],
         "line": "laser",
-        "machines": ["x1", "m2"],
+        "machines": ["x1", "m2", "f2"],
     },
     "metal-fabrication": {
         "headline": "Stainless steel sheet parts, cut on the xTool MetalFab.",

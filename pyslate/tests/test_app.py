@@ -318,3 +318,18 @@ def test_studio_lines_and_engraving(client, tmp_path):
     only_lines = {"shapes": [{"type": "poly", "pts": [[0, 0], [10, 0]], "closed": False}]}
     r = client.post("/studio/quote", data={"design": json.dumps(only_lines), "process": "print"})
     assert r.status_code == 400
+
+
+def test_f2_machine_added_to_saved_profiles():
+    from pyslate.services import _with_new_machines
+    from pyslate.shop import default_profile
+
+    old = default_profile()
+    old["machines"] = [m for m in old["machines"] if m["id"] != "f2"]
+    old.pop("known_machine_ids", None)
+    merged = _with_new_machines(old)
+    f2 = next(m for m in merged["machines"] if m["id"] == "f2")
+    assert f2["bed_mm"] == [115, 115]
+    # once known, an owner's deletion sticks
+    merged["machines"] = [m for m in merged["machines"] if m["id"] != "f2"]
+    assert all(m["id"] != "f2" for m in _with_new_machines(merged)["machines"])

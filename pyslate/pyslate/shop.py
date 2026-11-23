@@ -47,6 +47,16 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "setup_fee": 5.0,
         },
         {
+            # Small dual laser (15 W diode + 5 W IR): engraves metal, cuts thin wood and acrylic.
+            # Standard field 115 x 115 mm (115 x 400 mm with the slide extension).
+            "id": "f2",
+            "name": "xTool F2",
+            "line": LASER,
+            "bed_mm": [115, 115],
+            "rate_per_hour": 25.0,
+            "setup_fee": 5.0,
+        },
+        {
             "id": "metalfab",
             "name": "xTool MetalFab",
             "line": LASER,
@@ -80,7 +90,7 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "cost_per_m2": 18.0,
             "cut_speed_mm_s": 8.0,
             "passes": 1,
-            "machines": ["x1", "m2"],
+            "machines": ["x1", "m2", "f2"],
         },
         {
             "id": "acrylic-3",
@@ -90,7 +100,7 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "cost_per_m2": 40.0,
             "cut_speed_mm_s": 5.0,
             "passes": 1,
-            "machines": ["x1", "m2"],
+            "machines": ["x1", "m2", "f2"],
         },
         {
             "id": "mdf-3",
@@ -100,7 +110,7 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "cost_per_m2": 12.0,
             "cut_speed_mm_s": 7.0,
             "passes": 1,
-            "machines": ["x1", "m2"],
+            "machines": ["x1", "m2", "f2"],
         },
         {
             "id": "steel-1",
