@@ -243,3 +243,53 @@ def test_design_request_validates(client):
         files=[("files", ("run.exe", b"MZ", "application/octet-stream"))],
     )
     assert r.status_code == 400
+
+
+PLATE = {"shapes": [
+    {"type": "rect", "x": 100, "y": 100, "w": 100, "h": 60, "r": 4},
+    {"type": "circle", "x": 60, "y": 80, "d": 5},
+    {"type": "slot", "x": 100, "y": 110, "w": 30, "h": 6, "rot": 15},
+    {"type": "polygon", "x": 130, "y": 90, "d": 12, "n": 6},
+]}
+
+
+def test_studio_page(client):
+    r = client.get("/studio")
+    assert r.status_code == 200 and "studio-config" in r.text
+
+
+def test_studio_laser_quote(client):
+    import json
+    r = client.post("/studio/quote", data={"design": json.dumps(PLATE), "process": "laser",
+                                           "material_id": "acrylic-3", "quantity": "5"})
+    assert r.status_code == 200, r.text
+    page = client.get(r.json()["url"]).text
+    assert "studio-design.dxf" in page and 'class="pill">Laser' in page
+    assert 'value="5"' in page
+
+
+def test_studio_print_quote(client):
+    import json
+    r = client.post("/studio/quote", data={"design": json.dumps(PLATE), "process": "print",
+                                           "material_id": "petg", "height_mm": "20"})
+    assert r.status_code == 200, r.text
+    page = client.get(r.json()["url"]).text
+    assert "studio-design.stl" in page and 'class="pill">3D print' in page
+    assert "100.0 × 60.0 × 20.0" in page or "100 × 60 × 20" in page
+
+
+def test_studio_rejects_bad_designs(client):
+    import json
+    for design in ("nope", json.dumps({"shapes": []}), json.dumps({"shapes": [{"type": "rect", "x": 0, "y": 0, "w": -1, "h": 5}]})):
+        r = client.post("/studio/quote", data={"design": design})
+        assert r.status_code == 400 and "error" in r.json()
+
+
+def test_studio_send_to_engineer(client):
+    import json
+    r = client.post("/studio/request", data={"design": json.dumps(PLATE), "process": "print", "height_mm": "12",
+                                             "name": "Ada", "email": "ada@example.com", "description": ""})
+    assert r.status_code == 200 and r.json()["ref"] == "R-501"
+    admin_login(client)
+    detail = client.get("/admin/requests/501").text
+    assert "studio-design.dxf" in detail and "studio-design.stl" in detail and "studio-design.json" in detail

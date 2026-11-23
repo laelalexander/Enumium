@@ -18,7 +18,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from . import __version__, catalog, payments, services
+from . import __version__, catalog, payments, services, studio
 from . import geometry as geo
 from .config import Settings, settings as default_settings
 from .models import ORDER_LABELS, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
@@ -146,6 +146,102 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     @app.get("/quote", response_class=HTMLResponse)
     def quote_start(request: Request):
         return render(request, "quote_start.html", formats=sorted(geo.SUPPORTED_EXTS))
+
+    # ---- design studio ----
+
+    def studio_context(db: Session) -> dict:
+        profile = services.get_profile(db).data
+        machines = {m["id"]: m for m in profile["machines"]}
+        mats = [
+            {"id": m["id"], "name": m["name"], "line": m["line"], "thickness": m.get("thickness_mm"),
+             "bed": max((machines[i]["bed_mm"][:2] for i in m.get("machines", []) if i in machines),
+                        key=lambda b: b[0] * b[1], default=[300, 300])}
+            for m in profile["materials"]
+        ]
+        return {"studio_config": {"materials": mats, "maxPrintHeight": 256}}
+
+    @app.get("/studio", response_class=HTMLResponse)
+    def studio_page(request: Request, db: Session = Depends(get_db)):
+        return render(request, "studio.html", **studio_context(db))
+
+    def _studio_files(design: dict, process: str, height_mm: float, tmpdir: Path) -> tuple[str, Path]:
+        if process == studio.PRINT:
+            target = tmpdir / "studio-design.stl"
+            studio.design_to_stl(design, height_mm, target, tmpdir)
+            return "studio-design.stl", target
+        target = tmpdir / "studio-design.dxf"
+        studio.design_to_dxf(design, target)
+        return "studio-design.dxf", target
+
+    @app.post("/studio/quote")
+    def studio_quote(
+        request: Request,
+        design: str = Form(...),
+        process: str = Form("laser"),
+        material_id: str = Form(""),
+        height_mm: float = Form(10.0),
+        quantity: int = Form(1),
+        db: Session = Depends(get_db),
+    ):
+        try:
+            clean = studio.validate_design(design)
+            if process not in (studio.LASER, studio.PRINT):
+                raise studio.DesignError("Choose laser cutting or 3D printing")
+            if process == studio.PRINT and not 0.4 <= height_mm <= 256:
+                raise studio.DesignError("Print height must be between 0.4 and 256 mm")
+            with tempfile.TemporaryDirectory() as tmp:
+                name, path = _studio_files(clean, process, height_mm, Path(tmp))
+                part = services.store_part(db, cfg.upload_dir, name, path)
+        except (studio.DesignError, services.ServiceError) as exc:
+            db.rollback()
+            return JSONResponse({"error": str(exc)}, status_code=400)
+        quote = Quote()
+        db.add(quote)
+        line = services.add_part_to_quote(db, quote, part)
+        db.commit()
+        allowed = {m["id"] for m in compatible_materials(geo.PartGeometry.from_dict(part.geometry), services.get_profile(db))}
+        try:
+            services.update_line(db, line, material_id if material_id in allowed else line.material_id,
+                                 max(1, min(quantity, services.MAX_QUANTITY)))
+        except services.ServiceError:
+            db.rollback()
+        return JSONResponse({"url": f"/quote/{quote.token}"})
+
+    @app.post("/studio/request")
+    def studio_request(
+        design: str = Form(...),
+        process: str = Form("laser"),
+        material_id: str = Form(""),
+        height_mm: float = Form(10.0),
+        name: str = Form(""),
+        email: str = Form(""),
+        description: str = Form(""),
+        db: Session = Depends(get_db),
+    ):
+        try:
+            clean = studio.validate_design(design)
+            if process not in (studio.LASER, studio.PRINT):
+                raise studio.DesignError("Choose laser cutting or 3D printing")
+            note = (f"{description.strip()}\n\nFrom the design studio: {len(clean['shapes'])} shapes, "
+                    f"{'3D print, ' + format(height_mm, 'g') + ' mm tall' if process == studio.PRINT else 'laser cut'}"
+                    f"{', material ' + material_id if material_id else ''}.")
+            with tempfile.TemporaryDirectory() as tmp:
+                tmpdir = Path(tmp)
+                dxf = tmpdir / "design.dxf"
+                studio.design_to_dxf(clean, dxf)
+                js = tmpdir / "design.json"
+                js.write_text(json.dumps({**clean, "process": process, "material_id": material_id,
+                                          "height_mm": height_mm}, indent=1))
+                files = [("studio-design.dxf", dxf), ("studio-design.json", js)]
+                if process == studio.PRINT:
+                    files.insert(1, _studio_files(clean, process, height_mm, tmpdir))
+                req = services.create_service_request(
+                    db, cfg.upload_dir, "product-design", name, email, note, files=files,
+                )
+        except (studio.DesignError, services.ServiceError) as exc:
+            db.rollback()
+            return JSONResponse({"error": str(exc)}, status_code=400)
+        return JSONResponse({"ref": f"R-{req.number}"})
 
     @app.get("/capabilities", response_class=HTMLResponse)
     def capabilities_page(request: Request):
