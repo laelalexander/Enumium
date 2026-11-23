@@ -404,7 +404,7 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
 .wrap.wide { max-width: 1640px; }
 .studio-grid { grid-template-columns: 220px minmax(0, 1fr) 280px; }
 .board-wrap { aspect-ratio: auto; max-height: 78vh; min-height: 320px; }
-#board.drawing { cursor: crosshair; }
+#board.drawing, #board.scissors, #board.scissors .hit { cursor: crosshair; }
 #board .handle { touch-action: none; }
 .machine-pick { display: grid; gap: 6px; }
 .mpick { display: block; cursor: pointer; }

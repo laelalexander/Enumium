@@ -21,8 +21,9 @@
         <button type="button" data-add="polygon"><svg viewBox="0 0 24 24"><path d="M12 4l7 4v8l-7 4-7-4V8z"/></svg>Polygon</button>
         <button type="button" id="line-tool" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 18l6-9 5 5 5-9"/><circle cx="4" cy="18" r="1.4"/><circle cx="20" cy="5" r="1.4"/></svg>Line</button>
         <button type="button" data-add="text"><svg viewBox="0 0 24 24"><path d="M5 6h14M12 6v13M9 19h6"/></svg>Text</button>
+        <button type="button" id="scissors-tool" aria-pressed="false" title="Cut away material that isn't part of the final part"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1L20 18M8.1 15.9L20 6"/></svg>Cut away</button>
       </div>
-      <p class="fine">A shape inside another shape becomes a hole. Lines and text can be cut or engraved.</p>
+      <p class="fine">A shape inside another shape becomes a hole. Use the scissors to mark a shape as scrap: it's cut out of anything it overlaps. Lines and text can be cut or engraved.</p>
       <h3>Start from</h3>
       <div class="template-list" id="templates"></div>
 
@@ -77,6 +78,7 @@
 <script type="application/json" id="studio-config">{{ studio_config | tojson }}</script>
 {% endblock %}
 {% block scripts %}
+<script src="/static/vendor/polygon-clipping/polygon-clipping.umd.min.js"></script>
 <script type="importmap">{ "imports": { "three": "/static/vendor/three/three.module.min.js" } }</script>
 <script type="module" src="/static/studio.js"></script>
 {% endblock %}

@@ -107,11 +107,32 @@ function nesting(polys) {
     return { depth: containers.length, parent: containers.sort((a, b) => areas[a] - areas[b])[0] ?? -1 };
   });
 }
+// The finished part: shapes overlap even-odd (a shape inside another makes a hole),
+// then every cut-away shape (scissors) is trimmed off. Returns pieces as [outer, ...holes].
+const PC = window.polygonClipping;
+let memoKey = '', memo = null;
 function analyse() {
-  const all = state.shapes.flatMap((s, si) => contours(s).map(c => ({ ...c, si })));
-  const solid = all.filter(c => c.closed && !c.engrave);
-  const nest = nesting(solid.map(c => c.pts));
-  return { all, solid, nest };
+  const key = JSON.stringify(state.shapes) + '|' + Object.keys(fonts).length;
+  if (key === memoKey && memo) return memo;
+  const all = state.shapes.flatMap((s, si) => contours(s).map(c => ({ ...c, si, cutter: s.role === 'remove' && c.closed && !c.engrave })));
+  const material = all.filter(c => c.closed && !c.engrave && !c.cutter);
+  const cutters = all.filter(c => c.cutter);
+  const lines = all.filter(c => (!c.closed || c.engrave) && state.shapes[c.si].role !== 'remove');
+  let pieces = [];
+  try {
+    if (material.length) {
+      let geom = PC.xor(...material.map(c => [c.pts]));
+      if (cutters.length) geom = PC.difference(geom, ...cutters.map(c => [c.pts]));
+      pieces = geom.map(poly => poly.map(ring => { const r = ring.slice(); r.pop(); return r; }));
+    }
+  } catch (e) {
+    // Fall back to plain even-odd outlines if the boolean maths fails on odd input.
+    pieces = material.map(c => [c.pts]);
+  }
+  const solid = pieces.flat().map(pts => ({ pts, closed: true }));
+  memo = { all, material, cutters, lines, pieces, solid };
+  memoKey = key;
+  return memo;
 }
 
 /* ---------------- machines and materials ---------------- */
@@ -232,14 +253,16 @@ function render() {
   const defs = el('defs', {}, board);
   const pat = el('pattern', { id: 'grid', width: 10, height: 10, patternUnits: 'userSpaceOnUse' }, defs);
   el('path', { d: 'M10 0H0V10', fill: 'none', stroke: '#e3e5e9', 'stroke-width': u }, pat);
+  const scrap = el('pattern', { id: 'scrap', width: 4, height: 4, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+  el('path', { d: 'M0 0V4', stroke: 'rgba(214,51,108,.35)', 'stroke-width': .8 }, scrap);
   el('rect', { x: view[0], y: view[1], width: view[2], height: view[3], fill: '#fbfbfc' }, board);
   el('rect', { x: 0, y: 0, width: bw, height: bh, fill: 'url(#grid)', stroke: '#b9bec7', 'stroke-width': u * 1.5, 'stroke-dasharray': `${u * 6} ${u * 4}` }, board);
   rulers(bw, bh, u);
 
-  const { all, solid } = analyse();
+  const { all, solid, cutters, lines } = analyse();
   if (solid.length) el('path', { d: solid.map(c => pathD(c.pts)).join(' '), 'fill-rule': 'evenodd', fill: MAT_COLORS[state.material] || '#ff9a3c', 'fill-opacity': .55, stroke: CUT, 'stroke-width': u * 1.6 }, board);
-  for (const c of all) {
-    if (c.closed && !c.engrave) continue;
+  for (const c of cutters) el('path', { d: pathD(c.pts), fill: 'url(#scrap)', stroke: '#d6336c', 'stroke-width': u * 1.2, 'stroke-dasharray': `${u * 5} ${u * 3}`, 'pointer-events': 'none' }, board);
+  for (const c of lines) {
     el('path', { d: pathD(c.pts, c.closed), fill: 'none', stroke: c.engrave ? ENGRAVE : CUT, 'stroke-width': u * (c.engrave ? 1.2 : 1.6), 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, board);
   }
   // overall size
@@ -264,7 +287,7 @@ function render() {
     else d = cs.map(c => pathD(c.pts, c.closed)).join(' ');
     const open = s.type === 'path' && !s.closed;
     const hit = el('path', { d, fill: open ? 'none' : 'rgba(0,0,0,0)', stroke: open ? 'rgba(0,0,0,0)' : 'transparent', 'stroke-width': open ? u * 12 : u * 3, class: 'hit', 'pointer-events': open ? 'stroke' : 'all' }, board);
-    hit.addEventListener('pointerdown', ev => { if (drawing) return; startMove(ev, i); });
+    hit.addEventListener('pointerdown', ev => { if (drawing) return; if (scissors) { ev.preventDefault(); ev.stopPropagation(); toggleCut([i]); return; } startMove(ev, i); });
   }
   if (sel.length === 1 && state.shapes[selected]) drawHandles(state.shapes[selected], u);
   else if (sel.length > 1) {
@@ -401,6 +424,7 @@ board.addEventListener('pointerup', () => {
   act = null; render(); save(); refresh3d();
 });
 board.addEventListener('pointerdown', ev => {
+  if (scissors) return;
   if (drawing) { ev.preventDefault(); addLinePoint(svgPoint(ev), ev.shiftKey, ev.detail >= 2); return; }
   if (!ev.target.classList.contains('hit') && !ev.target.classList.contains('handle')) {
     if (!ev.shiftKey) select(-1);
@@ -410,6 +434,7 @@ board.addEventListener('pointerdown', ev => {
   }
 });
 board.addEventListener('keydown', ev => {
+  if (scissors && ev.key === 'Escape') { ev.preventDefault(); setScissors(false); return; }
   if (drawing) {
     if (ev.key === 'Enter') { ev.preventDefault(); finishLine(false); }
     else if (ev.key === 'Escape') { ev.preventDefault(); drawing = null; setLineMode(false); render(); }
@@ -476,8 +501,32 @@ function drawLinePreview(u) {
   }
 }
 $('line-tool').addEventListener('click', () => {
+  if (scissors) setScissors(false);
   if (drawing) { finishLine(false); return; }
   drawing = { pts: [], cursor: null }; select(-1); buildProps(); setLineMode(true); board.focus({ preventScroll: true }); render();
+});
+
+/* ---------------- scissors: mark shapes as scrap to cut away ---------------- */
+let scissors = false;
+const HELP_SCISSORS = 'Scissors: click any shape to cut it away from the part (click again to keep it as material). Scrap shapes are hatched in pink. Esc or the Cut away button to finish.';
+function setScissors(on) {
+  scissors = on;
+  $('scissors-tool').setAttribute('aria-pressed', String(on));
+  board.classList.toggle('scissors', on);
+  if (on) $('board-help').textContent = HELP_SCISSORS; else setLineMode(false);
+}
+function toggleCut(idx) {
+  const ok = idx.filter(i => canCut(state.shapes[i]));
+  if (!ok.length) { status('Open lines and engraving can\'t cut away material. Use a closed shape.', true); return; }
+  const allCut = ok.every(i => state.shapes[i].role === 'remove');
+  for (const i of ok) state.shapes[i].role = allCut ? undefined : 'remove';
+  buildProps(); render(); save(); refresh3d();
+}
+$('scissors-tool').addEventListener('click', () => {
+  if (drawing) finishLine(false);
+  if (scissors) { setScissors(false); return; }
+  if (sel.length) { toggleCut(sel); return; }
+  setScissors(true); board.focus({ preventScroll: true });
 });
 
 /* ---------------- properties panel ---------------- */
@@ -493,12 +542,17 @@ const NAMES = { rect: 'Rectangle', circle: 'Circle', slot: 'Slot', polygon: 'Pol
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function shapeRole(i) {
   const s = state.shapes[i];
+  if (s.role === 'remove') return 'cut away';
   if (s.engrave) return 'engraved';
   if (s.type === 'path' && !s.closed) return 'cut line';
-  const { solid, nest } = analyse();
-  const k = solid.findIndex(c => c.si === i);
-  return k >= 0 && nest[k].depth % 2 ? 'hole' : 'solid';
+  const { material } = analyse();
+  const mine = material.filter(c => c.si === i);
+  const others = material.filter(c => c.si !== i);
+  if (!mine.length) return 'part';
+  const probe = mine[0].pts[0];
+  return others.filter(c => area(c.pts) > area(mine[0].pts) && inside(probe, c.pts)).length % 2 ? 'hole' : 'material';
 }
+const canCut = s => !(s.type === 'path' && !s.closed) && !s.engrave;
 function buildProps() {
   const box = $('props'), s = state.shapes[selected];
   if (!s) { box.innerHTML = '<p class="fine">Click a shape to edit it, or drag its handles to scale and rotate it. Shift-click or drag a box to select several.</p>'; return; }
@@ -526,6 +580,9 @@ function buildProps() {
     ${s.type === 'path' || s.type === 'text' ? `<div class="segmented small" role="radiogroup" aria-label="Line type">
         <label><input type="radio" name="p-mode" value="cut" ${s.engrave ? '' : 'checked'}><span>Cut</span></label>
         <label><input type="radio" name="p-mode" value="engrave" ${s.engrave ? 'checked' : ''}><span>Engrave</span></label></div>` : ''}
+    ${canCut(s) ? `<div class="segmented small" role="radiogroup" aria-label="Role">
+        <label><input type="radio" name="p-role" value="add" ${s.role === 'remove' ? '' : 'checked'}><span>Material</span></label>
+        <label><input type="radio" name="p-role" value="remove" ${s.role === 'remove' ? 'checked' : ''}><span>✂ Cut away</span></label></div>` : ''}
     ${s.type === 'path' ? `<label class="check"><input type="checkbox" id="p-closed" ${s.closed ? 'checked' : ''} ${s.pts.length < 3 ? 'disabled' : ''}> Closed shape</label>` : ''}
     <div class="prop-actions">
       ${s.type !== 'circle' ? '<button type="button" class="chip" data-act="rotl">⟲ 90°</button><button type="button" class="chip" data-act="rotr">⟳ 90°</button>' : ''}
@@ -551,6 +608,7 @@ function buildProps() {
   $('p-text')?.addEventListener('input', e => { s.text = e.target.value; changed(); });
   $('p-font')?.addEventListener('change', e => { s.font = e.target.value; changed(); });
   box.querySelectorAll('input[name=p-mode]').forEach(r => r.addEventListener('change', () => { s.engrave = r.value === 'engrave'; buildProps(); changed(); }));
+  box.querySelectorAll('input[name=p-role]').forEach(r => r.addEventListener('change', () => { s.role = r.value === 'remove' ? 'remove' : undefined; buildProps(); changed(); }));
   $('p-closed')?.addEventListener('change', e => { s.closed = e.target.checked; buildProps(); changed(); });
   box.querySelectorAll('[data-act]:not([data-act=centre]):not([data-act^=dist])').forEach(b => b.addEventListener('click', () => {
     const a = b.dataset.act;
@@ -654,32 +712,33 @@ function wireAlign(box) {
 
 /* ---------------- facts and warnings ---------------- */
 function renderFacts() {
-  const { all, solid, nest } = analyse();
+  const { all, solid, pieces, material, lines } = analyse();
   const facts = $('facts'), warn = $('warnings');
   const [bw, bh] = bed();
   if (!all.length) { facts.innerHTML = '<dt>Shapes</dt><dd>None yet</dd>'; warn.innerHTML = ''; $('board-size').textContent = ''; return; }
-  const pts = all.flatMap(c => c.pts), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  const kept = [...solid, ...lines];
+  const pts = (kept.length ? kept : all).flatMap(c => c.pts), xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
   const w = Math.max(...xs) - Math.min(...xs), h = Math.max(...ys) - Math.min(...ys);
-  const holes = nest.filter(n => n.depth % 2).length;
-  const cut = all.filter(c => !c.engrave).reduce((s, c) => s + length(c.pts, c.closed), 0);
-  const engr = all.filter(c => c.engrave).reduce((s, c) => s + length(c.pts, c.closed), 0);
+  const holes = pieces.reduce((t, p) => t + p.length - 1, 0);
+  const cut = solid.reduce((s, c) => s + length(c.pts, true), 0) + lines.filter(c => !c.engrave).reduce((s, c) => s + length(c.pts, c.closed), 0);
+  const engr = lines.filter(c => c.engrave).reduce((s, c) => s + length(c.pts, c.closed), 0);
   const mat = cfg.materials.find(m => m.id === state.material);
   const thick = isPrint() ? state.height : (mat?.thickness || 3);
   $('board-size').textContent = `${fmt(w)} × ${fmt(h)} mm`;
   facts.innerHTML = `<dt>Size</dt><dd>${fmt(w)} × ${fmt(h)} × ${fmt(thick)} mm</dd>
-    <dt>Shapes</dt><dd>${state.shapes.length} (${holes} hole${holes === 1 ? '' : 's'})</dd>
+    <dt>Pieces</dt><dd>${pieces.length} (${holes} hole${holes === 1 ? '' : 's'})</dd>
     ${isPrint() ? '' : `<dt>Cut length</dt><dd>${Math.round(cut)} mm</dd>${engr ? `<dt>Engrave length</dt><dd>${Math.round(engr)} mm</dd>` : ''}`}`;
   const issues = [];
   if (Math.min(...xs) < 0 || Math.min(...ys) < 0 || Math.max(...xs) > bw || Math.max(...ys) > bh)
     issues.push(w > bw || h > bh ? `Bigger than the ${machine().name} bed (${bw} × ${bh} mm), so we'll review it before pricing.` : 'Part of the design is off the bed. Drag it back inside the dashed area.');
-  const sp = solid.map(c => c.pts), areas = sp.map(area);
-  const crosses = sp.some((p, i) => sp.some((q, j) => { if (i === j || areas[j] <= areas[i] || solid[i].si === solid[j].si) return false; const n = p.filter(pt => inside(pt, q)).length; return n > 0 && n < p.length; }));
-  if (crosses) issues.push('A shape crosses the edge of another, so it will cut a notch. Move it fully inside or outside if that is not what you want.');
+  const sp = material.map(c => c.pts), areas = sp.map(area);
+  const crosses = sp.some((p, i) => sp.some((q, j) => { if (i === j || areas[j] <= areas[i] || material[i].si === material[j].si) return false; const n = p.filter(pt => inside(pt, q)).length; return n > 0 && n < p.length; }));
+  if (crosses) issues.push('A shape crosses the edge of another, so the overlap becomes a gap. To trim material away cleanly, select the shape and use the scissors.');
   const textCut = state.shapes.some((s, i) => s.type === 'text' && !s.engrave && s.font !== 'stencil');
   if (textCut && !isPrint()) issues.push('Cut-through letters like O, A and B lose their centres. Use the stencil font, or engrave the text.');
-  else if (nest.some(n => n.depth >= 2)) issues.push('A shape sits inside a hole, so it will come out as a separate piece.');
-  if (isPrint() && all.some(c => c.engrave)) issues.push('Engraving only applies to laser cutting, so engraved lines and text are left off a 3D print.');
-  if (isPrint() && all.some(c => !c.closed && !c.engrave)) issues.push('Open lines are only cut on the laser, so they are left off a 3D print.');
+  else if (pieces.length > 1) issues.push(`This design comes out as ${pieces.length} separate pieces. Use the scissors to cut away any you don't want.`);
+  if (isPrint() && lines.some(c => c.engrave)) issues.push('Engraving only applies to laser cutting, so engraved lines and text are left off a 3D print.');
+  if (isPrint() && lines.some(c => !c.closed && !c.engrave)) issues.push('Open lines are only cut on the laser, so they are left off a 3D print.');
   if (!solid.length) issues.push('There is no closed outline yet, so there is no part to cut out. Add a shape around your lines or text.');
   warn.innerHTML = issues.map(t => `<li>${t}</li>`).join('');
 }
@@ -708,22 +767,21 @@ async function build3d() {
   }
   const { THREE, group, camera, controls } = three;
   group.children.slice().forEach(c => { group.remove(c); c.geometry?.dispose(); });
-  const { all, solid, nest } = analyse();
-  if (!solid.length) return;
+  const { pieces, lines } = analyse();
+  if (!pieces.length) return;
   const mat = cfg.materials.find(m => m.id === state.material);
   const depth = isPrint() ? state.height : (mat?.thickness || 3);
   const toV = p => new THREE.Vector2(p[0], -p[1]);
   const material = new THREE.MeshStandardMaterial({ color: MAT_COLORS[state.material] || '#ff9a3c', roughness: state.material === 'steel-1' ? .35 : .7, metalness: state.material === 'steel-1' ? .8 : 0, transparent: state.material === 'acrylic-3', opacity: state.material === 'acrylic-3' ? .75 : 1 });
-  solid.forEach((c, i) => {
-    if (nest[i].depth % 2) return;
-    const shape = new THREE.Shape(c.pts.map(toV));
-    solid.forEach((q, j) => { if (nest[j].parent === i && nest[j].depth % 2) shape.holes.push(new THREE.Path(q.pts.map(toV))); });
+  pieces.forEach(([outer, ...holes]) => {
+    const shape = new THREE.Shape(outer.map(toV));
+    holes.forEach(h => shape.holes.push(new THREE.Path(h.map(toV))));
     const geom = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false, curveSegments: 24 });
     group.add(new THREE.Mesh(geom, material));
     group.add(new THREE.LineSegments(new THREE.EdgesGeometry(geom, 25), new THREE.LineBasicMaterial({ color: '#2b2d33' })));
   });
   if (!isPrint()) {
-    for (const c of all.filter(c => c.engrave || !c.closed)) {
+    for (const c of lines) {
       const pts = c.pts.map(p => new THREE.Vector3(p[0], -p[1], depth + 0.05));
       if (c.closed) pts.push(pts[0].clone());
       group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: c.engrave ? '#3b2a1a' : '#111' })));
@@ -760,17 +818,12 @@ new ResizeObserver(() => render()).observe(board);
 
 /* ---------------- sending ---------------- */
 function status(text, bad = false) { const s = $('status'); s.textContent = text; s.classList.toggle('bad', bad); }
+// The server gets the finished outlines (after holes and scissors), plus lines and engraving.
 function designPayload() {
-  const shapes = [];
-  for (const s of state.shapes) {
-    if (s.type === 'path' || s.type === 'text' || s.fx || s.fy) {
-      for (const c of contours(s)) shapes.push({ type: 'poly', pts: c.pts.map(p => [round(p[0] * 100) / 100, round(p[1] * 100) / 100]), closed: c.closed, engrave: !!c.engrave });
-    } else {
-      const { id, fx, fy, ...rest } = s;
-      shapes.push(rest);
-    }
-  }
-  return { shapes };
+  const { solid, lines } = analyse();
+  const r2 = v => Math.round(v * 100) / 100;
+  const poly = (c, engrave) => ({ type: 'poly', pts: c.pts.map(p => [r2(p[0]), r2(p[1])]), closed: c.closed, engrave });
+  return { shapes: [...solid.map(c => poly(c, false)), ...lines.map(c => poly(c, !!c.engrave))] };
 }
 function designForm() {
   const f = new FormData();
@@ -811,3 +864,18 @@ if (!restored || !state.shapes.length) state.shapes = TEMPLATES['Name sign']();
 $('height').value = state.height; $('quantity').value = state.quantity;
 buildMachines(); fillMaterials(); setLineMode(false); fit(); render(); buildProps();
 history.push(JSON.stringify(state.shapes)); store(); undoButtons();
+
+// /studio?design=/designs/<slug>/studio.json opens a library design (same-origin only)
+const designUrl = new URLSearchParams(location.search).get('design');
+if (designUrl && designUrl.startsWith('/') && !designUrl.startsWith('//')) {
+  fetch(designUrl, { credentials: 'same-origin' }).then(r => { if (!r.ok) throw new Error(); return r.json(); }).then(d => {
+    const kinds = ['rect', 'circle', 'slot', 'polygon', 'path', 'text'];
+    const shapes = (Array.isArray(d.shapes) ? d.shapes : []).filter(x => x && kinds.includes(x.type) && isFinite(x.x) && isFinite(x.y)).slice(0, 200);
+    if (!shapes.length) throw new Error();
+    state.shapes = shapes.map(x => ({ rot: 0, ...x, id: uid++ }));
+    if (d.machine && cfg.machines.some(m => m.id === d.machine)) { state.machine = d.machine; buildMachines(); fillMaterials(); }
+    select(-1); buildProps(); fit(); render(); save(); refresh3d();
+    window.history.replaceState(null, '', location.pathname);
+    status(d.name ? `Loaded ${d.name}. Change anything you like, then get a price.` : 'Design loaded.');
+  }).catch(() => status('That design could not be opened.', true));
+}
