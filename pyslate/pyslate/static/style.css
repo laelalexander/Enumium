@@ -401,3 +401,30 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
 .studio-props .stack { margin-top: 12px; }
 .studio-status { font-size: .88rem; margin: 10px 0 0; color: var(--good); }
 .studio-status.bad { color: var(--bad); }
+.wrap.wide { max-width: 1640px; }
+.studio-grid { grid-template-columns: 220px minmax(0, 1fr) 280px; }
+.board-wrap { aspect-ratio: auto; max-height: 78vh; min-height: 320px; }
+#board.drawing { cursor: crosshair; }
+#board .handle { touch-action: none; }
+.machine-pick { display: grid; gap: 6px; }
+.mpick { display: block; cursor: pointer; }
+.mpick input { position: absolute; opacity: 0; pointer-events: none; }
+.mpick span { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; background: var(--bg); }
+.mpick strong { font-size: .88rem; }
+.mpick em { font: .72rem var(--mono); font-style: normal; color: var(--muted); }
+.mpick input:checked + span { border-color: var(--accent-fill); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-fill); }
+.mpick input:focus-visible + span { outline: 2px solid var(--accent-fill); }
+.segmented.small { margin: 10px 0 4px; }
+.segmented.small span { padding: 5px 4px; font-size: .82rem; }
+.check { display: flex; gap: 8px; align-items: center; font-size: .88rem; margin: 8px 0; }
+.wide-field { margin-top: 0; margin-bottom: 8px; }
+.chip { font: 500 .8rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 99px; padding: 5px 10px; cursor: pointer; }
+.chip:hover { border-color: var(--accent-fill); }
+.chip.danger { color: var(--bad); }
+.prop-actions { flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.align-bar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.icon-btn { display: grid; place-items: center; height: 34px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.icon-btn:hover { border-color: var(--accent-fill); background: var(--accent-soft); }
+.icon-btn svg { width: 18px; height: 18px; fill: none; stroke: var(--ink); stroke-width: 1.6; }
+.size-note { margin: 6px 0 0; }
+.tool-group button:disabled { opacity: .45; cursor: default; }

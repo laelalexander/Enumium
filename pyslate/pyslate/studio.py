@@ -11,7 +11,10 @@ import json
 import math
 from pathlib import Path
 
-SHAPE_TYPES = {"rect", "circle", "slot", "polygon"}
+SHAPE_TYPES = {"rect", "circle", "slot", "polygon", "poly"}
+MAX_POLY_POINTS = 5000
+MAX_TOTAL_POINTS = 80000
+ENGRAVE_LAYER = "ENGRAVE"
 MAX_SHAPES = 200
 MIN_MM, MAX_MM = 0.5, 1000.0
 MAX_COORD = 2000.0
@@ -46,10 +49,27 @@ def validate_design(raw: str | dict) -> dict:
     if len(shapes) > MAX_SHAPES:
         raise DesignError(f"A design can have up to {MAX_SHAPES} shapes")
     clean = []
+    total_points = 0
     for i, s in enumerate(shapes, 1):
         if not isinstance(s, dict) or s.get("type") not in SHAPE_TYPES:
             raise DesignError(f"Shape {i} is not a shape the studio knows")
         t = s["type"]
+        if t == "poly":
+            pts = s.get("pts")
+            if not isinstance(pts, list) or not 2 <= len(pts) <= MAX_POLY_POINTS:
+                raise DesignError(f"Line {i} needs between 2 and {MAX_POLY_POINTS} points")
+            total_points += len(pts)
+            if total_points > MAX_TOTAL_POINTS:
+                raise DesignError("The design has too much detail. Use shorter text or fewer lines.")
+            clean_pts = []
+            for p in pts:
+                if not isinstance(p, (list, tuple)) or len(p) != 2:
+                    raise DesignError(f"Line {i} has a bad point")
+                clean_pts.append([_num(p[0], f"Line {i} point", -MAX_COORD, MAX_COORD),
+                                  _num(p[1], f"Line {i} point", -MAX_COORD, MAX_COORD)])
+            closed = bool(s.get("closed")) and len(clean_pts) >= 3
+            clean.append({"type": "poly", "pts": clean_pts, "closed": closed, "engrave": bool(s.get("engrave"))})
+            continue
         c = {
             "type": t,
             "x": _num(s.get("x"), f"Shape {i} position", -MAX_COORD, MAX_COORD),
@@ -85,6 +105,8 @@ def _rounded_rect(w: float, h: float, r: float, seg: int = 10) -> list[tuple[flo
 def shape_points(s: dict) -> list[tuple[float, float]]:
     """Outline of a non-circle shape in drawing coordinates (y up), not closed."""
     t = s["type"]
+    if t == "poly":
+        return [(x, -y) for x, y in s["pts"]]
     if t == "rect":
         local = _rounded_rect(s["w"], s["h"], s["r"])
     elif t == "slot":
@@ -105,19 +127,31 @@ def design_to_dxf(design: dict, target: Path) -> None:
 
     doc = ezdxf.new("R2010")
     doc.header["$INSUNITS"] = 4  # millimetres
+    doc.layers.add(ENGRAVE_LAYER, color=5)
     msp = doc.modelspace()
     for s in design["shapes"]:
         if s["type"] == "circle":
             msp.add_circle((s["x"], -s["y"]), s["d"] / 2)
+        elif s["type"] == "poly":
+            attribs = {"layer": ENGRAVE_LAYER} if s["engrave"] else {}
+            msp.add_lwpolyline(shape_points(s), close=s["closed"], dxfattribs=attribs)
         else:
             msp.add_lwpolyline(shape_points(s), close=True)
     doc.saveas(str(target))
 
 
+def solid_shapes(design: dict) -> dict:
+    """Only the closed cut outlines: what a 3D print is extruded from."""
+    return {"shapes": [s for s in design["shapes"] if s["type"] != "poly" or (s["closed"] and not s["engrave"])]}
+
+
 def design_to_stl(design: dict, height_mm: float, target: Path, work_dir: Path) -> None:
     from . import geometry as geo
 
+    solid = solid_shapes(design)
+    if not solid["shapes"]:
+        raise DesignError("A 3D print needs at least one closed shape. Lines and engraving alone can't be printed.")
     dxf = work_dir / "studio-extrude.dxf"
-    design_to_dxf(design, dxf)
+    design_to_dxf(solid, dxf)
     mesh = geo.dxf_to_mesh(dxf, height_mm)
     mesh.export(str(target), file_type="stl")

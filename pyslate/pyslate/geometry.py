@@ -227,6 +227,8 @@ def dxf_to_mesh(path: Path, thickness_mm: float):
     scale = DXF_UNITS_TO_MM.get(int(doc.header.get("$INSUNITS", 0)), 1.0)
     rings = []
     for entity in doc.modelspace().query("LWPOLYLINE POLYLINE CIRCLE ELLIPSE SPLINE ARC LINE"):
+        if entity.dxf.layer.upper() == "ENGRAVE":
+            continue  # engraving marks the surface; it doesn't change the solid
         try:
             pts = [(p.x * scale, p.y * scale) for p in ezpath.make_path(entity).flattening(0.05)]
         except (TypeError, ValueError):

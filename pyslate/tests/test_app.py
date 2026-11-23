@@ -293,3 +293,28 @@ def test_studio_send_to_engineer(client):
     admin_login(client)
     detail = client.get("/admin/requests/501").text
     assert "studio-design.dxf" in detail and "studio-design.stl" in detail and "studio-design.json" in detail
+
+
+def test_studio_lines_and_engraving(client, tmp_path):
+    import json
+    from pyslate import studio, geometry as geo
+    design = {"shapes": [
+        {"type": "rect", "x": 100, "y": 100, "w": 120, "h": 60, "r": 0},
+        {"type": "poly", "pts": [[50, 80], [150, 80]], "closed": False, "engrave": False},   # open cut line
+        {"type": "poly", "pts": [[60, 90], [80, 90], [80, 110], [60, 110]], "closed": True, "engrave": True},
+        {"type": "poly", "pts": [[120, 90], [140, 90], [140, 110]], "closed": True, "engrave": False},  # triangle hole
+    ]}
+    clean = studio.validate_design(design)
+    dxf = tmp_path / "d.dxf"
+    studio.design_to_dxf(clean, dxf)
+    import ezdxf
+    layers = sorted(e.dxf.layer for e in ezdxf.readfile(dxf).modelspace())
+    assert layers.count("ENGRAVE") == 1
+    mesh = geo.dxf_to_mesh(dxf, 3)
+    # the engraved square must not become a hole; the triangle must
+    assert abs(mesh.volume - (120 * 60 - 200) * 3) < 1
+    r = client.post("/studio/quote", data={"design": json.dumps(design), "process": "print", "height_mm": "5"})
+    assert r.status_code == 200
+    only_lines = {"shapes": [{"type": "poly", "pts": [[0, 0], [10, 0]], "closed": False}]}
+    r = client.post("/studio/quote", data={"design": json.dumps(only_lines), "process": "print"})
+    assert r.status_code == 400

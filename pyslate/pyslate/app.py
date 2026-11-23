@@ -151,14 +151,11 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
 
     def studio_context(db: Session) -> dict:
         profile = services.get_profile(db).data
-        machines = {m["id"]: m for m in profile["machines"]}
-        mats = [
-            {"id": m["id"], "name": m["name"], "line": m["line"], "thickness": m.get("thickness_mm"),
-             "bed": max((machines[i]["bed_mm"][:2] for i in m.get("machines", []) if i in machines),
-                        key=lambda b: b[0] * b[1], default=[300, 300])}
-            for m in profile["materials"]
-        ]
-        return {"studio_config": {"materials": mats, "maxPrintHeight": 256}}
+        machines = [{"id": m["id"], "name": m["name"], "line": m["line"], "bed": list(m["bed_mm"][:2])}
+                    for m in profile["machines"]]
+        mats = [{"id": m["id"], "name": m["name"], "line": m["line"], "thickness": m.get("thickness_mm"),
+                 "machines": m.get("machines", [])} for m in profile["materials"]]
+        return {"studio_config": {"machines": machines, "materials": mats}}
 
     @app.get("/studio", response_class=HTMLResponse)
     def studio_page(request: Request, db: Session = Depends(get_db)):
