@@ -89,3 +89,99 @@ def icon_svg(name: str) -> str:
         '<svg class="cap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
         f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{body}</svg>'
     )
+
+
+# Page content for each capability, shown at /capabilities/<slug>.
+DETAILS = {
+    "3d-printing": {
+        "headline": "3D printed parts, from one prototype to a production run.",
+        "intro": "We print on Bambu Lab printers and our own custom-built machines. Upload a model and you get a price, a lead time and a printability check in seconds.",
+        "points": [
+            "PLA for prototypes, fixtures and display parts",
+            "PETG for tougher, heat- and moisture-resistant parts",
+            "Overhang and thin-wall checks before you order",
+            "Quantity discounts from 10 parts",
+        ],
+        "specs": [("Build volume", "256 × 256 × 256 mm"), ("Layer height", "0.20 mm standard"),
+                  ("Files", "STL, 3MF, OBJ, PLY"), ("Lead time", "About 7 days, 3 with rush")],
+        "line": "print",
+    },
+    "laser-cutting": {
+        "headline": "Laser cut and engraved parts in wood, acrylic and MDF.",
+        "intro": "Flat parts go to our xTool X1 and M2 lasers. Upload a DXF or a flat model and we measure the cut length, nest it on the sheet and price it.",
+        "points": [
+            "Signs, panels, enclosures, inlays and templates",
+            "Engraving for logos, labels and serial numbers",
+            "Cut length and sheet use priced line by line",
+            "Parts thicker or larger than our stock go to review",
+        ],
+        "specs": [("Work area", "300 × 300 mm"), ("Materials", "Plywood, cast acrylic, MDF"),
+                  ("Files", "DXF, or a flat STL / 3MF"), ("Lead time", "About 7 days, 3 with rush")],
+        "line": "laser",
+        "machines": ["x1", "m2"],
+    },
+    "metal-fabrication": {
+        "headline": "Stainless steel sheet parts, cut on the xTool MetalFab.",
+        "intro": "Brackets, plates, shims and panels cut from stainless sheet. Upload a DXF and the price includes cutting time and material.",
+        "points": [
+            "Brackets, mounting plates, gaskets and shims",
+            "Clean edges with no tooling cost",
+            "Small batches priced the same way as single parts",
+            "Parts larger than the bed go to review",
+        ],
+        "specs": [("Work area", "300 × 300 mm"), ("Material", "Stainless steel 1 mm"),
+                  ("Files", "DXF"), ("Lead time", "About 7 days, 3 with rush")],
+        "line": "laser",
+        "machines": ["metalfab"],
+    },
+    "system-design": {
+        "headline": "Complete systems, designed and built under one roof.",
+        "intro": "Tell us what the machine or system has to do. Our engineers design the mechanical structure, the electrical and the controls, document it, and build the parts in our own shop.",
+        "points": [
+            "Concept, layout and part selection",
+            "Mechanical design with 3D models and drawings",
+            "Electrical design, wiring and control panels",
+            "Prototype parts printed and cut in house",
+        ],
+        "specs": [("You send", "A description, sketches or photos"), ("You get", "Models, drawings, schematics and parts"),
+                  ("Quote", "Usually within two business days"), ("Pricing", "Fixed quote per project")],
+    },
+    "mechanical-blueprints": {
+        "headline": "Engineering drawings you can build from.",
+        "intro": "We produce dimensioned drawings, assembly drawings, cut lists and bills of materials, for new designs or for parts and machines you already have.",
+        "points": [
+            "Part drawings with dimensions and tolerances",
+            "Assembly drawings and exploded views",
+            "Cut lists and bills of materials",
+            "Drawings made from existing parts or sketches",
+        ],
+        "specs": [("Formats", "PDF, DXF, STEP"), ("Standards", "Dimensioned to your units"),
+                  ("Quote", "Usually within two business days"), ("Pricing", "Per drawing set")],
+    },
+    "electrical-schematics": {
+        "headline": "Schematics and wiring diagrams for your electrical and control systems.",
+        "intro": "We draw schematics, wiring diagrams and panel layouts so a system can be built, wired and maintained, whether it is new or already running.",
+        "points": [
+            "Schematics for power, control and signal circuits",
+            "Wiring diagrams with wire numbers and terminals",
+            "Control panel layouts and enclosure cutouts",
+            "Documentation for systems already in service",
+        ],
+        "specs": [("Formats", "PDF, DXF"), ("Includes", "Parts list and wire schedule"),
+                  ("Quote", "Usually within two business days"), ("Pricing", "Per drawing set")],
+    },
+    "product-design": {
+        "headline": "Bring an idea. Leave with a part you can hold.",
+        "intro": "Send a sketch, a photo or a description. We model it, check that it can be made on our machines, and quote the design and the parts together.",
+        "points": [
+            "3D modelling from sketches, photos or descriptions",
+            "Design for 3D printing or laser cutting",
+            "A first prototype made in our shop",
+            "Changes until it fits and works",
+        ],
+        "specs": [("You send", "A sketch, photo or description"), ("You get", "A model, files and a prototype"),
+                  ("Quote", "Usually within two business days"), ("Pricing", "Fixed quote per project")],
+    },
+}
+
+CAPABILITY_BY_SLUG = {c["slug"]: c for c in CAPABILITIES}

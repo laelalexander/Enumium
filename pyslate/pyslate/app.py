@@ -143,6 +143,44 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         profile = services.get_profile(db).data
         return render(request, "landing.html", profile=profile, formats=sorted(geo.SUPPORTED_EXTS))
 
+    @app.get("/quote", response_class=HTMLResponse)
+    def quote_start(request: Request):
+        return render(request, "quote_start.html", formats=sorted(geo.SUPPORTED_EXTS))
+
+    @app.get("/capabilities", response_class=HTMLResponse)
+    def capabilities_page(request: Request):
+        return render(request, "capabilities.html")
+
+    @app.get("/capabilities/{slug}", response_class=HTMLResponse)
+    def capability_page(request: Request, slug: str, db: Session = Depends(get_db)):
+        cap = catalog.CAPABILITY_BY_SLUG.get(slug)
+        if cap is None:
+            raise HTTPException(404, "No such capability")
+        detail = catalog.DETAILS[slug]
+        profile = services.get_profile(db).data
+        materials = []
+        if detail.get("line"):
+            wanted = set(detail.get("machines", []))
+            materials = [m for m in profile["materials"] if m["line"] == detail["line"]
+                         and (not wanted or wanted & set(m.get("machines", [])))]
+        others = [c for c in catalog.CAPABILITIES if c["slug"] != slug]
+        return render(request, "capability.html", cap=cap, detail=detail, materials=materials,
+                      others=others, formats=sorted(geo.SUPPORTED_EXTS))
+
+    @app.get("/how-it-works", response_class=HTMLResponse)
+    def how_page(request: Request, db: Session = Depends(get_db)):
+        return render(request, "how.html", profile=services.get_profile(db).data)
+
+    @app.get("/materials", response_class=HTMLResponse)
+    def materials_page(request: Request, db: Session = Depends(get_db)):
+        profile = services.get_profile(db).data
+        names = {m["id"]: m["name"] for m in profile["machines"]}
+        return render(request, "materials.html", profile=profile, machine_names=names)
+
+    @app.get("/about", response_class=HTMLResponse)
+    def about_page(request: Request, db: Session = Depends(get_db)):
+        return render(request, "about.html", profile=services.get_profile(db).data)
+
     @app.post("/quote")
     async def upload(
         request: Request,
@@ -158,7 +196,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
             db.rollback()
             profile = services.get_profile(db).data
             return render(
-                request, "landing.html", 400,
+                request, "quote_start.html", 400,
                 profile=profile, formats=sorted(geo.SUPPORTED_EXTS), errors=errors or ["Choose a file to upload"],
             )
         if quote.id is None:

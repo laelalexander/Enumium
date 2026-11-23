@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}About the shop · Pyslate{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">// about</span>
+    <h1>A fabrication shop with its own engineers.</h1>
+    <p class="lead">Pyslate is our own shop. We design, cut and print every order in house, so the people who quote your part are the people who make it.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <h2>Our machines</h2>
+    <div class="machine-cards">
+      {% for m in profile.machines %}
+      <div class="machine-card">
+        <span class="mono">{{ '3D printing' if m.line == 'print' else 'Laser' }}</span>
+        <strong>{{ m.name }}</strong>
+        <span>Work area {{ m.bed_mm | join(' × ') }} mm</span>
+      </div>
+      {% endfor %}
+      <div class="machine-card">
+        <span class="mono">3D printing</span>
+        <strong>Custom printers</strong>
+        <span>Our own machines, for larger and special jobs</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="cta-band">
+  <div class="wrap cta-band-row">
+    <div><h2>Have a project in mind?</h2><p>Upload a file for an instant price, or tell us what you need designed.</p></div>
+    <div class="cta-row"><a class="button" href="/quote">Get a quote</a><a class="button ghost light" href="/request">Request a design</a></div>
+  </div>
+</section>
+{% endblock %}

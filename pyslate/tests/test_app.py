@@ -191,8 +191,21 @@ def test_landing_lists_capabilities(client):
     page = client.get("/").text
     for title in ("Custom System Design", "Mechanical Blueprints", "Electrical Schematics"):
         assert title in page
-    assert "/request?service=system-design" in page
+    assert "/capabilities/system-design" in page
     assert client.get("/request?service=electrical-schematics").status_code == 200
+
+
+def test_site_pages(client):
+    for path in ("/quote", "/capabilities", "/how-it-works", "/materials", "/about"):
+        r = client.get(path)
+        assert r.status_code == 200, path
+    detail = client.get("/capabilities/system-design").text
+    assert "/request?service=system-design" in detail
+    laser = client.get("/capabilities/laser-cutting").text
+    assert "Cast acrylic 3 mm" in laser and "Stainless steel" not in laser
+    assert "Stainless steel 1 mm" in client.get("/capabilities/metal-fabrication").text
+    assert "xTool MetalFab" in client.get("/materials").text
+    assert client.get("/capabilities/nope").status_code == 404
 
 
 def test_design_request_flow(client):

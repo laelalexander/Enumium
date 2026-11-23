@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Capabilities · Pyslate{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">// capabilities</span>
+    <h1>Everything we make, and everything we design.</h1>
+    <p class="lead">Fabrication work gets an instant price when you upload a file. Design and documentation work is quoted by our engineers, usually within two business days.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <h2 class="group-title">Make it <span>instant quote</span></h2>
+    <div class="cap-cards">
+      {% for c in capabilities if c.kind == 'instant' %}
+      <a class="cap-card" href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<strong>{{ c.title }}</strong><span>{{ c.blurb }}</span><em>Learn more →</em></a>
+      {% endfor %}
+    </div>
+    <h2 class="group-title">Design it <span>engineer quoted</span></h2>
+    <div class="cap-cards">
+      {% for c in capabilities if c.kind == 'request' %}
+      <a class="cap-card" href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<strong>{{ c.title }}</strong><span>{{ c.blurb }}</span><em>Learn more →</em></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

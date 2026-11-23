@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ cap.title }} · Pyslate{% endblock %}
+{% block description %}{{ detail.intro }}{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <p class="crumbs"><a href="/capabilities">Capabilities</a> / {{ cap.title }}</p>
+    <div class="cap-hero">
+      <div>
+        <span class="eyebrow">// {{ 'instant quote' if cap.kind == 'instant' else 'engineer quoted' }}</span>
+        <h1>{{ detail.headline }}</h1>
+        <p class="lead">{{ detail.intro }}</p>
+        <div class="cta-row">
+          {% if cap.kind == 'instant' %}
+          <a class="button" href="/quote">Upload a file for a price</a>
+          <a class="button ghost" href="/materials">See materials</a>
+          {% else %}
+          <a class="button" href="/request?service={{ cap.slug }}">Request a quote</a>
+          <a class="button ghost" href="/how-it-works">How it works</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="cap-badge">{{ icon_svg(cap.icon) | safe }}</div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap detail-grid">
+    <div>
+      <h2>What we do</h2>
+      <ul class="check-list">{% for p in detail.points %}<li>{{ p }}</li>{% endfor %}</ul>
+      {% if materials %}
+      <h2>Materials</h2>
+      <table class="data-table">
+        <thead><tr><th>Material</th><th>{{ 'Thickness' if detail.line == 'laser' else 'Process' }}</th></tr></thead>
+        <tbody>{% for m in materials %}<tr><td>{{ m.name }}</td><td>{{ '%g mm' % m.thickness_mm if m.thickness_mm else 'FDM print' }}</td></tr>{% endfor %}</tbody>
+      </table>
+      {% endif %}
+    </div>
+    <aside class="spec-card">
+      <h3>At a glance</h3>
+      <dl>{% for k, v in detail.specs %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}</dl>
+    </aside>
+  </div>
+</section>
+<section class="section tinted">
+  <div class="wrap">
+    <h2>Other capabilities</h2>
+    <div class="cap-cards small">
+      {% for c in others %}
+      <a class="cap-card" href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<strong>{{ c.title }}</strong></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

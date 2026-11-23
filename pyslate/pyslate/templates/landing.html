@@ -1,98 +1,108 @@
 {% extends "base.html" %}
-{% block title %}Pyslate · Instant quotes for 3D printing and laser cutting{% endblock %}
+{% block title %}Pyslate · Parts cut, printed and designed to order{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="wrap hero-grid">
-    <div>
-      <h1>Upload a part. See the price in seconds. We make it.</h1>
-      <p class="lead">Pyslate 3D prints and laser cuts your designs in our own shop. Drop in a model or drawing to get a price, a lead time and a check that it can be made.</p>
-      <ul class="ticks">
-        <li>3D printing, laser cutting and metal laser fabrication</li>
-        <li>Custom system design, blueprints and electrical schematics</li>
-        <li>Every order made in house, start to finish</li>
+    <div class="hero-copy">
+      <span class="eyebrow">// laser · print · design, all in one shop</span>
+      <h1>Precision parts, <span class="burn">cut, printed and designed</span> to order.</h1>
+      <p class="lead">Drop in a file and get a price in seconds, or bring us an idea and our engineers will draw the blueprints and schematics. Every part is made in house, from the first cut to the box it ships in.</p>
+      <div class="cta-row">
+        <a class="button" href="/quote">Get an instant quote</a>
+        <a class="button ghost" href="/request">Request a design</a>
+      </div>
+      <ul class="facts-row">
+        <li><b>Seconds</b><span>to a price</span></li>
+        <li><b>{{ profile.lead_days.standard }} days</b><span>standard lead time</span></li>
+        <li><b>{{ profile.machines | length }}+</b><span>machines in house</span></li>
       </ul>
     </div>
-    <form id="upload" class="upload-card" action="/quote" method="post" enctype="multipart/form-data">
-      <label class="dropzone" for="files">
-        <span class="dz-title">Drop files here or choose files</span>
-        <span class="dz-sub">{{ formats | map('upper') | join(' · ') | replace('.', '') }}</span>
-        <input id="files" name="files" type="file" multiple required
-               accept="{{ formats | join(',') }}">
-      </label>
-      <p class="file-list" id="file-list" aria-live="polite"></p>
-      <button class="button wide" type="submit">Get instant quote</button>
-      <p class="fine">Up to 20 files, 50 MB each. Your files are only used to quote and make your order.</p>
-    </form>
+    <div class="machine-window">
+      <div class="scenes" role="group" aria-label="Show a discipline">
+        <button type="button" data-s="0" aria-pressed="true">Laser cutting</button>
+        <button type="button" data-s="1" aria-pressed="false">3D printing</button>
+        <button type="button" data-s="2" aria-pressed="false">Design and drawings</button>
+      </div>
+      <canvas id="shop-canvas" width="560" height="400" aria-label="The shop at work: a laser cutting a gear, a printer building a part layer by layer, and an engineer drawing a bracket and a schematic"></canvas>
+      <div class="readout" id="shop-readout"></div>
+      <div class="progress"><span id="shop-progress"></span></div>
+    </div>
   </div>
 </section>
 
-<section id="how" class="band">
+<section class="machines-strip" aria-label="Our machines">
   <div class="wrap">
-    <h2>How it works</h2>
+    <span class="label">In our shop</span>
+    <ul>
+      <li>Bambu Lab printers</li><li>Custom 3D printers</li><li>xTool X1</li><li>xTool M2</li><li>xTool MetalFab</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">// what we do</span>
+        <h2>Three disciplines, one shop.</h2>
+      </div>
+      <a class="more" href="/capabilities">All capabilities →</a>
+    </div>
+    <div class="discipline-grid">
+      <a class="discipline" href="/capabilities/laser-cutting">
+        <span class="disc-art laser" aria-hidden="true"><i></i></span>
+        <span class="disc-body"><span class="mono">01 · instant quote</span><strong>Laser cutting and metal</strong>
+        <span>Wood, acrylic and MDF on the xTool X1 and M2. Stainless sheet on the xTool MetalFab.</span></span>
+      </a>
+      <a class="discipline" href="/capabilities/3d-printing">
+        <span class="disc-art print" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="disc-body"><span class="mono">02 · instant quote</span><strong>3D printing</strong>
+        <span>Prototypes and end-use parts in PLA and PETG on Bambu Lab and our custom printers.</span></span>
+      </a>
+      <a class="discipline" href="/capabilities/system-design">
+        <span class="disc-art design" aria-hidden="true"><svg viewBox="0 0 120 70"><path d="M10 10h60v20H45v30H10z"/><circle cx="27" cy="25" r="7"/><path d="M80 15h30M95 15v40M80 55h30" class="amber"/></svg></span>
+        <span class="disc-body"><span class="mono">03 · engineer quoted</span><strong>Design and engineering</strong>
+        <span>Custom systems, mechanical blueprints and electrical schematics, then the parts built here.</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section tinted">
+  <div class="wrap">
+    <div class="section-head">
+      <div><span class="eyebrow">// how it works</span><h2>From file to finished part.</h2></div>
+      <a class="more" href="/how-it-works">The full process →</a>
+    </div>
     <ol class="steps">
       <li><strong>Upload</strong><span>STL, 3MF, OBJ or PLY for 3D parts. DXF for flat parts.</span></li>
-      <li><strong>Check and price</strong><span>We measure the part, pick the right machine, flag problems and show the price broken down.</span></li>
+      <li><strong>Check and price</strong><span>We measure the part, pick the machine, flag problems and show the price.</span></li>
       <li><strong>Order</strong><span>Pay online. Your parts go straight into our production queue.</span></li>
       <li><strong>Track</strong><span>Follow your order from queue to machine to your door.</span></li>
     </ol>
   </div>
 </section>
 
-<section id="capabilities" class="wrap capabilities">
-  <div class="cap-layout">
+<section class="section">
+  <div class="wrap upload-split">
     <div>
-      <h2 class="cap-heading">Capabilities</h2>
-      <div class="cap-grid">
-        {% for c in capabilities %}
-        <a class="cap" href="{{ '#upload' if c.kind == 'instant' else '/request?service=' ~ c.slug }}">
-          {{ icon_svg(c.icon) | safe }}
-          <span class="cap-text">
-            <strong>{{ c.title }}</strong>
-            <span>{{ c.blurb }}</span>
-            <em>{{ 'Instant quote' if c.kind == 'instant' else 'Request a quote' }} →</em>
-          </span>
-        </a>
-        {% endfor %}
-      </div>
-      <p class="fine cap-note">Flat parts in a sheet material go to the laser; everything else is printed. Design and documentation work is quoted by our engineers, usually within two business days.</p>
+      <span class="eyebrow">// have a file ready?</span>
+      <h2>Get a price right now.</h2>
+      <p class="lead">Flat parts in a sheet material go to the laser. Everything else is printed. You'll see the machine, the material and the price for each part, and you can open any part in our 3D viewer to measure and section it.</p>
+      <p class="fine">No file yet? <a href="/request">Tell us what you need</a> and an engineer will reply, usually within two business days.</p>
     </div>
-    <aside class="platform-card">
-      <div class="platform-art" aria-hidden="true">
-        <div class="steps-chip">
-          <span class="chip-title">Your order</span>
-          <span class="chip-row"><i class="ok">✓</i><b></b><i class="ok">✓</i><b></b><i class="now">3</i></span>
-          <span class="chip-sub">Quoted · Paid · Making</span>
-        </div>
-      </div>
-      <h3>One platform, from idea to finished part</h3>
-      <p>Instant quotes, a 3D viewer with measuring and section tools, automatic manufacturability checks, and order tracking from our queue to your door.</p>
-      <div class="platform-links">
-        <a href="#upload">Upload a part →</a>
-        <a href="/request">Start a design project →</a>
-      </div>
-    </aside>
+    {% include "_upload.html" %}
   </div>
 </section>
 
-<section class="band engineering">
-  <div class="wrap eng-grid">
+<section class="cta-band">
+  <div class="wrap cta-band-row">
     <div>
       <h2>Need it designed first?</h2>
-      <p>We design complete systems, mechanical and electrical, and furnish the blueprints and schematics to build, wire and maintain them. Then we can make the parts in our own shop.</p>
+      <p>We design complete systems, mechanical and electrical, and furnish the blueprints and schematics to build, wire and maintain them. Then we make the parts in our own shop.</p>
     </div>
     <a class="button" href="/request">Request a design quote</a>
   </div>
 </section>
 {% endblock %}
-{% block scripts %}
-<script>
-  const input = document.getElementById('files');
-  const list = document.getElementById('file-list');
-  const zone = document.querySelector('.dropzone');
-  const show = () => { list.textContent = [...input.files].map(f => f.name).join(', '); };
-  input.addEventListener('change', show);
-  ['dragenter', 'dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('over'); }));
-  ['dragleave', 'drop'].forEach(e => zone.addEventListener(e, () => zone.classList.remove('over')));
-  zone.addEventListener('drop', ev => { ev.preventDefault(); input.files = ev.dataTransfer.files; show(); });
-</script>
-{% endblock %}
+{% block scripts %}<script src="/static/shop-anim.js" defer></script>{% endblock %}

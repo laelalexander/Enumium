@@ -4,20 +4,46 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Pyslate{% endblock %}</title>
-  <meta name="description" content="Upload a 3D model or drawing, get an instant price, and have it 3D printed or laser cut by the Pyslate shop.">
+  <meta name="description" content="{% block description %}Upload a 3D model or drawing, get an instant price, and have it 3D printed or laser cut by the Pyslate shop. We also design systems and draw blueprints and schematics.{% endblock %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;700&display=swap">
   <link rel="stylesheet" href="/static/style.css">
   {% block head %}{% endblock %}
 </head>
+{% set path = request.url.path %}
 <body>
   <header class="site-header">
     <div class="wrap header-row">
-      <a class="brand" href="/">Pyslate</a>
-      <nav>
-        <a href="/#how">How it works</a>
-        <a href="/#capabilities">Capabilities</a>
-        <a href="/request">Design services</a>
-        <a class="button small" href="/#upload">Get a quote</a>
+      <a class="brand" href="/">PY<span>/</span>SLATE</a>
+      <nav class="main-nav" aria-label="Main">
+        <div class="has-menu">
+          <a href="/capabilities" {% if path.startswith('/capabilities') %}aria-current="page"{% endif %}>Capabilities</a>
+          <div class="menu-panel">
+            {% for c in capabilities %}
+            <a href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<span><strong>{{ c.title }}</strong><em>{{ 'Instant quote' if c.kind == 'instant' else 'Quoted by an engineer' }}</em></span></a>
+            {% endfor %}
+          </div>
+        </div>
+        <a href="/how-it-works" {% if path == '/how-it-works' %}aria-current="page"{% endif %}>How it works</a>
+        <a href="/materials" {% if path == '/materials' %}aria-current="page"{% endif %}>Materials</a>
+        <a href="/about" {% if path == '/about' %}aria-current="page"{% endif %}>About</a>
+        <a href="/request" {% if path == '/request' %}aria-current="page"{% endif %}>Design services</a>
       </nav>
+      <div class="header-actions">
+        <a class="button small" href="/quote">Get a quote</a>
+        <details class="mobile-menu">
+          <summary aria-label="Menu"><span></span><span></span><span></span></summary>
+          <nav aria-label="Mobile">
+            <a href="/capabilities">Capabilities</a>
+            {% for c in capabilities %}<a class="sub" href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
+            <a href="/how-it-works">How it works</a>
+            <a href="/materials">Materials</a>
+            <a href="/about">About</a>
+            <a href="/request">Design services</a>
+          </nav>
+        </details>
+      </div>
     </div>
   </header>
   <main>
@@ -29,8 +55,27 @@
     {% block content %}{% endblock %}
   </main>
   <footer class="site-footer">
-    <div class="wrap">
-      <p>Pyslate · made in our own shop on Bambu Lab printers and xTool lasers.</p>
+    <div class="wrap footer-grid">
+      <div>
+        <a class="brand" href="/">PY<span>/</span>SLATE</a>
+        <p>Parts cut, printed and designed to order, in our own shop on Bambu Lab printers and xTool lasers.</p>
+      </div>
+      <div>
+        <h4>Make</h4>
+        {% for c in capabilities if c.kind == 'instant' %}<a href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
+        <a href="/quote">Get an instant quote</a>
+      </div>
+      <div>
+        <h4>Design</h4>
+        {% for c in capabilities if c.kind == 'request' %}<a href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/how-it-works">How it works</a>
+        <a href="/materials">Materials</a>
+        <a href="/about">About the shop</a>
+        <a href="/request">Request a design quote</a>
+      </div>
     </div>
   </footer>
   {% block scripts %}{% endblock %}
