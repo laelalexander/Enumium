@@ -46,13 +46,18 @@ Data (a SQLite database and the uploaded files) goes into `./data` unless `DATAB
 
 ## Deploy on the DigitalOcean Droplet
 
-Pyslate runs next to Pyrails.com on the same Droplet. It listens only on `127.0.0.1:8100`, and the Droplet's web server proxies `pyslate.com` to it.
+Pyslate runs next to Pyrails.com on the same Droplet. On the Droplet, as root:
 
-1. Point the `pyslate.com` DNS A record at the Droplet's IP.
-2. Copy this folder to the Droplet, then `cp .env.example .env` and fill in the values.
-3. `docker compose up -d --build`
-4. Install `deploy/nginx-pyslate.conf` as an nginx site and run `certbot --nginx -d pyslate.com -d www.pyslate.com`. If Pyrails.com is served by something other than nginx, use the same proxy settings in that server.
-5. For card payments, add a Stripe webhook to `https://pyslate.com/stripe/webhook` for the `checkout.session.completed` event, and put its signing secret in `STRIPE_WEBHOOK_SECRET`.
+```bash
+curl -fsSL https://raw.githubusercontent.com/laelalexander/enumium/claude/pyslate-phase-1/pyslate/deploy/install.sh -o /root/pyslate-install.sh
+bash /root/pyslate-install.sh
+```
+
+`deploy/install.sh` puts the code in `/var/www/pyslate.com`. It then runs Pyslate as the `pyslate` systemd service on `127.0.0.1:8100`, using SQLite and capped at 512 MB of RAM. Next it adds an nginx site for pyslate.com, leaving other sites alone, and runs `nginx -t` before reloading. Finally it gets a Let's Encrypt certificate once `pyslate.com` points at the Droplet. The script prints the admin password the first time it runs. Run it again to update.
+
+`docker-compose.yml` is an alternative for a server with spare memory: the app plus Postgres, behind `deploy/nginx-pyslate.conf`.
+
+For card payments, add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to `/etc/pyslate.env`. Point a Stripe webhook at `https://pyslate.com/stripe/webhook` for `checkout.session.completed`, then run `systemctl restart pyslate`.
 
 ## Layout
 
