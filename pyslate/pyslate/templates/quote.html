@@ -11,12 +11,15 @@
     <div class="lines">
       {% for row in rows %}{% set line = row.line %}{% set g = row.geom %}
       <article class="line-card" id="line-{{ line.id }}">
-        <div class="preview">
-          {% if line.part.preview_name %}
-          <div class="viewer" data-src="/parts/{{ line.part.id }}/preview" aria-label="3D preview of {{ line.part.filename }}"></div>
-          {% else %}
-          <img class="svg-preview" src="/parts/{{ line.part.id }}/preview" alt="Outline of {{ line.part.filename }}">
-          {% endif %}
+        <div class="preview-col">
+          <div class="preview">
+            {% if line.part.preview_name %}
+            <div class="viewer" data-src="/parts/{{ line.part.id }}/preview" aria-label="3D preview of {{ line.part.filename }}"></div>
+            {% else %}
+            <img class="svg-preview" src="/parts/{{ line.part.id }}/preview" alt="Outline of {{ line.part.filename }}">
+            {% endif %}
+          </div>
+          <a class="button small secondary wide" href="/quote/{{ quote.token }}/part/{{ line.id }}">Open 3D view</a>
         </div>
         <div class="line-body">
           <h2 class="part-name">{{ line.part.filename }}</h2>

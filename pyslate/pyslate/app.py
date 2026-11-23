@@ -223,6 +223,58 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
             return Response(svg, media_type="image/svg+xml")
         raise HTTPException(404)
 
+    def _sheet_thickness(db: Session, line: QuoteLine) -> float:
+        material = services.get_profile(db).material(line.material_id) if line.material_id else None
+        return float(material.get("thickness_mm", 3.0)) if material else 3.0
+
+    @app.get("/parts/{part_id}/model.stl")
+    def part_model(part_id: str, thickness: float = 3.0, db: Session = Depends(get_db)):
+        """The part as an STL for the 3D viewer. Drawings are extruded to the sheet thickness."""
+        part = db.get(Part, part_id)
+        if part is None:
+            raise HTTPException(404)
+        if part.preview_name:
+            return FileResponse(cfg.upload_dir / part.preview_name, media_type="model/stl")
+        if not part.stored_name.endswith(".dxf"):
+            raise HTTPException(404)
+        thickness = min(max(thickness, 0.1), 50.0)
+        cached = cfg.upload_dir / f"{part.id}.sheet-{thickness:.2f}.stl"
+        if not cached.exists():
+            try:
+                geo.dxf_to_mesh(cfg.upload_dir / part.stored_name, thickness).export(str(cached), file_type="stl")
+            except Exception as exc:  # a drawing that cannot be filled still has its 2D preview
+                raise HTTPException(422, "This drawing cannot be shown in 3D") from exc
+        return FileResponse(cached, media_type="model/stl")
+
+    @app.get("/quote/{token}/part/{line_id}", response_class=HTMLResponse)
+    def part_view(request: Request, token: str, line_id: str, db: Session = Depends(get_db)):
+        quote = load_quote(db, token)
+        line = next((ln for ln in quote.lines if ln.id == line_id), None)
+        if line is None:
+            raise HTTPException(404, "Part not found")
+        profile = services.get_profile(db)
+        g = geo.PartGeometry.from_dict(line.part.geometry)
+        material = profile.material(line.material_id) if line.material_id else None
+        machine = profile.machine(line.machine_id) if line.machine_id else None
+        thickness = _sheet_thickness(db, line)
+        model_url = f"/parts/{line.part.id}/model.stl"
+        if g.kind == "drawing":
+            model_url += f"?thickness={thickness:.2f}"
+        viewer_config = {
+            "model_url": model_url,
+            "name": line.part.filename,
+            "kind": g.kind,
+            "line": line.line,
+            "material_name": material["name"] if material else "",
+            "machine_name": machine["name"] if machine else "",
+            "bed_mm": machine["bed_mm"] if machine else None,
+            "volume_mm3": g.volume_mm3 if g.kind == "mesh" else None,
+        }
+        return render(
+            request, "part_view.html", quote=quote, line=line, geom=g, material=material, machine=machine,
+            thickness=thickness, viewer_config=viewer_config,
+        )
+
     @app.post("/quote/{token}/checkout")
     def checkout(
         request: Request,

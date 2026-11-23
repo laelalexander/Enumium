@@ -29,6 +29,7 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
 a { color: var(--accent); }
 h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 .5em; }
@@ -136,3 +137,36 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
 .job-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .address { font: inherit; white-space: pre-wrap; margin: 0 0 8px; }
 .code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; width: 100%; }
+
+/* ---- quote card preview column ---- */
+.preview-col { display: flex; flex-direction: column; gap: 8px; }
+
+/* ---- product viewer ---- */
+.view-page { padding-top: 16px; }
+.crumb { margin: 0 0 12px; }
+.view-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .view-grid { grid-template-columns: 1fr; } }
+.viewer-shell { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.viewer-shell:fullscreen { display: flex; flex-direction: column; border-radius: 0; }
+.viewer-shell:fullscreen .stage { flex: 1; height: auto; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: .875rem; }
+.toolbar.lower { border-bottom: 0; border-top: 1px solid var(--line); justify-content: flex-start; }
+.toolbar label { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); }
+.toolbar select { padding: 3px 6px; }
+.tool-group { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.tool-group button { font: inherit; font-size: .85rem; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+.tool-group button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.stage { position: relative; height: min(68vh, 620px); min-height: 360px; touch-action: none; }
+.stage.measuring { cursor: crosshair; }
+.stage canvas { display: block; }
+.label-layer { position: absolute; inset: 0; pointer-events: none; }
+.viewer-status { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--muted); }
+.dim-label, .measure-label, .plate-label { font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+.dim-label { background: #2563eb; color: #fff; }
+.measure-label { background: #e11d48; color: #fff; }
+.plate-label { color: var(--muted); font-weight: 500; transform: translateY(12px); }
+.viewer-help { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 8px 12px 12px; font-size: .875rem; }
+#measure-out { font-weight: 600; color: #e11d48; }
+#overhang-note { color: var(--warn); }
+.facts .part-name { font-size: 1.15rem; margin-top: 16px; }
+.facts .button { margin-top: 12px; text-align: center; }

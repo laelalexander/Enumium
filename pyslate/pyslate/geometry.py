@@ -210,3 +210,41 @@ def dxf_preview_svg(path: Path, max_px: int = 480) -> str:
 def export_preview_stl(source: Path, target: Path) -> None:
     """Write an STL copy of any mesh so the browser viewer only needs one loader."""
     load_mesh(source).export(str(target), file_type="stl")
+
+
+def dxf_to_mesh(path: Path, thickness_mm: float):
+    """Extrude a DXF drawing into a sheet part, so drawings get a 3D view too.
+
+    Closed outlines are filled even-odd: an outline inside another becomes a hole.
+    """
+    import ezdxf
+    import trimesh
+    from ezdxf import path as ezpath
+    from shapely.geometry import Polygon
+    from shapely.ops import unary_union
+
+    doc = ezdxf.readfile(str(path))
+    scale = DXF_UNITS_TO_MM.get(int(doc.header.get("$INSUNITS", 0)), 1.0)
+    rings = []
+    for entity in doc.modelspace().query("LWPOLYLINE POLYLINE CIRCLE ELLIPSE SPLINE ARC LINE"):
+        try:
+            pts = [(p.x * scale, p.y * scale) for p in ezpath.make_path(entity).flattening(0.05)]
+        except (TypeError, ValueError):
+            continue
+        if len(pts) >= 3 and math.dist(pts[0], pts[-1]) < 0.01:
+            poly = Polygon(pts).buffer(0)
+            if poly.area > 0:
+                rings.append(poly)
+    if not rings:
+        # Open line work only: show a thin plate the size of the drawing.
+        g = _analyze_dxf(path)
+        w, h = g.extents_mm[:2]
+        return trimesh.creation.box(extents=(w, h, thickness_mm))
+    rings.sort(key=lambda p: p.area, reverse=True)
+    shape = rings[0]
+    for ring in rings[1:]:
+        shape = shape.symmetric_difference(ring)
+    shape = unary_union(shape)
+    polys = list(shape.geoms) if hasattr(shape, "geoms") else [shape]
+    meshes = [trimesh.creation.extrude_polygon(p, height=thickness_mm) for p in polys if p.area > 0]
+    return trimesh.util.concatenate(meshes)

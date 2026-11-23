@@ -159,3 +159,29 @@ def test_admin_disabled_without_token(tmp_path):
     cfg.admin_token = None
     c = TestClient(create_app(cfg))
     assert c.get("/admin/login").status_code == 503
+
+
+def test_3d_viewer_page_and_models(client, cube_stl, square_dxf):
+    token = quote_token(upload(client, cube_stl, square_dxf))
+    page = client.get(f"/quote/{token}").text
+    links = re.findall(rf"/quote/{token}/part/(\w+)", page)
+    assert len(links) == 2
+    for line_id in links:
+        view = client.get(f"/quote/{token}/part/{line_id}")
+        assert view.status_code == 200
+        assert "product-viewer.js" in view.text and "Measure" in view.text
+        model_url = re.search(r'"model_url": "([^"]+)"', view.text).group(1)
+        model = client.get(model_url)
+        assert model.status_code == 200 and model.headers["content-type"] == "model/stl"
+        assert len(model.content) > 84  # STL header + at least one triangle
+    assert client.get(f"/quote/{token}/part/nope").status_code == 404
+
+
+def test_dxf_extrudes_to_a_watertight_sheet(square_dxf):
+    from pyslate.geometry import dxf_to_mesh
+
+    mesh = dxf_to_mesh(square_dxf, 3.0)
+    assert list(mesh.extents) == pytest.approx([100, 100, 3])
+    assert mesh.is_watertight
+    # 100 x 100 x 3 plate minus a 20 mm hole
+    assert mesh.volume == pytest.approx(100 * 100 * 3 - 3.14159 * 100 * 3, rel=0.01)
