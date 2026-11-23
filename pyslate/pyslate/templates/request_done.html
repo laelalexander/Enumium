@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Request received · Pyslate{% endblock %}
+{% block content %}
+<div class="wrap narrow">
+  <h1>Thanks, {{ req.name.split(' ')[0] }}.</h1>
+  <p>We received your request for <strong>{{ request_services[req.service] }}</strong>. Your reference is <strong>R-{{ req.number }}</strong>.</p>
+  <p>An engineer will reply to {{ req.email }}, usually within two business days.</p>
+  <p><a class="button" href="/">Back to Pyslate</a></p>
+</div>
+{% endblock %}

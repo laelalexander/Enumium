@@ -7,8 +7,8 @@
       <h1>Upload a part. See the price in seconds. We make it.</h1>
       <p class="lead">Pyslate 3D prints and laser cuts your designs in our own shop. Drop in a model or drawing to get a price, a lead time and a check that it can be made.</p>
       <ul class="ticks">
-        <li>3D printing in PLA and PETG</li>
-        <li>Laser cutting in wood, acrylic and stainless steel</li>
+        <li>3D printing, laser cutting and metal laser fabrication</li>
+        <li>Custom system design, blueprints and electrical schematics</li>
         <li>Every order made in house, start to finish</li>
       </ul>
     </div>
@@ -39,26 +39,49 @@
 </section>
 
 <section id="capabilities" class="wrap capabilities">
-  <h2>Capabilities</h2>
-  <div class="cards">
-    <article class="card">
-      <h3>3D printing</h3>
-      <p>For parts with real shape: enclosures, brackets, models, prototypes.</p>
-      <ul>
-        {% for m in profile.machines if m.line == 'print' %}<li>{{ m.name }}, build volume {{ m.bed_mm | join(' × ') }} mm</li>{% endfor %}
-        {% for m in profile.materials if m.line == 'print' %}<li>{{ m.name }}</li>{% endfor %}
-      </ul>
-    </article>
-    <article class="card">
-      <h3>Laser cutting</h3>
-      <p>For flat parts: signs, panels, gaskets, brackets, gifts.</p>
-      <ul>
-        {% for m in profile.machines if m.line == 'laser' %}<li>{{ m.name }}</li>{% endfor %}
-        {% for m in profile.materials if m.line == 'laser' %}<li>{{ m.name }}</li>{% endfor %}
-      </ul>
-    </article>
+  <div class="cap-layout">
+    <div>
+      <h2 class="cap-heading">Capabilities</h2>
+      <div class="cap-grid">
+        {% for c in capabilities %}
+        <a class="cap" href="{{ '#upload' if c.kind == 'instant' else '/request?service=' ~ c.slug }}">
+          {{ icon_svg(c.icon) | safe }}
+          <span class="cap-text">
+            <strong>{{ c.title }}</strong>
+            <span>{{ c.blurb }}</span>
+            <em>{{ 'Instant quote' if c.kind == 'instant' else 'Request a quote' }} →</em>
+          </span>
+        </a>
+        {% endfor %}
+      </div>
+      <p class="fine cap-note">Flat parts in a sheet material go to the laser; everything else is printed. Design and documentation work is quoted by our engineers, usually within two business days.</p>
+    </div>
+    <aside class="platform-card">
+      <div class="platform-art" aria-hidden="true">
+        <div class="steps-chip">
+          <span class="chip-title">Your order</span>
+          <span class="chip-row"><i class="ok">✓</i><b></b><i class="ok">✓</i><b></b><i class="now">3</i></span>
+          <span class="chip-sub">Quoted · Paid · Making</span>
+        </div>
+      </div>
+      <h3>One platform, from idea to finished part</h3>
+      <p>Instant quotes, a 3D viewer with measuring and section tools, automatic manufacturability checks, and order tracking from our queue to your door.</p>
+      <div class="platform-links">
+        <a href="#upload">Upload a part →</a>
+        <a href="/request">Start a design project →</a>
+      </div>
+    </aside>
   </div>
-  <p class="fine">Flat parts in a sheet material go to the laser. Everything else is printed. Parts that need a closer look go to the shop for review before you pay.</p>
+</section>
+
+<section class="band engineering">
+  <div class="wrap eng-grid">
+    <div>
+      <h2>Need it designed first?</h2>
+      <p>We design complete systems, mechanical and electrical, and furnish the blueprints and schematics to build, wire and maintain them. Then we can make the parts in our own shop.</p>
+    </div>
+    <a class="button" href="/request">Request a design quote</a>
+  </div>
 </section>
 {% endblock %}
 {% block scripts %}

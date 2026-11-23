@@ -10,7 +10,10 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from . import geometry as geo
-from .models import JOB_TRANSITIONS, Job, Order, OrderEvent, Part, Quote, QuoteLine, Setting, new_id, utcnow
+from .catalog import REQUEST_SERVICES, REQUEST_STATES
+from .models import (
+    JOB_TRANSITIONS, Job, Order, OrderEvent, Part, Quote, QuoteLine, ServiceRequest, Setting, new_id, utcnow,
+)
 from .pricing import price_line, total_quote
 from .routing import REVIEW, compatible_materials, default_material, route
 from .shop import Profile, default_profile, validate_profile
@@ -201,4 +204,55 @@ def move_job(db: Session, job: Job, new_state: str, note: str = "") -> None:
     elif states == {"done"} and order.status in ("in_queue", "making"):
         order.status = "finishing"
         order.events.append(OrderEvent(status="finishing", note="All parts made; finishing and packing"))
+    db.commit()
+
+
+# ---- design and documentation requests ----------------------------------
+
+REQUEST_FILE_EXTS = geo.SUPPORTED_EXTS | {
+    ".pdf", ".png", ".jpg", ".jpeg", ".step", ".stp", ".blend", ".zip", ".svg", ".txt", ".csv", ".xlsx", ".docx",
+}
+FIRST_REQUEST_NUMBER = 501
+
+
+def create_service_request(
+    db: Session, upload_dir: Path, service: str, name: str, email: str, description: str,
+    company: str = "", phone: str = "", budget: str = "", needed_by: str = "",
+    files: list[tuple[str, Path]] | None = None,
+) -> ServiceRequest:
+    if service not in REQUEST_SERVICES:
+        raise ServiceError("Choose a service")
+    if not name.strip() or "@" not in email or len(email) > 255:
+        raise ServiceError("Enter your name and a valid email address")
+    if len(description.strip()) < 20:
+        raise ServiceError("Tell us a little more about the project (at least a couple of sentences)")
+    number = (db.scalar(select(func.max(ServiceRequest.number))) or FIRST_REQUEST_NUMBER - 1) + 1
+    req = ServiceRequest(
+        id=new_id(), number=number, service=service, name=name.strip()[:255], email=email.strip(),
+        company=company.strip()[:255], phone=phone.strip()[:64], description=description.strip()[:20000],
+        budget=budget.strip()[:64], needed_by=needed_by.strip()[:64], files=[],
+    )
+    for original, _ in files or []:
+        if Path(_safe_filename(original)).suffix.lower() not in REQUEST_FILE_EXTS:
+            raise ServiceError(f"{_safe_filename(original)}: this file type is not accepted")
+    saved = []
+    target_dir = upload_dir / "requests"
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for original, src in files or []:
+        clean = _safe_filename(original)
+        ext = Path(clean).suffix.lower()
+        stored = f"{req.id}-{len(saved)}{ext}"
+        shutil.copyfile(src, target_dir / stored)
+        saved.append({"name": clean, "stored": stored})
+    req.files = saved
+    db.add(req)
+    db.commit()
+    return req
+
+
+def update_service_request(db: Session, req: ServiceRequest, status: str, shop_notes: str) -> None:
+    if status not in REQUEST_STATES:
+        raise ServiceError("Unknown status")
+    req.status = status
+    req.shop_notes = shop_notes.strip()[:20000]
     db.commit()

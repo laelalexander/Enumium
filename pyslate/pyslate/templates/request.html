@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Request a design quote · Pyslate{% endblock %}
+{% block content %}
+<div class="wrap request-page">
+  <h1>Request a design quote</h1>
+  <p class="lead">Tell us what you need. An engineer reviews every request and replies with a quote, usually within two business days.</p>
+  <form method="post" action="/request" enctype="multipart/form-data" class="request-form">
+    <fieldset class="service-pick">
+      <legend>What do you need?</legend>
+      {% for slug, title in request_services.items() %}
+      <label class="pick">
+        <input type="radio" name="service" value="{{ slug }}" required {% if (form.service or selected) == slug %}checked{% endif %}>
+        <span>{{ title }}</span>
+      </label>
+      {% endfor %}
+    </fieldset>
+    <label>Describe the project
+      <textarea name="description" rows="7" required minlength="20" placeholder="What it should do, size or space limits, power and voltage, quantities, anything you already have.">{{ form.description }}</textarea>
+    </label>
+    <label>Sketches, photos, models or existing drawings (optional)
+      <input type="file" name="files" multiple>
+      <span class="fine">PDF, images, STEP, STL, DXF, Blender, ZIP and office files, up to 50 MB each.</span>
+    </label>
+    <div class="two">
+      <label>Budget (optional) <input name="budget" maxlength="64" value="{{ form.budget }}" placeholder="e.g. $500 to $2,000"></label>
+      <label>Needed by (optional) <input name="needed_by" maxlength="64" value="{{ form.needed_by }}" placeholder="e.g. end of January"></label>
+    </div>
+    <div class="two">
+      <label>Name <input name="name" required maxlength="255" autocomplete="name" value="{{ form.name }}"></label>
+      <label>Email <input name="email" type="email" required maxlength="255" autocomplete="email" value="{{ form.email }}"></label>
+    </div>
+    <div class="two">
+      <label>Company (optional) <input name="company" maxlength="255" autocomplete="organization" value="{{ form.company }}"></label>
+      <label>Phone (optional) <input name="phone" maxlength="64" autocomplete="tel" value="{{ form.phone }}"></label>
+    </div>
+    <button class="button">Send request</button>
+    <p class="fine">Have a finished model or drawing already? <a href="/#upload">Get an instant quote</a> instead.</p>
+  </form>
+</div>
+{% endblock %}

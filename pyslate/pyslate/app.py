@@ -18,10 +18,10 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from . import __version__, payments, services
+from . import __version__, catalog, payments, services
 from . import geometry as geo
 from .config import Settings, settings as default_settings
-from .models import ORDER_LABELS, Job, Order, Part, Quote, QuoteLine, make_session_factory
+from .models import ORDER_LABELS, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
 from .routing import compatible_materials
 
 HERE = Path(__file__).parent
@@ -39,7 +39,11 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     app = FastAPI(title="Pyslate", version=__version__, docs_url=None, redoc_url=None)
     app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
     templates = Jinja2Templates(directory=HERE / "templates")
-    templates.env.globals.update(order_labels=ORDER_LABELS, stripe_enabled=cfg.stripe_enabled, version=__version__)
+    templates.env.globals.update(
+        order_labels=ORDER_LABELS, stripe_enabled=cfg.stripe_enabled, version=__version__,
+        capabilities=catalog.CAPABILITIES, request_services=catalog.REQUEST_SERVICES,
+        request_labels=catalog.REQUEST_LABELS, icon_svg=catalog.icon_svg,
+    )
     templates.env.filters["money"] = lambda v: f"${v:,.2f}"
     templates.env.filters["cents"] = lambda v: f"${v / 100:,.2f}"
     templates.env.filters["mm"] = lambda v: f"{v:,.1f} mm"
@@ -322,6 +326,51 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
                 services.mark_paid(db, order, "Paid by card through Stripe")
         return JSONResponse({"received": True})
 
+    @app.get("/request", response_class=HTMLResponse)
+    def request_form(request: Request, service: str = ""):
+        return render(request, "request.html", selected=service, form={})
+
+    @app.post("/request", response_class=HTMLResponse)
+    async def request_submit(
+        request: Request,
+        service: str = Form(""),
+        name: str = Form(""),
+        email: str = Form(""),
+        company: str = Form(""),
+        phone: str = Form(""),
+        description: str = Form(""),
+        budget: str = Form(""),
+        needed_by: str = Form(""),
+        files: list[UploadFile] = File(default=[]),
+        db: Session = Depends(get_db),
+    ):
+        form = dict(service=service, name=name, email=email, company=company, phone=phone,
+                    description=description, budget=budget, needed_by=needed_by)
+        limit = cfg.max_upload_mb * 1024 * 1024
+        with tempfile.TemporaryDirectory() as tmpdir:
+            saved: list[tuple[str, Path]] = []
+            for i, upload in enumerate(f for f in files[:MAX_FILES_PER_UPLOAD] if f.filename):
+                dest = Path(tmpdir) / str(i)
+                size = 0
+                with dest.open("wb") as out:
+                    while chunk := await upload.read(1024 * 1024):
+                        size += len(chunk)
+                        if size > limit:
+                            break
+                        out.write(chunk)
+                if size > limit:
+                    return render(request, "request.html", 400, selected=service, form=form,
+                                  errors=[f"{upload.filename}: larger than {cfg.max_upload_mb} MB"])
+                saved.append((upload.filename, dest))
+            try:
+                req = services.create_service_request(
+                    db, cfg.upload_dir, service, name, email, description,
+                    company=company, phone=phone, budget=budget, needed_by=needed_by, files=saved,
+                )
+            except services.ServiceError as exc:
+                return render(request, "request.html", 400, selected=service, form=form, errors=[str(exc)])
+        return render(request, "request_done.html", req=req)
+
     @app.get("/api/health")
     def health():
         return {"ok": True, "version": __version__}
@@ -408,6 +457,38 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         except services.ServiceError as exc:
             raise HTTPException(400, str(exc)) from exc
         return RedirectResponse(back if back.startswith("/admin") else "/admin", status_code=303)
+
+    @app.get("/admin/requests", response_class=HTMLResponse, dependencies=[Depends(require_admin)])
+    def admin_requests(request: Request, db: Session = Depends(get_db)):
+        reqs = db.scalars(select(ServiceRequest).order_by(ServiceRequest.number.desc()).limit(200)).all()
+        return render(request, "admin/requests.html", reqs=reqs)
+
+    @app.get("/admin/requests/{number}", response_class=HTMLResponse, dependencies=[Depends(require_admin)])
+    def admin_request(request: Request, number: int, db: Session = Depends(get_db)):
+        req = db.scalar(select(ServiceRequest).where(ServiceRequest.number == number))
+        if req is None:
+            raise HTTPException(404)
+        return render(request, "admin/request.html", req=req, states=catalog.REQUEST_STATES)
+
+    @app.post("/admin/requests/{number}", dependencies=[Depends(require_admin)])
+    def admin_request_update(number: int, status: str = Form(...), shop_notes: str = Form(""),
+                             db: Session = Depends(get_db)):
+        req = db.scalar(select(ServiceRequest).where(ServiceRequest.number == number))
+        if req is None:
+            raise HTTPException(404)
+        try:
+            services.update_service_request(db, req, status, shop_notes)
+        except services.ServiceError as exc:
+            raise HTTPException(400, str(exc)) from exc
+        return RedirectResponse(f"/admin/requests/{number}", status_code=303)
+
+    @app.get("/admin/requests/{number}/file/{index}", dependencies=[Depends(require_admin)])
+    def admin_request_file(number: int, index: int, db: Session = Depends(get_db)):
+        req = db.scalar(select(ServiceRequest).where(ServiceRequest.number == number))
+        if req is None or not 0 <= index < len(req.files):
+            raise HTTPException(404)
+        f = req.files[index]
+        return FileResponse(cfg.upload_dir / "requests" / f["stored"], filename=f["name"])
 
     @app.get("/admin/parts/{part_id}/file", dependencies=[Depends(require_admin)])
     def admin_part_file(part_id: str, db: Session = Depends(get_db)):

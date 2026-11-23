@@ -185,3 +185,48 @@ def test_dxf_extrudes_to_a_watertight_sheet(square_dxf):
     assert mesh.is_watertight
     # 100 x 100 x 3 plate minus a 20 mm hole
     assert mesh.volume == pytest.approx(100 * 100 * 3 - 3.14159 * 100 * 3, rel=0.01)
+
+
+def test_landing_lists_capabilities(client):
+    page = client.get("/").text
+    for title in ("Custom System Design", "Mechanical Blueprints", "Electrical Schematics"):
+        assert title in page
+    assert "/request?service=system-design" in page
+    assert client.get("/request?service=electrical-schematics").status_code == 200
+
+
+def test_design_request_flow(client):
+    desc = "Design a conveyor with a 24 V control panel and full wiring diagrams."
+    r = client.post(
+        "/request",
+        data={"service": "system-design", "name": "Ada", "email": "ada@example.com", "description": desc},
+        files=[("files", ("sketch.pdf", b"%PDF-1.4 test", "application/pdf"))],
+    )
+    assert r.status_code == 200
+    assert "R-501" in r.text
+
+    assert client.get("/admin/requests", follow_redirects=False).status_code == 303
+    admin_login(client)
+    assert "Ada" in client.get("/admin/requests").text
+    detail = client.get("/admin/requests/501").text
+    assert "conveyor" in detail and "sketch.pdf" in detail
+    f = client.get("/admin/requests/501/file/0")
+    assert f.status_code == 200 and f.content == b"%PDF-1.4 test"
+    client.post("/admin/requests/501", data={"status": "quoted", "shop_notes": "Sent $1,200 quote"})
+    assert "Sent $1,200 quote" in client.get("/admin/requests/501").text
+    assert client.post("/admin/requests/501", data={"status": "bogus"}).status_code == 400
+
+
+def test_design_request_validates(client):
+    r = client.post("/request", data={"service": "system-design", "name": "Ada",
+                                      "email": "ada@example.com", "description": "too short"})
+    assert r.status_code == 400
+    r = client.post("/request", data={"service": "nope", "name": "Ada", "email": "ada@example.com",
+                                      "description": "x" * 40})
+    assert r.status_code == 400
+    r = client.post(
+        "/request",
+        data={"service": "product-design", "name": "Ada", "email": "ada@example.com", "description": "x" * 40},
+        files=[("files", ("run.exe", b"MZ", "application/octet-stream"))],
+    )
+    assert r.status_code == 400

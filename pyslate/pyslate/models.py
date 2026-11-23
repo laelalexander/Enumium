@@ -158,6 +158,26 @@ class Job(Base):
     quote_line: Mapped[QuoteLine] = relationship()
 
 
+class ServiceRequest(Base):
+    """A request for design or documentation work: system design, blueprints, schematics."""
+
+    __tablename__ = "service_requests"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    number: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    service: Mapped[str] = mapped_column(String(64))
+    name: Mapped[str] = mapped_column(String(255))
+    email: Mapped[str] = mapped_column(String(255))
+    company: Mapped[str] = mapped_column(String(255), default="")
+    phone: Mapped[str] = mapped_column(String(64), default="")
+    description: Mapped[str] = mapped_column(Text)
+    budget: Mapped[str] = mapped_column(String(64), default="")
+    needed_by: Mapped[str] = mapped_column(String(64), default="")
+    files: Mapped[list] = mapped_column(JSON, default=list)  # [{"name": original, "stored": stored name}]
+    status: Mapped[str] = mapped_column(String(32), default="new")
+    shop_notes: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 def make_session_factory(url: str):
     connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
     engine = create_engine(url, connect_args=connect_args, future=True)
