@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Pyslate{% endblock %}</title>
+  <meta name="description" content="Upload a 3D model or drawing, get an instant price, and have it 3D printed or laser cut by the Pyslate shop.">
+  <link rel="stylesheet" href="/static/style.css">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="brand" href="/">Pyslate</a>
+      <nav>
+        <a href="/#how">How it works</a>
+        <a href="/#capabilities">Capabilities</a>
+        <a class="button small" href="/#upload">Get a quote</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    {% if errors %}
+    <div class="wrap"><div class="alert" role="alert">
+      {% for e in errors %}<p>{{ e }}</p>{% endfor %}
+    </div></div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Pyslate · made in our own shop on Bambu Lab printers and xTool lasers.</p>
+    </div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

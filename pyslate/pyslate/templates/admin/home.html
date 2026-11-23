@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% block admin %}
+<h1>Production queue</h1>
+<div class="lanes">
+  {% for lane in lanes %}
+  <section class="lane">
+    <h2>{{ lane.machine.name }} <span class="count">{{ lane.jobs | length }}</span></h2>
+    {% for job in lane.jobs %}
+    <article class="job job-{{ job.state }}">
+      <p><a href="/admin/order/{{ job.order.number }}">#{{ job.order.number }}</a> · {{ job.quote_line.part.filename }}</p>
+      <p class="fine">{{ job.quantity }} × {{ job.quote_line.material_id }} · {{ job.state }}{% if job.note %} · {{ job.note }}{% endif %}</p>
+      <div class="job-actions">
+        <a class="link-button" href="/admin/parts/{{ job.quote_line.part.id }}/file">File</a>
+        {% for next in {'queued': ['running'], 'running': ['done', 'failed'], 'failed': ['queued'], 'review': ['queued']}.get(job.state, []) %}
+        <form method="post" action="/admin/job/{{ job.id }}">
+          <input type="hidden" name="state" value="{{ next }}">
+          <button class="button small {% if next == 'failed' %}danger{% endif %}">{{ {'running': 'Start', 'done': 'Done', 'failed': 'Failed', 'queued': 'Requeue'}[next] }}</button>
+        </form>
+        {% endfor %}
+      </div>
+    </article>
+    {% else %}<p class="fine">Nothing queued.</p>{% endfor %}
+  </section>
+  {% endfor %}
+</div>
+
+<h2>Orders</h2>
+<table class="orders">
+  <thead><tr><th>#</th><th>Customer</th><th>Status</th><th>Total</th><th>Placed</th></tr></thead>
+  <tbody>
+  {% for o in orders %}
+  <tr>
+    <td><a href="/admin/order/{{ o.number }}">{{ o.number }}</a></td>
+    <td>{{ o.name }}<br><span class="fine">{{ o.email }}</span></td>
+    <td>{{ o.status_label }}</td>
+    <td>{{ o.total_cents | cents }}</td>
+    <td>{{ o.created_at.strftime('%b %d %H:%M') }}</td>
+  </tr>
+  {% else %}<tr><td colspan="5">No orders yet.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Pyslate · Instant quotes for 3D printing and laser cutting{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Upload a part. See the price in seconds. We make it.</h1>
+      <p class="lead">Pyslate 3D prints and laser cuts your designs in our own shop. Drop in a model or drawing to get a price, a lead time and a check that it can be made.</p>
+      <ul class="ticks">
+        <li>3D printing in PLA and PETG</li>
+        <li>Laser cutting in wood, acrylic and stainless steel</li>
+        <li>Every order made in house, start to finish</li>
+      </ul>
+    </div>
+    <form id="upload" class="upload-card" action="/quote" method="post" enctype="multipart/form-data">
+      <label class="dropzone" for="files">
+        <span class="dz-title">Drop files here or choose files</span>
+        <span class="dz-sub">{{ formats | map('upper') | join(' · ') | replace('.', '') }}</span>
+        <input id="files" name="files" type="file" multiple required
+               accept="{{ formats | join(',') }}">
+      </label>
+      <p class="file-list" id="file-list" aria-live="polite"></p>
+      <button class="button wide" type="submit">Get instant quote</button>
+      <p class="fine">Up to 20 files, 50 MB each. Your files are only used to quote and make your order.</p>
+    </form>
+  </div>
+</section>
+
+<section id="how" class="band">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><strong>Upload</strong><span>STL, 3MF, OBJ or PLY for 3D parts. DXF for flat parts.</span></li>
+      <li><strong>Check and price</strong><span>We measure the part, pick the right machine, flag problems and show the price broken down.</span></li>
+      <li><strong>Order</strong><span>Pay online. Your parts go straight into our production queue.</span></li>
+      <li><strong>Track</strong><span>Follow your order from queue to machine to your door.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="capabilities" class="wrap capabilities">
+  <h2>Capabilities</h2>
+  <div class="cards">
+    <article class="card">
+      <h3>3D printing</h3>
+      <p>For parts with real shape: enclosures, brackets, models, prototypes.</p>
+      <ul>
+        {% for m in profile.machines if m.line == 'print' %}<li>{{ m.name }}, build volume {{ m.bed_mm | join(' × ') }} mm</li>{% endfor %}
+        {% for m in profile.materials if m.line == 'print' %}<li>{{ m.name }}</li>{% endfor %}
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Laser cutting</h3>
+      <p>For flat parts: signs, panels, gaskets, brackets, gifts.</p>
+      <ul>
+        {% for m in profile.machines if m.line == 'laser' %}<li>{{ m.name }}</li>{% endfor %}
+        {% for m in profile.materials if m.line == 'laser' %}<li>{{ m.name }}</li>{% endfor %}
+      </ul>
+    </article>
+  </div>
+  <p class="fine">Flat parts in a sheet material go to the laser. Everything else is printed. Parts that need a closer look go to the shop for review before you pay.</p>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  const input = document.getElementById('files');
+  const list = document.getElementById('file-list');
+  const zone = document.querySelector('.dropzone');
+  const show = () => { list.textContent = [...input.files].map(f => f.name).join(', '); };
+  input.addEventListener('change', show);
+  ['dragenter', 'dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(e => zone.addEventListener(e, () => zone.classList.remove('over')));
+  zone.addEventListener('drop', ev => { ev.preventDefault(); input.files = ev.dataTransfer.files; show(); });
+</script>
+{% endblock %}

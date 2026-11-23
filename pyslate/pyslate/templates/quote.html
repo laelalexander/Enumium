@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Your quote · Pyslate{% endblock %}
+{% block content %}
+<div class="wrap quote-page">
+  <div class="quote-head">
+    <h1>Your quote</h1>
+    <p class="fine">Save this page's link to come back to it.</p>
+  </div>
+
+  <div class="quote-grid">
+    <div class="lines">
+      {% for row in rows %}{% set line = row.line %}{% set g = row.geom %}
+      <article class="line-card" id="line-{{ line.id }}">
+        <div class="preview">
+          {% if line.part.preview_name %}
+          <div class="viewer" data-src="/parts/{{ line.part.id }}/preview" aria-label="3D preview of {{ line.part.filename }}"></div>
+          {% else %}
+          <img class="svg-preview" src="/parts/{{ line.part.id }}/preview" alt="Outline of {{ line.part.filename }}">
+          {% endif %}
+        </div>
+        <div class="line-body">
+          <h2 class="part-name">{{ line.part.filename }}</h2>
+          <p class="dims">
+            {% if g.kind == 'mesh' %}{{ g.extents_mm | map('round', 1) | join(' × ') }} mm
+            {%- if g.flat %} · flat, {{ g.thickness_mm }} mm thick{% endif %}
+            {% else %}{{ g.outline_mm | map('round', 1) | join(' × ') }} mm drawing{% endif %}
+          </p>
+          <p class="route route-{{ line.line }}">
+            <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'review': 'Needs review'}[line.line] }}</span>
+            {{ line.route_reason }}
+          </p>
+          {% for issue in g.issues %}<p class="dfm">{{ issue }}</p>{% endfor %}
+
+          {% if not quote.order %}
+          <form class="line-form" method="post" action="/quote/{{ quote.token }}/line/{{ line.id }}">
+            <label>Material
+              <select name="material_id">
+                {% for m in row.materials %}
+                <option value="{{ m.id }}" {% if m.id == line.material_id %}selected{% endif %}>{{ m.name }}{% if m.line == 'laser' %} (laser){% else %} (print){% endif %}</option>
+                {% else %}<option value="">No material fits</option>{% endfor %}
+              </select>
+            </label>
+            <label>Quantity
+              <input name="quantity" type="number" min="1" max="10000" value="{{ line.quantity }}">
+            </label>
+            <button class="button small" name="action" value="update">Update</button>
+            <button class="link-button" name="action" value="remove">Remove</button>
+          </form>
+          {% endif %}
+
+          {% if line.price %}{% set p = line.price %}
+          <details class="breakdown">
+            <summary><strong>{{ p.total | money }}</strong> for {{ p.quantity }} · {{ p.unit_price | money }} each</summary>
+            <table>
+              <tr><td>Material, per part</td><td>{{ p.material | money }}</td></tr>
+              <tr><td>Machine time, per part ({{ p.machine_minutes }} min)</td><td>{{ p.machine | money }}</td></tr>
+              <tr><td>Quantity discount</td><td>{% if p.quantity_multiplier < 1 %}{{ ((1 - p.quantity_multiplier) * 100) | round | int }}%{% else %}none{% endif %}</td></tr>
+              <tr><td>Setup, once per order line</td><td>{{ p.setup | money }}</td></tr>
+            </table>
+          </details>
+          {% else %}
+          <p class="no-price">No instant price. Change the material, or remove this part and email the shop.</p>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+
+      {% if not quote.order %}
+      <form class="add-more" action="/quote" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="quote_token" value="{{ quote.token }}">
+        <label>Add more parts <input name="files" type="file" multiple required></label>
+        <button class="button small secondary">Upload</button>
+      </form>
+      {% endif %}
+    </div>
+
+    <aside class="summary">
+      <h2>Summary</h2>
+      {% if not quote.order %}
+      <form method="post" action="/quote/{{ quote.token }}/lead" class="lead-form">
+        <fieldset>
+          <legend>Lead time</legend>
+          <label><input type="radio" name="lead_tier" value="standard" {% if quote.lead_tier == 'standard' %}checked{% endif %} onchange="this.form.submit()"> Standard, ships in {{ profile.lead_days.standard }} days</label>
+          <label><input type="radio" name="lead_tier" value="rush" {% if quote.lead_tier == 'rush' %}checked{% endif %} onchange="this.form.submit()"> Rush, ships in {{ profile.lead_days.rush }} days (+{{ ((profile.rush_multiplier - 1) * 100) | round | int }}%)</label>
+        </fieldset>
+        <noscript><button class="button small secondary">Apply</button></noscript>
+      </form>
+      {% endif %}
+      <table class="totals">
+        <tr><td>Parts</td><td>{{ summary.subtotal | money }}</td></tr>
+        {% if summary.rush_fee %}<tr><td>Rush</td><td>{{ summary.rush_fee | money }}</td></tr>{% endif %}
+        {% if summary.minimum_top_up %}<tr><td>Minimum order top-up</td><td>{{ summary.minimum_top_up | money }}</td></tr>{% endif %}
+        <tr class="grand"><td>Total</td><td>{{ summary.total | money }}</td></tr>
+      </table>
+      <p class="fine">Ships in {{ summary.lead_days }} days after payment. Shipping is arranged by the shop.</p>
+
+      {% if quote.order %}
+      <p>This quote is order #{{ quote.order.number }}.</p>
+      {% elif orderable %}
+      <form method="post" action="/quote/{{ quote.token }}/checkout" class="checkout">
+        <label>Name <input name="name" required maxlength="255" autocomplete="name"></label>
+        <label>Email <input name="email" type="email" required maxlength="255" autocomplete="email"></label>
+        <label>Shipping address <textarea name="address" rows="3" required autocomplete="street-address"></textarea></label>
+        <label>Notes for the shop <textarea name="notes" rows="2"></textarea></label>
+        <button class="button wide">{% if stripe_enabled %}Pay {{ summary.total | money }}{% else %}Place order{% endif %}</button>
+        {% if not stripe_enabled %}<p class="fine">The shop will send payment details by email.</p>{% endif %}
+      </form>
+      {% else %}
+      <p class="no-price">Some parts need review before this quote can be ordered.</p>
+      {% endif %}
+    </aside>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="importmap">
+{ "imports": { "three": "/static/vendor/three/three.module.min.js" } }
+</script>
+<script type="module" src="/static/viewer.js"></script>
+{% endblock %}

@@ -1,0 +1,382 @@
+"""The Pyslate web app: customer pages, admin console and the Stripe webhook."""
+
+from __future__ import annotations
+
+import hashlib
+import hmac
+import json
+import secrets
+import tempfile
+import time
+from pathlib import Path
+from urllib.parse import quote as urlquote
+
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from . import __version__, payments, services
+from . import geometry as geo
+from .config import Settings, settings as default_settings
+from .models import ORDER_LABELS, Job, Order, Part, Quote, QuoteLine, make_session_factory
+from .routing import compatible_materials
+
+HERE = Path(__file__).parent
+ADMIN_COOKIE = "pyslate_admin"
+ADMIN_SESSION_SECONDS = 12 * 3600
+MAX_FILES_PER_UPLOAD = 20
+
+
+def create_app(cfg: Settings | None = None) -> FastAPI:
+    cfg = cfg or default_settings
+    cfg.data_dir.mkdir(parents=True, exist_ok=True)
+    cfg.upload_dir.mkdir(parents=True, exist_ok=True)
+    SessionLocal = make_session_factory(cfg.db_url)
+
+    app = FastAPI(title="Pyslate", version=__version__, docs_url=None, redoc_url=None)
+    app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
+    templates = Jinja2Templates(directory=HERE / "templates")
+    templates.env.globals.update(order_labels=ORDER_LABELS, stripe_enabled=cfg.stripe_enabled, version=__version__)
+    templates.env.filters["money"] = lambda v: f"${v:,.2f}"
+    templates.env.filters["cents"] = lambda v: f"${v / 100:,.2f}"
+    templates.env.filters["mm"] = lambda v: f"{v:,.1f} mm"
+
+    def get_db():
+        db = SessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()
+
+    def render(request: Request, name: str, status_code: int = 200, **ctx) -> HTMLResponse:
+        return templates.TemplateResponse(request, name, ctx, status_code=status_code)
+
+    # ---- admin session (signed cookie, SameSite=Strict blocks cross-site form posts) ----
+
+    def _sign(expires: int) -> str:
+        mac = hmac.new(cfg.secret_key.encode(), str(expires).encode(), hashlib.sha256).hexdigest()
+        return f"{expires}.{mac}"
+
+    def _valid(cookie: str | None) -> bool:
+        if not cookie or "." not in cookie:
+            return False
+        expires, _, mac = cookie.partition(".")
+        if not expires.isdigit() or int(expires) < time.time():
+            return False
+        return hmac.compare_digest(_sign(int(expires)), cookie)
+
+    def require_admin(request: Request) -> None:
+        if not cfg.admin_token:
+            raise HTTPException(503, "Admin is disabled. Set PYSLATE_ADMIN_TOKEN to turn it on.")
+        if not _valid(request.cookies.get(ADMIN_COOKIE)):
+            raise HTTPException(303, headers={"Location": "/admin/login"})
+
+    # ---- helpers ----
+
+    def load_quote(db: Session, token: str) -> Quote:
+        quote = db.scalar(select(Quote).where(Quote.token == token))
+        if quote is None:
+            raise HTTPException(404, "Quote not found")
+        return quote
+
+    def load_order(db: Session, number: int, token: str) -> Order:
+        order = db.scalar(select(Order).where(Order.number == number))
+        if order is None or not secrets.compare_digest(order.access_token, token or ""):
+            raise HTTPException(404, "Order not found")
+        return order
+
+    def quote_context(db: Session, quote: Quote) -> dict:
+        profile = services.get_profile(db)
+        rows = []
+        for line in quote.lines:
+            g = geo.PartGeometry.from_dict(line.part.geometry)
+            rows.append(
+                {
+                    "line": line,
+                    "geom": g,
+                    "materials": compatible_materials(g, profile),
+                    "machine": profile.machine(line.machine_id) if line.machine_id else None,
+                }
+            )
+        return {
+            "quote": quote,
+            "rows": rows,
+            "summary": services.quote_summary(db, quote),
+            "orderable": services.quote_is_orderable(quote),
+            "profile": profile.data,
+        }
+
+    async def _save_uploads(db: Session, files: list[UploadFile]) -> tuple[list[Part], list[str]]:
+        parts, errors = [], []
+        limit = cfg.max_upload_mb * 1024 * 1024
+        for upload in files[:MAX_FILES_PER_UPLOAD]:
+            if not upload.filename:
+                continue
+            with tempfile.NamedTemporaryFile(suffix=Path(upload.filename).suffix.lower()) as tmp:
+                size = 0
+                while chunk := await upload.read(1024 * 1024):
+                    size += len(chunk)
+                    if size > limit:
+                        break
+                    tmp.write(chunk)
+                tmp.flush()
+                if size > limit:
+                    errors.append(f"{upload.filename}: larger than {cfg.max_upload_mb} MB")
+                    continue
+                try:
+                    parts.append(services.store_part(db, cfg.upload_dir, upload.filename, Path(tmp.name)))
+                except services.ServiceError as exc:
+                    errors.append(str(exc))
+        return parts, errors
+
+    # ---- customer pages ----
+
+    @app.get("/", response_class=HTMLResponse)
+    def landing(request: Request, db: Session = Depends(get_db)):
+        profile = services.get_profile(db).data
+        return render(request, "landing.html", profile=profile, formats=sorted(geo.SUPPORTED_EXTS))
+
+    @app.post("/quote")
+    async def upload(
+        request: Request,
+        files: list[UploadFile] = File(...),
+        quote_token: str | None = Form(None),
+        db: Session = Depends(get_db),
+    ):
+        quote = load_quote(db, quote_token) if quote_token else Quote()
+        if quote.order is not None:
+            raise HTTPException(400, "This quote has already been ordered")
+        parts, errors = await _save_uploads(db, files)
+        if not parts:
+            db.rollback()
+            profile = services.get_profile(db).data
+            return render(
+                request, "landing.html", 400,
+                profile=profile, formats=sorted(geo.SUPPORTED_EXTS), errors=errors or ["Choose a file to upload"],
+            )
+        if quote.id is None:
+            db.add(quote)
+        for part in parts:
+            services.add_part_to_quote(db, quote, part)
+        db.commit()
+        url = f"/quote/{quote.token}"
+        if errors:
+            url += "?errors=" + urlquote(json.dumps(errors))
+        return RedirectResponse(url, status_code=303)
+
+    @app.get("/quote/{token}", response_class=HTMLResponse)
+    def show_quote(request: Request, token: str, errors: str | None = None, db: Session = Depends(get_db)):
+        quote = load_quote(db, token)
+        try:
+            messages = json.loads(errors) if errors else []
+            messages = [str(m) for m in messages][:20] if isinstance(messages, list) else []
+        except ValueError:
+            messages = []
+        return render(request, "quote.html", errors=messages, **quote_context(db, quote))
+
+    @app.post("/quote/{token}/line/{line_id}")
+    def change_line(
+        request: Request,
+        token: str,
+        line_id: str,
+        material_id: str = Form(""),
+        quantity: int = Form(1),
+        action: str = Form("update"),
+        db: Session = Depends(get_db),
+    ):
+        quote = load_quote(db, token)
+        line = next((ln for ln in quote.lines if ln.id == line_id), None)
+        if line is None:
+            raise HTTPException(404, "Part not found")
+        if quote.order is not None:
+            raise HTTPException(400, "This quote has already been ordered")
+        try:
+            if action == "remove":
+                quote.lines.remove(line)
+                db.commit()
+            else:
+                services.update_line(db, line, material_id or None, quantity)
+        except services.ServiceError as exc:
+            return render(request, "quote.html", 400, errors=[str(exc)], **quote_context(db, quote))
+        return RedirectResponse(f"/quote/{token}#line-{line_id}", status_code=303)
+
+    @app.post("/quote/{token}/lead")
+    def change_lead(token: str, lead_tier: str = Form("standard"), db: Session = Depends(get_db)):
+        quote = load_quote(db, token)
+        if quote.order is None and lead_tier in ("standard", "rush"):
+            quote.lead_tier = lead_tier
+            db.commit()
+        return RedirectResponse(f"/quote/{token}", status_code=303)
+
+    @app.get("/parts/{part_id}/preview")
+    def part_preview(part_id: str, db: Session = Depends(get_db)):
+        part = db.get(Part, part_id)
+        if part is None:
+            raise HTTPException(404)
+        if part.preview_name:
+            return FileResponse(cfg.upload_dir / part.preview_name, media_type="model/stl")
+        if part.stored_name.endswith(".dxf"):
+            svg = geo.dxf_preview_svg(cfg.upload_dir / part.stored_name)
+            return Response(svg, media_type="image/svg+xml")
+        raise HTTPException(404)
+
+    @app.post("/quote/{token}/checkout")
+    def checkout(
+        request: Request,
+        token: str,
+        email: str = Form(...),
+        name: str = Form(...),
+        address: str = Form(...),
+        notes: str = Form(""),
+        db: Session = Depends(get_db),
+    ):
+        quote = load_quote(db, token)
+        try:
+            order = services.place_order(db, quote, email, name, address, notes)
+        except services.ServiceError as exc:
+            return render(request, "quote.html", 400, errors=[str(exc)], **quote_context(db, quote))
+        order_url = f"/order/{order.number}?t={order.access_token}"
+        if cfg.stripe_enabled and order.status == "awaiting_payment":
+            try:
+                url = payments.create_checkout(order, cfg)
+                db.commit()
+                return RedirectResponse(url, status_code=303)
+            except payments.PaymentError:
+                return RedirectResponse(order_url + "&payment_error=1", status_code=303)
+        return RedirectResponse(order_url, status_code=303)
+
+    @app.get("/order/{number}", response_class=HTMLResponse)
+    def show_order(
+        request: Request, number: int, t: str = "", paid: int = 0, payment_error: int = 0,
+        db: Session = Depends(get_db),
+    ):
+        order = load_order(db, number, t)
+        return render(request, "order.html", order=order, just_paid=bool(paid), payment_error=bool(payment_error))
+
+    @app.post("/stripe/webhook")
+    async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
+        try:
+            _, order_id = payments.parse_webhook(
+                await request.body(), request.headers.get("stripe-signature", ""), cfg
+            )
+        except payments.PaymentError as exc:
+            raise HTTPException(400, str(exc)) from exc
+        if order_id:
+            order = db.get(Order, order_id)
+            if order is not None:
+                services.mark_paid(db, order, "Paid by card through Stripe")
+        return JSONResponse({"received": True})
+
+    @app.get("/api/health")
+    def health():
+        return {"ok": True, "version": __version__}
+
+    # ---- admin console ----
+
+    @app.get("/admin/login", response_class=HTMLResponse)
+    def admin_login_form(request: Request):
+        if not cfg.admin_token:
+            raise HTTPException(503, "Admin is disabled. Set PYSLATE_ADMIN_TOKEN to turn it on.")
+        return render(request, "admin/login.html")
+
+    @app.post("/admin/login")
+    def admin_login(request: Request, token: str = Form(...)):
+        if not cfg.admin_token:
+            raise HTTPException(503)
+        if not secrets.compare_digest(token.encode(), cfg.admin_token.encode()):
+            return render(request, "admin/login.html", 401, error="Wrong password")
+        resp = RedirectResponse("/admin", status_code=303)
+        resp.set_cookie(
+            ADMIN_COOKIE, _sign(int(time.time()) + ADMIN_SESSION_SECONDS),
+            httponly=True, samesite="strict", secure=cfg.secure_cookies, max_age=ADMIN_SESSION_SECONDS,
+        )
+        return resp
+
+    @app.post("/admin/logout")
+    def admin_logout():
+        resp = RedirectResponse("/", status_code=303)
+        resp.delete_cookie(ADMIN_COOKIE)
+        return resp
+
+    @app.get("/admin", response_class=HTMLResponse, dependencies=[Depends(require_admin)])
+    def admin_home(request: Request, db: Session = Depends(get_db)):
+        profile = services.get_profile(db)
+        jobs = db.scalars(select(Job).where(Job.state != "done").order_by(Job.updated_at)).all()
+        orders = db.scalars(select(Order).order_by(Order.number.desc()).limit(100)).all()
+        lanes = {}
+        for machine in profile.data["machines"]:
+            lanes[machine["id"]] = {"machine": machine, "jobs": []}
+        lanes["review"] = {"machine": {"id": "review", "name": "Needs review", "line": "review"}, "jobs": []}
+        for job in jobs:
+            lanes.get(job.machine_id or "review", lanes["review"])["jobs"].append(job)
+        return render(request, "admin/home.html", lanes=lanes.values(), orders=orders)
+
+    @app.get("/admin/order/{number}", response_class=HTMLResponse, dependencies=[Depends(require_admin)])
+    def admin_order(request: Request, number: int, db: Session = Depends(get_db)):
+        order = db.scalar(select(Order).where(Order.number == number))
+        if order is None:
+            raise HTTPException(404)
+        return render(request, "admin/order.html", order=order, profile=services.get_profile(db).data)
+
+    @app.post("/admin/order/{number}/paid", dependencies=[Depends(require_admin)])
+    def admin_mark_paid(number: int, db: Session = Depends(get_db)):
+        order = db.scalar(select(Order).where(Order.number == number))
+        if order is None:
+            raise HTTPException(404)
+        services.mark_paid(db, order, "Payment recorded by the shop")
+        return RedirectResponse(f"/admin/order/{number}", status_code=303)
+
+    @app.post("/admin/order/{number}/status", dependencies=[Depends(require_admin)])
+    def admin_order_status(
+        request: Request, number: int, status: str = Form(...), note: str = Form(""), tracking: str = Form(""),
+        db: Session = Depends(get_db),
+    ):
+        order = db.scalar(select(Order).where(Order.number == number))
+        if order is None:
+            raise HTTPException(404)
+        try:
+            services.set_order_status(db, order, status, note, tracking)
+        except services.ServiceError as exc:
+            return render(
+                request, "admin/order.html", 400, order=order, profile=services.get_profile(db).data, error=str(exc)
+            )
+        return RedirectResponse(f"/admin/order/{number}", status_code=303)
+
+    @app.post("/admin/job/{job_id}", dependencies=[Depends(require_admin)])
+    def admin_job(job_id: str, state: str = Form(...), note: str = Form(""), back: str = Form("/admin"),
+                  db: Session = Depends(get_db)):
+        job = db.get(Job, job_id)
+        if job is None:
+            raise HTTPException(404)
+        try:
+            services.move_job(db, job, state, note)
+        except services.ServiceError as exc:
+            raise HTTPException(400, str(exc)) from exc
+        return RedirectResponse(back if back.startswith("/admin") else "/admin", status_code=303)
+
+    @app.get("/admin/parts/{part_id}/file", dependencies=[Depends(require_admin)])
+    def admin_part_file(part_id: str, db: Session = Depends(get_db)):
+        part = db.get(Part, part_id)
+        if part is None:
+            raise HTTPException(404)
+        return FileResponse(cfg.upload_dir / part.stored_name, filename=part.filename)
+
+    @app.get("/admin/rates", response_class=HTMLResponse, dependencies=[Depends(require_admin)])
+    def admin_rates(request: Request, db: Session = Depends(get_db)):
+        text = json.dumps(services.get_profile(db).data, indent=2)
+        return render(request, "admin/rates.html", text=text)
+
+    @app.post("/admin/rates", response_class=HTMLResponse, dependencies=[Depends(require_admin)])
+    def admin_save_rates(request: Request, profile: str = Form(...), db: Session = Depends(get_db)):
+        try:
+            services.save_profile(db, json.loads(profile))
+        except (ValueError, services.ServiceError) as exc:
+            return render(request, "admin/rates.html", 400, text=profile, error=str(exc))
+        return render(request, "admin/rates.html", text=profile, saved=True)
+
+    app.state.session_factory = SessionLocal
+    app.state.settings = cfg
+    return app
