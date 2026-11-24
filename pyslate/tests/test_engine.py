@@ -120,3 +120,10 @@ def test_profile_validation_catches_mistakes():
     problems = validate_profile(data)
     assert any("unknown machine" in p for p in problems)
     assert any("rate_per_hour" in p for p in problems)
+
+
+def test_big_print_goes_to_a8s(profile):
+    from pyslate.geometry import PartGeometry
+    g = PartGeometry(kind="mesh", extents_mm=[320.0, 200.0, 120.0], flat=False, volume_mm3=500000.0)
+    r = route(g, "pla", profile)
+    assert r.line == PRINT and r.machine_id == "a8s"

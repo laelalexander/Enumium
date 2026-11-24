@@ -33,7 +33,7 @@ def big_stl(tmp_path: Path) -> Path:
     import trimesh
 
     path = tmp_path / "big.stl"
-    trimesh.creation.box(extents=(300, 50, 50)).export(path)
+    trimesh.creation.box(extents=(400, 50, 50)).export(path)
     return path
 
 

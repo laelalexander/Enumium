@@ -127,14 +127,14 @@ def icon_svg(name: str) -> str:
 DETAILS = {
     "3d-printing": {
         "headline": "3D printed parts, from one prototype to a production run.",
-        "intro": "We print on Bambu Lab and Noitavonne 3D printers. Upload a model and you get a price, a lead time and a printability check in seconds.",
+        "intro": "We print on Bambu Lab printers and Noitavonne JG Maker printers, with the A8S taking parts up to 350 × 250 × 300 mm. Upload a model and you get a price, a lead time and a printability check in seconds.",
         "points": [
             "PLA for prototypes, fixtures and display parts",
             "PETG for tougher, heat- and moisture-resistant parts",
             "Overhang and thin-wall checks before you order",
             "Quantity discounts from 10 parts",
         ],
-        "specs": [("Build volume", "256 × 256 × 256 mm"), ("Layer height", "0.20 mm standard"),
+        "specs": [("Build volume", "Bambu: 256 × 256 × 256 mm · JG Maker A8S: 350 × 250 × 300 mm"), ("Layer height", "0.20 mm standard"),
                   ("Files", "STL, 3MF, OBJ, PLY"), ("Lead time", "About 7 days, 3 with rush")],
         "line": "print",
     },

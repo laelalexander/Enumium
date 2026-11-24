@@ -39,6 +39,15 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "setup_fee": 3.0,
         },
         {
+            # JG Maker A8S by Noitavonne, run from "Nero 8 by Noitavonne" (Nero 8 profile, COM4).
+            "id": "a8s",
+            "name": "JG Maker A8S (Noitavonne)",
+            "line": PRINT,
+            "bed_mm": [350, 250, 300],
+            "rate_per_hour": 6.0,
+            "setup_fee": 3.0,
+        },
+        {
             "id": "x1",
             "name": "xTool X1",
             "line": LASER,
@@ -135,7 +144,7 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "line": PRINT,
             "density_g_cm3": 1.24,
             "cost_per_kg": 22.0,
-            "machines": ["bambu"],
+            "machines": ["bambu", "a8s"],
         },
         {
             "id": "petg",
@@ -143,7 +152,7 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "line": PRINT,
             "density_g_cm3": 1.27,
             "cost_per_kg": 25.0,
-            "machines": ["bambu"],
+            "machines": ["bambu", "a8s"],
         },
         {
             "id": "plywood-3",
