@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from . import services
+from . import barcode, services
 from .models import (
     Customer, CustomerFlag, CustomerOrder, Order, OrderEvent, SavedDesign, SavedQuote, Shipment, utcnow,
 )
@@ -279,6 +279,49 @@ def register(app: FastAPI, render, get_db, cfg, require_admin) -> None:
         except services.ServiceError as exc:
             return back(back_to, str(exc))
         return back(back_to)
+
+    @app.get("/admin/order/{number}/labels", dependencies=admin)
+    def labels(request: Request, number: int, size: str = "4x6", db: Session = Depends(get_db)):
+        """Pyslate's own label for every box: ship-to, carrier, tracking and box barcodes."""
+        order = get_order(db, number)
+        s = db.get(Shipment, order.id)
+        boxes = s.packages if s else 1
+        tracking_svg = None
+        if s and s.tracking:
+            try:
+                tracking_svg = barcode.svg(s.tracking, height=70, module=2, font_size=16)
+            except barcode.BarcodeError:
+                tracking_svg = None
+        items = [{"n": n, "code": barcode.box_code(order.number, n, boxes),
+                  "svg": barcode.svg(barcode.box_code(order.number, n, boxes), height=56, module=2, font_size=15)}
+                 for n in range(1, boxes + 1)]
+        return render(request, "admin/labels.html", order=order, shipment=s, boxes=items, count=boxes,
+                      tracking_svg=tracking_svg, ship_from=services.get_profile(db).data.get("ship_from") or {},
+                      size="letter" if size == "letter" else "4x6", **ctx_common)
+
+    @app.get("/admin/barcode.svg", dependencies=admin)
+    def barcode_svg(code: str):
+        from fastapi.responses import Response
+
+        try:
+            return Response(barcode.svg(code[:80]), media_type="image/svg+xml")
+        except barcode.BarcodeError as exc:
+            raise HTTPException(422, str(exc)) from exc
+
+    @app.get("/admin/scan", dependencies=admin)
+    def scan(request: Request, code: str = "", db: Session = Depends(get_db)):
+        """Scan station: a handheld scanner types a box code (or order number) and Enter."""
+        found = barcode.parse_code(code) if code.strip() else None
+        order = None
+        if code.strip() and found is None:
+            # A carrier tracking number scanned off a box.
+            order = db.scalar(select(Order).where(Order.tracking == code.strip()))
+        elif found:
+            order = db.scalar(select(Order).where(Order.number == found["order"]))
+        missing = bool(code.strip()) and order is None
+        return render(request, "admin/scan.html", code=code.strip(), found=found or {}, order=order,
+                      shipment=db.get(Shipment, order.id) if order else None, missing=missing,
+                      error=request.query_params.get("error", "")[:300], **ctx_common)
 
     @app.get("/admin/order/{number}/packing-slip", dependencies=admin)
     def packing_slip(request: Request, number: int, db: Session = Depends(get_db)):

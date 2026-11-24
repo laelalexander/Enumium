@@ -100,3 +100,60 @@ def test_orders_still_making_show_as_coming(app, shop, cube_stl):
     number, _ = order_for(app, cube_stl)
     page = shop.get("/admin/shipping").text
     assert "Still being made" in page and f"#{number}" in page and "0/1 parts made" in page
+
+
+# ---- Pyslate's own labels and barcodes ------------------------------------------------
+
+
+def decode_code128(runs):
+    """A reference decoder, independent of the encoder's mode logic."""
+    from pyslate.barcode import PATTERNS
+
+    widths = "".join(str(w) for _, w in runs)
+    lookup = {p: v for v, p in enumerate(PATTERNS)}
+    symbols = [lookup[widths[i:i + 6]] for i in range(0, len(widths) - 7, 6)]
+    assert widths[-7:] == PATTERNS[106]
+    *data, check = symbols
+    assert check == (data[0] + sum(i * v for i, v in enumerate(data[1:], 1))) % 103
+    out, mode = "", {104: "B", 105: "C"}[data[0]]
+    for v in data[1:]:
+        if mode == "B" and v == 99:
+            mode = "C"
+        elif mode == "C" and v == 100:
+            mode = "B"
+        else:
+            out += f"{v:02d}" if mode == "C" else chr(v + 32)
+    return out
+
+
+@pytest.mark.parametrize("text", ["PYS-1004-01-02", "1Z999AA10123456784", "9400111899223197428490", "12", "A", "00012345"])
+def test_code128_round_trip(text):
+    from pyslate.barcode import modules, svg
+
+    assert decode_code128(modules(text)) == text
+    assert svg(text).startswith("<svg") and text in svg(text)
+
+
+def test_scan_codes():
+    from pyslate.barcode import box_code, parse_code
+
+    assert box_code(1004, 1, 2) == "PYS-1004-01-02"
+    assert parse_code("PYS-1004-01-02") == {"order": 1004, "box": 1, "boxes": 2}
+    assert parse_code("#1004") == {"order": 1004} and parse_code(" 1004 ") == {"order": 1004}
+    assert parse_code("1Z999AA10123456784") is None
+
+
+def test_labels_and_scan_station(app, shop, cube_stl):
+    number, _ = order_for(app, cube_stl, made=True)
+    scan = shop.get(f"/admin/scan?code=PYS-{number}-01-01").text
+    assert f"#{number}" in scan and "Mark packed" in scan
+    shop.post(f"/admin/order/{number}/pack", data={"packages": "2", "back": f"/admin/scan?code={number}"})
+    labels = shop.get(f"/admin/order/{number}/labels").text
+    assert labels.count('class="label"') == 2 and f"PYS-{number}-02-02" in labels and "Austin, TX".upper() in labels.upper()
+    shop.post(f"/admin/order/{number}/ship", data={"carrier": "ups", "service": "Ground", "tracking": "1Z999AA10123456784"})
+    labels = shop.get(f"/admin/order/{number}/labels?size=letter").text
+    assert "UPS TRACKING" in labels and "1Z999AA10123456784" in labels and "size: letter" in labels
+    # Scanning the carrier's tracking number finds the order too.
+    assert f"#{number}" in shop.get("/admin/scan?code=1Z999AA10123456784").text
+    assert "Nothing found" in shop.get("/admin/scan?code=PYS-9999").text
+    assert shop.get("/admin/barcode.svg?code=PYS-1").headers["content-type"].startswith("image/svg")

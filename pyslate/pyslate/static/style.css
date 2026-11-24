@@ -591,3 +591,12 @@ pre.cfg { background: var(--graphite); color: #e9eaee; padding: 12px; border-rad
 .table-scroll { overflow-x: auto; }
 .stack textarea { font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; }
 .ship-note a { font-weight: 600; }
+.scan-form { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.scan-form input { flex: 1 1 280px; font: 600 1.25rem var(--mono); padding: 14px 16px; border: 2px solid var(--accent-fill); border-radius: 10px; min-width: 0; }
+.scan-result { background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--accent-fill); border-radius: var(--radius); padding: 14px 16px; margin-top: 16px; }
+.scan-result header { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.scan-result h2 { margin: 0; font-size: 1.5rem; }
+.scan-status { font-weight: 700; color: var(--accent); margin: 4px 0; }
+.scan-shipped, .scan-delivered { border-left-color: var(--good); }
+.small-num { width: 90px; font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; }
+.scan-result .inline-form input, .scan-result .inline-form select { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; }

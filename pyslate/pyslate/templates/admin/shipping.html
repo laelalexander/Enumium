@@ -3,6 +3,7 @@
 {% block admin %}
 <div class="prod-head">
   <h1>Pack and ship</h1>
+  <a class="button small secondary" href="/admin/scan">Scan station</a>
   <p class="fine">{{ to_pack | length }} to pack · {{ packed | length }} packed · {{ shipped | length }} on the way · {{ coming | length }} still being made</p>
 </div>
 
@@ -51,7 +52,8 @@
         </label>
         <label>Service <input name="service" placeholder="Ground, Priority…"></label>
         <label class="wide">Tracking number <input name="tracking" maxlength="255"></label>
-        <div class="send-actions"><button class="button small">Mark shipped</button></div>
+        <div class="send-actions"><button class="button small">Mark shipped</button>
+          <a href="/admin/order/{{ o.number }}/labels" target="_blank">Box labels ({{ s.packages }})</a></div>
       </form>
       <form method="post" action="/admin/order/{{ o.number }}/unpack"><input type="hidden" name="back" value="/admin/shipping">
         <button class="link-button">Back to packing</button></form>
@@ -70,6 +72,7 @@
           {% if o.tracking %} · {% if turl %}<a href="{{ turl }}" target="_blank" rel="noopener">{{ o.tracking }}</a>{% else %}{{ o.tracking }}{% endif %}{% endif %}
           {% if s and s.shipped_at %} · shipped {{ s.shipped_at.strftime('%b %d') }}{% endif %}</span>
       </div>
+      <p class="fine"><a href="/admin/order/{{ o.number }}/labels" target="_blank">Shipping labels</a></p>
       <form method="post" action="/admin/order/{{ o.number }}/delivered"><input type="hidden" name="back" value="/admin/shipping">
         <button class="button small secondary">Mark delivered</button></form>
     </article>
