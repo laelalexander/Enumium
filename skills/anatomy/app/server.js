@@ -169,12 +169,21 @@ function cleanEnv() {
     // Markers inherited when the server was started from inside another Claude session.
     if (k === 'CLAUDECODE' || k.startsWith('CLAUDE_CODE_') || k === 'ANTHROPIC_BASE_URL') delete env[k];
   }
-  const extra = [];
+  const extra = [], tail = [];
   if (process.platform === 'win32') {
-    for (const d of [path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Prusa3D', 'PrusaSlicer')]) if (fs.existsSync(d)) extra.push(d);
+    const prusa = path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Prusa3D', 'PrusaSlicer');
+    if (fs.existsSync(prusa)) extra.push(prusa);
+    else {
+      // Portable PrusaSlicer unpacked under <root>\_tools\PrusaSlicer\PrusaSlicer-x.y.z (no admin rights needed).
+      const pr = path.join(ROOT, '_tools', 'PrusaSlicer');
+      let ds = []; try { ds = fs.readdirSync(pr).filter(n => /^PrusaSlicer/i.test(n)).sort().reverse(); } catch {}
+      const hit = ds.map(n => path.join(pr, n)).find(d => fs.existsSync(path.join(d, 'prusa-slicer-console.exe')));
+      if (hit) extra.push(hit);
+    }
     for (const b of [process.env.ProgramFiles, process.env.LOCALAPPDATA && path.join(process.env.LOCALAPPDATA, 'Programs')].filter(Boolean)) {
       let ds = []; try { ds = fs.readdirSync(b).filter(n => /^FreeCAD/i.test(n)); } catch {}
-      for (const n of ds) { const bin = path.join(b, n, 'bin'); if (fs.existsSync(bin)) extra.push(bin); }
+      // FreeCAD's bin holds its own python.exe: put it after PATH so it never shadows the system Python.
+      for (const n of ds) { const bin = path.join(b, n, 'bin'); if (fs.existsSync(bin)) tail.push(bin); }
     }
   }
     if (process.env.APPDATA) {
@@ -185,6 +194,7 @@ function cleanEnv() {
   // launcher started us with a PATH that has no Node.js on it.
   extra.unshift(path.dirname(process.execPath));
   if (extra.length) env.PATH = extra.join(path.delimiter) + path.delimiter + (env.PATH || '');
+  if (tail.length) env.PATH = (env.PATH || '') + path.delimiter + tail.join(path.delimiter);
   const kicad = findKiCadBin();
   // KiCad last, so its bundled Python does not shadow the system Python for venvs.
   if (kicad) env.PATH = (env.PATH || '') + path.delimiter + kicad;
