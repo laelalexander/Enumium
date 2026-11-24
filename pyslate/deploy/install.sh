@@ -75,6 +75,11 @@ PYSLATE_MAX_UPLOAD_MB=50
 EOF
   chmod 600 "${ENV_FILE}"
 fi
+if ! grep -q '^PYSLATE_AGENT_TOKEN=' "${ENV_FILE}"; then
+  say "Adding a token for the shop agent (shown in the shop console under Shop agent)"
+  printf '# The shop agent on the shop PC sends this to pick up machine jobs.\nPYSLATE_AGENT_TOKEN=%s\n' \
+    "$(openssl rand -hex 24)" >> "${ENV_FILE}"
+fi
 chown -R pyslate:pyslate "${ROOT}/data"
 
 say "Installing the pyslate service"
@@ -137,6 +142,7 @@ fi
 say "Done"
 echo "  Site:          https://${DOMAIN}"
 echo "  Shop console:  https://${DOMAIN}/admin"
+echo "  Production:    https://${DOMAIN}/admin/production"
 if [ -n "${NEW_PASSWORD}" ]; then
   echo "  Admin password: ${NEW_PASSWORD}"
   echo "  (Saved in ${ENV_FILE}. Write it down; it is not shown again.)"

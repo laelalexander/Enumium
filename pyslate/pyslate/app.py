@@ -19,7 +19,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from . import __version__, catalog, payments, services, studio
-from . import accounts, library
+from . import accounts, library, production
 from . import geometry as geo
 from .config import Settings, settings as default_settings
 from .models import ORDER_LABELS, CustomerOrder, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
@@ -667,5 +667,6 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     app.state.settings = cfg
     library.register(app, render, get_db, cfg)
     accounts.register(app, render, get_db, cfg)
+    production.register(app, render, get_db, cfg, require_admin)
 
     return app

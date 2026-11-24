@@ -524,3 +524,52 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
   .hero.has-hero { padding-top: 48px; }
   .page-head.has-hero { padding-top: 40px; }
 }
+
+/* ---- production board ---- */
+.prod-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; }
+.prod-head h1 { margin-bottom: .2em; }
+.agent-line { font-size: .9rem; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; background: var(--muted); }
+.dot-idle { background: var(--good); }
+.dot-offline { background: var(--bad); }
+.line-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 4px; }
+.line-tabs a { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; color: var(--ink); font-size: .9rem; }
+.line-tabs a.current { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.line-title { margin-top: 1.4em; }
+.machines { display: grid; align-items: start; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+.machine { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; min-width: 0; }
+.machine header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.machine h3 { margin: 0; font-size: 1rem; }
+.mdetail { margin: 4px 0 10px; overflow-wrap: anywhere; }
+.mstate { font: 600 .72rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 2px 8px; border-radius: 99px; background: var(--tint); color: var(--muted); white-space: nowrap; }
+.mstate-idle { background: color-mix(in srgb, var(--good) 14%, var(--surface)); color: var(--good); }
+.mstate-busy, .mstate-paused { background: var(--accent-soft); color: var(--accent); }
+.mstate-offline, .mstate-error { background: color-mix(in srgb, var(--bad) 12%, var(--surface)); color: var(--bad); }
+.review-lane { margin: 16px 0; border-color: var(--warn); }
+.review-lane h2 { margin: 0; font-size: 1rem; }
+.pjob { border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.pjob-main { display: flex; flex-direction: column; gap: 2px; overflow-wrap: anywhere; }
+.pjob-sent, .pjob-running { border-color: var(--accent); }
+.pjob-failed { border-color: var(--bad); }
+.run { background: var(--tint); border-radius: 6px; padding: 8px; }
+.run p { margin: 4px 0; overflow-wrap: anywhere; }
+.bar { height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent-fill); transition: width .5s; }
+.inline-form { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.inline-form select { max-width: 100%; }
+details.send summary { list-style: none; display: inline-block; }
+details.send summary::-webkit-details-marker { display: none; }
+.send-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.send-form label { display: flex; flex-direction: column; gap: 2px; font-size: .8rem; color: var(--muted); min-width: 0; }
+.send-form input, .send-form select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; width: 100%; }
+.send-form .wide, .send-actions { grid-column: 1 / -1; }
+.send-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.manual-start { margin-top: 4px; }
+.manual-start .link-button { font-size: .85rem; color: var(--muted); }
+.empty { margin: 4px 0; }
+.summary-lanes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.summary-lanes a { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 12px; text-decoration: none; color: var(--ink); }
+.agent-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.agent-table td, .agent-table th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.token { font: .9rem var(--mono); background: var(--tint); padding: 8px 10px; border-radius: 6px; overflow-wrap: anywhere; user-select: all; }
+pre.cfg { background: var(--graphite); color: #e9eaee; padding: 12px; border-radius: 8px; overflow: auto; font-size: .8rem; max-height: 420px; }

@@ -106,8 +106,9 @@ def test_full_order_flow(app, client, cube_stl, plate_stl):
         assert {j.line for j in jobs} == {"print", "laser"}
         job_ids = [j.id for j in jobs]
 
-    queue = client.get("/admin").text
+    queue = client.get("/admin/production").text
     assert "cube.stl" in queue and "plate.stl" in queue
+    assert "Bambu Lab printer" in client.get("/admin").text
 
     client.post(f"/admin/job/{job_ids[0]}", data={"state": "running"})
     assert "Making" in client.get(order_url).text

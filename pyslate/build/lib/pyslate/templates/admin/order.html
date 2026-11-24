@@ -1,0 +1,58 @@
+{% extends "admin/base.html" %}
+{% block admin %}
+<h1>Order #{{ order.number }} · {{ order.status_label }}</h1>
+<div class="order-grid">
+  <section>
+    <h2>Customer</h2>
+    <p>{{ order.name }} · {{ order.email }}</p>
+    <pre class="address">{{ order.shipping_address }}</pre>
+    {% if order.notes %}<p><strong>Notes:</strong> {{ order.notes }}</p>{% endif %}
+    <p>Total {{ order.total_cents | cents }} · ships {{ order.lead_days }} days after payment
+      · <a href="/order/{{ order.number }}?t={{ order.access_token }}">customer page</a></p>
+
+    {% if order.status == 'awaiting_payment' %}
+    <form method="post" action="/admin/order/{{ order.number }}/paid">
+      <button class="button">Mark paid and queue jobs</button>
+    </form>
+    {% endif %}
+
+    <h2>Update status</h2>
+    <form method="post" action="/admin/order/{{ order.number }}/status" class="stack">
+      <label>Status
+        <select name="status">
+          {% for s in ['making', 'finishing', 'shipped', 'delivered', 'cancelled'] %}
+          <option value="{{ s }}" {% if s == order.status %}selected{% endif %}>{{ order_labels[s] }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Tracking number <input name="tracking" value="{{ order.tracking }}"></label>
+      <label>Note to customer <input name="note"></label>
+      <button class="button small">Save</button>
+    </form>
+  </section>
+  <section>
+    <h2>Parts and jobs</h2>
+    <table class="parts">
+      <thead><tr><th>Part</th><th>Material</th><th>Qty</th><th>Machine</th><th>Job</th></tr></thead>
+      <tbody>
+      {% for line in order.quote.lines %}
+      {% set job = order.jobs | selectattr('quote_line_id', 'equalto', line.id) | first %}
+      <tr>
+        <td><a href="/admin/parts/{{ line.part.id }}/file">{{ line.part.filename }}</a></td>
+        <td>{{ line.material_id }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>{{ line.machine_id or 'review' }}</td>
+        <td>{{ job.label if job else 'not queued' }}{% if job and job.runs %}<br><span class="fine">{{ job.runs | length }} run(s){% if job.copies_done %}, {{ job.copies_done }} made{% endif %}</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <h2>History</h2>
+    <ul class="events">
+      {% for e in order.events | reverse %}
+      <li><strong>{{ order_labels.get(e.status, e.status) }}</strong> · {{ e.at.strftime('%b %d %H:%M') }}{% if e.note %} · {{ e.note }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}

@@ -20,6 +20,8 @@ class Settings:
     public_url: str = field(default_factory=lambda: _env("PYSLATE_PUBLIC_URL", "http://localhost:8000"))
     # Password for the shop admin console. Admin is disabled when unset.
     admin_token: str | None = field(default_factory=lambda: _env("PYSLATE_ADMIN_TOKEN"))
+    # Shared secret the shop agent on the shop PC sends to pick up machine runs. API off when unset.
+    agent_token: str | None = field(default_factory=lambda: _env("PYSLATE_AGENT_TOKEN"))
     # Signs admin session cookies. Set a fixed value in production so logins survive restarts.
     secret_key: str = field(default_factory=lambda: _env("PYSLATE_SECRET_KEY") or secrets.token_hex(32))
     stripe_secret_key: str | None = field(default_factory=lambda: _env("STRIPE_SECRET_KEY"))

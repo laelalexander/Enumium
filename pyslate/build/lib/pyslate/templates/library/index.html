@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{% if q %}{{ q }} · {% endif %}{% if category %}{{ category }} · {% endif %}Design library · Pyslate{% endblock %}
+{% block description %}Browse {{ '{:,}'.format(all_total) }} free designs to laser cut, engrave or 3D print: boxes, coasters, ornaments, puzzles, signs, art and space models. Pick one, customise it, and we make it.{% endblock %}
+{% block head %}<link rel="stylesheet" href="/static/library.css">{% endblock %}
+{% block content %}
+<section class="page-head lib-head">
+  <div class="wrap">
+    <span class="eyebrow">// design library</span>
+    <h1>Pick a design. We'll make it.</h1>
+    <p class="lead">{{ '{:,}'.format(all_total) }} free designs to laser cut, engrave or 3D print. Change any of them in the design studio, or order it as it is.</p>
+    <form class="lib-search" action="/designs" method="get" role="search">
+      <label class="sr" for="lib-q">Search designs</label>
+      <input id="lib-q" type="search" name="q" value="{{ q }}" placeholder="Search boxes, dragons, coasters, rockets…" autocomplete="off">
+      <select name="process" aria-label="How it's made">
+        <option value="">Laser and 3D print</option>
+        <option value="laser" {% if process == 'laser' %}selected{% endif %}>Laser cut and engrave</option>
+        <option value="print" {% if process == 'print' %}selected{% endif %}>3D print</option>
+      </select>
+      <select name="source" aria-label="Source">
+        <option value="">All sources</option>
+        {% for key, name in sources %}<option value="{{ key }}" {% if source == key %}selected{% endif %}>{{ name }}</option>{% endfor %}
+      </select>
+      {% if category %}<input type="hidden" name="category" value="{{ category }}">{% endif %}
+      <button class="button" type="submit">Search</button>
+    </form>
+  </div>
+</section>
+<section class="section lib-section">
+  <div class="wrap">
+    <nav class="lib-cats" aria-label="Categories">
+      <a href="{{ filter_url(category='') }}" {% if not category %}aria-current="true"{% endif %}>All</a>
+      {% for c, n in categories %}
+      <a href="{{ filter_url(category=c) }}" {% if category == c %}aria-current="true"{% endif %}>{{ c }} <span>{{ n }}</span></a>
+      {% endfor %}
+    </nav>
+    <p class="lib-count">{% if filtered %}{{ '{:,}'.format(total) }} design{{ '' if total == 1 else 's' }} found{% if pages > 1 %}, page {{ page }} of {{ pages }}{% endif %}. <a href="/designs">Clear filters</a>{% else %}Showing shop originals first, then space models, then artwork.{% endif %}</p>
+    {% if items %}
+    <ul class="lib-grid">
+      {% for d, thumb in items %}
+      <li>
+        <a class="lib-card" href="/designs/{{ d.slug }}">
+          <span class="lib-thumb {{ 'is-art' if d.source == 'game-icons' else '' }}"><img src="{{ thumb }}" alt="" loading="lazy" width="240" height="240"></span>
+          <strong>{{ d.title }}</strong>
+          <span class="lib-meta"><span class="pill {{ d.process }}">{{ 'Laser' if d.process == 'laser' else '3D print' }}</span>{% if d.price_cents %}<span class="price">{{ d.price_cents | cents }}</span>{% else %}<span>Free design</span>{% endif %}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="lib-empty">
+      <p>No designs match that yet.</p>
+      <p><a class="button" href="/studio">Draw it in the design studio</a> <a class="button ghost" href="/request">Ask us to design it</a></p>
+    </div>
+    {% endif %}
+    {% if pages > 1 %}
+    <nav class="lib-pages" aria-label="Pages">
+      {% if page > 1 %}<a href="{{ page_url(page - 1) }}" rel="prev">← Previous</a>{% endif %}
+      <span>Page {{ page }} of {{ pages }}</span>
+      {% if page < pages %}<a href="{{ page_url(page + 1) }}" rel="next">Next →</a>{% endif %}
+    </nav>
+    {% endif %}
+    <p class="fine lib-foot">Every design here is free to make and sell from: shop originals, public domain and Creative Commons work. <a href="/designs/sources">Where our designs come from</a>.</p>
+  </div>
+</section>
+{% endblock %}

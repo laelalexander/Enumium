@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% block admin %}
+<h1>Orders</h1>
+<p class="fine">Open jobs by machine. <a href="/admin/production">Go to Production</a> to send them to the machines.</p>
+<div class="summary-lanes">
+  {% for lane in lanes if lane.jobs %}
+  <a href="/admin/production{% if lane.machine.line != 'review' %}?line={{ lane.machine.line }}{% endif %}">{{ lane.machine.name }} <span class="count">{{ lane.jobs | length }}</span></a>
+  {% else %}<span class="fine">No open jobs.</span>{% endfor %}
+</div>
+
+<table class="orders">
+  <thead><tr><th>#</th><th>Customer</th><th>Status</th><th>Total</th><th>Placed</th></tr></thead>
+  <tbody>
+  {% for o in orders %}
+  <tr>
+    <td><a href="/admin/order/{{ o.number }}">{{ o.number }}</a></td>
+    <td>{{ o.name }}<br><span class="fine">{{ o.email }}</span></td>
+    <td>{{ o.status_label }}</td>
+    <td>{{ o.total_cents | cents }}</td>
+    <td>{{ o.created_at.strftime('%b %d %H:%M') }}</td>
+  </tr>
+  {% else %}<tr><td colspan="5">No orders yet.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+{% block title %}Shop agent · Pyslate shop{% endblock %}
+{% block admin %}
+<h1>Shop agent</h1>
+<p class="lead">The shop agent is a small program on a shop PC. It picks up the jobs you send from
+  <a href="/admin/production">Production</a>, hands them to the machines on the shop network, and reports
+  their status back here. Pyslate can't reach your machines directly, so the agent calls out to it.</p>
+
+{% if not token %}
+<div class="alert">
+  <p><strong>The agent API is off.</strong> Add a token to the server's settings and restart Pyslate.
+    Re-running <code>install.sh</code> on the Droplet does this for you.</p>
+</div>
+{% else %}
+<h2>1. Download the agent</h2>
+<p><a class="button small" href="/admin/agent/download">Download pyslate-shop-agent.zip</a>
+  <span class="fine">It includes <code>agent.json</code> with this shop's machines and token already filled in.</span></p>
+
+<h2>2. Fill in the machines</h2>
+<ul>
+  <li><strong>xTool lasers</strong> work straight away: each job opens in xTool Studio on the shop PC with the
+    settings in its note. Add each laser's IP address as <code>host</code> to see whether it's on the network.</li>
+  <li><strong>Bambu Lab</strong>: turn on LAN mode on the printer, then fill in <code>host</code>, <code>serial</code>
+    and <code>access_code</code>, and the Bambu Studio command line with your exported presets. Run <code>pip install paho-mqtt</code>.</li>
+  <li><strong>JG Maker A8S</strong>: set the slicer command (PrusaSlicer or Orca with your A8S profile) and run
+    <code>pip install pyserial</code>. Only one program can use COM4, so close Nero 8 while the agent prints.</li>
+  <li><strong>Tormach and others</strong>: the <code>folder</code> driver drops each file into a folder, such as
+    a share PathPilot can see.</li>
+</ul>
+<p>Turn a machine on with <code>"enabled": true</code>.</p>
+
+<h2>3. Start it</h2>
+<p>Unzip it on the shop PC (Python 3.11 or newer), then double-click <code>run-agent.bat</code>, or run
+  <code>py -3 -m shop_agent --config agent.json</code>. Check the machines first with <code>--status</code>.</p>
+
+<details>
+  <summary>Agent token</summary>
+  <p class="fine">The agent sends this with every call. Keep it private; change <code>PYSLATE_AGENT_TOKEN</code> in
+    <code>/etc/pyslate.env</code> to revoke it.</p>
+  <p class="token">{{ token }}</p>
+</details>
+{% endif %}
+
+<h2>Machines seen by the agent</h2>
+<table class="agent-table">
+  <thead><tr><th>Machine</th><th>Status</th><th>Driver</th><th>Last seen</th></tr></thead>
+  <tbody>
+  {% for m in machines %}{% set s = states.get(m.id) %}
+  <tr>
+    <td>{{ m.name }}<br><span class="fine">{{ m.id }}</span></td>
+    <td>{% if s %}<span class="mstate mstate-{{ s.state }}">{{ s.state }}</span><br><span class="fine">{{ s.detail }}</span>{% else %}<span class="fine">Not set up</span>{% endif %}</td>
+    <td>{{ s.driver if s else '' }}</td>
+    <td class="fine">{% if s %}{{ s.agent }}{% if s.seen %}<br>{{ s.seen[:19] | replace('T', ' ') }} UTC{% endif %}{% endif %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<details>
+  <summary>Sample agent.json</summary>
+  <pre class="cfg">{{ config | tojson(indent=2) }}</pre>
+</details>
+{% endblock %}

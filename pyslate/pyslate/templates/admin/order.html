@@ -42,7 +42,7 @@
         <td>{{ line.material_id }}</td>
         <td>{{ line.quantity }}</td>
         <td>{{ line.machine_id or 'review' }}</td>
-        <td>{{ job.state if job else 'not queued' }}</td>
+        <td>{{ job.label if job else 'not queued' }}{% if job and job.runs %}<br><span class="fine">{{ job.runs | length }} run(s){% if job.copies_done %}, {{ job.copies_done }} made{% endif %}</span>{% endif %}</td>
       </tr>
       {% endfor %}
       </tbody>

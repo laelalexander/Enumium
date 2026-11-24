@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Account settings · Pyslate{% endblock %}
+{% block content %}
+<div class="wrap account-page">
+  <div class="account-head">
+    <div>
+      <span class="eyebrow">// your account</span>
+      <h1>Settings</h1>
+    </div>
+    {% include "account/_nav.html" %}
+  </div>
+  {% if done == 'profile' %}<p class="notice">Saved. New orders will use these details.</p>
+  {% elif done == 'password' %}<p class="notice">Password changed. Other devices are signed out.</p>{% endif %}
+
+  <div class="settings-grid">
+    <section class="settings-card">
+      <h2>Profile and shipping</h2>
+      <p class="fine">Filled in for you at checkout. Signed in as {{ customer.email }}.</p>
+      <form method="post" action="/account/settings/profile" class="stack">
+        <label>Name <input name="name" autocomplete="name" maxlength="255" value="{{ customer.name }}"></label>
+        <label>Company <input name="company" autocomplete="organization" maxlength="255" value="{{ customer.company }}"></label>
+        <label>Phone <input name="phone" type="tel" autocomplete="tel" maxlength="64" value="{{ customer.phone }}"></label>
+        <label>Shipping address <textarea name="shipping_address" rows="3" autocomplete="street-address">{{ customer.shipping_address }}</textarea></label>
+        <button class="button">Save details</button>
+      </form>
+    </section>
+
+    <section class="settings-card">
+      <h2>Payments</h2>
+      {% if stripe_on %}
+      <p>Cards are kept by Stripe, never on Pyslate. Add a card, remove one, or change your default in Stripe's secure page. When you pay for an order while signed in, Stripe offers your saved cards.</p>
+      <form method="post" action="/account/settings/payments">
+        <button class="button">Manage payment methods</button>
+      </form>
+      {% else %}
+      <p>Card payments aren't switched on yet. For each order, the shop emails you payment details. Saved cards will appear here once card payments are live.</p>
+      {% endif %}
+      <p class="fine">Each order's page shows what it cost and where it is in the shop.</p>
+    </section>
+
+    <section class="settings-card">
+      <h2>Password</h2>
+      <form method="post" action="/account/settings/password" class="stack">
+        <label>Current password <input name="current" type="password" required autocomplete="current-password"></label>
+        <label>New password <input name="new" type="password" required minlength="10" autocomplete="new-password"></label>
+        <button class="button secondary">Change password</button>
+      </form>
+      <p class="fine">Changing it signs you out on other devices.</p>
+    </section>
+  </div>
+</div>
+{% endblock %}
