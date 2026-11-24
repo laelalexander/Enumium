@@ -14,9 +14,19 @@
     {% else %}<p class="fine"><a href="/account/signup">Create an account</a> to keep all your orders in one place.</p>{% endif %}
   </div>
   {% if just_paid and order.status == 'awaiting_payment' %}
-  <p class="notice">Thanks! We are confirming your payment. This page will update in a minute.</p>
+  <p class="notice">Thanks! We are confirming your payment with Stripe. This page will update in a few seconds.</p>
+  <script>setTimeout(() => location.reload(), 5000);</script>
+  {% elif just_paid and order.paid_at %}
+  <p class="notice">Payment received, thank you. Your parts are in the production queue.</p>
   {% elif payment_error %}
-  <p class="alert">We could not start card payment. Your order is saved and the shop will email you payment details.</p>
+  <p class="alert">We couldn't start card payment just now. Your order is saved. {% if stripe_enabled %}Try the button below again in a minute.{% else %}The shop will email you payment details.{% endif %}</p>
+  {% endif %}
+  {% if order.status == 'awaiting_payment' and stripe_enabled and not just_paid %}
+  <form method="post" action="/order/{{ order.number }}/pay" class="pay-now">
+    <input type="hidden" name="t" value="{{ order.access_token }}">
+    <div><strong>Waiting for payment</strong><span class="fine">Your parts go into the production queue as soon as you pay. Cards are handled by Stripe.</span></div>
+    <button class="button">Pay {{ order.total_cents | cents }} by card</button>
+  </form>
   {% endif %}
 
   <ol class="tracker">
