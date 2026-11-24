@@ -22,7 +22,7 @@ from . import __version__, catalog, payments, services, studio
 from . import accounts, library, production, shopops
 from . import geometry as geo
 from .config import Settings, settings as default_settings
-from .models import ORDER_LABELS, CustomerOrder, Shipment, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
+from .models import ORDER_LABELS, CustomerOrder, Shipment, Job, Order, OrderEvent, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
 from .routing import compatible_materials
 
 HERE = Path(__file__).parent
@@ -456,6 +456,8 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         db: Session = Depends(get_db),
     ):
         order = load_order(db, number, t)
+        if paid and cfg.stripe_enabled and order.status == "awaiting_payment" and payments.check_session(order, cfg):
+            services.mark_paid(db, order, "Paid by card through Stripe")
         customer = app.state.current_customer(request, db)
         owned = customer is not None and db.get(CustomerOrder, (customer.id, order.id)) is not None
         profile = services.get_profile(db)
@@ -471,16 +473,34 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     @app.post("/stripe/webhook")
     async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         try:
-            _, order_id = payments.parse_webhook(
+            _, paid = payments.parse_webhook(
                 await request.body(), request.headers.get("stripe-signature", ""), cfg
             )
         except payments.PaymentError as exc:
             raise HTTPException(400, str(exc)) from exc
-        if order_id:
-            order = db.get(Order, order_id)
-            if order is not None:
+        order = db.get(Order, paid["order_id"]) if paid and paid["order_id"] else None
+        if order is not None:
+            if payments.matches(order, paid):
                 services.mark_paid(db, order, "Paid by card through Stripe")
+            elif order.status == "awaiting_payment":
+                order.events.append(OrderEvent(status="awaiting_payment",
+                                               note="Stripe reported a payment that doesn't match this order. Check Stripe."))
+                db.commit()
         return JSONResponse({"received": True})
+
+    @app.post("/order/{number}/pay")
+    def pay_order(request: Request, number: int, t: str = Form(""), db: Session = Depends(get_db)):
+        """Start (or restart) card payment for an order that is still waiting for it."""
+        order = load_order(db, number, t)
+        order_url = f"/order/{order.number}?t={order.access_token}"
+        if not cfg.stripe_enabled or order.status != "awaiting_payment":
+            return RedirectResponse(order_url, status_code=303)
+        try:
+            url = payments.create_checkout(order, cfg, app.state.current_customer(request, db))
+            db.commit()
+        except payments.PaymentError:
+            return RedirectResponse(order_url + "&payment_error=1", status_code=303)
+        return RedirectResponse(url, status_code=303)
 
     @app.get("/request", response_class=HTMLResponse)
     def request_form(request: Request, service: str = ""):

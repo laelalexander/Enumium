@@ -58,7 +58,7 @@ bash /root/pyslate-install.sh
 
 `docker-compose.yml` is an alternative for a server with spare memory: the app plus Postgres, behind `deploy/nginx-pyslate.conf`.
 
-For card payments, add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to `/etc/pyslate.env`. Point a Stripe webhook at `https://pyslate.com/stripe/webhook` for `checkout.session.completed`, then run `systemctl restart pyslate`.
+For card payments, run `/var/www/pyslate.com/venv/bin/python -m pyslate.stripe_setup` on the server and paste your Stripe secret key. It checks the key, creates the webhook (`/stripe/webhook`, for `checkout.session.completed` and `checkout.session.async_payment_succeeded`), turns on the customer portal for saved cards, writes both keys to `/etc/pyslate.env` and restarts Pyslate. Try it with a test key first.
 
 ## Layout
 

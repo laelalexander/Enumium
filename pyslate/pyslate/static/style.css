@@ -611,3 +611,5 @@ table.rates { width: 100%; border-collapse: collapse; margin: 12px 0 24px; }
 table.rates th, table.rates td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
 table.rates .num { text-align: right; font-variant-numeric: tabular-nums; }
 .bought-labels { padding: 12px 16px; background: #fff; }
+.pay-now { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--accent-soft); border: 1px solid var(--accent-fill); border-radius: var(--radius); padding: 14px 18px; margin: 12px 0 4px; }
+.pay-now div { display: flex; flex-direction: column; }
