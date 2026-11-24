@@ -325,11 +325,42 @@ def test_f2_machine_added_to_saved_profiles():
     from pyslate.shop import default_profile
 
     old = default_profile()
-    old["machines"] = [m for m in old["machines"] if m["id"] != "f2"]
+    old["machines"] = [m for m in old["machines"] if m["id"] not in ("f2", "tormach")]
+    old["materials"] = [m for m in old["materials"] if m["line"] != "cnc" and not m.get("engrave_only")]
     old.pop("known_machine_ids", None)
     merged = _with_new_machines(old)
     f2 = next(m for m in merged["machines"] if m["id"] == "f2")
-    assert f2["bed_mm"] == [115, 115]
+    assert f2["bed_mm"] == [400, 115]
+    assert any(m["id"] == "tormach" for m in merged["machines"])
+    assert any(m["id"] == "al-6061" for m in merged["materials"])
+    assert any(m["id"] == "engrave-stainless" for m in merged["materials"])
+    from pyslate.shop import validate_profile
+    assert validate_profile(merged) == []
     # once known, an owner's deletion sticks
     merged["machines"] = [m for m in merged["machines"] if m["id"] != "f2"]
     assert all(m["id"] != "f2" for m in _with_new_machines(merged)["machines"])
+
+
+def test_studio_cnc_quote(client):
+    import json
+    r = client.post("/studio/quote", data={"design": json.dumps(PLATE), "process": "cnc",
+                                           "material_id": "al-6061", "height_mm": "12"})
+    assert r.status_code == 200, r.text
+    page = client.get(r.json()["url"]).text
+    assert "studio-design.stl" in page and 'class="pill">CNC' in page and "Tormach" in page
+
+
+def test_studio_metal_engraving_quote(client):
+    import json
+    r = client.post("/studio/quote", data={"design": json.dumps(PLATE), "process": "laser",
+                                           "material_id": "engrave-stainless"})
+    assert r.status_code == 200, r.text
+    page = client.get(r.json()["url"]).text
+    assert "Engraved on a metal blank on the xTool F2" in page
+
+
+def test_cnc_and_engraving_pages(client):
+    assert "Tormach" in client.get("/capabilities/cnc-machining").text
+    mats = client.get("/materials").text
+    assert "CNC machining" in mats and "Aluminium 6061" in mats and "Engrave only" in mats
+    assert "Engraved, not cut" in client.get("/capabilities/laser-cutting").text

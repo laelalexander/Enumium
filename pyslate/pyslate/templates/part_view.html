@@ -46,7 +46,7 @@
     <aside class="summary facts">
       <h1 class="part-name">{{ line.part.filename }}</h1>
       <p class="route route-{{ line.line }}">
-        <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'review': 'Needs review'}[line.line] }}</span>
+        <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'cnc': 'CNC', 'review': 'Needs review'}.get(line.line, line.line) }}</span>
         {{ line.route_reason }}
       </p>
       <table class="totals">

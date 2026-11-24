@@ -12,6 +12,8 @@ from typing import Any
 
 PRINT = "print"
 LASER = "laser"
+CNC = "cnc"
+LINES = (PRINT, LASER, CNC)
 
 DEFAULT_PROFILE: dict[str, Any] = {
     "currency": "usd",
@@ -48,11 +50,11 @@ DEFAULT_PROFILE: dict[str, Any] = {
         },
         {
             # Small dual laser (15 W diode + 5 W IR): engraves metal, cuts thin wood and acrylic.
-            # Standard field 115 x 115 mm (115 x 400 mm with the slide extension).
+            # Field 115 x 115 mm; the shop has the slide extension, which gives 115 x 400 mm.
             "id": "f2",
             "name": "xTool F2",
             "line": LASER,
-            "bed_mm": [115, 115],
+            "bed_mm": [400, 115],
             "rate_per_hour": 25.0,
             "setup_fee": 5.0,
         },
@@ -63,6 +65,15 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "bed_mm": [610, 610],
             "rate_per_hour": 60.0,
             "setup_fee": 10.0,
+        },
+        {
+            # Placeholder travel (Tormach 1100-class mill: 18 x 11 x 16.25 in). Confirm the models.
+            "id": "tormach",
+            "name": "Tormach CNC mill",
+            "line": CNC,
+            "bed_mm": [457, 279, 413],
+            "rate_per_hour": 75.0,
+            "setup_fee": 40.0,
         },
     ],
     "materials": [
@@ -122,12 +133,78 @@ DEFAULT_PROFILE: dict[str, Any] = {
             "passes": 1,
             "machines": ["metalfab"],
         },
+        # Metal engraving on the F2's 5 W IR laser. The design's outline is the blank's
+        # size: it is marked, not cut. Price = blank + engrave time.
+        {
+            "id": "engrave-stainless",
+            "name": "Engrave: stainless steel blank",
+            "line": LASER,
+            "engrave_only": True,
+            "thickness_mm": 1.0,
+            "cost_per_m2": 120.0,
+            "cut_speed_mm_s": 20.0,
+            "passes": 3,
+            "machines": ["f2"],
+        },
+        {
+            "id": "engrave-anodized",
+            "name": "Engrave: anodized aluminium blank",
+            "line": LASER,
+            "engrave_only": True,
+            "thickness_mm": 1.0,
+            "cost_per_m2": 80.0,
+            "cut_speed_mm_s": 40.0,
+            "passes": 1,
+            "machines": ["f2"],
+        },
+        {
+            "id": "engrave-brass",
+            "name": "Engrave: brass blank",
+            "line": LASER,
+            "engrave_only": True,
+            "thickness_mm": 1.0,
+            "cost_per_m2": 160.0,
+            "cut_speed_mm_s": 20.0,
+            "passes": 3,
+            "machines": ["f2"],
+        },
+        # CNC machining on the Tormach. Price = stock block + time to remove material.
+        {
+            "id": "al-6061",
+            "name": "Aluminium 6061",
+            "line": CNC,
+            "density_g_cm3": 2.70,
+            "cost_per_kg": 12.0,
+            "removal_cm3_per_min": 8.0,
+            "machines": ["tormach"],
+        },
+        {
+            "id": "steel-1018",
+            "name": "Mild steel 1018",
+            "line": CNC,
+            "density_g_cm3": 7.87,
+            "cost_per_kg": 6.0,
+            "removal_cm3_per_min": 2.5,
+            "machines": ["tormach"],
+        },
+        {
+            "id": "delrin",
+            "name": "Delrin (acetal)",
+            "line": CNC,
+            "density_g_cm3": 1.41,
+            "cost_per_kg": 18.0,
+            "removal_cm3_per_min": 15.0,
+            "machines": ["tormach"],
+        },
     ],
     # Print estimate: grams of plastic per part = volume x density x fill factor.
     "print_fill_factor": 0.45,
     "print_grams_per_hour": 12.0,
     # Extra time per laser job for travel and focusing, in minutes.
     "laser_overhead_minutes": 1.0,
+    # CNC: stock is the part's box plus this much on each side, in mm; plus programming time.
+    "cnc_stock_margin_mm": 3.0,
+    "cnc_program_minutes": 20.0,
     # Margin added around a laser part when charging for sheet use, in mm.
     "laser_sheet_margin_mm": 5.0,
 }
@@ -173,18 +250,18 @@ def validate_profile(data: dict[str, Any]) -> list[str]:
         for key in ("id", "name", "line", "bed_mm", "rate_per_hour", "setup_fee"):
             if key not in m:
                 problems.append(f"machine {m.get('id', '?')}: missing '{key}'")
-        if m.get("line") not in (PRINT, LASER):
-            problems.append(f"machine {m.get('id', '?')}: line must be 'print' or 'laser'")
+        if m.get("line") not in LINES:
+            problems.append(f"machine {m.get('id', '?')}: line must be 'print', 'laser' or 'cnc'")
     for mat in data["materials"]:
         mid = mat.get("id", "?")
-        if mat.get("line") not in (PRINT, LASER):
-            problems.append(f"material {mid}: line must be 'print' or 'laser'")
+        if mat.get("line") not in LINES:
+            problems.append(f"material {mid}: line must be 'print', 'laser' or 'cnc'")
             continue
-        needed = (
-            ("density_g_cm3", "cost_per_kg")
-            if mat["line"] == PRINT
-            else ("thickness_mm", "cost_per_m2", "cut_speed_mm_s")
-        )
+        needed = {
+            PRINT: ("density_g_cm3", "cost_per_kg"),
+            LASER: ("thickness_mm", "cost_per_m2", "cut_speed_mm_s"),
+            CNC: ("density_g_cm3", "cost_per_kg", "removal_cm3_per_min"),
+        }[mat["line"]]
         for key in ("id", "name", "machines", *needed):
             if key not in mat:
                 problems.append(f"material {mid}: missing '{key}'")

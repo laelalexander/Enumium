@@ -31,18 +31,22 @@ class ServiceError(ValueError):
 
 
 def _with_new_machines(data: dict) -> dict:
-    """Add machines that shipped after the owner saved their profile (e.g. the F2).
+    """Add machines and materials that shipped after the owner saved their profile
+    (e.g. the F2, metal engraving, the Tormach).
 
-    Each default machine is added once; "known_machine_ids" records which ones the
-    owner has seen, so a machine they delete later stays deleted.
+    Each default is added once; "known_machine_ids" / "known_material_ids" record which
+    ones the owner has seen, so one they delete later stays deleted. Missing top-level
+    settings are filled from the defaults.
     """
-    defaults = default_profile()["machines"]
-    known = set(data.get("known_machine_ids") or [m["id"] for m in data.get("machines", [])])
-    have = {m["id"] for m in data.get("machines", [])}
-    for m in defaults:
-        if m["id"] not in known and m["id"] not in have:
-            data = {**data, "machines": [*data.get("machines", []), m]}
-    data["known_machine_ids"] = sorted(known | {m["id"] for m in defaults})
+    base = default_profile()
+    data = {**{k: v for k, v in base.items() if k not in ("machines", "materials")}, **data}
+    for key, known_key in (("machines", "known_machine_ids"), ("materials", "known_material_ids")):
+        items = list(data.get(key, []))
+        known = set(data.get(known_key) or [m["id"] for m in items])
+        have = {m["id"] for m in items}
+        items += [m for m in base[key] if m["id"] not in known and m["id"] not in have]
+        data[key] = items
+        data[known_key] = sorted(known | {m["id"] for m in base[key]})
     return data
 
 

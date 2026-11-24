@@ -4,6 +4,7 @@ The rule is the shop's: sort first, then route.
   1. A sheet part (one thickness, straight sides) or a 2D drawing, in a
      laser material whose thickness matches, that fits a laser bed -> laser line.
   2. Anything with real 3D shape, in a print material, that fits a printer -> print line.
+     The same shape in a metal or plastic stock material that fits the mill -> CNC line.
   3. A part that cannot be made as chosen -> manual review by the shop.
 """
 
@@ -12,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .geometry import PartGeometry
-from .shop import LASER, PRINT, Profile
+from .shop import CNC, LASER, PRINT, Profile
 
 THICKNESS_TOLERANCE_MM = 0.25
 REVIEW = "review"
@@ -20,7 +21,7 @@ REVIEW = "review"
 
 @dataclass
 class Route:
-    line: str  # "print", "laser" or "review"
+    line: str  # "print", "laser", "cnc" or "review"
     machine_id: str | None
     reason: str
 
@@ -40,8 +41,11 @@ def compatible_materials(geom: PartGeometry, profile: Profile) -> list[dict]:
     """Materials a customer may pick for this part, in profile order."""
     options = []
     for mat in profile.data["materials"]:
-        if mat["line"] == PRINT and geom.kind == "mesh":
+        if mat["line"] in (PRINT, CNC) and geom.kind == "mesh":
             options.append(mat)
+        elif mat["line"] == LASER and mat.get("engrave_only"):
+            if geom.kind == "drawing":  # engraving comes from a drawing
+                options.append(mat)
         elif mat["line"] == LASER and geom.flat:
             if geom.kind == "drawing" or abs(mat["thickness_mm"] - (geom.thickness_mm or 0)) <= THICKNESS_TOLERANCE_MM:
                 options.append(mat)
@@ -51,7 +55,7 @@ def compatible_materials(geom: PartGeometry, profile: Profile) -> list[dict]:
 def default_material(geom: PartGeometry, profile: Profile) -> str | None:
     """Laser first for sheet parts (faster and cheaper), print otherwise."""
     options = compatible_materials(geom, profile)
-    laser = [m for m in options if m["line"] == LASER]
+    laser = [m for m in options if m["line"] == LASER and not m.get("engrave_only")]
     if laser:
         return laser[0]["id"]
     return options[0]["id"] if options else None
@@ -61,6 +65,15 @@ def route(geom: PartGeometry, material_id: str | None, profile: Profile) -> Rout
     material = profile.material(material_id) if material_id else None
     if material is None:
         return Route(REVIEW, None, "No material fits this part. The shop will review it and contact you.")
+
+    if material["line"] == LASER and material.get("engrave_only"):
+        if geom.kind != "drawing":
+            return Route(REVIEW, None, "Metal engraving needs a 2D drawing. Use the design studio or upload a DXF or SVG.")
+        for machine_id in material["machines"]:
+            machine = profile.machine(machine_id)
+            if machine and _fits(geom.outline_mm or geom.extents_mm[:2], machine["bed_mm"][:2]):
+                return Route(LASER, machine_id, f"Engraved on a metal blank on the {machine['name']}.")
+        return Route(REVIEW, None, "The design is larger than the engraving area. The shop will review it.")
 
     if material["line"] == LASER:
         if not geom.flat:
@@ -80,6 +93,12 @@ def route(geom: PartGeometry, material_id: str | None, profile: Profile) -> Rout
 
     if geom.kind != "mesh":
         return Route(REVIEW, None, "A 2D drawing can only be laser cut. Pick a sheet material.")
+    if material["line"] == CNC:
+        for machine_id in material["machines"]:
+            machine = profile.machine(machine_id)
+            if machine and _fits(geom.extents_mm, machine["bed_mm"]):
+                return Route(CNC, machine_id, f"Machined from {material['name']} on the {machine['name']}.")
+        return Route(REVIEW, None, "The part is larger than the mill's travel. The shop will review it.")
     for machine_id in material["machines"]:
         machine = profile.machine(machine_id)
         if machine and _fits(geom.extents_mm, machine["bed_mm"]):
