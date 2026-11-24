@@ -94,7 +94,8 @@ def header(feed: dict, title: str, link_ok: bool, width: int):
     left.append(f" {title} ", style="bold " + INK)
     mid = Text()
     for label, value, style in (("QUEUED", tot["queued"], INK), ("RUNNING", tot["running"], HOT),
-                                ("LATE", tot["late"], BAD if tot["late"] else DIM), ("DONE 24H", tot["done_24h"], OK)):
+                                ("LATE", tot["late"], BAD if tot["late"] else DIM), ("DONE 24H", tot["done_24h"], OK),
+                                ("TO SHIP", tot.get("to_ship", 0), "bright_cyan")):
         mid.append(f" {label} ", style=DIM)
         mid.append(f"{value:>2} ", style="bold " + style)
     right = Text()
@@ -375,7 +376,7 @@ def demo_feed() -> dict:
             {"at": iso(-55), "state": "failed", "machine_id": "bambu", "order": 1005, "part": "vase.stl", "copies": 1},
             {"at": iso(-90), "state": "done", "machine_id": "x1", "order": 1000, "part": "box-lid.dxf", "copies": 4},
         ],
-        "totals": {"queued": 8, "running": 2, "late": 1, "done_24h": 2},
+        "totals": {"queued": 8, "running": 2, "late": 1, "done_24h": 2, "to_ship": 1},
     }
 
 

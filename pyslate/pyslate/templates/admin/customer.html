@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ display_name }} · Customers · Pyslate shop{% endblock %}
+{% block admin %}
+<p class="fine"><a href="/admin/customers">Customers</a></p>
+<h1>{{ display_name }}</h1>
+{% if saved_ok %}<p class="notice">Saved.</p>{% endif %}
+<div class="order-grid">
+  <section>
+    <h2>Details</h2>
+    <p>{{ email }}{% if account and account.phone %} · {{ account.phone }}{% endif %}{% if account and account.company %}<br>{{ account.company }}{% endif %}</p>
+    {% if account %}
+      {% if account.shipping_address %}<pre class="address">{{ account.shipping_address }}</pre>{% endif %}
+      <p class="fine">Account since {{ account.created_at.strftime('%b %d, %Y') }} · {{ saved.quotes }} saved quote(s) · {{ saved.designs }} saved design(s)
+        {% if account.stripe_customer_id %} · card on file with Stripe{% endif %}</p>
+      {% if flag and flag.disabled %}<p class="alert">This account is closed. The customer can't sign in; their orders still ship.</p>{% endif %}
+      <h2>Shop notes</h2>
+      <form method="post" class="stack">
+        <input type="hidden" name="action" value="notes">
+        <textarea name="shop_notes" rows="4" placeholder="Only the shop sees these">{{ flag.shop_notes if flag else '' }}</textarea>
+        <button class="button small">Save notes</button>
+      </form>
+      <h2>Account</h2>
+      <div class="job-actions">
+        <form method="post"><input type="hidden" name="action" value="signout"><button class="button small secondary">Sign out everywhere</button></form>
+        {% if flag and flag.disabled %}
+        <form method="post"><input type="hidden" name="action" value="reopen"><button class="button small">Reopen account</button></form>
+        {% else %}
+        <form method="post" onsubmit="return confirm('Close this account? The customer will be signed out and can\'t sign in until you reopen it.')"><input type="hidden" name="action" value="close"><button class="button small danger">Close account</button></form>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="fine">Guest buyer: ordered without an account.</p>
+    {% endif %}
+  </section>
+  <section>
+    <h2>Orders <span class="count">{{ orders | length }}</span></h2>
+    <p class="fine">{{ spent | cents }} paid in total.</p>
+    <table class="parts">
+      <thead><tr><th>#</th><th>Status</th><th>Parts</th><th>Total</th><th>Placed</th></tr></thead>
+      <tbody>
+      {% for o in orders %}
+      <tr>
+        <td><a href="/admin/order/{{ o.number }}">{{ o.number }}</a></td>
+        <td>{{ o.status_label }}{% if o.tracking %}<br><span class="fine">{{ o.tracking }}</span>{% endif %}</td>
+        <td>{{ o.quote.lines | length }}</td>
+        <td>{{ o.total_cents | cents }}</td>
+        <td class="fine">{{ o.created_at.strftime('%b %d, %Y') }}</td>
+      </tr>
+      {% else %}<tr><td colspan="5">No orders yet.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}

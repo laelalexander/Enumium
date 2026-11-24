@@ -134,7 +134,7 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
 .events li { padding: 8px 0; border-bottom: 1px solid var(--line); }
 .events span { color: var(--muted); }
 
-.admin-nav { display: flex; gap: 20px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+.admin-nav { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
 .admin-nav form { margin-left: auto; }
 .lanes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
 .lane { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 12px 12px; }
@@ -578,3 +578,16 @@ pre.cfg { background: var(--graphite); color: #e9eaee; padding: 12px; border-rad
 .pp-step { color: var(--muted); }
 .pp-2 { color: var(--accent); font-weight: 600; }
 .pp-3 { color: var(--good); font-weight: 600; }
+
+/* ---- pack and ship, customers ---- */
+.ship-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; align-items: start; }
+.ship-col h2 { margin-top: .4em; }
+.ship-card { background: var(--surface); }
+.pack-list { list-style: none; padding: 0; margin: 4px 0; font-size: .9rem; }
+.pack-list li { padding: 3px 0; overflow-wrap: anywhere; }
+.late { color: var(--bad); }
+.search-form { margin: 8px 0 16px; }
+.search-form input { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; min-width: min(100%, 320px); }
+.table-scroll { overflow-x: auto; }
+.stack textarea { font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 8px; }
+.ship-note a { font-weight: 600; }

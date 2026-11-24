@@ -408,6 +408,7 @@ def board_feed(db: Session, now: datetime | None = None) -> dict:
             "running": sum(1 for m in machines if m["current"]),
             "late": sum(1 for o in orders if o["late"]),
             "done_24h": sum(1 for e in events if e["state"] == "done"),
+            "to_ship": sum(1 for o in open_orders if o.status == "finishing"),
         },
     }
 

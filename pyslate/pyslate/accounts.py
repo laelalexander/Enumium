@@ -21,7 +21,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .models import Customer, CustomerOrder, Order, Quote, SavedDesign, SavedQuote
+from .models import Customer, CustomerFlag, CustomerOrder, Order, Quote, SavedDesign, SavedQuote
 
 COOKIE = "pyslate_customer"
 SESSION_SECONDS = 30 * 24 * 3600
@@ -90,6 +90,9 @@ def register(app: FastAPI, render, get_db, cfg) -> None:
             return None
         c = db.get(Customer, cid)
         if c is None or str(c.session_version) != version:
+            return None
+        flag = db.get(CustomerFlag, c.id)
+        if flag is not None and flag.disabled:
             return None
         return c
 
@@ -161,6 +164,10 @@ def register(app: FastAPI, render, get_db, cfg) -> None:
         if c is None or not check_password(password, c.password_hash):
             note_fail(request)
             return render(request, "account/login.html", 401, errors=["That email and password don't match."], **ctx)
+        flag = db.get(CustomerFlag, c.id)
+        if flag is not None and flag.disabled:
+            return render(request, "account/login.html", 403,
+                          errors=["This account is closed. Contact the shop if you need it back."], **ctx)
         return signed_in(RedirectResponse(safe_next(next), status_code=303), c)
 
     @app.post("/account/logout")

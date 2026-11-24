@@ -19,10 +19,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from . import __version__, catalog, payments, services, studio
-from . import accounts, library, production
+from . import accounts, library, production, shopops
 from . import geometry as geo
 from .config import Settings, settings as default_settings
-from .models import ORDER_LABELS, CustomerOrder, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
+from .models import ORDER_LABELS, CustomerOrder, Shipment, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
 from .routing import compatible_materials
 
 HERE = Path(__file__).parent
@@ -465,7 +465,8 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         progress = {ln.id: production.part_progress(profile, jobs.get(ln.id)) for ln in order.quote.lines}
         return render(request, "order.html", order=order, just_paid=bool(paid), payment_error=bool(payment_error),
                       customer=customer, owned=owned, added=request.query_params.get("added") == "1",
-                      material_names=names, progress=progress)
+                      material_names=names, progress=progress, shipment=db.get(Shipment, order.id),
+                      tracking_url=shopops.tracking_url, carrier_name=shopops.carrier_name)
 
     @app.post("/stripe/webhook")
     async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
@@ -671,5 +672,6 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     library.register(app, render, get_db, cfg)
     accounts.register(app, render, get_db, cfg)
     production.register(app, render, get_db, cfg, require_admin)
+    shopops.register(app, render, get_db, cfg, require_admin)
 
     return app

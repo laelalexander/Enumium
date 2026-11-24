@@ -10,6 +10,10 @@
     <p>Total {{ order.total_cents | cents }} · ships {{ order.lead_days }} days after payment
       · <a href="/order/{{ order.number }}?t={{ order.access_token }}">customer page</a></p>
 
+    <p><a href="/admin/order/{{ order.number }}/packing-slip" target="_blank">Packing slip</a>
+      · <a href="/admin/shipping">Pack and ship</a>
+      · <a href="/admin/customers/{{ order.email | urlencode }}">Customer</a></p>
+
     {% if order.status == 'awaiting_payment' %}
     <form method="post" action="/admin/order/{{ order.number }}/paid">
       <button class="button">Mark paid and queue jobs</button>

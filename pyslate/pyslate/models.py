@@ -304,6 +304,37 @@ class MachineStatus(Base):
     seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+# ---- shop operations: customer management, packing and shipping (new tables only) ----
+
+
+class CustomerFlag(Base):
+    """The shop's own notes on a customer account, and whether it is closed."""
+
+    __tablename__ = "customer_flags"
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), primary_key=True)
+    disabled: Mapped[bool] = mapped_column(default=False)
+    shop_notes: Mapped[str] = mapped_column(Text, default="")
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class Shipment(Base):
+    """Packing and shipping for one order."""
+
+    __tablename__ = "shipments"
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"), primary_key=True)
+    carrier: Mapped[str] = mapped_column(String(32), default="")
+    service: Mapped[str] = mapped_column(String(64), default="")
+    tracking: Mapped[str] = mapped_column(String(255), default="")
+    packages: Mapped[int] = mapped_column(Integer, default=1)
+    weight_g: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    dims_mm: Mapped[str] = mapped_column(String(64), default="")  # "300 x 200 x 100"
+    notes: Mapped[str] = mapped_column(Text, default="")
+    packed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    shipped_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    delivered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    order: Mapped[Order] = relationship()
+
+
 def make_session_factory(url: str):
     connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
     engine = create_engine(url, connect_args=connect_args, future=True)
