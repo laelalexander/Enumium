@@ -363,8 +363,8 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
 @media (max-width: 760px) { .studio-grid { grid-template-columns: minmax(0, 1fr); } .studio-main { order: -1; } }
 .studio-panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px 16px 16px; min-width: 0; }
 .studio-panel h3 { font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 14px 0 8px; }
-.tool-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.tool-buttons button, .template-list button { font: 500 .88rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.tool-buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.tool-buttons button, .template-list button { font: 500 .88rem var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; cursor: pointer; display: flex; min-width: 0; white-space: nowrap; overflow: hidden; align-items: center; gap: 7px; }
 .tool-buttons button:hover, .template-list button:hover { border-color: var(--accent-fill); background: var(--accent-soft); }
 .tool-buttons svg { width: 18px; height: 18px; fill: none; stroke: var(--accent); stroke-width: 1.8; flex: none; }
 .template-list { display: flex; flex-direction: column; gap: 6px; }
@@ -402,7 +402,7 @@ input, select, textarea { font: inherit; color: var(--ink); background: var(--su
 .studio-status { font-size: .88rem; margin: 10px 0 0; color: var(--good); }
 .studio-status.bad { color: var(--bad); }
 .wrap.wide { max-width: 1640px; }
-.studio-grid { grid-template-columns: 220px minmax(0, 1fr) 280px; }
+.studio-grid { grid-template-columns: 272px minmax(0, 1fr) 280px; }
 .board-wrap { aspect-ratio: auto; max-height: 78vh; min-height: 320px; }
 #board.drawing, #board.scissors, #board.scissors .hit { cursor: crosshair; }
 #board .handle { touch-action: none; }
