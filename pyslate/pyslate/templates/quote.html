@@ -29,7 +29,7 @@
             {% else %}{{ g.outline_mm | map('round', 1) | join(' × ') }} mm drawing{% endif %}
           </p>
           <p class="route route-{{ line.line }}">
-            <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'cnc': 'CNC', 'review': 'Needs review'}.get(line.line, line.line) }}</span>
+            <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'cnc': 'CNC', 'router': 'CNC router', 'plasma': 'Plasma', 'review': 'Needs review'}.get(line.line, line.line) }}</span>
             {{ line.route_reason }}
           </p>
           {% for issue in g.issues %}<p class="dfm">{{ issue }}</p>{% endfor %}
@@ -39,7 +39,7 @@
             <label>Material
               <select name="material_id">
                 {% for m in row.materials %}
-                <option value="{{ m.id }}" {% if m.id == line.material_id %}selected{% endif %}>{{ m.name }}{{ {'laser': ' (laser)', 'print': ' (print)', 'cnc': ' (CNC)'}.get(m.line, '') }}</option>
+                <option value="{{ m.id }}" {% if m.id == line.material_id %}selected{% endif %}>{{ m.name }}{{ {'laser': ' (laser)', 'print': ' (print)', 'cnc': ' (CNC)', 'router': ' (router)', 'plasma': ' (plasma)'}.get(m.line, '') }}</option>
                 {% else %}<option value="">No material fits</option>{% endfor %}
               </select>
             </label>

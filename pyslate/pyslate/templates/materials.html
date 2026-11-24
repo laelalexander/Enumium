@@ -10,14 +10,14 @@
 </section>
 <section class="section">
   <div class="wrap">
-    {% for line, title in [('print', '3D printing'), ('laser', 'Laser cutting and engraving'), ('cnc', 'CNC machining')] %}
+    {% for line, title in [('print', '3D printing'), ('laser', 'Laser cutting and engraving'), ('cnc', 'CNC machining'), ('router', 'CNC routing'), ('plasma', 'Plasma cutting'), ('molding', 'Injection molding (quoted per project)')] %}
     <h2 class="group-title">{{ title }}</h2>
     <div class="table-scroll">
     <table class="data-table">
-      <thead><tr><th>Material</th>{% if line == 'laser' %}<th>Thickness</th>{% endif %}<th>Machines</th></tr></thead>
+      <thead><tr><th>Material</th>{% if line in ('laser', 'router', 'plasma') %}<th>Thickness</th>{% endif %}<th>Machines</th></tr></thead>
       <tbody>
       {% for m in profile.materials if m.line == line %}
-      <tr><td>{{ m.name }}</td>{% if line == 'laser' %}<td>{{ 'Engrave only' if m.engrave_only else '%g mm' % m.thickness_mm }}</td>{% endif %}<td>{% for id in m.machines %}{{ machine_names.get(id, id) }}{{ ', ' if not loop.last }}{% endfor %}</td></tr>
+      <tr><td>{{ m.name }}</td>{% if line in ('laser', 'router', 'plasma') %}<td>{{ 'Engrave only' if m.engrave_only else '%g mm' % m.thickness_mm }}</td>{% endif %}<td>{% for id in m.machines %}{{ machine_names.get(id, id) }}{{ ', ' if not loop.last }}{% endfor %}</td></tr>
       {% endfor %}
       </tbody>
     </table>

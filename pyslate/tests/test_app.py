@@ -325,13 +325,13 @@ def test_f2_machine_added_to_saved_profiles():
     from pyslate.shop import default_profile
 
     old = default_profile()
-    old["machines"] = [m for m in old["machines"] if m["id"] not in ("f2", "tormach")]
-    old["materials"] = [m for m in old["materials"] if m["line"] != "cnc" and not m.get("engrave_only")]
+    old["machines"] = [m for m in old["machines"] if m["id"] not in ("f2", "770m", "1100mx", "8l", "24r", "1300pl", "noit1680")]
+    old["materials"] = [m for m in old["materials"] if m["line"] not in ("cnc", "router", "plasma", "molding") and not m.get("engrave_only")]
     old.pop("known_machine_ids", None)
     merged = _with_new_machines(old)
     f2 = next(m for m in merged["machines"] if m["id"] == "f2")
     assert f2["bed_mm"] == [400, 115]
-    assert any(m["id"] == "tormach" for m in merged["machines"])
+    assert {"770m", "1100mx", "8l", "24r", "1300pl", "noit1680"} <= {m["id"] for m in merged["machines"]}
     assert any(m["id"] == "al-6061" for m in merged["materials"])
     assert any(m["id"] == "engrave-stainless" for m in merged["materials"])
     from pyslate.shop import validate_profile
@@ -364,3 +364,23 @@ def test_cnc_and_engraving_pages(client):
     mats = client.get("/materials").text
     assert "CNC machining" in mats and "Aluminium 6061" in mats and "Engrave only" in mats
     assert "Engraved, not cut" in client.get("/capabilities/laser-cutting").text
+
+
+def test_router_and_plasma_quotes(client):
+    import json
+    for material, pill, machine in (("router-ply-18", "CNC router", "24R"), ("plasma-steel-6", "Plasma", "1300PL")):
+        r = client.post("/studio/quote", data={"design": json.dumps(PLATE), "process": material.split("-")[0],
+                                               "material_id": material})
+        assert r.status_code == 200, r.text
+        page = client.get(r.json()["url"]).text
+        assert f'class="pill">{pill}' in page and machine in page
+
+
+def test_studio_hides_lathe_and_molder(client):
+    page = client.get("/studio").text
+    assert "1100MX" in page and "8L lathe" not in page and "NOIT1680" not in page
+
+
+def test_new_capability_pages(client):
+    for slug, word in (("cnc-routing", "24R"), ("plasma-cutting", "1300PL"), ("injection-molding", "Noitavonne")):
+        assert word in client.get(f"/capabilities/{slug}").text

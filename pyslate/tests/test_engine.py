@@ -74,9 +74,10 @@ def test_3d_parts_print_and_oversize_goes_to_review(cube_stl, big_stl, profile):
     assert route(geo.analyze(cube_stl), "plywood-3", profile).line == REVIEW
 
 
-def test_dxf_only_offers_laser_materials(square_dxf, profile):
+def test_dxf_only_offers_sheet_materials(square_dxf, profile):
     g = geo.analyze(square_dxf)
-    assert {m["line"] for m in compatible_materials(g, profile)} == {LASER}
+    assert {m["line"] for m in compatible_materials(g, profile)} == {LASER, "router", "plasma"}
+    assert route(g, "plasma-steel-6", profile).machine_id == "1300pl"
     assert route(g, "steel-1", profile).machine_id == "metalfab"
 
 

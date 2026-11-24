@@ -152,7 +152,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     def studio_context(db: Session) -> dict:
         profile = services.get_profile(db).data
         machines = [{"id": m["id"], "name": m["name"], "line": m["line"], "bed": list(m["bed_mm"][:2])}
-                    for m in profile["machines"]]
+                    for m in profile["machines"] if m.get("kind") != "lathe" and m["line"] != "molding"]  # 2D outlines only
         mats = [{"id": m["id"], "name": m["name"], "line": m["line"], "thickness": m.get("thickness_mm"),
                  "engrave_only": bool(m.get("engrave_only")), "machines": m.get("machines", [])}
                 for m in profile["materials"]]
@@ -184,7 +184,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         try:
             clean = studio.validate_design(design)
             if process not in studio.PROCESSES:
-                raise studio.DesignError("Choose laser cutting, 3D printing or CNC machining")
+                raise studio.DesignError("Choose how the part is made")
             if process in studio.SOLID_PROCESSES and not 0.4 <= height_mm <= 256:
                 raise studio.DesignError("Part height must be between 0.4 and 256 mm")
             with tempfile.TemporaryDirectory() as tmp:
@@ -219,9 +219,9 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         try:
             clean = studio.validate_design(design)
             if process not in studio.PROCESSES:
-                raise studio.DesignError("Choose laser cutting, 3D printing or CNC machining")
+                raise studio.DesignError("Choose how the part is made")
             note = (f"{description.strip()}\n\nFrom the design studio: {len(clean['shapes'])} shapes, "
-                    f"{studio.PROCESSES[process] + ', ' + format(height_mm, 'g') + ' mm tall' if process in studio.SOLID_PROCESSES else 'laser cut'}"
+                    f"{studio.PROCESSES[process] + ', ' + format(height_mm, 'g') + ' mm tall' if process in studio.SOLID_PROCESSES else studio.PROCESSES[process]}"
                     f"{', material ' + material_id if material_id else ''}.")
             with tempfile.TemporaryDirectory() as tmp:
                 tmpdir = Path(tmp)

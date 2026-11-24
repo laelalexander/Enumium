@@ -25,7 +25,7 @@
         <label><input type="checkbox" id="t-dims" checked> Dimensions</label>
         <label><input type="checkbox" id="t-edges" checked> Edges</label>
         <label><input type="checkbox" id="t-wire"> Wireframe</label>
-        <label><input type="checkbox" id="t-plate" checked> {% if line.line == 'laser' %}Laser bed{% else %}Build plate{% endif %}</label>
+        <label><input type="checkbox" id="t-plate" checked> {% if line.line in ('laser', 'router', 'plasma') %}Machine bed{% else %}Build plate{% endif %}</label>
         <label><input type="checkbox" id="t-spin"> Spin</label>
         {% if line.line == 'print' %}<label><input type="checkbox" id="t-overhang"> Overhangs</label>{% endif %}
         <label>Units
@@ -46,7 +46,7 @@
     <aside class="summary facts">
       <h1 class="part-name">{{ line.part.filename }}</h1>
       <p class="route route-{{ line.line }}">
-        <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'cnc': 'CNC', 'review': 'Needs review'}.get(line.line, line.line) }}</span>
+        <span class="pill">{{ {'print': '3D print', 'laser': 'Laser', 'cnc': 'CNC', 'router': 'CNC router', 'plasma': 'Plasma', 'review': 'Needs review'}.get(line.line, line.line) }}</span>
         {{ line.route_reason }}
       </p>
       <table class="totals">

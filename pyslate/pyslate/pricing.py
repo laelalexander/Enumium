@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass
 
 from .geometry import PartGeometry
 from .routing import Route
-from .shop import CNC, LASER, PRINT, Profile
+from .shop import CNC, PRINT, SHEET_LINES, Profile
 
 
 @dataclass
@@ -46,7 +46,7 @@ def price_line(geom: PartGeometry, material_id: str, route: Route, quantity: int
         grams = geom.volume_mm3 / 1000.0 * material["density_g_cm3"] * data["print_fill_factor"]
         material_cost = grams / 1000.0 * material["cost_per_kg"]
         minutes = grams / data["print_grams_per_hour"] * 60.0 + 6.0  # plus heat-up and first layer
-    elif route.line == LASER:
+    elif route.line in SHEET_LINES:
         margin = data["laser_sheet_margin_mm"]
         w, h = (geom.outline_mm or geom.extents_mm[:2])[:2]
         sheet_m2 = (w + 2 * margin) * (h + 2 * margin) / 1e6

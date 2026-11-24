@@ -138,8 +138,9 @@ function analyse() {
 /* ---------------- machines and materials ---------------- */
 const machine = () => cfg.machines.find(m => m.id === state.machine) || cfg.machines[0];
 // 3D lines (print, CNC) extrude the outline to a height; the laser cuts it flat.
-const isPrint = () => machine().line !== 'laser';
-const LINE_LABEL = { print: '3D print', laser: 'Laser', cnc: 'CNC mill' };
+const SHEET = ['laser', 'router', 'plasma'];
+const isPrint = () => !SHEET.includes(machine().line);
+const LINE_LABEL = { print: '3D print', laser: 'Laser', cnc: 'CNC mill', router: 'CNC router', plasma: 'Plasma' };
 const engraveOnly = () => !!cfg.materials.find(m => m.id === state.material)?.engrave_only;
 const bed = () => machine().bed;
 const materialSel = $('material');
@@ -157,7 +158,7 @@ function fillMaterials() {
   materialSel.innerHTML = mats.map(x => `<option value="${x.id}">${x.name}</option>`).join('');
   if (!mats.some(x => x.id === state.material)) state.material = mats[0]?.id || '';
   materialSel.value = state.material;
-  $('height-field').hidden = m.line === 'laser';
+  $('height-field').hidden = SHEET.includes(m.line);
 }
 materialSel.addEventListener('change', () => { state.material = materialSel.value; render(); renderFacts(); save(); refresh3d(); });
 $('height').addEventListener('input', e => { const v = parseFloat(e.target.value); if (v > 0) { state.height = v; renderFacts(); save(); refresh3d(); } });
@@ -738,6 +739,7 @@ function renderFacts() {
   const crosses = sp.some((p, i) => sp.some((q, j) => { if (i === j || areas[j] <= areas[i] || material[i].si === material[j].si) return false; const n = p.filter(pt => inside(pt, q)).length; return n > 0 && n < p.length; }));
   if (crosses) issues.push('A shape crosses the edge of another, so the overlap becomes a gap. To trim material away cleanly, select the shape and use the scissors.');
   const textCut = state.shapes.some((s, i) => s.type === 'text' && !s.engrave && s.font !== 'stencil');
+  if (['router', 'plasma'].includes(machine().line) && lines.some(c => c.engrave)) issues.push(machine().line === 'plasma' ? 'The plasma table can\'t engrave, so engraved lines and text are left for the shop to review.' : 'On the router, engraved lines and text are carved with a V-bit.');
   if (engraveOnly()) issues.push('Metal engraving: everything is engraved and nothing is cut. The outline sets the size of the metal blank we engrave.');
   else if (textCut && !isPrint()) issues.push('Cut-through letters like O, A and B lose their centres. Use the stencil font, or engrave the text.');
   else if (pieces.length > 1) issues.push(`This design comes out as ${pieces.length} separate pieces. Use the scissors to cut away any you don't want.`);

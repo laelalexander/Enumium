@@ -14,7 +14,7 @@
     <div class="machine-cards">
       {% for m in profile.machines %}
       <div class="machine-card">
-        <span class="mono">{{ {'print': '3D printing', 'laser': 'Laser', 'cnc': 'CNC machining'}.get(m.line, m.line) }}</span>
+        <span class="mono">{{ {'print': '3D printing', 'laser': 'Laser', 'cnc': 'CNC machining', 'router': 'CNC routing', 'plasma': 'Plasma cutting', 'molding': 'Injection molding'}.get(m.line, m.line) }}</span>
         <strong>{{ m.name }}</strong>
         <span>Work area {{ m.bed_mm | join(' × ') }} mm</span>
       </div>
