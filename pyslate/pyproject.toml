@@ -32,7 +32,7 @@ build-backend = "setuptools.build_meta"
 include = ["pyslate*"]
 
 [tool.setuptools.package-data]
-pyslate = ["templates/*.html", "templates/admin/*.html", "static/*", "static/vendor/three/*", "static/vendor/opentype/*", "static/vendor/polygon-clipping/*", "static/fonts/*"]
+pyslate = ["templates/*.html", "templates/admin/*.html", "static/*", "static/vendor/three/*", "static/vendor/opentype/*", "static/vendor/polygon-clipping/*", "static/fonts/*", "static/img/made/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
