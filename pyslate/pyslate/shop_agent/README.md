@@ -60,6 +60,28 @@ copy per run, or add your slicer's duplicate option (PrusaSlicer: `--duplicate {
 Export your printer, filament and process presets from the slicer and point the command
 at them, so the agent slices exactly as you would by hand.
 
+## Shop-floor HUD
+
+A full-screen terminal board for the workshop screens. It shows each machine's status, the
+job on it with a progress bar, its queue with start times and due dates, a 12-hour schedule
+strip, orders by due date, and what finished in the last day. It only reads from Pyslate.
+
+```
+py -3 -m pip install rich
+run-hud.bat                                   # the whole shop
+run-hud.bat --line laser --title "LASER BAY"  # one area per screen
+run-hud.bat --line print,cnc --hours 24
+py -3 -m shop_agent hud --demo                # sample data, no server
+```
+
+Press F11 in Windows Terminal for full screen and turn the font size up for a TV across
+the room. Colours: green fine, amber needs a look (sending, at the machine, due within a
+day), red needs a person (offline, failed, late). `AT MACHINE` means the file is open in
+xTool Studio or in a folder, waiting for the operator. The schedule runs each queue back
+to back from now using the quoted machine minutes, earliest due first. It ignores shop
+hours and changeovers, so read it as "if we kept going". Any PC with the token can run a
+HUD; it doesn't need to be the one running the agent.
+
 ## Not done yet
 
 * Sending laser jobs straight to xTool machines without xTool Studio (`"mode": "direct"`).

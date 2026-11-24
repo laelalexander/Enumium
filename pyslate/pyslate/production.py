@@ -280,6 +280,108 @@ def run_json(run: JobRun, base: str = "") -> dict:
     }
 
 
+def board_feed(db: Session, now: datetime | None = None) -> dict:
+    """Everything the shop-floor HUD shows: each machine's status, current run and queue,
+    a rough schedule from the quoted machine minutes, and orders by due date.
+
+    The schedule runs each machine's queue back to back from now, earliest due first.
+    It ignores shop hours and operator time, so read it as "if we kept going"."""
+    from .models import Order, OrderEvent
+
+    now = now or datetime.now(timezone.utc)
+    profile = services.get_profile(db)
+    states = machine_states(db)
+    jobs = db.scalars(select(Job).where(Job.state.in_(("queued", "sent", "running", "failed", "review")))).all()
+
+    def due(job: Job) -> datetime | None:
+        paid = _aware(job.order.paid_at)
+        return paid + timedelta(days=job.order.lead_days) if paid else None
+
+    def minutes_each(job: Job) -> float:
+        price = job.quote_line.price or {}
+        return float(price.get("machine_minutes") or 0)
+
+    def job_row(job: Job) -> dict:
+        d = due(job)
+        return {
+            "job_id": job.id, "order": job.order.number, "part": job.quote_line.part.filename,
+            "material": job.quote_line.material_id or "", "quantity": job.quantity,
+            "made": job.copies_done, "state": job.state, "label": job.label, "note": job.note,
+            "due": d.isoformat() if d else None, "minutes_each": round(minutes_each(job), 1),
+        }
+
+    machines = []
+    for m in profile.data["machines"]:
+        mine = [j for j in jobs if j.machine_id == m["id"] and j.state != "review"]
+        clock = now
+        current = None
+        for job in mine:
+            run = job.active_run
+            if run is not None and job.state in ("sent", "running"):
+                total = minutes_each(job) * run.copies
+                left = total * (1 - (run.progress or 0) / 100)
+                started = _aware(run.started_at)
+                current = {
+                    **job_row(job), "run_id": run.id, "run_state": run.state, "run_label": run.label,
+                    "progress": run.progress, "message": run.message, "copies": run.copies,
+                    "started": started.isoformat() if started else None,
+                    "minutes_left": round(left, 1),
+                }
+                clock = now + timedelta(minutes=left)
+                break
+        queue = []
+        waiting = [j for j in mine if current is None or j.id != current["job_id"]]
+        waiting.sort(key=lambda j: (j.state == "failed", due(j) or now + timedelta(days=365), j.updated_at))
+        for job in waiting:
+            row = job_row(job)
+            mins = minutes_each(job) * max(0, job.quantity - job.copies_done)
+            row["start"] = clock.isoformat()
+            clock = clock + timedelta(minutes=mins)
+            row["end"] = clock.isoformat()
+            d = due(job)
+            row["late"] = bool(d and clock > d)
+            queue.append(row)
+        st = states.get(m["id"])
+        machines.append({
+            "id": m["id"], "name": m["name"], "line": m["line"],
+            "line_label": LINE_LABELS.get(m["line"], m["line"]),
+            "state": st["state"] if st else "manual", "detail": st["detail"] if st else "",
+            "progress": st["progress"] if st else None, "online": bool(st and st["online"]),
+            "current": current, "queue": queue, "busy_until": clock.isoformat(),
+            "queued_minutes": round((clock - now).total_seconds() / 60, 1),
+        })
+
+    review = [job_row(j) for j in jobs if j.state == "review"]
+    open_orders = db.scalars(select(Order).where(Order.status.in_(("in_queue", "making", "finishing")))).all()
+    orders = []
+    for o in open_orders:
+        paid = _aware(o.paid_at)
+        d = paid + timedelta(days=o.lead_days) if paid else None
+        made = sum(1 for j in o.jobs if j.state == "done")
+        orders.append({"order": o.number, "customer": o.name, "status": o.status_label,
+                       "due": d.isoformat() if d else None, "late": bool(d and d < now),
+                       "jobs_done": made, "jobs": len(o.jobs)})
+    orders.sort(key=lambda o: o["due"] or "9999")
+    day_ago = now - timedelta(hours=24)
+    finished = db.scalars(
+        select(JobRun).where(JobRun.state.in_(RUN_FINAL_STATES)).order_by(JobRun.finished_at.desc()).limit(12)
+    ).all()
+    events = [{
+        "at": _aware(r.finished_at).isoformat() if r.finished_at else None, "state": r.state,
+        "machine_id": r.machine_id, "order": r.job.order.number, "part": r.job.quote_line.part.filename,
+        "copies": r.copies, "message": r.message[:200],
+    } for r in finished if r.finished_at and _aware(r.finished_at) >= day_ago]
+    return {
+        "now": now.isoformat(), "machines": machines, "review": review, "orders": orders, "events": events,
+        "totals": {
+            "queued": sum(len(m["queue"]) for m in machines) + len(review),
+            "running": sum(1 for m in machines if m["current"]),
+            "late": sum(1 for o in orders if o["late"]),
+            "done_24h": sum(1 for e in events if e["state"] == "done"),
+        },
+    }
+
+
 # ---- web routes ------------------------------------------------------------
 
 
@@ -468,6 +570,16 @@ def register(app: FastAPI, render, get_db, cfg, require_admin) -> None:
         if ids:
             q = q.where(JobRun.machine_id.in_(ids))
         return {"runs": [run_json(r) for r in db.scalars(q).all()]}
+
+    @app.get("/api/agent/board")
+    def agent_board(request: Request, db: Session = Depends(get_db)):
+        """Read-only feed for the shop-floor HUD (python -m shop_agent hud)."""
+        require_agent(request)
+        return board_feed(db)
+
+    @app.get("/admin/production/board.json", dependencies=admin)
+    def admin_board(db: Session = Depends(get_db)):
+        return board_feed(db)
 
     @app.get("/api/agent/runs/{run_id}")
     def agent_run(request: Request, run_id: str, db: Session = Depends(get_db)):

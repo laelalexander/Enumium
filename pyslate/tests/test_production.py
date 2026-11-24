@@ -348,3 +348,38 @@ def test_folder_driver_hands_off(tmp_path):
         d.run({"settings": {"material": "Birch plywood 18 mm"}}, src, Ctx())
     assert (tmp_path / "share" / "a.nc").exists() and "Birch" in str(h.value)
     assert d.status()["state"] == "manual"
+
+
+# ---- shop-floor HUD -----------------------------------------------------------------
+
+
+def test_board_feed_schedules_queues(app, client, cube_stl):
+    _, (job_id,) = paid_order(app, cube_stl, quantity=3)
+    client.post(f"/admin/job/{job_id}/send", data={"machine_id": "bambu", "copies": "1"})
+    _, (job2,) = paid_order(app, cube_stl, quantity=2)
+    with app.state.session_factory() as db:
+        run_id = db.query(JobRun).one().id
+    client.post(f"/api/agent/runs/{run_id}/claim", headers=AGENT)
+    client.post(f"/api/agent/runs/{run_id}/update", headers=AGENT, json={"state": "running", "progress": 50})
+    feed = client.get("/api/agent/board", headers=AGENT).json()
+    assert client.get("/api/agent/board").status_code == 401
+    bambu = next(m for m in feed["machines"] if m["id"] == "bambu")
+    assert bambu["current"]["progress"] == 50 and bambu["current"]["minutes_left"] > 0
+    assert [q["job_id"] for q in bambu["queue"]] == [job2]
+    assert bambu["queue"][0]["start"] < bambu["queue"][0]["end"] and not bambu["queue"][0]["late"]
+    assert feed["totals"]["running"] == 1 and feed["totals"]["queued"] == 1
+    assert {o["order"] for o in feed["orders"]} and client.get("/admin/production/board.json").status_code == 200
+
+
+@pytest.mark.parametrize("width,height,lines", [(200, 56, None), (150, 40, ["laser"]), (90, 30, None)])
+def test_hud_renders_feed(app, client, cube_stl, width, height, lines):
+    from rich.console import Console
+
+    from pyslate.shop_agent.hud import demo_feed, render
+
+    paid_order(app, cube_stl)
+    for feed in (demo_feed(), client.get("/api/agent/board", headers=AGENT).json()):
+        console = Console(record=True, width=width, height=height, file=io.StringIO())
+        console.print(render(feed, width, height, lines=lines), height=height)
+        text = console.export_text()
+        assert "PYSLATE" in text and "SCHEDULE" in text

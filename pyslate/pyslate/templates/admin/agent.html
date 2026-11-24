@@ -33,6 +33,11 @@
 <p>Unzip it on the shop PC (Python 3.11 or newer), then double-click <code>run-agent.bat</code>, or run
   <code>py -3 -m shop_agent --config agent.json</code>. Check the machines first with <code>--status</code>.</p>
 
+<h2>Shop-floor screens</h2>
+<p>The same download has a full-screen terminal board for the workshop: machine status, progress bars, queues,
+  a schedule strip and orders by due date. Run <code>py -3 -m pip install rich</code> once, then
+  <code>run-hud.bat</code>, or <code>run-hud.bat --line laser --title "LASER BAY"</code> for one area per screen.</p>
+
 <details>
   <summary>Agent token</summary>
   <p class="fine">The agent sends this with every call. Keep it private; change <code>PYSLATE_AGENT_TOKEN</code> in
