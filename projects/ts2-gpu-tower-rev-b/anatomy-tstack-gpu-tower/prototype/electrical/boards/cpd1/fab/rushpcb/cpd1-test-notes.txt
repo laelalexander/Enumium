@@ -1,0 +1,9 @@
+CPD1 rev A - TEST NOTES
+============================================================
+1. Visual + AOI on the B face.  Press the four PwrBlade receptacles and 16 studs with a flat-rock tool after reflow.
+2. Stud pull-out / torque check on the first article (6 N m on M6, no rotation).
+3. Apply 12 V 2 A to one VSB pin (PSU 1 slot): +3V3 = 3.30 V +/-2 %; heartbeat LED blinks; VSB_OUT live through F1.
+4. With one CRPS fitted: PRESENT, AC_OK reported over Modbus; PMBus READ_VOUT / READ_IOUT on each of the four buses.
+5. PSON_REQ# low -> PS_ON asserted for every present PSU; COL_PWR_OK goes low-impedance when >= 3 PW_OK.
+6. Load test 4 PSUs (3 + 1) into the column busbars at 450 A for 30 min: strap NTC < 70 C, stud rise < 30 K (IR camera).
+7. Pull one PSU under 450 A load: bus droop < 0.3 V, no COL_PWR_OK drop (3 remain).

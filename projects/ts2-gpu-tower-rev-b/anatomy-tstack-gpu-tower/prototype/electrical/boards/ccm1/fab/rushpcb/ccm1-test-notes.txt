@@ -1,0 +1,10 @@
+CCM1 rev A - TEST NOTES
+============================================================
+1. AOI top.  Power from J1 at 12 V 1 A limit: +3V3 3.30 V, +5V_LED 4.95 V +/-3 %, idle < 60 mA; repeat from J2 (VSB) with J1 open.
+2. Six 10k resistors on the NTC inputs read 25.0 C +/-0.5 C; leak inputs read dry open / wet with 22k to GND.
+3. Flow and tach inputs: 100 Hz square from a function generator (open collector) counted +/-1 Hz.
+4. SHT45 and SDP810 on 300 mm cables answer at 0x44 / 0x25.
+5. Pump PWM 25 kHz on J19-3 (open drain); relay clicks, J22 1-2 closes; alarm short J22-4 to GND reads active;
+6. set point DAC 1.65 V -> J22-6 4.95 V +/-1 %.  Light bar: 60 SK6812 on J21 run the test pattern.
+7. Interlock: PSON_REQ# (J2-3) stays high-Z until the simulated flow, temperature and leak checks pass.
+8. Modbus on both buses: column master polls a CPD-1; tower slave answers the host at the strapped address.

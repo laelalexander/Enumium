@@ -1,0 +1,7 @@
+TCD1 rev A - TEST NOTES
+============================================================
+1. AOI top.  12 V 2 A limit on the studs: +3V3 3.30 V; idle < 80 mA with all channels off; no gate activity in reset.
+2. Each channel into a 0.6 ohm 300 W load: duty sweep 0-95 %; VOUT within 2 % of set point, IMON within 3 % of a reference shunt.
+3. Full load: four channels at 12 A for 30 min at 40 C ambient, FET case < 95 C, inductor < 100 C (thermocouples).
+4. Shoot-through check: low-side gate never overlaps high-side (scope, 50 ns dead time).
+5. Fans: 25 kHz PWM sweep, tach counted; NTC inputs with 10k read 25.0 C +/-0.5.  Modbus answers on the column bus.

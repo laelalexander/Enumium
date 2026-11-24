@@ -1,0 +1,62 @@
+Line,Part number,Description,Make / buy,Material,Finish,Drawing,Qty per column,Qty per tower
+1,HAR-1,Column wiring harness set per TS2B-ELE-101 / -102,make,,,electrical/harness/out,1,4
+2,TS2B-201,Column base plate,make,6061-T6 plate 12 mm,clear anodise Type II,TS2B-201,1,4
+3,TS2B-202,Column top plate,make,6061-T6 plate 10 mm,clear anodise Type II,TS2B-202,1,4
+4,TS2B-203,Exhaust bulkhead (16 card windows),make,6061-T6 sheet 3.0 mm,black anodise (plenum side),TS2B-203,1,4
+5,TS2B-205,Bracket screw rail (8x 6-32),make,6061-T6 bar 12 x 7.6,clear anodise,TS2B-205,2,8
+6,TS2B-206,Tail guide comb (16 slots),make,6061-T6 bar 16 x 22,black anodise,TS2B-206,2,8
+7,TS2B-207,"Hold-down bar, hinged",make,6061-T6 channel 20 x 14,clear anodise,TS2B-207,2,8
+8,TS2B-208,"Hold-down pad, EPDM 3 mm",make,EPDM 60A sheet 3 mm (die cut),,TS2B-208,2,8
+9,TS2B-209,Hold-down hinge block pair,make,6061-T6,clear anodise,TS2B-209,2,8
+10,TS2B-210,Hold-down latch handle,make,6061-T6,red anodise,TS2B-210,2,8
+11,TS2B-211,Midspan crossmember,make,6061-T6 plate 10 mm,clear anodise,TS2B-211,1,4
+12,TS2B-212,Red light-bar diffuser,make,"PC opal, signal red",,TS2B-212,1,4
+13,TS2B-213,Side skin,make,5052-H32 1.5 mm,"brushed, clear anodise",TS2B-213,2,8
+14,TS2B-214,Backplane carrier plate,make,6061-T6 3 mm,clear chromate,TS2B-214,1,4
+15,TS2B-215,12 V busbar 14 x 10,make,"C11000 Cu, tin plated",,TS2B-215,1,4
+16,TS2B-216,RTN busbar 14 x 10,make,"C11000 Cu, tin plated",,TS2B-216,1,4
+17,TS2B-220,Tracing coil: tube sheets + frame,make,304 SS 1.2 mm,,TS2B-220,1,4
+18,TS2B-221,Coil drip tray,make,304 SS 1.0 mm,,TS2B-221,1,4
+19,TS2B-223,Intake grille segment (printed),make,"PETG, printed 0.2 mm",,TS2B-223,4,16
+20,TS2B-232,"CPD-1 +12 V strap (flat, 6 mm Cu)",make,C11000 plate 6 mm,bright tin 5-8 um,TS2B-232,1,4
+21,TS2B-233,"CPD-1 RTN strap (flat, 6 mm Cu)",make,C11000 plate 6 mm,bright tin 5-8 um,TS2B-233,1,4
+22,TS2B-301,Plenum corner panel,make,5052-H32 1.5 mm,black powder coat,TS2B-301,1,4
+23,TS2B-401,Crown base ring,make,6061-T6 8 mm,clear anodise,TS2B-401,,1
+24,TS2B-402,Crown octagon shell,make,5052-H32 2 mm,"brushed, clear anodise",TS2B-402,,1
+25,TS2B-403,Crown red band,make,5052 2 mm,red anodise,TS2B-403,,1
+26,TS2B-404,Fan deck (3 inlet rings),make,5052-H32 5 mm,,TS2B-404,,1
+27,TS2B-405,Backdraft flap pair,make,5052 0.8 mm,,TS2B-405,,3
+28,TS2B-406,Crown top + 18 in collar,make,5052-H32 5 mm,,TS2B-406,,1
+29,TS2B-501,Plinth arm weldment,make,S355 3 mm + 8 mm deck,powder coat RAL 9005 textured,TS2B-501,1,4
+30,TS2B-502,Plinth hub weldment,make,S355 3 mm,powder coat RAL 9005 textured,TS2B-502,,1
+31,TS2B-503,Host node tray,make,S355 2 mm,,TS2B-503,1,4
+32,TS2B-601,Base thermal module housing,make,304 SS 2 mm,black powder coat,TS2B-601,1,4
+33,TS2B-602,Split cold block,make,"C11000 Cu, nickel plated",,TS2B-602,1,4
+34,TS2B-701,Console post 40 x 40,make,6063 tube,,TS2B-701,,1
+35,TS2B-702,Console bezel (printed ASA),make,ASA,,TS2B-702,,1
+36,CBP-8,CBP-8 GPU backplane (KiCad),pcb,Megtron 6 8L 2.0 mm,,CBP-8,2,8
+37,CCM-1,"CCM-1 cooling controller board (KiCad, RushPCB turnkey)",pcb,,,electrical/boards/ccm1,1,4
+38,CPD-1,CPD-1 column power distribution board (KiCad),pcb,FR4 6L 4 oz,,CPD-1,1,4
+39,TCD-1,"TCD-1 Peltier driver board (KiCad, RushPCB turnkey)",pcb,,,electrical/boards/tcd1,1,4
+40,B-001,GPU: RTX PRO 6000 Blackwell Max-Q,buy,Al/Mg die cast,,,16,64
+41,B-010,PCIe x16 Gen5 slot connector,buy,LCP,,,16,64
+42,B-011,"MCIO 8i receptacle, right angle",buy,LCP,,,16,64
+43,B-012,MCIO 8i cable plug,buy,LCP/steel,,,16,64
+44,B-013,12V-2x6 right-angle header,buy,LCP,,,16,64
+45,B-014,12V-2x6 GPU power cable 150 mm,buy,16 AWG silicone,,,16,64
+46,B-020,ASRock Rack ROMED8-2T,buy,FR4,,,1,4
+47,B-022,SilverStone XE04-SP3B on EPYC 7543P,buy,Al/Cu,,,1,4
+48,B-023,32 GB DDR4-3200 RDIMM,buy,FR4,,,1,4
+49,B-024,HighPoint Rocket 1628A (x4) + ConnectX-6 Dx,buy,FR4/Al,,,1,4
+50,B-030,Murata D1U54T-W-2000-12-HC4TC CRPS 2000 W,buy,steel,,,4,16
+51,B-040,"Peltier module 40 x 40, TEC1-12715 class (x4)",buy,ceramic,,,1,4
+52,B-041,Hot-side Cu spreader + heat-pipe fin stacks,buy,Cu/Al,,,1,4
+53,B-042,120 mm PWM fan (x2),buy,PBT,,,1,4
+54,B-050,ebm-papst R3G310-AN12-30 impeller,buy,Al sheet,,,,3
+55,B-051,ebm-papst inlet ring 31050-2-4013,buy,Al,,,,3
+56,B-060,"18 in spiral duct, 26 ga",buy,galvanised,,,,1
+57,B-070,Leveling caster 300 kg,buy,"steel, zinc",,,2,8
+58,B-080,Raspberry Pi Touch Display 2,buy,glass,,,,1
+59,B-110,"Post, HFS6-3030 extrusion 952.8 mm",buy,6063-T5 extrusion,,,4,16
+60,B-206,EPDM U-trim 1.0 mm (comb liners),buy,EPDM 60A,,,1,4
+61,B-222,MERV 8 filter 200 x 905 x 12 (frame),buy,galvanised steel,,,2,8
