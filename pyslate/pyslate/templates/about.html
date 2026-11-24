@@ -11,6 +11,11 @@
 <section class="section">
   <div class="wrap">
     <h2>Our machines</h2>
+    <div class="shop-photos">
+      {% for src, caption in machine_photos %}
+      <figure><img src="{{ src }}" alt="{{ caption }}" loading="lazy"><figcaption>{{ caption }}</figcaption></figure>
+      {% endfor %}
+    </div>
     <div class="machine-cards">
       {% for m in profile.machines %}
       <div class="machine-card">

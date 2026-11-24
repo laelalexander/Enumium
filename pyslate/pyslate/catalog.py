@@ -224,6 +224,7 @@ DETAILS = {
                   ("Quote", "Mold + price per part"), ("Typical run", "500 parts and up")],
         "line": "molding",
         "machines": ["noit1680"],
+        "photo": ("/static/img/shop/noit1680iii.jpg", "Our Noitavonne NOIT1680III injection molding machine"),
     },
     "system-design": {
         "headline": "Complete systems, designed and built under one roof.",

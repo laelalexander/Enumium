@@ -274,7 +274,8 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
 
     @app.get("/about", response_class=HTMLResponse)
     def about_page(request: Request, db: Session = Depends(get_db)):
-        return render(request, "about.html", profile=services.get_profile(db).data)
+        return render(request, "about.html", profile=services.get_profile(db).data,
+                      machine_photos=[("/static/img/shop/noit1680iii.jpg", "Our Noitavonne NOIT1680III injection molder")])
 
     @app.post("/quote")
     async def upload(

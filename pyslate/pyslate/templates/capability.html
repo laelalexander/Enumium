@@ -20,7 +20,11 @@
           {% endif %}
         </div>
       </div>
+      {% if detail.photo %}
+      <figure class="cap-photo"><img src="{{ detail.photo[0] }}" alt="{{ detail.photo[1] }}" width="1400" height="903"><figcaption>{{ detail.photo[1] }}, in our shop</figcaption></figure>
+      {% else %}
       <div class="cap-badge">{{ icon_svg(cap.icon) | safe }}</div>
+      {% endif %}
     </div>
   </div>
 </section>
