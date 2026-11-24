@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Pyslate · Parts cut, printed and designed to order{% endblock %}
 {% block content %}
-<section class="hero">
-  <div class="wrap hero-grid">
+<section class="hero has-hero" style="--hero:url(/static/img/hero/shop-floor.jpg);--hero-sm:url(/static/img/hero/shop-floor-900.jpg)">
+  <div class="wrap hero-grid hero-solo">
     <div class="hero-copy">
       <span class="eyebrow">// laser · print · design, all in one shop</span>
       <h1>Precision parts, <span class="burn">cut, printed and designed</span> to order.</h1>
@@ -16,16 +16,6 @@
         <li><b>{{ profile.lead_days.standard }} days</b><span>standard lead time</span></li>
         <li><b>{{ profile.machines | length }}+</b><span>machines in house</span></li>
       </ul>
-    </div>
-    <div class="machine-window">
-      <div class="scenes" role="group" aria-label="Show a discipline">
-        <button type="button" data-s="0" aria-pressed="true">Laser cutting</button>
-        <button type="button" data-s="1" aria-pressed="false">3D printing</button>
-        <button type="button" data-s="2" aria-pressed="false">Design and drawings</button>
-      </div>
-      <canvas id="shop-canvas" width="560" height="400" aria-label="The shop at work: a laser cutting a gear, a printer building a part layer by layer, and an engineer drawing a bracket and a schematic"></canvas>
-      <div class="readout" id="shop-readout"></div>
-      <div class="progress"><span id="shop-progress"></span></div>
     </div>
   </div>
 </section>
@@ -64,6 +54,27 @@
         <span class="disc-body"><span class="mono">03 · engineer quoted</span><strong>Design and engineering</strong>
         <span>Custom systems, mechanical blueprints and electrical schematics, then the parts built here.</span></span>
       </a>
+    </div>
+  </div>
+</section>
+
+<section class="section watch">
+  <div class="wrap watch-grid">
+    <div>
+      <span class="eyebrow">// watch the shop</span>
+      <h2>Cutting, printing and drawing, all under one roof.</h2>
+      <p class="lead">Pick a discipline to see how a part comes together in our shop.</p>
+      <a class="button ghost" href="/how-it-works">How it works</a>
+    </div>
+    <div class="machine-window">
+      <div class="scenes" role="group" aria-label="Show a discipline">
+        <button type="button" data-s="0" aria-pressed="true">Laser cutting</button>
+        <button type="button" data-s="1" aria-pressed="false">3D printing</button>
+        <button type="button" data-s="2" aria-pressed="false">Design and drawings</button>
+      </div>
+      <canvas id="shop-canvas" width="560" height="400" aria-label="The shop at work: a laser cutting a gear, a printer building a part layer by layer, and an engineer drawing a bracket and a schematic"></canvas>
+      <div class="readout" id="shop-readout"></div>
+      <div class="progress"><span id="shop-progress"></span></div>
     </div>
   </div>
 </section>
