@@ -47,7 +47,26 @@
       {% endfor %}
       </tbody>
     </table>
-    <h2>History</h2>
+    {% set runs = order.jobs | map(attribute='runs') | sum(start=[]) %}
+    {% if runs %}
+    <h2>Machine runs</h2>
+    <table class="parts">
+      <thead><tr><th>Part</th><th>Machine</th><th>Run</th><th>Started</th><th>Finished</th></tr></thead>
+      <tbody>
+      {% for r in runs | sort(attribute='created_at') %}
+      <tr>
+        <td>{{ r.job.quote_line.part.filename }} ×{{ r.copies }}</td>
+        <td>{{ r.machine_id }}{% if r.agent %}<br><span class="fine">{{ r.agent }}</span>{% endif %}</td>
+        <td>{{ r.label }}{% if r.state in ('running', 'cancel_requested') %} · {{ r.progress }}%{% endif %}{% if r.message %}<br><span class="fine">{{ r.message[:160] }}</span>{% endif %}</td>
+        <td class="fine">{{ r.started_at.strftime('%b %d %H:%M') if r.started_at else '' }}</td>
+        <td class="fine">{{ r.finished_at.strftime('%b %d %H:%M') if r.finished_at else '' }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p><a href="/admin/production">Open Production</a></p>
+    {% endif %}
+    <h2>Journey</h2>
     <ul class="events">
       {% for e in order.events | reverse %}
       <li><strong>{{ order_labels.get(e.status, e.status) }}</strong> · {{ e.at.strftime('%b %d %H:%M') }}{% if e.note %} · {{ e.note }}{% endif %}</li>

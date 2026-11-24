@@ -36,6 +36,12 @@
         <tbody>
         {% for line in order.quote.lines %}
         <tr><td>{{ line.part.filename }}</td><td>{{ material_names.get(line.material_id, line.material_id) if material_names else line.material_id }}</td><td>{{ line.quantity }}</td><td>{{ line.price.total | money }}</td></tr>
+        {% if progress and order.status not in ('awaiting_payment', 'cancelled') %}{% set p = progress[line.id] %}
+        <tr class="part-progress"><td colspan="4">
+          <div class="pp-line"><span class="pp-step pp-{{ p.step }}">{{ p.text }}</span>{% if p.pct is not none %}<span class="fine">{{ p.pct }}%</span>{% endif %}</div>
+          <div class="bar"><span style="width: {{ p.pct if p.pct is not none else (100 if p.step >= 3 else 0) }}%"></span></div>
+        </td></tr>
+        {% endif %}
         {% endfor %}
         </tbody>
         <tfoot><tr><td colspan="3">Total</td><td>{{ order.total_cents | cents }}</td></tr></tfoot>
@@ -43,7 +49,7 @@
       <p class="fine">Ships {{ order.lead_days }} days after payment.</p>
     </section>
     <section>
-      <h2>History</h2>
+      <h2>Journey</h2>
       <ul class="events">
         {% for e in order.events | reverse %}
         <li><strong>{{ order_labels.get(e.status, e.status) }}</strong> · {{ e.at.strftime('%b %d, %Y %H:%M') }} UTC{% if e.note %}<br><span>{{ e.note }}</span>{% endif %}</li>

@@ -23,6 +23,23 @@
 
 {% set here = '/admin/production' ~ ('?line=' ~ only_line if only_line else '') %}
 
+{% if awaiting and not only_line %}
+<section class="machine review-lane awaiting-lane">
+  <header><h2>New orders waiting for payment <span class="count">{{ awaiting | length }}</span></h2>
+    <p class="fine">Card payments queue on their own. Mark these paid when the money arrives and their parts join the machine queues below.</p></header>
+  {% for o in awaiting %}
+  <article class="pjob">
+    <div class="pjob-main">
+      <strong><a href="/admin/order/{{ o.number }}">#{{ o.number }}</a> · {{ o.name }}</strong>
+      <span class="fine">{{ o.quote.lines | length }} part(s): {{ o.quote.lines | map(attribute='part.filename') | join(', ') }} · {{ o.total_cents | cents }} · placed {{ o.created_at.strftime('%b %d %H:%M') }}</span>
+    </div>
+    <form method="post" action="/admin/order/{{ o.number }}/paid"><input type="hidden" name="back" value="{{ here }}">
+      <button class="button small">Mark paid and queue</button></form>
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+
 {% if review.jobs and not only_line %}
 <section class="machine review-lane">
   <header><h2>Needs a machine <span class="count">{{ review.jobs | length }}</span></h2>

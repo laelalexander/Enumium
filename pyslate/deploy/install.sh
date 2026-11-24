@@ -12,9 +12,12 @@
 set -euo pipefail
 
 DOMAIN="${DOMAIN:-pyslate.com}"
-BRANCH="${BRANCH:-claude/pyslate-phase-1}"
 REPO="${REPO:-https://github.com/laelalexander/enumium.git}"
 ROOT="/var/www/${DOMAIN}"
+# Use BRANCH if given; otherwise stay on the branch the server already runs, so a plain
+# update never steps back to an older branch.
+if [ -z "${BRANCH:-}" ] && [ -f "${ROOT}/branch" ]; then BRANCH="$(cat "${ROOT}/branch")"; fi
+BRANCH="${BRANCH:-claude/pyslate-phase-1}"
 PORT="${PORT:-8100}"
 ENV_FILE="/etc/pyslate.env"
 
@@ -53,6 +56,7 @@ else
   git clone -q --depth 1 --branch "${BRANCH}" "${REPO}" "${ROOT}/repo"
 fi
 ln -sfn "${ROOT}/repo/pyslate" "${ROOT}/app"
+echo "${BRANCH}" > "${ROOT}/branch"
 
 say "Installing Python dependencies (takes a few minutes the first time)"
 [ -d "${ROOT}/venv" ] || python3 -m venv "${ROOT}/venv"

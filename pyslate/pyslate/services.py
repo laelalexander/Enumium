@@ -23,6 +23,10 @@ MAX_QUANTITY = 10_000
 FIRST_ORDER_NUMBER = 1001
 
 
+PART_VERBS = {"print": "Printing", "laser": "Cutting", "cnc": "Machining", "router": "Routing",
+              "plasma": "Cutting", "molding": "Molding"}
+
+
 class ServiceError(ValueError):
     pass
 
@@ -213,15 +217,24 @@ def set_order_status(db: Session, order: Order, status: str, note: str = "", tra
 def move_job(db: Session, job: Job, new_state: str, note: str = "") -> None:
     if new_state not in JOB_TRANSITIONS.get(job.state, set()):
         raise ServiceError(f"A {job.state} job cannot move to {new_state}")
+    old_state = job.state
     job.state = new_state
     if note:
         job.note = note
     order = job.order
     states = {j.state for j in order.jobs}
+    part = job.quote_line.part.filename
     if new_state == "running" and order.status in ("paid", "in_queue"):
         order.status = "making"
         order.events.append(OrderEvent(status="making", note="Production started"))
-    elif states == {"done"} and order.status in ("in_queue", "making"):
+    # Each part's journey on the customer's order page: started on which machine, and made.
+    if new_state == "running" and old_state in ("queued", "sent"):
+        machine = get_profile(db).machine(job.machine_id or "") or {}
+        verb = PART_VERBS.get(job.line, "Making")
+        order.events.append(OrderEvent(status=order.status, note=f"{part}: {verb.lower()} on the {machine.get('name', 'shop floor')}"))
+    elif new_state == "done":
+        order.events.append(OrderEvent(status=order.status, note=f"{part}: made, {job.quantity} of {job.quantity}"))
+    if states == {"done"} and order.status in ("in_queue", "making"):
         order.status = "finishing"
         order.events.append(OrderEvent(status="finishing", note="All parts made; finishing and packing"))
     db.commit()

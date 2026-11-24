@@ -65,6 +65,29 @@ def default_settings(profile, job: Job) -> dict:
     return out
 
 
+def part_progress(profile, job: Job | None) -> dict:
+    """What the customer sees for one part: a short status and a percentage when known."""
+    if job is None:
+        return {"text": "Waiting for payment", "pct": None, "step": 0}
+    machine = (profile.machine(job.machine_id or "") or {}).get("name", "the shop")
+    verb = services.PART_VERBS.get(job.line, "Making")
+    made = job.copies_done
+    run = job.active_run
+    if job.state == "done":
+        return {"text": f"Made · {job.quantity} of {job.quantity}", "pct": 100, "step": 3}
+    if job.state == "running" or (run and run.state == "running"):
+        pct = run.progress if run and run.progress else None
+        extra = f" · {made} of {job.quantity} made" if made else ""
+        return {"text": f"{verb} on the {machine}{extra}", "pct": pct, "step": 2}
+    if job.state == "sent":
+        return {"text": f"Loading onto the {machine}", "pct": None, "step": 2}
+    if job.state == "review":
+        return {"text": "The shop is choosing a machine", "pct": None, "step": 1}
+    if made:
+        return {"text": f"{made} of {job.quantity} made · next batch queued", "pct": int(made * 100 / job.quantity), "step": 2}
+    return {"text": f"In the queue for the {machine}", "pct": None, "step": 1}
+
+
 def file_kinds(job: Job) -> list[str]:
     return ["svg", "dxf", "original"] if job.line in SHEET_LINES else ["original"]
 
@@ -160,6 +183,10 @@ def _sync_job(db: Session, run: JobRun) -> None:
         if made >= job.quantity:
             services.move_job(db, job, "done", f"{made} of {job.quantity} made")
         else:
+            from .models import OrderEvent
+
+            job.order.events.append(OrderEvent(status=job.order.status,
+                                               note=f"{job.quote_line.part.filename}: {made} of {job.quantity} made"))
             services.move_job(db, job, "queued", f"{made} of {job.quantity} made; send the rest")
     elif run.state == "failed" and job.state in ("sent", "running"):
         services.move_job(db, job, "failed", run.message[:500] or "Run failed")
@@ -352,6 +379,8 @@ def board_feed(db: Session, now: datetime | None = None) -> dict:
         })
 
     review = [job_row(j) for j in jobs if j.state == "review"]
+    awaiting = [{"order": o.number, "customer": o.name, "total_cents": o.total_cents, "parts": len(o.quote.lines)}
+                for o in db.scalars(select(Order).where(Order.status == "awaiting_payment").order_by(Order.number))]
     open_orders = db.scalars(select(Order).where(Order.status.in_(("in_queue", "making", "finishing")))).all()
     orders = []
     for o in open_orders:
@@ -373,6 +402,7 @@ def board_feed(db: Session, now: datetime | None = None) -> dict:
     } for r in finished if r.finished_at and _aware(r.finished_at) >= day_ago]
     return {
         "now": now.isoformat(), "machines": machines, "review": review, "orders": orders, "events": events,
+        "awaiting_payment": awaiting,
         "totals": {
             "queued": sum(len(m["queue"]) for m in machines) + len(review),
             "running": sum(1 for m in machines if m["current"]),
@@ -433,7 +463,10 @@ def register(app: FastAPI, render, get_db, cfg, require_admin) -> None:
                 groups.append({"line": line, "label": LINE_LABELS[line], "lanes": ls,
                                "count": sum(len(lane["jobs"]) for lane in ls)})
         agents = sorted({s["agent"] for s in states.values() if s["online"] and s["agent"]})
-        return {"groups": groups, "review": review, "recent": recent, "profile": profile,
+        from .models import Order
+
+        awaiting = db.scalars(select(Order).where(Order.status == "awaiting_payment").order_by(Order.number)).all()
+        return {"awaiting": awaiting, "groups": groups, "review": review, "recent": recent, "profile": profile,
                 "agents": agents, "agent_enabled": bool(cfg.agent_token)}
 
     @app.get("/admin/production", dependencies=admin)

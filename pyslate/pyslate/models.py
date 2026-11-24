@@ -147,7 +147,8 @@ class Order(Base):
     paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     quote: Mapped[Quote] = relationship(back_populates="order")
     events: Mapped[list["OrderEvent"]] = relationship(
-        back_populates="order", cascade="all, delete-orphan", order_by="OrderEvent.at"
+        back_populates="order", cascade="all, delete-orphan",
+        order_by=lambda: [OrderEvent.at, OrderEvent.id]
     )
     jobs: Mapped[list["Job"]] = relationship(back_populates="order", cascade="all, delete-orphan")
 

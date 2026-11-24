@@ -383,3 +383,43 @@ def test_hud_renders_feed(app, client, cube_stl, width, height, lines):
         console.print(render(feed, width, height, lines=lines), height=height)
         text = console.export_text()
         assert "PYSLATE" in text and "SCHEDULE" in text
+
+
+def test_full_journey_site_order_to_shipped(app, client, plate_stl, cube_stl):
+    """An order placed on the site waits for payment on the board, queues, runs, and the
+    customer sees each part's progress and journey."""
+    from pyslate.models import Order
+
+    cfg = app.state.settings
+    with app.state.session_factory() as db:
+        quote = Quote()
+        db.add(quote)
+        for path in (plate_stl, cube_stl):
+            services.add_part_to_quote(db, quote, services.store_part(db, cfg.upload_dir, path.name, path))
+        db.flush()
+        order = services.place_order(db, quote, "c@example.com", "Casey", "2 Main St")
+        number, token = order.number, order.access_token
+    board = client.get("/admin/production").text
+    assert "waiting for payment" in board and f"#{number}" in board
+    assert client.get("/api/agent/board", headers=AGENT).json()["awaiting_payment"][0]["order"] == number
+    r = client.post(f"/admin/order/{number}/paid", data={"back": "/admin/production"}, follow_redirects=False)
+    assert r.headers["location"] == "/admin/production"
+    page = client.get(f"/order/{number}?t={token}").text
+    assert "In the queue for the" in page
+    with app.state.session_factory() as db:
+        jobs = db.query(Order).filter_by(number=number).one().jobs
+        ids = {j.line: (j.id, j.machine_id) for j in jobs}
+    for line, (jid, machine) in ids.items():
+        client.post(f"/admin/job/{jid}/send", data={"machine_id": machine, "copies": "1"})
+    for run in client.get("/api/agent/runs", headers=AGENT).json()["runs"]:
+        client.post(f"/api/agent/runs/{run['id']}/claim", headers=AGENT)
+        client.post(f"/api/agent/runs/{run['id']}/update", headers=AGENT, json={"state": "running", "progress": 35})
+    page = client.get(f"/order/{number}?t={token}").text
+    assert "Cutting on the" in page and "Printing on the" in page and "35%" in page
+    assert "plate.stl: cutting on the" in page
+    for run in client.get("/admin/production/status.json").json()["active"]:
+        client.post(f"/api/agent/runs/{run}/update", headers=AGENT, json={"state": "done"})
+    page = client.get(f"/order/{number}?t={token}").text
+    assert "Finishing" in page and "cube.stl: made, 1 of 1" in page
+    admin = client.get(f"/admin/order/{number}").text
+    assert "Machine runs" in admin and "yaeger" in admin

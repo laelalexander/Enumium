@@ -573,3 +573,8 @@ details.send summary::-webkit-details-marker { display: none; }
 .agent-table td, .agent-table th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .token { font: .9rem var(--mono); background: var(--tint); padding: 8px 10px; border-radius: 6px; overflow-wrap: anywhere; user-select: all; }
 pre.cfg { background: var(--graphite); color: #e9eaee; padding: 12px; border-radius: 8px; overflow: auto; font-size: .8rem; max-height: 420px; }
+.part-progress td { border-bottom: 1px solid var(--line); padding-top: 0; }
+.pp-line { display: flex; justify-content: space-between; gap: 8px; font-size: .85rem; margin-bottom: 4px; }
+.pp-step { color: var(--muted); }
+.pp-2 { color: var(--accent); font-weight: 600; }
+.pp-3 { color: var(--good); font-weight: 600; }

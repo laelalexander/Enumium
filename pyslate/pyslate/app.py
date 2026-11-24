@@ -461,9 +461,11 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         profile = services.get_profile(db)
         names = {ln.material_id: (profile.material(ln.material_id) or {}).get("name", ln.material_id)
                  for ln in order.quote.lines if ln.material_id}
+        jobs = {j.quote_line_id: j for j in order.jobs}
+        progress = {ln.id: production.part_progress(profile, jobs.get(ln.id)) for ln in order.quote.lines}
         return render(request, "order.html", order=order, just_paid=bool(paid), payment_error=bool(payment_error),
                       customer=customer, owned=owned, added=request.query_params.get("added") == "1",
-                      material_names=names)
+                      material_names=names, progress=progress)
 
     @app.post("/stripe/webhook")
     async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
@@ -576,12 +578,13 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         return render(request, "admin/order.html", order=order, profile=services.get_profile(db).data)
 
     @app.post("/admin/order/{number}/paid", dependencies=[Depends(require_admin)])
-    def admin_mark_paid(number: int, db: Session = Depends(get_db)):
+    def admin_mark_paid(number: int, back: str = Form(""), db: Session = Depends(get_db)):
         order = db.scalar(select(Order).where(Order.number == number))
         if order is None:
             raise HTTPException(404)
         services.mark_paid(db, order, "Payment recorded by the shop")
-        return RedirectResponse(f"/admin/order/{number}", status_code=303)
+        to = back if back.startswith("/admin") else f"/admin/order/{number}"
+        return RedirectResponse(to, status_code=303)
 
     @app.post("/admin/order/{number}/status", dependencies=[Depends(require_admin)])
     def admin_order_status(

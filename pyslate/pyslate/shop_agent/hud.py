@@ -246,10 +246,14 @@ def orders_table(orders: list[dict], now: datetime, limit: int):
     return t
 
 
-def ticker(events: list[dict], review: list[dict]):
+def ticker(events: list[dict], review: list[dict], awaiting: list[dict] | None = None):
     from rich.text import Text
 
     out = Text()
+    if awaiting:
+        out.append(f" $ {len(awaiting)} NEW ORDER(S) AWAITING PAYMENT: "
+                   + " ".join(f"#{a['order']}" for a in awaiting[:5]) + " ", style="bold black on bright_cyan")
+        out.append("  ")
     for r in review[:3]:
         out.append(f" ◆ NEEDS MACHINE #{r['order']} {r['part']} ", style="bold black on yellow")
         out.append("  ")
@@ -303,7 +307,7 @@ def render(feed: dict, width: int, height: int, title: str = "SHOP FLOOR", lines
         Layout(Panel(header(feed, title, link_ok, width), box=box.HEAVY, border_style=HOT, padding=0), name="head", size=3),
         Layout(grid if machines else Text("No machines on this board.", style=DIM), name="body", ratio=1),
         Layout(name="bottom", size=bottom_h),
-        Layout(ticker(feed["events"], feed["review"]), name="tick", size=1),
+        Layout(ticker(feed["events"], feed["review"], feed.get("awaiting_payment")), name="tick", size=1),
     )
     sched_w = int(width * 0.62) if width >= 110 else width
     sched = Panel(schedule(machines[:10], now, sched_w - 4, hours) if machines else Text(""),
