@@ -45,6 +45,8 @@
         <span class="fine">{{ s.packages }} box{{ 'es' if s.packages > 1 else '' }}{% if s.weight_g %} · {{ s.weight_g }} g{% endif %}{% if s.dims_mm %} · {{ s.dims_mm }} mm{% endif %}{% if s.notes %} · {{ s.notes }}{% endif %}</span>
       </div>
       <pre class="address fine">{{ o.shipping_address }}</pre>
+      <p><a class="button small" href="/admin/order/{{ o.number }}/postage">Buy postage</a>
+        <span class="fine">UPS, FedEx or USPS label, or enter tracking below</span></p>
       <form method="post" action="/admin/order/{{ o.number }}/ship" class="send-form">
         <input type="hidden" name="back" value="/admin/shipping">
         <label>Carrier
@@ -72,9 +74,15 @@
           {% if o.tracking %} · {% if turl %}<a href="{{ turl }}" target="_blank" rel="noopener">{{ o.tracking }}</a>{% else %}{{ o.tracking }}{% endif %}{% endif %}
           {% if s and s.shipped_at %} · shipped {{ s.shipped_at.strftime('%b %d') }}{% endif %}</span>
       </div>
+      {% set last = o.events[-1] if o.events else none %}{% if last and last.note and last.status == 'shipped' %}<p class="fine">{{ last.note }}</p>{% endif %}
       <p class="fine"><a href="/admin/order/{{ o.number }}/labels" target="_blank">Shipping labels</a></p>
-      <form method="post" action="/admin/order/{{ o.number }}/delivered"><input type="hidden" name="back" value="/admin/shipping">
-        <button class="button small secondary">Mark delivered</button></form>
+      <div class="send-actions">
+        <form method="post" action="/admin/order/{{ o.number }}/delivered"><input type="hidden" name="back" value="/admin/shipping">
+          <button class="button small secondary">Mark delivered</button></form>
+        {% if s and s.carrier in ('ups', 'fedex', 'usps') and s.tracking %}
+        <form method="post" action="/admin/order/{{ o.number }}/track"><input type="hidden" name="back" value="/admin/shipping">
+          <button class="link-button">Refresh tracking</button></form>{% endif %}
+      </div>
     </article>
     {% else %}<p class="fine empty">Nothing in transit.</p>{% endfor %}
 

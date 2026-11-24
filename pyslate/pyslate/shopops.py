@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote as urlquote
 
@@ -12,7 +13,7 @@ from sqlalchemy.orm import Session
 
 from . import barcode, services
 from .models import (
-    Customer, CustomerFlag, CustomerOrder, Order, OrderEvent, SavedDesign, SavedQuote, Shipment, utcnow,
+    CarrierLabel, Customer, CustomerFlag, CustomerOrder, Order, OrderEvent, SavedDesign, SavedQuote, Shipment, utcnow,
 )
 
 CARRIERS = {
@@ -171,6 +172,97 @@ def due_date(order: Order):
     return paid + timedelta(days=order.lead_days) if paid else None
 
 
+# ---- carrier labels, bought directly from UPS, FedEx and USPS --------------------------------
+
+ADDRESS_FIELDS = ("name", "company", "street1", "street2", "city", "state", "postal", "phone")
+
+
+def ship_from_address(profile) -> "carriers.Address":
+    from . import carriers
+
+    sf = profile.data.get("ship_from") or {}
+    addr = carriers.parse_us_address(sf.get("name", ""), sf.get("address", ""), sf.get("phone", ""))
+    addr.company = addr.company or sf.get("name", "")
+    if not addr.phone:
+        raise carriers.CarrierError("Add the shop's phone number to ship_from in Rates and machines; carriers require it")
+    return addr
+
+
+def address_from_form(form: dict, prefix: str):
+    from . import carriers
+
+    get = lambda k: str(form.get(f"{prefix}_{k}", "")).strip()  # noqa: E731
+    street = [x for x in (get("street1"), get("street2")) if x]
+    if not (get("name") and street and get("city") and get("state") and get("postal")):
+        raise carriers.CarrierError("Fill in name, street, city, state and ZIP")
+    return carriers.Address(name=get("name"), street=street, city=get("city"), state=get("state").upper()[:2],
+                            postal=get("postal"), phone=get("phone"), company=get("company"))
+
+
+def address_fields(addr, prefix: str) -> dict:
+    if addr is None:
+        return {}
+    return {f"{prefix}_name": addr.name, f"{prefix}_company": addr.company,
+            f"{prefix}_street1": addr.street[0] if addr.street else "",
+            f"{prefix}_street2": addr.street[1] if len(addr.street) > 1 else "",
+            f"{prefix}_city": addr.city, f"{prefix}_state": addr.state, f"{prefix}_postal": addr.postal,
+            f"{prefix}_phone": addr.phone}
+
+
+def parcels_for(shipment: Shipment | None):
+    from . import carriers
+
+    if shipment is None or not shipment.packed_at:
+        raise carriers.CarrierError("Pack the order first: boxes and weight go on the label")
+    if not shipment.weight_g:
+        raise carriers.CarrierError("Enter the packed weight first; carriers price by weight")
+    dims = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", shipment.dims_mm or "")][:3]
+    l, w, h = (dims + [0, 0, 0])[:3] if len(dims) == 3 else (0, 0, 0)
+    each = shipment.weight_g / max(1, shipment.packages)
+    return [carriers.Parcel(weight_g=each, length_mm=l, width_mm=w, height_mm=h) for _ in range(shipment.packages)]
+
+
+def buy_labels(db: Session, cfg, order: Order, carrier, service: str, service_name: str, ship_from, ship_to,
+               parcels) -> list[CarrierLabel]:
+    """Buy postage straight from the carrier, keep the label files, and mark the order shipped."""
+    if order.status != "finishing":
+        raise OpsError("Only packed orders waiting to ship can get postage")
+    bought = carrier.buy(ship_from, ship_to, parcels, service, reference=f"Order {order.number}")
+    folder = cfg.data_dir / "labels"
+    folder.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for i, lab in enumerate(bought, start=1):
+        stored = f"{order.number}-{i:02d}-{re.sub(r'[^A-Za-z0-9]', '', lab.tracking)[:40]}.{lab.fmt}"
+        (folder / stored).write_bytes(lab.data)
+        row = CarrierLabel(order_id=order.id, box=i, carrier=carrier.code, service=service,
+                           service_name=service_name or service, tracking=lab.tracking, shipment_id=lab.shipment_id,
+                           cost_cents=int(round(lab.cost * 100)) if lab.cost is not None else None,
+                           fmt=lab.fmt, stored_name=stored)
+        db.add(row)
+        rows.append(row)
+    db.flush()
+    mark_shipped(db, order, carrier.code, service_name or service, bought[0].tracking)
+    return rows
+
+
+def void_label(db: Session, carrier, label: CarrierLabel) -> None:
+    if label.voided:
+        raise OpsError("This label is already void")
+    carrier.void(label.tracking, label.shipment_id)
+    label.voided = True
+    order = label.order
+    live = db.scalars(select(CarrierLabel).where(CarrierLabel.order_id == order.id,
+                                                 CarrierLabel.voided.is_(False))).all()
+    if not [x for x in live if x.id != label.id] and order.status == "shipped":
+        order.status = "finishing"
+        order.tracking = ""
+        s = db.get(Shipment, order.id)
+        if s:
+            s.shipped_at, s.tracking = None, ""
+        order.events.append(OrderEvent(status="finishing", note="Shipping label cancelled; the order is back in packing"))
+    db.commit()
+
+
 # ---- web routes -------------------------------------------------------------------------
 
 
@@ -295,9 +387,12 @@ def register(app: FastAPI, render, get_db, cfg, require_admin) -> None:
         items = [{"n": n, "code": barcode.box_code(order.number, n, boxes),
                   "svg": barcode.svg(barcode.box_code(order.number, n, boxes), height=56, module=2, font_size=15)}
                  for n in range(1, boxes + 1)]
-        return render(request, "admin/labels.html", order=order, shipment=s, boxes=items, count=boxes,
+        bought = db.scalars(select(CarrierLabel).where(CarrierLabel.order_id == order.id)
+                            .order_by(CarrierLabel.created_at, CarrierLabel.box)).all()
+        return render(request, "admin/labels.html", order=order, shipment=s, boxes=items, count=boxes, bought=bought,
                       tracking_svg=tracking_svg, ship_from=services.get_profile(db).data.get("ship_from") or {},
-                      size="letter" if size == "letter" else "4x6", **ctx_common)
+                      size="letter" if size == "letter" else "4x6",
+                      error=request.query_params.get("error", "")[:400], **ctx_common)
 
     @app.get("/admin/barcode.svg", dependencies=admin)
     def barcode_svg(code: str):
@@ -322,6 +417,127 @@ def register(app: FastAPI, render, get_db, cfg, require_admin) -> None:
         return render(request, "admin/scan.html", code=code.strip(), found=found or {}, order=order,
                       shipment=db.get(Shipment, order.id) if order else None, missing=missing,
                       error=request.query_params.get("error", "")[:300], **ctx_common)
+
+    # -- postage straight from the carriers --
+
+    app.state.carrier_registry = None  # tests put fakes here
+
+    def carrier_set() -> dict:
+        from . import carriers
+
+        reg = app.state.carrier_registry or carriers.registry()
+        return {k: c for k, c in reg.items() if c.configured()}
+
+    def addresses(db: Session, order: Order, form: dict) -> tuple:
+        from . import carriers
+
+        problems = []
+        ship_from = ship_to = None
+        try:
+            ship_from = address_from_form(form, "from") if form.get("from_name") else ship_from_address(services.get_profile(db))
+        except carriers.CarrierError as exc:
+            problems.append(f"Ship from: {exc}")
+        try:
+            ship_to = (address_from_form(form, "to") if form.get("to_name") else
+                       carriers.parse_us_address(order.name, order.shipping_address, email=order.email))
+        except carriers.CarrierError as exc:
+            problems.append(f"Ship to: {exc}")
+        return ship_from, ship_to, problems
+
+    @app.get("/admin/order/{number}/postage", dependencies=admin)
+    def postage(request: Request, number: int, db: Session = Depends(get_db)):
+        from . import carriers
+
+        order = get_order(db, number)
+        form = dict(request.query_params)
+        ship_from, ship_to, problems = addresses(db, order, form)
+        rates, errors, parcels = [], {}, []
+        connected = carrier_set()
+        try:
+            parcels = parcels_for(db.get(Shipment, order.id))
+        except carriers.CarrierError as exc:
+            problems.append(str(exc))
+        if connected and not problems and form.get("quote", "1") == "1":
+            rates, errors = carriers.shop_rates(connected, ship_from, ship_to, parcels)
+        if ship_to is None:  # couldn't read the order's address: start the form from what we have
+            lines = [x.strip() for x in (order.shipping_address or "").splitlines() if x.strip()]
+            ship_to = carriers.Address(order.name, lines[:1], "", "", "")
+        fields = {**address_fields(ship_from, "from"), **address_fields(ship_to, "to"),
+                  **{k: v for k, v in form.items() if k.startswith(("from_", "to_"))}}
+        return render(request, "admin/postage.html", order=order, rates=rates, errors=errors, problems=problems,
+                      connected=connected, all_carriers=CARRIERS, fields=fields, parcels=parcels,
+                      error=request.query_params.get("error", "")[:400], **ctx_common)
+
+    @app.post("/admin/order/{number}/postage", dependencies=admin)
+    async def buy_postage(request: Request, number: int, db: Session = Depends(get_db)):
+        from . import carriers
+
+        form = dict(await request.form())
+        order = get_order(db, number)
+        keep = "&".join(f"{k}={urlquote(str(v))}" for k, v in form.items() if k.startswith(("from_", "to_")))
+        here = f"/admin/order/{number}/postage?{keep}"
+        carrier = carrier_set().get(str(form.get("carrier", "")))
+        if carrier is None:
+            return back(here, "That carrier isn't connected")
+        ship_from, ship_to, problems = addresses(db, order, form)
+        if problems:
+            return back(here, "; ".join(problems))
+        try:
+            parcels = parcels_for(db.get(Shipment, order.id))
+            buy_labels(db, cfg, order, carrier, str(form.get("service", "")), str(form.get("service_name", "")),
+                       ship_from, ship_to, parcels)
+        except (carriers.CarrierError, services.ServiceError) as exc:
+            db.rollback()
+            return back(here, f"{carrier.name}: {exc}")
+        return RedirectResponse(f"/admin/order/{number}/labels", status_code=303)
+
+    @app.get("/admin/carrier-label/{label_id}", dependencies=admin)
+    def carrier_label_file(label_id: str, db: Session = Depends(get_db)):
+        from fastapi.responses import FileResponse
+
+        lab = db.get(CarrierLabel, label_id)
+        if lab is None:
+            raise HTTPException(404)
+        media = {"png": "image/png", "gif": "image/gif", "pdf": "application/pdf", "zpl": "text/plain"}[lab.fmt]
+        return FileResponse(cfg.data_dir / "labels" / lab.stored_name, media_type=media,
+                            filename=lab.stored_name if lab.fmt == "zpl" else None)
+
+    @app.post("/admin/carrier-label/{label_id}/void", dependencies=admin)
+    def carrier_label_void(label_id: str, db: Session = Depends(get_db)):
+        from . import carriers
+
+        lab = db.get(CarrierLabel, label_id)
+        if lab is None:
+            raise HTTPException(404)
+        number = lab.order.number
+        carrier = (app.state.carrier_registry or carriers.registry()).get(lab.carrier)
+        try:
+            void_label(db, carrier, lab)
+        except (carriers.CarrierError, services.ServiceError) as exc:
+            return back(f"/admin/order/{number}/labels", str(exc))
+        return RedirectResponse(f"/admin/order/{number}/labels", status_code=303)
+
+    @app.post("/admin/order/{number}/track", dependencies=admin)
+    def track(number: int, back_to: str = Form("/admin/shipping", alias="back"), db: Session = Depends(get_db)):
+        from . import carriers
+
+        order = get_order(db, number)
+        s = db.get(Shipment, order.id)
+        carrier = (app.state.carrier_registry or carriers.registry()).get(s.carrier if s else "")
+        if not (s and s.tracking and carrier and carrier.configured()):
+            return back(back_to, "Tracking updates need a connected carrier and a tracking number")
+        try:
+            info = carrier.track(s.tracking)
+        except carriers.CarrierError as exc:
+            return back(back_to, f"{carrier.name}: {exc}")
+        if info.delivered and order.status == "shipped":
+            mark_delivered(db, order)
+        else:
+            note = f"{carrier.name}: {info.detail}"[:500]
+            if not order.events or order.events[-1].note != note:
+                order.events.append(OrderEvent(status=order.status, note=note))
+            db.commit()
+        return back(back_to)
 
     @app.get("/admin/order/{number}/packing-slip", dependencies=admin)
     def packing_slip(request: Request, number: int, db: Session = Depends(get_db)):

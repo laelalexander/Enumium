@@ -12,6 +12,7 @@
 
     <p><a href="/admin/order/{{ order.number }}/packing-slip" target="_blank">Packing slip</a>
       · <a href="/admin/order/{{ order.number }}/labels" target="_blank">Labels</a>
+      {% if order.status == 'finishing' %}· <a href="/admin/order/{{ order.number }}/postage">Buy postage</a>{% endif %}
       · <a href="/admin/shipping">Pack and ship</a>
       · <a href="/admin/customers/{{ order.email | urlencode }}">Customer</a></p>
 

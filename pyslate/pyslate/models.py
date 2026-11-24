@@ -335,6 +335,26 @@ class Shipment(Base):
     order: Mapped[Order] = relationship()
 
 
+class CarrierLabel(Base):
+    """A postage label bought straight from UPS, FedEx or USPS for one box of an order."""
+
+    __tablename__ = "carrier_labels"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"), index=True)
+    box: Mapped[int] = mapped_column(Integer, default=1)
+    carrier: Mapped[str] = mapped_column(String(16))
+    service: Mapped[str] = mapped_column(String(64))
+    service_name: Mapped[str] = mapped_column(String(128), default="")
+    tracking: Mapped[str] = mapped_column(String(64), index=True)
+    shipment_id: Mapped[str] = mapped_column(String(128), default="")
+    cost_cents: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    fmt: Mapped[str] = mapped_column(String(8))
+    stored_name: Mapped[str] = mapped_column(String(128))
+    voided: Mapped[bool] = mapped_column(default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    order: Mapped[Order] = relationship()
+
+
 def make_session_factory(url: str):
     connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
     engine = create_engine(url, connect_args=connect_args, future=True)

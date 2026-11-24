@@ -41,6 +41,7 @@
     <button class="button">Mark packed</button>
   </form>
   {% elif order.status == 'finishing' %}
+  <p><a class="button" href="/admin/order/{{ order.number }}/postage">Buy postage</a></p>
   <form method="post" action="/admin/order/{{ order.number }}/ship" class="inline-form">
     <input type="hidden" name="back" value="{{ here }}">
     <select name="carrier" aria-label="Carrier">{% for key, c in carriers.items() %}<option value="{{ key }}">{{ c[0] }}</option>{% endfor %}</select>
