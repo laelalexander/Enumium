@@ -1,0 +1,2699 @@
+{
+ "source": "nasa-3d",
+ "revision": "11ebb4ee043715aefbba6aeec8a61746fad67fa7",
+ "count": 92,
+ "models": [
+  {
+   "slug": "nasa-apollo-11-landing-site",
+   "title": "Apollo 11 - Landing Site",
+   "files": [
+    {
+     "name": "Apollo 11 - Landing Site.stl",
+     "bytes": 7138484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Apollo%2011%20-%20Landing%20Site/Apollo%2011%20-%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    255.5,
+    255.5,
+    18.7
+   ]
+  },
+  {
+   "slug": "nasa-apollo-12-landing-site",
+   "title": "Apollo 12 - Landing Site",
+   "files": [
+    {
+     "name": "Apollo 12 - Landing Site.stl",
+     "bytes": 26418784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Apollo%2012%20-%20Landing%20Site/Apollo%2012%20-%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    511.0,
+    511.0,
+    60.0
+   ]
+  },
+  {
+   "slug": "nasa-apollo-14-landing-site",
+   "title": "Apollo 14 - Landing Site",
+   "files": [
+    {
+     "name": "Apollo 14 - Landing Site.stl",
+     "bytes": 6963584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Apollo%2014%20-%20Landing%20Site/Apollo%2014%20-%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    255.5,
+    255.5,
+    38.2
+   ]
+  },
+  {
+   "slug": "nasa-apollo-15-landing-site",
+   "title": "Apollo 15 - Landing Site",
+   "files": [
+    {
+     "name": "Apollo 15 - Landing Site.stl",
+     "bytes": 7064884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Apollo%2015%20-%20Landing%20Site/Apollo%2015%20-%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    255.5,
+    255.5,
+    27.0
+   ]
+  },
+  {
+   "slug": "nasa-apollo-16-landing-site",
+   "title": "Apollo 16 - Landing Site",
+   "files": [
+    {
+     "name": "Apollo 16 - Landing Site.stl",
+     "bytes": 6940584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Apollo%2016%20-%20Landing%20Site/Apollo%2016%20-%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    255.5,
+    255.5,
+    14.4
+   ]
+  },
+  {
+   "slug": "nasa-apollo-17-landing-site",
+   "title": "Apollo 17 - Landing Site",
+   "files": [
+    {
+     "name": "Apollo 17 - Landing Site.stl",
+     "bytes": 26675384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Apollo%2017%20-%20Landing%20Site/Apollo%2017%20-%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    255.5,
+    255.5,
+    14.9
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-101955-bennu",
+   "title": "Asteroid 101955 Bennu",
+   "files": [
+    {
+     "name": "Asteroid 101955 Bennu.stl",
+     "bytes": 2457684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%20101955%20Bennu/Asteroid%20101955%20Bennu.stl"
+    }
+   ],
+   "extents_mm": [
+    0.5,
+    0.6,
+    0.6
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-1620-geographos",
+   "title": "Asteroid 1620 Geographos",
+   "files": [
+    {
+     "name": "Asteroid 1620 Geographos.stl",
+     "bytes": 819084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%201620%20Geographos/Asteroid%201620%20Geographos.stl"
+    }
+   ],
+   "extents_mm": [
+    5.1,
+    2.4,
+    2.0
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-216-kleopatra",
+   "title": "Asteroid 216 Kleopatra",
+   "files": [
+    {
+     "name": "Asteroid 216 Kleopatra.stl",
+     "bytes": 204684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%20216%20Kleopatra/Asteroid%20216%20Kleopatra.stl"
+    }
+   ],
+   "extents_mm": [
+    9.7,
+    3.7,
+    4.2
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-25143-itokawa",
+   "title": "Asteroid 25143 Itokawa",
+   "files": [
+    {
+     "name": "Asteroid 25143 Itokawa.stl",
+     "bytes": 10018284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%2025143%20Itokawa/Asteroid%2025143%20Itokawa.stl"
+    }
+   ],
+   "extents_mm": [
+    56.4,
+    52.2,
+    15.5
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-4-vesta-a",
+   "title": "Asteroid 4 Vesta (A)",
+   "files": [
+    {
+     "name": "Asteroid 4 Vesta (A).stl",
+     "bytes": 40000084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%204%20Vesta%20%28A%29/Asteroid%204%20Vesta%20%28A%29.stl"
+    },
+    {
+     "name": "Asteroid 4 Vesta (A) (East Globe Hollow).stl",
+     "bytes": 20000084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%204%20Vesta%20%28A%29/Asteroid%204%20Vesta%20%28A%29%20%28East%20Globe%20Hollow%29.stl"
+    },
+    {
+     "name": "Asteroid 4 Vesta (A) (West Globe Hollow).stl",
+     "bytes": 20000084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%204%20Vesta%20%28A%29/Asteroid%204%20Vesta%20%28A%29%20%28West%20Globe%20Hollow%29.stl"
+    }
+   ],
+   "extents_mm": [
+    355.0,
+    356.3,
+    322.5
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-4-vesta-b",
+   "title": "Asteroid 4 Vesta (B)",
+   "files": [
+    {
+     "name": "Asteroid 4 Vesta (B).stl",
+     "bytes": 40366434,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%204%20Vesta%20%28B%29/Asteroid%204%20Vesta%20%28B%29.stl"
+    }
+   ],
+   "extents_mm": [
+    236.0,
+    112.2,
+    46.7
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-4179-toutatis",
+   "title": "Asteroid 4179 Toutatis",
+   "files": [
+    {
+     "name": "Asteroid 4179 Toutatis.stl",
+     "bytes": 639884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%204179%20Toutatis/Asteroid%204179%20Toutatis.stl"
+    }
+   ],
+   "extents_mm": [
+    2.3,
+    4.6,
+    1.9
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-433-eros",
+   "title": "Asteroid 433 Eros",
+   "files": [
+    {
+     "name": "Asteroid 433 Eros.stl",
+     "bytes": 10042884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%20433%20Eros/Asteroid%20433%20Eros.stl"
+    }
+   ],
+   "extents_mm": [
+    55.5,
+    51.3,
+    9.8
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-4486-mithra",
+   "title": "Asteroid 4486 Mithra",
+   "files": [
+    {
+     "name": "Asteroid 4486 Mithra.stl",
+     "bytes": 299884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%204486%20Mithra/Asteroid%204486%20Mithra.stl"
+    }
+   ],
+   "extents_mm": [
+    3.3,
+    2.0,
+    2.3
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-6489-golevka",
+   "title": "Asteroid 6489 Golevka",
+   "files": [
+    {
+     "name": "Asteroid 6489 Golevka.stl",
+     "bytes": 204684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%206489%20Golevka/Asteroid%206489%20Golevka.stl"
+    }
+   ],
+   "extents_mm": [
+    1.7,
+    1.9,
+    2.3
+   ]
+  },
+  {
+   "slug": "nasa-asteroid-8567-1996-hw1",
+   "title": "Asteroid 8567 1996 HW1",
+   "files": [
+    {
+     "name": "Asteroid 8567 1996 HW1.stl",
+     "bytes": 139084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Asteroid%208567%201996%20HW1/Asteroid%208567%201996%20HW1.stl"
+    }
+   ],
+   "extents_mm": [
+    3.8,
+    1.5,
+    1.6
+   ]
+  },
+  {
+   "slug": "nasa-beam-waveguide-deep-space-station-antenna",
+   "title": "Beam Waveguide Deep Space Station Antenna",
+   "files": [
+    {
+     "name": "Quadrapod.stl",
+     "bytes": 1626084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Beam%20Waveguide%20Deep%20Space%20Station%20Antenna/Quadrapod.stl"
+    },
+    {
+     "name": "Main reflector.stl",
+     "bytes": 1002484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Beam%20Waveguide%20Deep%20Space%20Station%20Antenna/Main%20reflector.stl"
+    },
+    {
+     "name": "Elevation assembly.stl",
+     "bytes": 371984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Beam%20Waveguide%20Deep%20Space%20Station%20Antenna/Elevation%20assembly.stl"
+    },
+    {
+     "name": "Lower alidade.stl",
+     "bytes": 195884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Beam%20Waveguide%20Deep%20Space%20Station%20Antenna/Lower%20alidade.stl"
+    },
+    {
+     "name": "Upper alidade.stl",
+     "bytes": 177584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Beam%20Waveguide%20Deep%20Space%20Station%20Antenna/Upper%20alidade.stl"
+    },
+    {
+     "name": "Azimuth track.stl",
+     "bytes": 164084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Beam%20Waveguide%20Deep%20Space%20Station%20Antenna/Azimuth%20track.stl"
+    }
+   ],
+   "extents_mm": [
+    72.3,
+    56.5,
+    69.3
+   ]
+  },
+  {
+   "slug": "nasa-block-island",
+   "title": "Block Island",
+   "files": [
+    {
+     "name": "Block Island.stl",
+     "bytes": 7186984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Block%20Island/Block%20Island.stl"
+    }
+   ],
+   "extents_mm": [
+    135.0,
+    64.6,
+    174.4
+   ]
+  },
+  {
+   "slug": "nasa-chandra-x-ray-observatory",
+   "title": "Chandra X-ray Observatory",
+   "files": [
+    {
+     "name": "Chandra base.stl",
+     "bytes": 466084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20base.stl"
+    },
+    {
+     "name": "Chandra cylinder.stl",
+     "bytes": 393084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20cylinder.stl"
+    },
+    {
+     "name": "Chandra cover.stl",
+     "bytes": 73284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20cover.stl"
+    },
+    {
+     "name": "Chandra top.stl",
+     "bytes": 22784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20top.stl"
+    },
+    {
+     "name": "Chandra panel.stl",
+     "bytes": 18584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20panel.stl"
+    }
+   ],
+   "extents_mm": [
+    36.1,
+    38.3,
+    21.0
+   ]
+  },
+  {
+   "slug": "nasa-crab-nebula",
+   "title": "Crab Nebula",
+   "files": [
+    {
+     "name": "Crab Nebula (disc).stl",
+     "bytes": 5673684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Crab%20Nebula/Crab%20Nebula%20%28disc%29.stl"
+    },
+    {
+     "name": "Crab Nebula (jet 2).stl",
+     "bytes": 3208984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Crab%20Nebula/Crab%20Nebula%20%28jet%202%29.stl"
+    },
+    {
+     "name": "Crab Nebula (jet 1).stl",
+     "bytes": 2785884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Crab%20Nebula/Crab%20Nebula%20%28jet%201%29.stl"
+    }
+   ],
+   "extents_mm": [
+    126.8,
+    116.7,
+    132.6
+   ]
+  },
+  {
+   "slug": "nasa-cubesat",
+   "title": "CubeSat",
+   "files": [
+    {
+     "name": "CubeSat middle.stl",
+     "bytes": 1443384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/CubeSat/CubeSat%20middle.stl"
+    },
+    {
+     "name": "CubeSat bottom.stl",
+     "bytes": 237684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/CubeSat/CubeSat%20bottom.stl"
+    },
+    {
+     "name": "CubeSat top.stl",
+     "bytes": 234884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/CubeSat/CubeSat%20top.stl"
+    }
+   ],
+   "extents_mm": [
+    104.0,
+    104.0,
+    96.4
+   ]
+  },
+  {
+   "slug": "nasa-curiosity-landing-site",
+   "title": "Curiosity Landing Site",
+   "files": [
+    {
+     "name": "Curiosity Landing Site.stl",
+     "bytes": 2756784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Landing%20Site/Curiosity%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    761.3,
+    558.0,
+    40.8
+   ]
+  },
+  {
+   "slug": "nasa-curiosity-rover-detailed",
+   "title": "Curiosity Rover (Detailed)",
+   "files": [
+    {
+     "name": "4-wheels.stl",
+     "bytes": 17407284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Rover%20%28Detailed%29/4-wheels.stl"
+    },
+    {
+     "name": "2-components.stl",
+     "bytes": 12157084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Rover%20%28Detailed%29/2-components.stl"
+    },
+    {
+     "name": "3-pins-and-hubs.stl",
+     "bytes": 6986284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Rover%20%28Detailed%29/3-pins-and-hubs.stl"
+    },
+    {
+     "name": "1-body.stl",
+     "bytes": 916984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Rover%20%28Detailed%29/1-body.stl"
+    }
+   ],
+   "extents_mm": [
+    120.3,
+    78.8,
+    32.0
+   ]
+  },
+  {
+   "slug": "nasa-curiosity-rover-simplified",
+   "title": "Curiosity Rover (Simplified)",
+   "files": [
+    {
+     "name": "Curiosity (200uM).stl",
+     "bytes": 19247184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Rover%20%28Simplified%29/Curiosity%20%28200uM%29.stl"
+    }
+   ],
+   "extents_mm": [
+    196.3,
+    96.7,
+    32.5
+   ]
+  },
+  {
+   "slug": "nasa-curiosity-rover-path",
+   "title": "Curiosity Rover Path",
+   "files": [
+    {
+     "name": "Curiosity Rover Path.stl",
+     "bytes": 20000084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Curiosity%20Rover%20Path/Curiosity%20Rover%20Path.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    56.2
+   ]
+  },
+  {
+   "slug": "nasa-cyclone-global-navigation-satellite-system-cygnss",
+   "title": "Cyclone Global Navigation Satellite System (CYGNSS)",
+   "files": [
+    {
+     "name": "Cyclone Global Navigation Satellite System (CYGNSS).stl",
+     "bytes": 34684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Cyclone%20Global%20Navigation%20Satellite%20System%20%28CYGNSS%29/Cyclone%20Global%20Navigation%20Satellite%20System%20%28CYGNSS%29.stl"
+    }
+   ],
+   "extents_mm": [
+    10.0,
+    1.6,
+    3.2
+   ]
+  },
+  {
+   "slug": "nasa-dg-tau",
+   "title": "DG Tau",
+   "files": [
+    {
+     "name": "DG Tau.stl",
+     "bytes": 11072684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/DG%20Tau/DG%20Tau.stl"
+    }
+   ],
+   "extents_mm": [
+    99.0,
+    99.0,
+    316.2
+   ]
+  },
+  {
+   "slug": "nasa-double-asteroid-redirection-test-dart",
+   "title": "Double Asteroid Redirection Test (DART)",
+   "files": [
+    {
+     "name": "Double Asteroid Redirection Test (DART).stl",
+     "bytes": 22319934,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Double%20Asteroid%20Redirection%20Test%20%28DART%29/Double%20Asteroid%20Redirection%20Test%20%28DART%29.stl"
+    }
+   ],
+   "extents_mm": [
+    40.3,
+    4.5,
+    5.4
+   ]
+  },
+  {
+   "slug": "nasa-eclipse-2017",
+   "title": "Eclipse 2017",
+   "files": [
+    {
+     "name": "Wisconsin.stl",
+     "bytes": 14788084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Wisconsin.stl"
+    },
+    {
+     "name": "USA.stl",
+     "bytes": 13792584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/USA.stl"
+    },
+    {
+     "name": "Washington DC.stl",
+     "bytes": 11912184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Washington%20DC.stl"
+    },
+    {
+     "name": "California.stl",
+     "bytes": 11748784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/California.stl"
+    },
+    {
+     "name": "US Virgin Islands.stl",
+     "bytes": 11190084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/US%20Virgin%20Islands.stl"
+    },
+    {
+     "name": "South Dakota.stl",
+     "bytes": 10923584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/South%20Dakota.stl"
+    },
+    {
+     "name": "Indiana.stl",
+     "bytes": 10917684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Indiana.stl"
+    },
+    {
+     "name": "Arkansas.stl",
+     "bytes": 10777284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Arkansas.stl"
+    },
+    {
+     "name": "Alabama.stl",
+     "bytes": 10719784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Alabama.stl"
+    },
+    {
+     "name": "Virginia.stl",
+     "bytes": 10702184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Virginia.stl"
+    },
+    {
+     "name": "Maryland.stl",
+     "bytes": 10662584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Maryland.stl"
+    },
+    {
+     "name": "Michigan.stl",
+     "bytes": 10656584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Michigan.stl"
+    },
+    {
+     "name": "Colorado.stl",
+     "bytes": 10630784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Colorado.stl"
+    },
+    {
+     "name": "Maine.stl",
+     "bytes": 10624984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Maine.stl"
+    },
+    {
+     "name": "Puerto Rico.stl",
+     "bytes": 10598884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Puerto%20Rico.stl"
+    },
+    {
+     "name": "Ohio.stl",
+     "bytes": 10596284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Ohio.stl"
+    },
+    {
+     "name": "Texas.stl",
+     "bytes": 10588984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Texas.stl"
+    },
+    {
+     "name": "Delaware.stl",
+     "bytes": 10585584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Delaware.stl"
+    },
+    {
+     "name": "Washington.stl",
+     "bytes": 10578484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Washington.stl"
+    },
+    {
+     "name": "North Dakota.stl",
+     "bytes": 10569584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/North%20Dakota.stl"
+    },
+    {
+     "name": "Minnesota.stl",
+     "bytes": 10560384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Minnesota.stl"
+    },
+    {
+     "name": "West Virginia.stl",
+     "bytes": 10543484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/West%20Virginia.stl"
+    },
+    {
+     "name": "Nevada.stl",
+     "bytes": 10528684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Nevada.stl"
+    },
+    {
+     "name": "Utah.stl",
+     "bytes": 10527084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Utah.stl"
+    },
+    {
+     "name": "Louisiana.stl",
+     "bytes": 10507584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Louisiana.stl"
+    },
+    {
+     "name": "Pennsylvania.stl",
+     "bytes": 10486984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Pennsylvania.stl"
+    },
+    {
+     "name": "Florida.stl",
+     "bytes": 10448884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Florida.stl"
+    },
+    {
+     "name": "Vermont.stl",
+     "bytes": 10377584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Vermont.stl"
+    },
+    {
+     "name": "Oklahoma.stl",
+     "bytes": 10363084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Oklahoma.stl"
+    },
+    {
+     "name": "Arizona.stl",
+     "bytes": 10302484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Arizona.stl"
+    },
+    {
+     "name": "Mississippi.stl",
+     "bytes": 10281584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Mississippi.stl"
+    },
+    {
+     "name": "New York.stl",
+     "bytes": 10186684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/New%20York.stl"
+    },
+    {
+     "name": "New Hampshire.stl",
+     "bytes": 10181784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/New%20Hampshire.stl"
+    },
+    {
+     "name": "New Mexico.stl",
+     "bytes": 10170884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/New%20Mexico.stl"
+    },
+    {
+     "name": "Hawaii.stl",
+     "bytes": 10160384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Hawaii.stl"
+    },
+    {
+     "name": "New Jersey.stl",
+     "bytes": 10007284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/New%20Jersey.stl"
+    },
+    {
+     "name": "Rhode Island.stl",
+     "bytes": 9983684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Rhode%20Island.stl"
+    },
+    {
+     "name": "Connecticut.stl",
+     "bytes": 9939684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Connecticut.stl"
+    },
+    {
+     "name": "Alaska.stl",
+     "bytes": 9866884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Alaska.stl"
+    },
+    {
+     "name": "Massachusetts.stl",
+     "bytes": 9719984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Massachusetts.stl"
+    },
+    {
+     "name": "Wyoming.stl",
+     "bytes": 7823184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Wyoming.stl"
+    },
+    {
+     "name": "Missouri.stl",
+     "bytes": 7818184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Missouri.stl"
+    },
+    {
+     "name": "Nebraska.stl",
+     "bytes": 7815784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Nebraska.stl"
+    },
+    {
+     "name": "Idaho.stl",
+     "bytes": 7788884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Idaho.stl"
+    },
+    {
+     "name": "North Carolina.stl",
+     "bytes": 7758284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/North%20Carolina.stl"
+    },
+    {
+     "name": "Tennessee.stl",
+     "bytes": 7743084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Tennessee.stl"
+    },
+    {
+     "name": "South Carolina.stl",
+     "bytes": 7715084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/South%20Carolina.stl"
+    },
+    {
+     "name": "Iowa.stl",
+     "bytes": 7683184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Iowa.stl"
+    },
+    {
+     "name": "Oregon.stl",
+     "bytes": 7635284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Oregon.stl"
+    },
+    {
+     "name": "Georgia.stl",
+     "bytes": 7632884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Georgia.stl"
+    },
+    {
+     "name": "Kentucky.stl",
+     "bytes": 7626284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Kentucky.stl"
+    },
+    {
+     "name": "Illinois.stl",
+     "bytes": 7622184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Illinois.stl"
+    },
+    {
+     "name": "Montana.stl",
+     "bytes": 7609684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Montana.stl"
+    },
+    {
+     "name": "Kansas.stl",
+     "bytes": 7605484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eclipse%202017/Kansas.stl"
+    }
+   ],
+   "extents_mm": [
+    169.1,
+    180.0,
+    3.0
+   ]
+  },
+  {
+   "slug": "nasa-eta-carinae-homunculus-nebula",
+   "title": "Eta Carinae Homunculus Nebula",
+   "files": [
+    {
+     "name": "Eta Carinae Homunculus Nebula.stl",
+     "bytes": 855134,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula/Eta%20Carinae%20Homunculus%20Nebula.stl"
+    }
+   ],
+   "extents_mm": [
+    4.0,
+    3.6,
+    7.6
+   ]
+  },
+  {
+   "slug": "nasa-eta-carinae-homunculus-nebula-high-mass-loss-rate",
+   "title": "Eta Carinae Homunculus Nebula (High Mass-Loss Rate)",
+   "files": [
+    {
+     "name": "ApastronHighMdotWWCR.stl",
+     "bytes": 10452384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28High%20Mass-Loss%20Rate%29/ApastronHighMdotWWCR.stl"
+    },
+    {
+     "name": "Phase1p045HighMdotPrimaryWind.stl",
+     "bytes": 6572134,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28High%20Mass-Loss%20Rate%29/Phase1p045HighMdotPrimaryWind.stl"
+    },
+    {
+     "name": "PeriastronHighMdotPrimaryWind.stl",
+     "bytes": 6027084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28High%20Mass-Loss%20Rate%29/PeriastronHighMdotPrimaryWind.stl"
+    },
+    {
+     "name": "ApastronHighMdotPrimaryWind.stl",
+     "bytes": 6013884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28High%20Mass-Loss%20Rate%29/ApastronHighMdotPrimaryWind.stl"
+    },
+    {
+     "name": "Phase1p045HighMdotWWCR.stl",
+     "bytes": 5696834,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28High%20Mass-Loss%20Rate%29/Phase1p045HighMdotWWCR.stl"
+    },
+    {
+     "name": "PeriastronHighMdotWWCR.stl",
+     "bytes": 2561484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28High%20Mass-Loss%20Rate%29/PeriastronHighMdotWWCR.stl"
+    }
+   ],
+   "extents_mm": [
+    136.4,
+    42.9,
+    69.6
+   ]
+  },
+  {
+   "slug": "nasa-eta-carinae-homunculus-nebula-low-mass-loss-rate",
+   "title": "Eta Carinae Homunculus Nebula (Low Mass-Loss Rate)",
+   "files": [
+    {
+     "name": "Phase1p045LowMdotPrimaryWind.stl",
+     "bytes": 10968784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28Low%20Mass-Loss%20Rate%29/Phase1p045LowMdotPrimaryWind.stl"
+    },
+    {
+     "name": "Phase1p045LowMdotWWCR.stl",
+     "bytes": 7661934,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28Low%20Mass-Loss%20Rate%29/Phase1p045LowMdotWWCR.stl"
+    },
+    {
+     "name": "PeriastronLowMdotPrimaryWind.stl",
+     "bytes": 5292284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28Low%20Mass-Loss%20Rate%29/PeriastronLowMdotPrimaryWind.stl"
+    },
+    {
+     "name": "ApastronLowMdotPrimaryWind.stl",
+     "bytes": 4886234,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28Low%20Mass-Loss%20Rate%29/ApastronLowMdotPrimaryWind.stl"
+    },
+    {
+     "name": "PeriastronLowMdotWWCR.stl",
+     "bytes": 2933484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28Low%20Mass-Loss%20Rate%29/PeriastronLowMdotWWCR.stl"
+    },
+    {
+     "name": "ApastronLowMdotWWCR.stl",
+     "bytes": 2199034,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Eta%20Carinae%20Homunculus%20Nebula%20%28Low%20Mass-Loss%20Rate%29/ApastronLowMdotWWCR.stl"
+    }
+   ],
+   "extents_mm": [
+    125.9,
+    115.9,
+    137.6
+   ]
+  },
+  {
+   "slug": "nasa-europa-orbiter",
+   "title": "Europa Orbiter",
+   "files": [
+    {
+     "name": "europa-203a.stl",
+     "bytes": 3798184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Europa%20Orbiter/europa-203a.stl"
+    },
+    {
+     "name": "europa-205-rp.stl",
+     "bytes": 2912284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Europa%20Orbiter/europa-205-rp.stl"
+    },
+    {
+     "name": "europa-204-rp.stl",
+     "bytes": 2101384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Europa%20Orbiter/europa-204-rp.stl"
+    },
+    {
+     "name": "europa-206-rp.stl",
+     "bytes": 2021784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Europa%20Orbiter/europa-206-rp.stl"
+    },
+    {
+     "name": "europa-207.stl",
+     "bytes": 325884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Europa%20Orbiter/europa-207.stl"
+    }
+   ],
+   "extents_mm": [
+    3.8,
+    6.3,
+    4.6
+   ]
+  },
+  {
+   "slug": "nasa-explorer-1",
+   "title": "Explorer 1",
+   "files": [
+    {
+     "name": "04_nozzle_PLA.stl",
+     "bytes": 243284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/04_nozzle_PLA.stl"
+    },
+    {
+     "name": "04_nozzle_ABS.stl",
+     "bytes": 243284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/04_nozzle_ABS.stl"
+    },
+    {
+     "name": "01_side_a.stl",
+     "bytes": 143684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/01_side_a.stl"
+    },
+    {
+     "name": "02_side_b.stl",
+     "bytes": 143684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/02_side_b.stl"
+    },
+    {
+     "name": "05_cone_PLA.stl",
+     "bytes": 127884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/05_cone_PLA.stl"
+    },
+    {
+     "name": "05_cone_ABS.stl",
+     "bytes": 127884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/05_cone_ABS.stl"
+    },
+    {
+     "name": "03_connector_PLA.stl",
+     "bytes": 1084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/03_connector_PLA.stl"
+    },
+    {
+     "name": "03_connector_ABS.stl",
+     "bytes": 1084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Explorer%201/03_connector_ABS.stl"
+    }
+   ],
+   "extents_mm": [
+    11.7,
+    11.7,
+    16.7
+   ]
+  },
+  {
+   "slug": "nasa-fablab",
+   "title": "Fablab",
+   "files": [
+    {
+     "name": "Reference part.stl",
+     "bytes": 344084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Fablab/Reference%20part.stl"
+    },
+    {
+     "name": "FabLab manufacturing artifact.stl",
+     "bytes": 294584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Fablab/FabLab%20manufacturing%20artifact.stl"
+    }
+   ],
+   "extents_mm": [
+    38.1,
+    10.2,
+    20.6
+   ]
+  },
+  {
+   "slug": "nasa-gale-crater",
+   "title": "Gale Crater",
+   "files": [
+    {
+     "name": "Gale Crater.stl",
+     "bytes": 26317184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Gale%20Crater/Gale%20Crater.stl"
+    }
+   ],
+   "extents_mm": [
+    107.1,
+    142.2,
+    10.5
+   ]
+  },
+  {
+   "slug": "nasa-galileo",
+   "title": "Galileo",
+   "files": [
+    {
+     "name": "Galileo.stl",
+     "bytes": 873734,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Galileo/Galileo.stl"
+    },
+    {
+     "name": "Galileo without probe.stl",
+     "bytes": 835934,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Galileo/Galileo%20without%20probe.stl"
+    },
+    {
+     "name": "Galileo stowed.stl",
+     "bytes": 830534,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Galileo/Galileo%20stowed.stl"
+    },
+    {
+     "name": "Galileo with armature.stl",
+     "bytes": 115284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Galileo/Galileo%20with%20armature.stl"
+    },
+    {
+     "name": "Galileo probe.stl",
+     "bytes": 37884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Galileo/Galileo%20probe.stl"
+    }
+   ],
+   "extents_mm": [
+    7.5,
+    12.8,
+    6.8
+   ]
+  },
+  {
+   "slug": "nasa-hubble-25th-anniversary-model",
+   "title": "Hubble 25th Anniversary Model",
+   "files": [
+    {
+     "name": "Main body.stl",
+     "bytes": 274984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%2025th%20Anniversary%20Model/Main%20body.stl"
+    },
+    {
+     "name": "Radio dishes.stl",
+     "bytes": 240084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%2025th%20Anniversary%20Model/Radio%20dishes.stl"
+    },
+    {
+     "name": "Solar panels.stl",
+     "bytes": 236684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%2025th%20Anniversary%20Model/Solar%20panels.stl"
+    },
+    {
+     "name": "Body coupler.stl",
+     "bytes": 73784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%2025th%20Anniversary%20Model/Body%20coupler.stl"
+    },
+    {
+     "name": "Cover hatch.stl",
+     "bytes": 54684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%2025th%20Anniversary%20Model/Cover%20hatch.stl"
+    },
+    {
+     "name": "Base.stl",
+     "bytes": 37084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%2025th%20Anniversary%20Model/Base.stl"
+    }
+   ],
+   "extents_mm": [
+    41.8,
+    41.8,
+    79.6
+   ]
+  },
+  {
+   "slug": "nasa-hubble-space-telescope",
+   "title": "Hubble Space Telescope",
+   "files": [
+    {
+     "name": "All pieces.stl",
+     "bytes": 429584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/All%20pieces.stl"
+    },
+    {
+     "name": "Main body.stl",
+     "bytes": 181584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/Main%20body.stl"
+    },
+    {
+     "name": "Body coupler.stl",
+     "bytes": 73784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/Body%20coupler.stl"
+    },
+    {
+     "name": "Cover hatch.stl",
+     "bytes": 57184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/Cover%20hatch.stl"
+    },
+    {
+     "name": "Radio dishes.stl",
+     "bytes": 47284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/Radio%20dishes.stl"
+    },
+    {
+     "name": "Base.stl",
+     "bytes": 37084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/Base.stl"
+    },
+    {
+     "name": "Solar panels.stl",
+     "bytes": 33684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hubble%20Space%20Telescope/Solar%20panels.stl"
+    }
+   ],
+   "extents_mm": [
+    67.2,
+    91.9,
+    39.8
+   ]
+  },
+  {
+   "slug": "nasa-hurricane-julio",
+   "title": "Hurricane Julio",
+   "files": [
+    {
+     "name": "Hurricane Julio.stl",
+     "bytes": 19320484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hurricane%20Julio/Hurricane%20Julio.stl"
+    },
+    {
+     "name": "Hurricane Julio (small).stl",
+     "bytes": 11250084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hurricane%20Julio/Hurricane%20Julio%20%28small%29.stl"
+    }
+   ],
+   "extents_mm": [
+    195.0,
+    195.0,
+    16.9
+   ]
+  },
+  {
+   "slug": "nasa-hurricane-katrina",
+   "title": "Hurricane Katrina",
+   "files": [
+    {
+     "name": "Hurricane Katrina.stl",
+     "bytes": 19543384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hurricane%20Katrina/Hurricane%20Katrina.stl"
+    },
+    {
+     "name": "Hurricane Katrina (small).stl",
+     "bytes": 11250084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hurricane%20Katrina/Hurricane%20Katrina%20%28small%29.stl"
+    }
+   ],
+   "extents_mm": [
+    195.0,
+    195.0,
+    20.7
+   ]
+  },
+  {
+   "slug": "nasa-hurricane-sandy",
+   "title": "Hurricane Sandy",
+   "files": [
+    {
+     "name": "Hurricane Sandy.stl",
+     "bytes": 19361484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hurricane%20Sandy/Hurricane%20Sandy.stl"
+    },
+    {
+     "name": "Hurricane Sandy (small).stl",
+     "bytes": 11250084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Hurricane%20Sandy/Hurricane%20Sandy%20%28small%29.stl"
+    }
+   ],
+   "extents_mm": [
+    195.0,
+    195.0,
+    15.3
+   ]
+  },
+  {
+   "slug": "nasa-international-space-station-tools",
+   "title": "International Space Station Tools",
+   "files": [
+    {
+     "name": "020 -Container.stl",
+     "bytes": 1098984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/020%20-Container.stl"
+    },
+    {
+     "name": "wrench.stl",
+     "bytes": 728284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/wrench.stl"
+    },
+    {
+     "name": "021 - Wire Tie.stl",
+     "bytes": 653884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/021%20-%20Wire%20Tie.stl"
+    },
+    {
+     "name": "009 - ISS Crew.stl",
+     "bytes": 353184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/009%20-%20ISS%20Crew.stl"
+    },
+    {
+     "name": "008 - Torque.stl",
+     "bytes": 187084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/008%20-%20Torque.stl"
+    },
+    {
+     "name": "002 - First Part.stl",
+     "bytes": 175684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/002%20-%20First%20Part.stl"
+    },
+    {
+     "name": "007 - Range.stl",
+     "bytes": 90284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/007%20-%20Range.stl"
+    },
+    {
+     "name": "010 - Cubesat.stl",
+     "bytes": 65484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/010%20-%20Cubesat.stl"
+    },
+    {
+     "name": "011 - ZeroG1.stl",
+     "bytes": 54684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/011%20-%20ZeroG1.stl"
+    },
+    {
+     "name": "005 - Compression.stl",
+     "bytes": 31884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/005%20-%20Compression.stl"
+    },
+    {
+     "name": "004 - Tensile.stl",
+     "bytes": 27084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/004%20-%20Tensile.stl"
+    },
+    {
+     "name": "001 - FTC.stl",
+     "bytes": 18084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/001%20-%20FTC.stl"
+    },
+    {
+     "name": "019 - ZeroG2.stl",
+     "bytes": 5884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/019%20-%20ZeroG2.stl"
+    },
+    {
+     "name": "006 - Flexural.stl",
+     "bytes": 684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/006%20-%20Flexural.stl"
+    },
+    {
+     "name": "003 - Column.stl",
+     "bytes": 684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Space%20Station%20Tools/003%20-%20Column.stl"
+    }
+   ],
+   "extents_mm": [
+    46.0,
+    90.0,
+    32.5
+   ]
+  },
+  {
+   "slug": "nasa-international-sun-earth-explorer-3",
+   "title": "International Sun-Earth Explorer-3",
+   "files": [
+    {
+     "name": "Exboom1.stl",
+     "bytes": 3973684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Exboom1.stl"
+    },
+    {
+     "name": "Thruster.stl",
+     "bytes": 1610884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Thruster.stl"
+    },
+    {
+     "name": "Core 2.stl",
+     "bytes": 664284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Core%202.stl"
+    },
+    {
+     "name": "Exboom2.stl",
+     "bytes": 309784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Exboom2.stl"
+    },
+    {
+     "name": "Exboom (empty).stl",
+     "bytes": 307084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Exboom%20%28empty%29.stl"
+    },
+    {
+     "name": "Inertia boom.stl",
+     "bytes": 98284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Inertia%20boom.stl"
+    },
+    {
+     "name": "Rad antenna.stl",
+     "bytes": 36884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/International%20Sun-Earth%20Explorer-3/Rad%20antenna.stl"
+    }
+   ],
+   "extents_mm": [
+    10.6,
+    8.1,
+    132.8
+   ]
+  },
+  {
+   "slug": "nasa-james-webb-space-telescope",
+   "title": "James Webb Space Telescope",
+   "files": [
+    {
+     "name": "All pieces (with supports).stl",
+     "bytes": 2355184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/James%20Webb%20Space%20Telescope/All%20pieces%20%28with%20supports%29.stl"
+    },
+    {
+     "name": "All pieces (without supports).stl",
+     "bytes": 1404884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/James%20Webb%20Space%20Telescope/All%20pieces%20%28without%20supports%29.stl"
+    },
+    {
+     "name": "Body.stl",
+     "bytes": 1079084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/James%20Webb%20Space%20Telescope/Body.stl"
+    },
+    {
+     "name": "Dish.stl",
+     "bytes": 293384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/James%20Webb%20Space%20Telescope/Dish.stl"
+    }
+   ],
+   "extents_mm": [
+    189.9,
+    117.3,
+    108.5
+   ]
+  },
+  {
+   "slug": "nasa-ka-band-satellite-beacon-receiver",
+   "title": "Ka-Band Satellite Beacon Receiver",
+   "files": [
+    {
+     "name": "Alphasat Terminal - Ka-Band Reflector.stl",
+     "bytes": 355684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Ka-Band%20Reflector.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Ka-Band Reflector Mount.stl",
+     "bytes": 297084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Ka-Band%20Reflector%20Mount.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Sub-Reflector C.stl",
+     "bytes": 96484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Sub-Reflector%20C.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Post.stl",
+     "bytes": 92584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Post.stl"
+    },
+    {
+     "name": "Alphasat Terminal - RF Electronics Box.stl",
+     "bytes": 58884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20RF%20Electronics%20Box.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Antenna Feed.stl",
+     "bytes": 51584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Antenna%20Feed.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Positioner Arm.stl",
+     "bytes": 42984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Positioner%20Arm.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Positioner Body.stl",
+     "bytes": 29284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Positioner%20Body.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Base.stl",
+     "bytes": 16884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Base.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Sub-Reflector B.stl",
+     "bytes": 4284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Sub-Reflector%20B.stl"
+    },
+    {
+     "name": "Alphasat Terminal - Sub-Reflector A.stl",
+     "bytes": 3484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Ka-Band%20Satellite%20Beacon%20Receiver/Alphasat%20Terminal%20-%20Sub-Reflector%20A.stl"
+    }
+   ],
+   "extents_mm": [
+    51.0,
+    11.8,
+    51.0
+   ]
+  },
+  {
+   "slug": "nasa-kepler-1-33-scale",
+   "title": "Kepler 1-33 scale",
+   "files": [
+    {
+     "name": "base.stl",
+     "bytes": 10200934,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Kepler%201-33%20scale/base.stl"
+    },
+    {
+     "name": "photometer.stl",
+     "bytes": 5095284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Kepler%201-33%20scale/photometer.stl"
+    },
+    {
+     "name": "sun shield.stl",
+     "bytes": 1790384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Kepler%201-33%20scale/sun%20shield.stl"
+    },
+    {
+     "name": "solar array.stl",
+     "bytes": 973784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Kepler%201-33%20scale/solar%20array.stl"
+    },
+    {
+     "name": "stand.stl",
+     "bytes": 133484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Kepler%201-33%20scale/stand.stl"
+    }
+   ],
+   "extents_mm": [
+    75.5,
+    76.8,
+    33.2
+   ]
+  },
+  {
+   "slug": "nasa-landsat-9",
+   "title": "Landsat 9",
+   "files": [
+    {
+     "name": "Landsat 9.stl",
+     "bytes": 1346584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Landsat%209/Landsat%209.stl"
+    }
+   ],
+   "extents_mm": [
+    123.9,
+    81.4,
+    24.3
+   ]
+  },
+  {
+   "slug": "nasa-laser-interferometer-space-antenna-lisa",
+   "title": "Laser Interferometer Space Antenna (LISA)",
+   "files": [
+    {
+     "name": "Solar panel.stl",
+     "bytes": 1090684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Solar%20panel.stl"
+    },
+    {
+     "name": "Spacecraft top.stl",
+     "bytes": 1047784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Spacecraft%20top.stl"
+    },
+    {
+     "name": "Spacecraft base.stl",
+     "bytes": 524784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Spacecraft%20base.stl"
+    },
+    {
+     "name": "Telescope.stl",
+     "bytes": 481384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Telescope.stl"
+    },
+    {
+     "name": "Satellite dish.stl",
+     "bytes": 451084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Satellite%20dish.stl"
+    },
+    {
+     "name": "GRS tank.stl",
+     "bytes": 280784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/GRS%20tank.stl"
+    },
+    {
+     "name": "Optics bench.stl",
+     "bytes": 227784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Optics%20bench.stl"
+    },
+    {
+     "name": "Thruster.stl",
+     "bytes": 53984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Thruster.stl"
+    },
+    {
+     "name": "GRS unit.stl",
+     "bytes": 39284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/GRS%20unit.stl"
+    },
+    {
+     "name": "Charge management system.stl",
+     "bytes": 37484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Charge%20management%20system.stl"
+    },
+    {
+     "name": "LISA control electronics.stl",
+     "bytes": 35884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/LISA%20control%20electronics.stl"
+    },
+    {
+     "name": "Cmd and data handling.stl",
+     "bytes": 34484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Cmd%20and%20data%20handling.stl"
+    },
+    {
+     "name": "Combined bottom boxes.stl",
+     "bytes": 14484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Combined%20bottom%20boxes.stl"
+    },
+    {
+     "name": "Right side panel.stl",
+     "bytes": 5284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Right%20side%20panel.stl"
+    },
+    {
+     "name": "Left side panel.stl",
+     "bytes": 5084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/Left%20side%20panel.stl"
+    },
+    {
+     "name": "PSE and battery.stl",
+     "bytes": 3684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Laser%20Interferometer%20Space%20Antenna%20%28LISA%29/PSE%20and%20battery.stl"
+    }
+   ],
+   "extents_mm": [
+    150.0,
+    150.0,
+    7.5
+   ]
+  },
+  {
+   "slug": "nasa-linne-crater",
+   "title": "Linne Crater",
+   "files": [
+    {
+     "name": "Linne Crater.stl",
+     "bytes": 47499984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Linne%20Crater/Linne%20Crater.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    64.2
+   ]
+  },
+  {
+   "slug": "nasa-mars-gale-crater",
+   "title": "Mars - Gale Crater",
+   "files": [
+    {
+     "name": "Mars - Gale Crater.stl",
+     "bytes": 19999984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Gale%20Crater/Mars%20-%20Gale%20Crater.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    53.1
+   ]
+  },
+  {
+   "slug": "nasa-mars-pahrump-hills",
+   "title": "Mars - Pahrump Hills",
+   "files": [
+    {
+     "name": "Mars - Pahrump Hills 1.stl",
+     "bytes": 16080184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Pahrump%20Hills/Mars%20-%20Pahrump%20Hills%201.stl"
+    },
+    {
+     "name": "Mars - Pahrump Hills 2.stl",
+     "bytes": 16080184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Pahrump%20Hills/Mars%20-%20Pahrump%20Hills%202.stl"
+    }
+   ],
+   "extents_mm": [
+    533.0,
+    533.0,
+    45.7
+   ]
+  },
+  {
+   "slug": "nasa-mars-spirit-landing-site",
+   "title": "Mars - Spirit Landing Site",
+   "files": [
+    {
+     "name": "Mars - Spirit Landing Site.stl",
+     "bytes": 24444584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Spirit%20Landing%20Site/Mars%20-%20Spirit%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    151.4,
+    137.8,
+    11.1
+   ]
+  },
+  {
+   "slug": "nasa-mars-spirit-rover-path",
+   "title": "Mars - Spirit Rover Path",
+   "files": [
+    {
+     "name": "Mars - Spirit Rover Path.stl",
+     "bytes": 20025684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Spirit%20Rover%20Path/Mars%20-%20Spirit%20Rover%20Path.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    16.7
+   ]
+  },
+  {
+   "slug": "nasa-mars-tharsis",
+   "title": "Mars - Tharsis",
+   "files": [
+    {
+     "name": "Mars - Tharsis.stl",
+     "bytes": 16619134,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Tharsis/Mars%20-%20Tharsis.stl"
+    }
+   ],
+   "extents_mm": [
+    146.1,
+    15.2,
+    102.0
+   ]
+  },
+  {
+   "slug": "nasa-mars-valles-marineris",
+   "title": "Mars - Valles Marineris",
+   "files": [
+    {
+     "name": "Mars - Valles Marineris (part 1).stl",
+     "bytes": 24107634,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20%28part%201%29.stl"
+    },
+    {
+     "name": "Mars - Valles Marineris (part 2).stl",
+     "bytes": 23960984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20%28part%202%29.stl"
+    },
+    {
+     "name": "Mars - Valles Marineris (part 3).stl",
+     "bytes": 23862734,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20%28part%203%29.stl"
+    }
+   ],
+   "extents_mm": [
+    146.4,
+    8.0,
+    147.6
+   ]
+  },
+  {
+   "slug": "nasa-mars-valles-marineris-b",
+   "title": "Mars - Valles Marineris (B)",
+   "files": [
+    {
+     "name": "Mars - Valles Marineris (B).stl",
+     "bytes": 20020384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Valles%20Marineris%20%28B%29/Mars%20-%20Valles%20Marineris%20%28B%29.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    14.2
+   ]
+  },
+  {
+   "slug": "nasa-mars-valles-marineris-c",
+   "title": "Mars - Valles Marineris (C)",
+   "files": [
+    {
+     "name": "Mars - Valles Marineris (C).stl",
+     "bytes": 12362584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Valles%20Marineris%20%28C%29/Mars%20-%20Valles%20Marineris%20%28C%29.stl"
+    }
+   ],
+   "extents_mm": [
+    78.3,
+    78.3,
+    5.8
+   ]
+  },
+  {
+   "slug": "nasa-mars-victoria-crater",
+   "title": "Mars - Victoria Crater",
+   "files": [
+    {
+     "name": "Mars - Victoria Crater.stl",
+     "bytes": 20000084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20-%20Victoria%20Crater/Mars%20-%20Victoria%20Crater.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    40.3
+   ]
+  },
+  {
+   "slug": "nasa-mars-2020-5-inch-wheel",
+   "title": "Mars 2020 5 inch wheel",
+   "files": [
+    {
+     "name": "Mars 2020 5 inch wheel.stl",
+     "bytes": 2266484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%202020%205%20inch%20wheel/Mars%202020%205%20inch%20wheel.stl"
+    }
+   ],
+   "extents_mm": [
+    5.0,
+    5.0,
+    2.9
+   ]
+  },
+  {
+   "slug": "nasa-mars-2020-sample-tube",
+   "title": "Mars 2020 sample tube",
+   "files": [
+    {
+     "name": "Mars 2020 sample tube.stl",
+     "bytes": 2120884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%202020%20sample%20tube/Mars%202020%20sample%20tube.stl"
+    }
+   ],
+   "extents_mm": [
+    0.9,
+    1.0,
+    5.6
+   ]
+  },
+  {
+   "slug": "nasa-mars-reconnaissance-orbiter",
+   "title": "Mars Reconnaissance Orbiter",
+   "files": [
+    {
+     "name": "bus_02.stl",
+     "bytes": 114684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/bus_02.stl"
+    },
+    {
+     "name": "connectors.stl",
+     "bytes": 107084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/connectors.stl"
+    },
+    {
+     "name": "instruments_bottom.stl",
+     "bytes": 92184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/instruments_bottom.stl"
+    },
+    {
+     "name": "bus_01.stl",
+     "bytes": 67884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/bus_01.stl"
+    },
+    {
+     "name": "antenna_bottom_02.stl",
+     "bytes": 48084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/antenna_bottom_02.stl"
+    },
+    {
+     "name": "solar panel_L.stl",
+     "bytes": 31284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/solar%20panel_L.stl"
+    },
+    {
+     "name": "solar panel_R.stl",
+     "bytes": 31284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/solar%20panel_R.stl"
+    },
+    {
+     "name": "antenna_bottom_01.stl",
+     "bytes": 28784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/antenna_bottom_01.stl"
+    },
+    {
+     "name": "top.stl",
+     "bytes": 24984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Mars%20Reconnaissance%20Orbiter/top.stl"
+    }
+   ],
+   "extents_mm": [
+    36.4,
+    38.4,
+    28.0
+   ]
+  },
+  {
+   "slug": "nasa-moon",
+   "title": "Moon",
+   "files": [
+    {
+     "name": "Moon (far side).stl",
+     "bytes": 12362584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon/Moon%20%28far%20side%29.stl"
+    },
+    {
+     "name": "Moon (near side).stl",
+     "bytes": 12362584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon/Moon%20%28near%20side%29.stl"
+    }
+   ],
+   "extents_mm": [
+    78.5,
+    78.5,
+    5.0
+   ]
+  },
+  {
+   "slug": "nasa-moon-aristarchus-region",
+   "title": "Moon - Aristarchus Region",
+   "files": [
+    {
+     "name": "Moon - Aristarchus Region.stl",
+     "bytes": 6492084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon%20-%20Aristarchus%20Region/Moon%20-%20Aristarchus%20Region.stl"
+    }
+   ],
+   "extents_mm": [
+    128.3,
+    85.2,
+    14.9
+   ]
+  },
+  {
+   "slug": "nasa-moon-copernicus-crater",
+   "title": "Moon - Copernicus Crater",
+   "files": [
+    {
+     "name": "Moon - Copernicus Crater.stl",
+     "bytes": 27775884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon%20-%20Copernicus%20Crater/Moon%20-%20Copernicus%20Crater.stl"
+    }
+   ],
+   "extents_mm": [
+    194.8,
+    143.5,
+    15.9
+   ]
+  },
+  {
+   "slug": "nasa-moon-gassendi-crater",
+   "title": "Moon - Gassendi Crater",
+   "files": [
+    {
+     "name": "Moon - Gassendi Crater.stl",
+     "bytes": 29735884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon%20-%20Gassendi%20Crater/Moon%20-%20Gassendi%20Crater.stl"
+    }
+   ],
+   "extents_mm": [
+    185.4,
+    161.5,
+    16.0
+   ]
+  },
+  {
+   "slug": "nasa-moon-mount-hadley",
+   "title": "Moon - Mount Hadley",
+   "files": [
+    {
+     "name": "Moon - Mount Hadley.stl",
+     "bytes": 47500084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon%20-%20Mount%20Hadley/Moon%20-%20Mount%20Hadley.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    57.0
+   ]
+  },
+  {
+   "slug": "nasa-moon-tycho",
+   "title": "Moon - Tycho",
+   "files": [
+    {
+     "name": "Moon - Tycho.stl",
+     "bytes": 47500084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Moon%20-%20Tycho/Moon%20-%20Tycho.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    26.3
+   ]
+  },
+  {
+   "slug": "nasa-multi-purpose-precision-maintenance-tool",
+   "title": "Multi-Purpose Precision Maintenance Tool",
+   "files": [
+    {
+     "name": "Multi-Purpose Precision Maintenance Tool.stl",
+     "bytes": 888084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Multi-Purpose%20Precision%20Maintenance%20Tool/Multi-Purpose%20Precision%20Maintenance%20Tool.stl"
+    }
+   ],
+   "extents_mm": [
+    75.0,
+    100.0,
+    13.0
+   ]
+  },
+  {
+   "slug": "nasa-niac-titan-sub",
+   "title": "NIAC Titan Sub",
+   "files": [
+    {
+     "name": "NIAC Titan Sub (main body upright).stl",
+     "bytes": 2313084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/NIAC%20Titan%20Sub/NIAC%20Titan%20Sub%20%28main%20body%20upright%29.stl"
+    },
+    {
+     "name": "NIAC Titan Sub (aft cone upright).stl",
+     "bytes": 78384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/NIAC%20Titan%20Sub/NIAC%20Titan%20Sub%20%28aft%20cone%20upright%29.stl"
+    }
+   ],
+   "extents_mm": [
+    5535.7,
+    2003.4,
+    1134.5
+   ]
+  },
+  {
+   "slug": "nasa-nancy-grace-roman-space-telescope",
+   "title": "Nancy Grace Roman Space Telescope",
+   "files": [
+    {
+     "name": "Nancy Grace Roman Space Telescope.stl",
+     "bytes": 27238784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Nancy%20Grace%20Roman%20Space%20Telescope/Nancy%20Grace%20Roman%20Space%20Telescope.stl"
+    }
+   ],
+   "extents_mm": [
+    248.2,
+    131.1,
+    113.3
+   ]
+  },
+  {
+   "slug": "nasa-new-horizons",
+   "title": "New Horizons",
+   "files": [
+    {
+     "name": "7399_05_rp_antenna.stl",
+     "bytes": 509684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/New%20Horizons/7399_05_rp_antenna.stl"
+    },
+    {
+     "name": "7399_05_rp_body.stl",
+     "bytes": 388284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/New%20Horizons/7399_05_rp_body.stl"
+    },
+    {
+     "name": "7399_05_rp_rtg.stl",
+     "bytes": 212984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/New%20Horizons/7399_05_rp_rtg.stl"
+    },
+    {
+     "name": "7399_05_rp_body_r.stl",
+     "bytes": 210784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/New%20Horizons/7399_05_rp_body_r.stl"
+    },
+    {
+     "name": "7399_05_rp_body_l.stl",
+     "bytes": 208184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/New%20Horizons/7399_05_rp_body_l.stl"
+    }
+   ],
+   "extents_mm": [
+    4.1,
+    2.7,
+    4.1
+   ]
+  },
+  {
+   "slug": "nasa-opportunity-landing-site",
+   "title": "Opportunity Landing Site",
+   "files": [
+    {
+     "name": "Opportunity Landing Site.stl",
+     "bytes": 2756784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Opportunity%20Landing%20Site/Opportunity%20Landing%20Site.stl"
+    }
+   ],
+   "extents_mm": [
+    762.4,
+    558.8,
+    25.5
+   ]
+  },
+  {
+   "slug": "nasa-orion-capsule",
+   "title": "Orion Capsule",
+   "files": [
+    {
+     "name": "Orion Capsule (no fbc).stl",
+     "bytes": 2586884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Orion%20Capsule/Orion%20Capsule%20%28no%20fbc%29.stl"
+    },
+    {
+     "name": "Orion Capsule (stand).stl",
+     "bytes": 1481884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Orion%20Capsule/Orion%20Capsule%20%28stand%29.stl"
+    },
+    {
+     "name": "Orion Capsule (plug).stl",
+     "bytes": 99684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Orion%20Capsule/Orion%20Capsule%20%28plug%29.stl"
+    }
+   ],
+   "extents_mm": [
+    16.3,
+    10.6,
+    16.3
+   ]
+  },
+  {
+   "slug": "nasa-pillars-of-creation",
+   "title": "Pillars of Creation",
+   "files": [
+    {
+     "name": "Pillars of Creation (full).stl",
+     "bytes": 52041984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28full%29.stl"
+    },
+    {
+     "name": "Pillars of Creation (positions).stl",
+     "bytes": 36858584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28positions%29.stl"
+    },
+    {
+     "name": "Pillars of Creation (mini).stl",
+     "bytes": 32913784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28mini%29.stl"
+    },
+    {
+     "name": "Pillars of Creation (pillar 1A).stl",
+     "bytes": 18243784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28pillar%201A%29.stl"
+    },
+    {
+     "name": "Pillars of Creation (pillar 3).stl",
+     "bytes": 10578584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28pillar%203%29.stl"
+    },
+    {
+     "name": "Pillars of Creation (pillar 2).stl",
+     "bytes": 6807584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28pillar%202%29.stl"
+    },
+    {
+     "name": "Pillars of Creation (pillar 1B).stl",
+     "bytes": 1228884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Pillars%20of%20Creation/Pillars%20of%20Creation%20%28pillar%201B%29.stl"
+    }
+   ],
+   "extents_mm": [
+    110.2,
+    184.4,
+    106.5
+   ]
+  },
+  {
+   "slug": "nasa-sn-1006",
+   "title": "SN 1006",
+   "files": [
+    {
+     "name": "Ejecta quarter globe.stl",
+     "bytes": 35835084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SN%201006/Ejecta%20quarter%20globe.stl"
+    },
+    {
+     "name": "Blast quarter globe.stl",
+     "bytes": 19224184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SN%201006/Blast%20quarter%20globe.stl"
+    },
+    {
+     "name": "Ejecta full globe.stl",
+     "bytes": 13985484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SN%201006/Ejecta%20full%20globe.stl"
+    }
+   ],
+   "extents_mm": [
+    39.3,
+    78.9,
+    38.1
+   ]
+  },
+  {
+   "slug": "nasa-sn-1987a",
+   "title": "SN 1987A",
+   "files": [
+    {
+     "name": "Combined.stl",
+     "bytes": 28638734,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SN%201987A/Combined.stl"
+    },
+    {
+     "name": "Ring debris.stl",
+     "bytes": 26520784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SN%201987A/Ring%20debris.stl"
+    },
+    {
+     "name": "Ring.stl",
+     "bytes": 2122934,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SN%201987A/Ring.stl"
+    }
+   ],
+   "extents_mm": [
+    0.4,
+    0.4,
+    0.3
+   ]
+  },
+  {
+   "slug": "nasa-sofia",
+   "title": "SOFIA",
+   "files": [
+    {
+     "name": "Nose section.stl",
+     "bytes": 1974784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Nose%20section.stl"
+    },
+    {
+     "name": "Right wing.stl",
+     "bytes": 1587884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Right%20wing.stl"
+    },
+    {
+     "name": "Telescope cavity open.stl",
+     "bytes": 1464384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Telescope%20cavity%20open.stl"
+    },
+    {
+     "name": "Fuselage top.stl",
+     "bytes": 675084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Fuselage%20top.stl"
+    },
+    {
+     "name": "Tail section.stl",
+     "bytes": 196984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Tail%20section.stl"
+    },
+    {
+     "name": "Left wing.stl",
+     "bytes": 187284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Left%20wing.stl"
+    },
+    {
+     "name": "Instrument.stl",
+     "bytes": 19484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Instrument.stl"
+    },
+    {
+     "name": "Telescope cavity closed.stl",
+     "bytes": 7784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/SOFIA/Telescope%20cavity%20closed.stl"
+    }
+   ],
+   "extents_mm": [
+    73.4,
+    30.9,
+    22.7
+   ]
+  },
+  {
+   "slug": "nasa-saturn-v-stage-1",
+   "title": "Saturn V - Stage 1",
+   "files": [
+    {
+     "name": "bottom part b.stl",
+     "bytes": 1790934,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%201/bottom%20part%20b.stl"
+    },
+    {
+     "name": "top part a.stl",
+     "bytes": 491684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%201/top%20part%20a.stl"
+    },
+    {
+     "name": "top part b.stl",
+     "bytes": 330184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%201/top%20part%20b.stl"
+    },
+    {
+     "name": "bottom part a.stl",
+     "bytes": 299784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%201/bottom%20part%20a.stl"
+    }
+   ],
+   "extents_mm": [
+    124.6,
+    121.1,
+    124.6
+   ]
+  },
+  {
+   "slug": "nasa-saturn-v-stage-2",
+   "title": "Saturn V - Stage 2",
+   "files": [
+    {
+     "name": "bottom.stl",
+     "bytes": 1380284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%202/bottom.stl"
+    },
+    {
+     "name": "top.stl",
+     "bytes": 512684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%202/top.stl"
+    },
+    {
+     "name": "joining cube.stl",
+     "bytes": 684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20-%20Stage%202/joining%20cube.stl"
+    }
+   ],
+   "extents_mm": [
+    93.2,
+    128.7,
+    90.6
+   ]
+  },
+  {
+   "slug": "nasa-saturn-v-rocket",
+   "title": "Saturn V Rocket",
+   "files": [
+    {
+     "name": "service module.stl",
+     "bytes": 2329184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/service%20module.stl"
+    },
+    {
+     "name": "S-IC bottom.stl",
+     "bytes": 1891434,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/S-IC%20bottom.stl"
+    },
+    {
+     "name": "S-IV b.stl",
+     "bytes": 836634,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/S-IV%20b.stl"
+    },
+    {
+     "name": "S-IC top.stl",
+     "bytes": 820384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/S-IC%20top.stl"
+    },
+    {
+     "name": "S-II.stl",
+     "bytes": 816184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/S-II.stl"
+    },
+    {
+     "name": "escape tower.stl",
+     "bytes": 801584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/escape%20tower.stl"
+    },
+    {
+     "name": "stage 1-2 coupler v2.stl",
+     "bytes": 331184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/stage%201-2%20coupler%20v2.stl"
+    },
+    {
+     "name": "stage 1-2 coupler.stl",
+     "bytes": 207484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/stage%201-2%20coupler.stl"
+    },
+    {
+     "name": "command moduel.stl",
+     "bytes": 182684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/command%20moduel.stl"
+    },
+    {
+     "name": "lem shroud.stl",
+     "bytes": 58184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/lem%20shroud.stl"
+    },
+    {
+     "name": "fin (print 4).stl",
+     "bytes": 3384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/fin%20%28print%204%29.stl"
+    },
+    {
+     "name": "S-IC joining cube.stl",
+     "bytes": 684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Saturn%20V%20Rocket/S-IC%20joining%20cube.stl"
+    }
+   ],
+   "extents_mm": [
+    39.9,
+    81.4,
+    42.3
+   ]
+  },
+  {
+   "slug": "nasa-solar-and-heliospheric-observatory-soho",
+   "title": "Solar and Heliospheric Observatory (SOHO)",
+   "files": [
+    {
+     "name": "All parts.stl",
+     "bytes": 2738584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Solar%20and%20Heliospheric%20Observatory%20%28SOHO%29/All%20parts.stl"
+    },
+    {
+     "name": "Part 1.stl",
+     "bytes": 1253484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Solar%20and%20Heliospheric%20Observatory%20%28SOHO%29/Part%201.stl"
+    },
+    {
+     "name": "Part 3.stl",
+     "bytes": 798584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Solar%20and%20Heliospheric%20Observatory%20%28SOHO%29/Part%203.stl"
+    },
+    {
+     "name": "Part 2.stl",
+     "bytes": 686684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Solar%20and%20Heliospheric%20Observatory%20%28SOHO%29/Part%202.stl"
+    }
+   ],
+   "extents_mm": [
+    175.0,
+    112.7,
+    28.8
+   ]
+  },
+  {
+   "slug": "nasa-space-launch-system-sls-block-1",
+   "title": "Space Launch System (SLS) Block 1",
+   "files": [
+    {
+     "name": "Space Launch System (SLS) Block 1.stl",
+     "bytes": 13721684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Space%20Launch%20System%20%28SLS%29%20Block%201/Space%20Launch%20System%20%28SLS%29%20Block%201.stl"
+    }
+   ],
+   "extents_mm": [
+    45.3,
+    23.0,
+    198.7
+   ]
+  },
+  {
+   "slug": "nasa-tycho-supernova-remnant",
+   "title": "Tycho Supernova Remnant",
+   "files": [
+    {
+     "name": "Tycho Supernova Remnant (left outer).stl",
+     "bytes": 20360534,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Tycho%20Supernova%20Remnant/Tycho%20Supernova%20Remnant%20%28left%20outer%29.stl"
+    },
+    {
+     "name": "Tycho Supernova Remnant (right outer).stl",
+     "bytes": 20341384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Tycho%20Supernova%20Remnant/Tycho%20Supernova%20Remnant%20%28right%20outer%29.stl"
+    },
+    {
+     "name": "Tycho Supernova Remnant (right inner).stl",
+     "bytes": 19867034,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Tycho%20Supernova%20Remnant/Tycho%20Supernova%20Remnant%20%28right%20inner%29.stl"
+    },
+    {
+     "name": "Tycho Supernova Remnant (left inner).stl",
+     "bytes": 19818134,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Tycho%20Supernova%20Remnant/Tycho%20Supernova%20Remnant%20%28left%20inner%29.stl"
+    }
+   ],
+   "extents_mm": [
+    90.4,
+    86.8,
+    41.6
+   ]
+  },
+  {
+   "slug": "nasa-u-scorpii",
+   "title": "U Scorpii",
+   "files": [
+    {
+     "name": "U Scorpii.stl",
+     "bytes": 12293484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/U%20Scorpii/U%20Scorpii.stl"
+    }
+   ],
+   "extents_mm": [
+    118.4,
+    125.6,
+    89.6
+   ]
+  },
+  {
+   "slug": "nasa-vesta-numisia",
+   "title": "Vesta - Numisia",
+   "files": [
+    {
+     "name": "Vesta - Numisia.stl",
+     "bytes": 24514584,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Vesta%20-%20Numisia/Vesta%20-%20Numisia.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    75.6
+   ]
+  },
+  {
+   "slug": "nasa-vesta-rheasilvia",
+   "title": "Vesta - Rheasilvia",
+   "files": [
+    {
+     "name": "Vesta - Rheasilvia.stl",
+     "bytes": 19999984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Vesta%20-%20Rheasilvia/Vesta%20-%20Rheasilvia.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    68.1
+   ]
+  },
+  {
+   "slug": "nasa-vesta-snowman-craters",
+   "title": "Vesta - Snowman Craters",
+   "files": [
+    {
+     "name": "Vesta - Snowman Craters.stl",
+     "bytes": 20000084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Vesta%20-%20Snowman%20Craters/Vesta%20-%20Snowman%20Craters.stl"
+    }
+   ],
+   "extents_mm": [
+    304.0,
+    304.0,
+    57.6
+   ]
+  },
+  {
+   "slug": "nasa-viking-lander",
+   "title": "Viking Lander",
+   "files": [
+    {
+     "name": "Top.stl",
+     "bytes": 720984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Top.stl"
+    },
+    {
+     "name": "Bottom.stl",
+     "bytes": 286884,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Bottom.stl"
+    },
+    {
+     "name": "Leg x 3.stl",
+     "bytes": 260784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Leg%20x%203.stl"
+    },
+    {
+     "name": "Dish part A.stl",
+     "bytes": 161184,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Dish%20part%20A.stl"
+    },
+    {
+     "name": "Tool1 C.stl",
+     "bytes": 104284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Tool1%20C.stl"
+    },
+    {
+     "name": "3D Foot x 3.stl",
+     "bytes": 85984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/3D%20Foot%20x%203.stl"
+    },
+    {
+     "name": "Dish part B.stl",
+     "bytes": 49384,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Dish%20part%20B.stl"
+    },
+    {
+     "name": "Tool2.stl",
+     "bytes": 42284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Tool2.stl"
+    },
+    {
+     "name": "Tool1 A.stl",
+     "bytes": 25284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Tool1%20A.stl"
+    },
+    {
+     "name": "Tool1 B.stl",
+     "bytes": 15084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Viking%20Lander/Tool1%20B.stl"
+    }
+   ],
+   "extents_mm": [
+    136.5,
+    85.4,
+    28.7
+   ]
+  },
+  {
+   "slug": "nasa-voyager",
+   "title": "Voyager",
+   "files": [
+    {
+     "name": "arm_right_01.stl",
+     "bytes": 550784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/arm_right_01.stl"
+    },
+    {
+     "name": "arm_right_02.stl",
+     "bytes": 470684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/arm_right_02.stl"
+    },
+    {
+     "name": "arm_left_02.stl",
+     "bytes": 307084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/arm_left_02.stl"
+    },
+    {
+     "name": "bus.stl",
+     "bytes": 303484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/bus.stl"
+    },
+    {
+     "name": "pins.stl",
+     "bytes": 235484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/pins.stl"
+    },
+    {
+     "name": "dish.stl",
+     "bytes": 186784,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/dish.stl"
+    },
+    {
+     "name": "legs.stl",
+     "bytes": 182984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/legs.stl"
+    },
+    {
+     "name": "arm_left_01.stl",
+     "bytes": 174984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/arm_left_01.stl"
+    },
+    {
+     "name": "boom_02.stl",
+     "bytes": 97484,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/boom_02.stl"
+    },
+    {
+     "name": "boom_03.stl",
+     "bytes": 96984,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/boom_03.stl"
+    },
+    {
+     "name": "boom_01.stl",
+     "bytes": 95284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/boom_01.stl"
+    },
+    {
+     "name": "stand.stl",
+     "bytes": 31684,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/stand.stl"
+    },
+    {
+     "name": "instrument_03.stl",
+     "bytes": 11284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/instrument_03.stl"
+    },
+    {
+     "name": "instrument_01.stl",
+     "bytes": 7084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/instrument_01.stl"
+    },
+    {
+     "name": "instrument_02.stl",
+     "bytes": 7084,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Voyager/instrument_02.stl"
+    }
+   ],
+   "extents_mm": [
+    53.0,
+    110.8,
+    13.9
+   ]
+  },
+  {
+   "slug": "nasa-wrench",
+   "title": "Wrench",
+   "files": [
+    {
+     "name": "Wrench.stl",
+     "bytes": 728284,
+     "url": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/11ebb4ee043715aefbba6aeec8a61746fad67fa7/3D%20Printing/Wrench/Wrench.stl"
+    }
+   ],
+   "extents_mm": [
+    33.1,
+    114.2,
+    26.0
+   ]
+  }
+ ]
+}
