@@ -5,7 +5,7 @@
   <div class="wrap">
     <span class="eyebrow">// capabilities</span>
     <h1>Everything we make, and everything we design.</h1>
-    <p class="lead">Fabrication work gets an instant price when you upload a file. Design and documentation work is quoted by our engineers, usually within two business days.</p>
+    <p class="lead">Fabrication work gets an instant price when you upload a file. Color and large format prints are priced from your artwork, usually the same day. Design and documentation work is quoted by our engineers, usually within two business days.</p>
   </div>
 </section>
 <section class="section">
@@ -13,6 +13,12 @@
     <h2 class="group-title">Make it <span>instant quote</span></h2>
     <div class="cap-cards">
       {% for c in capabilities if c.kind == 'instant' %}
+      <a class="cap-card" href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<strong>{{ c.title }}</strong><span>{{ c.blurb }}</span><em>Learn more →</em></a>
+      {% endfor %}
+    </div>
+    <h2 class="group-title">Print it <span>priced from your artwork</span></h2>
+    <div class="cap-cards">
+      {% for c in capabilities if c.kind == 'print' %}
       <a class="cap-card" href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<strong>{{ c.title }}</strong><span>{{ c.blurb }}</span><em>Learn more →</em></a>
       {% endfor %}
     </div>

@@ -42,7 +42,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     templates = Jinja2Templates(directory=HERE / "templates")
     templates.env.globals.update(
         order_labels=ORDER_LABELS, stripe_enabled=cfg.stripe_enabled, version=__version__,
-        capabilities=catalog.CAPABILITIES, request_services=catalog.REQUEST_SERVICES,
+        capabilities=catalog.CAPABILITIES, request_services=catalog.REQUEST_SERVICES, kind_labels=catalog.KIND_LABELS,
         request_labels=catalog.REQUEST_LABELS, icon_svg=catalog.icon_svg,
     )
     templates.env.filters["money"] = lambda v: f"${v:,.2f}"

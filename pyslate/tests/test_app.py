@@ -385,3 +385,11 @@ def test_studio_hides_lathe_and_molder(client):
 def test_new_capability_pages(client):
     for slug, word in (("cnc-routing", "24R"), ("plasma-cutting", "1300PL"), ("injection-molding", "Noitavonne")):
         assert word in client.get(f"/capabilities/{slug}").text
+
+
+def test_print_services_take_artwork(client):
+    menu = client.get("/").text
+    assert "Color Printing" in menu and "Large Format Printing" in menu and "Priced from your artwork" in menu
+    page = client.get("/capabilities/large-format-printing").text
+    assert "44 in (1118 mm)" in page and "/request?service=large-format-printing" in page
+    assert 'value="color-printing"' in client.get("/request?service=color-printing").text

@@ -243,7 +243,7 @@ def move_job(db: Session, job: Job, new_state: str, note: str = "") -> None:
 # ---- design and documentation requests ----------------------------------
 
 REQUEST_FILE_EXTS = geo.SUPPORTED_EXTS | {
-    ".pdf", ".png", ".jpg", ".jpeg", ".json", ".step", ".stp", ".blend", ".zip", ".svg", ".txt", ".csv", ".xlsx", ".docx",
+    ".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".ai", ".eps", ".psd", ".json", ".step", ".stp", ".blend", ".zip", ".svg", ".txt", ".csv", ".xlsx", ".docx",
 }
 FIRST_REQUEST_NUMBER = 501
 

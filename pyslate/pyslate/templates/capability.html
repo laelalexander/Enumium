@@ -7,7 +7,7 @@
     <p class="crumbs"><a href="/capabilities">Capabilities</a> / {{ cap.title }}</p>
     <div class="cap-hero">
       <div>
-        <span class="eyebrow">// {{ 'instant quote' if cap.kind == 'instant' else 'engineer quoted' }}</span>
+        <span class="eyebrow">// {{ kind_labels[cap.kind] | lower }}</span>
         <h1>{{ detail.headline }}</h1>
         <p class="lead">{{ detail.intro }}</p>
         <div class="cta-row">
@@ -15,7 +15,7 @@
           <a class="button" href="/quote">Upload a file for a price</a>
           <a class="button ghost" href="/materials">See materials</a>
           {% else %}
-          <a class="button" href="/request?service={{ cap.slug }}">Request a quote</a>
+          <a class="button" href="/request?service={{ cap.slug }}">{{ 'Send artwork for a price' if cap.kind == 'print' else 'Request a quote' }}</a>
           <a class="button ghost" href="/how-it-works">How it works</a>
           {% endif %}
         </div>

@@ -21,7 +21,7 @@
           <a href="/capabilities" {% if path.startswith('/capabilities') %}aria-current="page"{% endif %}>Capabilities</a>
           <div class="menu-panel">
             {% for c in capabilities %}
-            <a href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<span><strong>{{ c.title }}</strong><em>{{ 'Instant quote' if c.kind == 'instant' else 'Quoted by an engineer' }}</em></span></a>
+            <a href="/capabilities/{{ c.slug }}">{{ icon_svg(c.icon) | safe }}<span><strong>{{ c.title }}</strong><em>{{ kind_labels[c.kind] }}</em></span></a>
             {% endfor %}
           </div>
         </div>
@@ -69,7 +69,7 @@
       </div>
       <div>
         <h4>Make</h4>
-        {% for c in capabilities if c.kind == 'instant' %}<a href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
+        {% for c in capabilities if c.kind in ('instant', 'print') %}<a href="/capabilities/{{ c.slug }}">{{ c.title }}</a>{% endfor %}
         <a href="/quote">Get an instant quote</a>
         <a href="/designs">Design library</a>
         <a href="/studio">Design studio</a>
