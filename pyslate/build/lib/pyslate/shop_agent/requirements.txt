@@ -1,3 +1,0 @@
-# Only needed for the drivers that use them:
-pyserial>=3.5      # marlin driver (JG Maker A8S / A6 over USB serial)
-paho-mqtt>=2.0     # bambu driver (Bambu Lab printers in LAN mode)

@@ -1,5 +1,0 @@
-<nav class="account-tabs" aria-label="Account">
-  <a href="/account" {% if request.url.path == '/account' %}aria-current="page"{% endif %}>Dashboard</a>
-  <a href="/account/settings" {% if request.url.path.startswith('/account/settings') %}aria-current="page"{% endif %}>Settings</a>
-  <form method="post" action="/account/logout"><button class="link-button">Sign out</button></form>
-</nav>
