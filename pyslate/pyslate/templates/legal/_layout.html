@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ co.name }}{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">// legal</span>
+    <h1>{{ title }}</h1>
+    <p class="fine">Effective {{ effective.strftime('%B %d, %Y').replace(' 0', ' ') }}</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap legal-grid">
+    <nav class="legal-nav" aria-label="Legal pages">
+      {% for s, (t, _) in pages.items() %}<a href="/{{ s }}" {% if s == slug %}aria-current="page"{% endif %}>{{ t }}</a>{% endfor %}
+    </nav>
+    <article class="legal-text">
+      {% block legal %}{% endblock %}
+      <h2 id="contact">Contact us</h2>
+      <p>{{ co.who }}{% if co.address %}<br>{{ co.address | replace('\n', ', ') }}{% endif %}<br>
+        {% if co.email %}Email <a href="mailto:{{ co.email }}">{{ co.email }}</a>{% else %}Use the <a href="/request">contact and request form</a>{% endif %}</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

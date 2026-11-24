@@ -3,9 +3,10 @@
 {% block content %}
 <section class="page-head has-hero" style="--hero:url(/static/img/hero/design-desk.jpg);--hero-sm:url(/static/img/hero/design-desk-900.jpg)">
   <div class="wrap">
-    <span class="eyebrow">// design services</span>
-    <h1>Request a design quote</h1>
-    <p class="lead">Tell us what you need. An engineer reviews every request and replies with a quote, usually within two business days.</p>
+    {% set printing = (form.service or selected) in ('color-printing', 'large-format-printing') %}
+    <span class="eyebrow">// {{ 'printing' if printing else 'design services' }}</span>
+    <h1>{{ 'Send artwork for a print quote' if printing else 'Request a design quote' }}</h1>
+    <p class="lead">{% if printing %}Attach your artwork and tell us the size, paper or media, and how many. We reply with a price, usually the same business day.{% else %}Tell us what you need. An engineer reviews every request and replies with a quote, usually within two business days.{% endif %}</p>
   </div>
 </section>
 <div class="wrap request-page">
@@ -39,6 +40,7 @@
       <label>Phone (optional) <input name="phone" maxlength="64" autocomplete="tel" value="{{ form.phone }}"></label>
     </div>
     <button class="button">Send request</button>
+    <p class="consent">By sending a request you agree to our <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>.</p>
     <p class="fine">Have a finished model or drawing already? <a href="/quote">Get an instant quote</a> instead.</p>
   </form>
 </div>

@@ -1,0 +1,32 @@
+{% extends "legal/_layout.html" %}
+{% block legal %}
+<p class="lead">&copy; {{ effective.year }} {{ co.legal_name }}. All rights reserved. This page explains who owns what on {{ co.name }}, and how to report a copyright or trademark problem.</p>
+
+<h2 id="ours">Our content</h2>
+<p>The text, photos, graphics, page design, software and the {{ co.name }} name and logo on this site are owned by {{ co.legal_name }} or used with permission, and are protected by United States and international copyright and trademark law. You may not copy, republish or sell them without our written permission. Names of machines and materials, such as xTool, Bambu Lab, Tormach and Noitavonne, are trademarks of their owners and are used only to describe the equipment in our shop.</p>
+
+<h2 id="yours">Your content</h2>
+<p>You keep ownership of everything you upload. We use it only to quote and make your order, as set out in our <a href="/terms#files">Terms</a>. Work we design for you becomes yours once paid for, as described in <a href="/terms#design">section 9 of the Terms</a>.</p>
+
+<h2 id="library">Design library credits</h2>
+<p>Designs in our <a href="/designs">design library</a> come from the sources shown on each design page, each with its licence and author: Pyslate originals, artwork from game-icons.net under Creative Commons Attribution 3.0 (credited to each artist), and public-domain models from NASA 3D Resources (NASA does not endorse {{ co.name }}, and NASA insignia are not included). We add only designs whose licences allow them to be shared and allow items made from them to be sold.</p>
+
+<h2 id="report">Reporting infringement</h2>
+<p>We respect the rights of creators and respond to notices under the Digital Millennium Copyright Act (DMCA). If you believe something on our site, or something we made, infringes your copyright, send our Copyright Agent a written notice with:</p>
+<ol>
+  <li>your physical or electronic signature;</li>
+  <li>a description of the copyrighted work you believe was infringed;</li>
+  <li>where the material is on our site (a link), or the order or item concerned;</li>
+  <li>your name, address, phone number and email;</li>
+  <li>a statement that you have a good-faith belief the use is not authorized by the owner, its agent or the law; and</li>
+  <li>a statement, under penalty of perjury, that the information in your notice is accurate and that you are the owner or authorized to act for the owner.</li>
+</ol>
+<p><strong>Copyright Agent:</strong> {% if co.agent %}{{ co.agent }}{% else %}{{ co.legal_name }}, through the <a href="/request">contact form</a>{% endif %}{% if co.address %}, {{ co.address | replace('\n', ', ') }}{% endif %}.</p>
+<p>We will remove or disable the material and, where it was posted by someone else, tell them. Trademark and patent concerns can be sent the same way, and we will review them promptly.</p>
+
+<h2 id="counter">Counter-notices</h2>
+<p>If your material was removed and you believe that was a mistake, you may send a counter-notice with your signature, the material removed and where it was, a statement under penalty of perjury that you believe it was removed by mistake, and your consent to the jurisdiction of the federal court for your address. We may restore the material in 10 to 14 business days unless the original complainant tells us they have filed a court action.</p>
+
+<h2 id="repeat">Repeat infringers</h2>
+<p>We close the accounts of users who repeatedly infringe others' rights, and refuse orders that we know infringe.</p>
+{% endblock %}

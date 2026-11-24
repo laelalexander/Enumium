@@ -19,7 +19,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from . import __version__, catalog, payments, services, studio
-from . import accounts, library, production, shopops
+from . import accounts, legal, library, production, shopops
 from . import geometry as geo
 from .config import Settings, settings as default_settings
 from .models import ORDER_LABELS, CustomerOrder, Shipment, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
@@ -673,5 +673,6 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     accounts.register(app, render, get_db, cfg)
     production.register(app, render, get_db, cfg, require_admin)
     shopops.register(app, render, get_db, cfg, require_admin)
+    legal.register(app, render, get_db)
 
     return app

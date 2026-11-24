@@ -114,6 +114,7 @@
         <label>Shipping address <textarea name="address" rows="3" required autocomplete="street-address">{{ customer.shipping_address if customer else '' }}</textarea></label>
         <label>Notes for the shop <textarea name="notes" rows="2"></textarea></label>
         <button class="button wide">{% if stripe_enabled %}Pay {{ summary.total | money }}{% else %}Place order{% endif %}</button>
+        <p class="consent">By placing this order you agree to our <a href="/terms" target="_blank">Terms of Service</a> and <a href="/policies" target="_blank">Shop Policies</a>.</p>
         {% if not stripe_enabled %}<p class="fine">The shop will send payment details by email.</p>{% endif %}
       </form>
       {% else %}

@@ -393,3 +393,22 @@ def test_print_services_take_artwork(client):
     page = client.get("/capabilities/large-format-printing").text
     assert "44 in (1118 mm)" in page and "/request?service=large-format-printing" in page
     assert 'value="color-printing"' in client.get("/request?service=color-printing").text
+
+
+def test_legal_pages(client, app):
+    for path, words in {"/terms": "Governing law", "/privacy": "We do not sell your personal information",
+                        "/policies": "Returns, remakes and refunds", "/copyright": "Copyright Agent"}.items():
+        r = client.get(path)
+        assert r.status_code == 200 and words in r.text
+    assert "the state where our shop is located" in client.get("/terms").text
+    home = client.get("/").text
+    assert 'href="/terms"' in home and "All rights reserved" in home
+    with app.state.session_factory() as db:
+        from pyslate import services
+        data = dict(services.get_profile(db).data)
+        data["legal"] = {"company": "Pyslate", "legal_name": "Pyslate LLC", "state": "Texas", "email": "legal@pyslate.com"}
+        services.save_profile(db, data)
+        db.commit()
+    terms = client.get("/terms").text
+    assert "State of Texas" in terms and "Pyslate LLC (doing business as Pyslate)" in terms and "legal@pyslate.com" in terms
+    assert "Copyright Agent, legal@pyslate.com" in client.get("/copyright").text
