@@ -28,7 +28,7 @@ CAPABILITIES = [
         "title": "3D Printing",
         "icon": "printer",
         "kind": "instant",
-        "blurb": "Prototypes and end-use parts in PLA and PETG on Bambu Lab and our custom printers.",
+        "blurb": "Prototypes and end-use parts in PLA and PETG on Bambu Lab and Noitavonne printers.",
     },
     {
         "slug": "laser-cutting",
@@ -127,7 +127,7 @@ def icon_svg(name: str) -> str:
 DETAILS = {
     "3d-printing": {
         "headline": "3D printed parts, from one prototype to a production run.",
-        "intro": "We print on Bambu Lab printers and our own custom-built machines. Upload a model and you get a price, a lead time and a printability check in seconds.",
+        "intro": "We print on Bambu Lab and Noitavonne 3D printers. Upload a model and you get a price, a lead time and a printability check in seconds.",
         "points": [
             "PLA for prototypes, fixtures and display parts",
             "PETG for tougher, heat- and moisture-resistant parts",
