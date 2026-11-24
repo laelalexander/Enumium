@@ -1,0 +1,30 @@
+# Pyslate on the shared DigitalOcean Droplet.
+# The app listens on 127.0.0.1:8100 only; the Droplet's existing web server
+# (the one serving Pyrails.com) proxies pyslate.com to it. See deploy/nginx-pyslate.conf.
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://pyslate:${POSTGRES_PASSWORD}@db:5432/pyslate
+    volumes:
+      - pyslate-data:/data
+    ports:
+      - "127.0.0.1:8100:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: pyslate
+      POSTGRES_DB: pyslate
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pyslate-db:/var/lib/postgresql/data
+
+volumes:
+  pyslate-data:
+  pyslate-db:

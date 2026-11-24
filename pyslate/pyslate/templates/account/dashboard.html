@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Your account · Pyslate{% endblock %}
+{% block content %}
+{% set steps = ['awaiting_payment', 'in_queue', 'making', 'finishing', 'shipped', 'delivered'] %}
+{% set states = ['awaiting_payment', 'paid', 'in_queue', 'making', 'finishing', 'shipped', 'delivered'] %}
+<div class="wrap account-page">
+  <div class="account-head">
+    <div>
+      <span class="eyebrow">// your account</span>
+      <h1>Hi{% if customer.name %}, {{ customer.name.split(' ')[0] }}{% endif %}</h1>
+    </div>
+    {% include "account/_nav.html" %}
+  </div>
+
+  <div class="account-stats">
+    <div><strong>{{ active | length }}</strong><span>in progress</span></div>
+    <div><strong>{{ orders | length }}</strong><span>orders</span></div>
+    <div><strong>{{ quotes | length }}</strong><span>saved quotes</span></div>
+    <div><strong>{{ designs | length }}</strong><span>saved designs</span></div>
+  </div>
+
+  <section class="account-section">
+    <h2>In progress</h2>
+    {% for o in active %}
+    <a class="order-card" href="/order/{{ o.number }}?t={{ o.access_token }}">
+      <div class="order-card-head">
+        <strong>Order #{{ o.number }}</strong>
+        <span class="pill">{{ o.status_label }}</span>
+        <span class="order-card-total">{{ o.total_cents | cents }}</span>
+      </div>
+      <p class="fine">{{ o.quote.lines | map(attribute='part.filename') | join(', ') | truncate(90) }} · placed {{ o.created_at.strftime('%b %d, %Y') }}</p>
+      <ol class="tracker mini">
+        {% for s in steps %}
+        <li class="{% if o.status != 'cancelled' and states.index(o.status) >= states.index(s) %}done{% endif %}{% if o.status == s %} current{% endif %}">{{ order_labels[s] }}</li>
+        {% endfor %}
+      </ol>
+    </a>
+    {% else %}
+    <p class="empty">Nothing in the shop right now. <a href="/quote">Upload a part</a> or <a href="/studio">draw one</a> to get a price.</p>
+    {% endfor %}
+  </section>
+
+  <section class="account-section" id="saved">
+    <h2>Saved jobs</h2>
+    <div class="saved-grid">
+      <div>
+        <h3>Quotes</h3>
+        {% for sq in quotes %}
+        <div class="saved-row">
+          <a href="/quote/{{ sq.quote.token }}"><strong>{{ sq.name }}</strong>
+            <span class="fine">{{ sq.quote.lines | length }} part{{ '' if sq.quote.lines | length == 1 else 's' }} · saved {{ sq.saved_at.strftime('%b %d') }}{% if sq.quote.order %} · ordered as #{{ sq.quote.order.number }}{% endif %}</span></a>
+          <form method="post" action="/account/quotes/{{ sq.id }}/delete"><button class="link-button" aria-label="Remove {{ sq.name }}">Remove</button></form>
+        </div>
+        {% else %}
+        <p class="empty">On any quote, press <em>Save to my account</em> to keep it here.</p>
+        {% endfor %}
+      </div>
+      <div>
+        <h3>Studio designs</h3>
+        {% for d in designs %}
+        <div class="saved-row">
+          <a href="/studio?design=/account/designs/{{ d.id }}.json"><strong>{{ d.name }}</strong>
+            <span class="fine">{{ d.design.shapes | length }} shape{{ '' if d.design.shapes | length == 1 else 's' }} · saved {{ d.saved_at.strftime('%b %d') }}</span></a>
+          <form method="post" action="/account/designs/{{ d.id }}/delete"><button class="link-button" aria-label="Delete {{ d.name }}">Delete</button></form>
+        </div>
+        {% else %}
+        <p class="empty">In the <a href="/studio">design studio</a>, press <em>Save design</em> to keep a drawing here.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="account-section">
+    <h2>All orders</h2>
+    {% if orders %}
+    <table class="parts account-orders">
+      <thead><tr><th>Order</th><th>Placed</th><th>Status</th><th>Total</th></tr></thead>
+      <tbody>
+      {% for o in orders %}
+      <tr><td><a href="/order/{{ o.number }}?t={{ o.access_token }}">#{{ o.number }}</a></td><td>{{ o.created_at.strftime('%b %d, %Y') }}</td><td>{{ o.status_label }}</td><td>{{ o.total_cents | cents }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty">Orders you place while signed in show up here. For an older order, open its link from your email and press <em>Add to my account</em>.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

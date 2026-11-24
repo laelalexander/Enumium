@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Pyslate · Parts cut, printed and designed to order{% endblock %}
+{% block content %}
+<section class="hero has-hero" style="--hero:url(/static/img/hero/shop-floor.jpg);--hero-sm:url(/static/img/hero/shop-floor-900.jpg)">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">// laser · print · design, all in one shop</span>
+      <h1>Precision parts, <span class="burn">cut, printed and designed</span> to order.</h1>
+      <p class="lead">Drop in a file and get a price in seconds, or bring us an idea and our engineers will draw the blueprints and schematics. Every part is made in house, from the first cut to the box it ships in.</p>
+      <div class="cta-row">
+        <a class="button" href="/quote">Get an instant quote</a>
+        <a class="button ghost" href="/studio">Open the design studio</a>
+      </div>
+      <ul class="facts-row">
+        <li><b>Seconds</b><span>to a price</span></li>
+        <li><b>{{ profile.lead_days.standard }} days</b><span>standard lead time</span></li>
+        <li><b>{{ profile.machines | length }}+</b><span>machines in house</span></li>
+      </ul>
+    </div>
+    <div class="machine-window">
+      <div class="scenes" role="group" aria-label="Show a discipline">
+        <button type="button" data-s="0" aria-pressed="true">Laser cutting</button>
+        <button type="button" data-s="1" aria-pressed="false">3D printing</button>
+        <button type="button" data-s="2" aria-pressed="false">Design and drawings</button>
+      </div>
+      <canvas id="shop-canvas" width="560" height="400" aria-label="The shop at work: a laser cutting a gear, a printer building a part layer by layer, and an engineer drawing a bracket and a schematic"></canvas>
+      <div class="readout" id="shop-readout"></div>
+      <div class="progress"><span id="shop-progress"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="machines-strip" aria-label="Our machines">
+  <div class="wrap">
+    <span class="label">In our shop</span>
+    <ul>
+      <li>Bambu Lab printers</li><li>JG Maker A8S and A6 (Noitavonne)</li><li>xTool X1</li><li>xTool M2</li><li>xTool F2</li><li>xTool MetalFab</li><li>Tormach 1100MX and 770M mills</li><li>Tormach 8L lathe</li><li>Tormach 24R router</li><li>Tormach 1300PL plasma</li><li>Noitavonne injection molders</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">// what we do</span>
+        <h2>Three disciplines, one shop.</h2>
+      </div>
+      <a class="more" href="/capabilities">All capabilities →</a>
+    </div>
+    <div class="discipline-grid">
+      <a class="discipline" href="/capabilities/laser-cutting">
+        <span class="disc-art laser" aria-hidden="true"><i></i></span>
+        <span class="disc-body"><span class="mono">01 · instant quote</span><strong>Laser cutting and metal</strong>
+        <span>Wood, acrylic and MDF on the xTool X1, M2 and F2. Stainless sheet on the xTool MetalFab.</span></span>
+      </a>
+      <a class="discipline" href="/capabilities/3d-printing">
+        <span class="disc-art print" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="disc-body"><span class="mono">02 · instant quote</span><strong>3D printing</strong>
+        <span>Prototypes and end-use parts in PLA and PETG on Bambu Lab and Noitavonne printers.</span></span>
+      </a>
+      <a class="discipline" href="/capabilities/system-design">
+        <span class="disc-art design" aria-hidden="true"><svg viewBox="0 0 120 70"><path d="M10 10h60v20H45v30H10z"/><circle cx="27" cy="25" r="7"/><path d="M80 15h30M95 15v40M80 55h30" class="amber"/></svg></span>
+        <span class="disc-body"><span class="mono">03 · engineer quoted</span><strong>Design and engineering</strong>
+        <span>Custom systems, mechanical blueprints and electrical schematics, then the parts built here.</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div><span class="eyebrow">// ideas to make</span><h2>Things you can make and order.</h2></div>
+      <a class="more" href="/studio">Start one in the design studio →</a>
+    </div>
+    <div class="made-grid">
+      {% for img, title, how, href in [
+        ('laser-sign', 'Engraved wood signs', 'Laser · basswood plywood', '/capabilities/laser-cutting'),
+        ('laser-acrylic-gears', 'Acrylic gears and parts', 'Laser · cast acrylic', '/capabilities/laser-cutting'),
+        ('engraved-tags', 'Engraved metal tags', 'xTool F2 · stainless steel', '/capabilities/laser-cutting'),
+        ('print-planter', 'Planters, organizers, prototypes', '3D print · PLA and PETG', '/capabilities/3d-printing'),
+        ('cnc-bracket', 'Machined brackets', 'CNC mill · aluminium 6061', '/capabilities/cnc-machining'),
+        ('router-plywood', 'Shelves and cabinet panels', 'CNC router · 18 mm plywood', '/capabilities/cnc-routing'),
+        ('plasma-steel', 'Steel gussets and base plates', 'Plasma · mild steel plate', '/capabilities/plasma-cutting'),
+        ('molded-enclosure', 'Molded enclosures and knobs', 'Injection molding · ABS', '/capabilities/injection-molding'),
+      ] %}
+      <a class="made-card" href="{{ href }}">
+        <img src="/static/img/made/{{ img }}.jpg" alt="{{ title }}" width="800" height="600" loading="lazy">
+        <span><strong>{{ title }}</strong><em>{{ how }}</em></span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section tinted">
+  <div class="wrap">
+    <div class="section-head">
+      <div><span class="eyebrow">// how it works</span><h2>From file to finished part.</h2></div>
+      <a class="more" href="/how-it-works">The full process →</a>
+    </div>
+    <ol class="steps">
+      <li><strong>Upload</strong><span>STL, 3MF, OBJ or PLY for 3D parts. DXF for flat parts.</span></li>
+      <li><strong>Check and price</strong><span>We measure the part, pick the machine, flag problems and show the price.</span></li>
+      <li><strong>Order</strong><span>Pay online. Your parts go straight into our production queue.</span></li>
+      <li><strong>Track</strong><span>Follow your order from queue to machine to your door.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap upload-split">
+    <div>
+      <span class="eyebrow">// have a file ready?</span>
+      <h2>Get a price right now.</h2>
+      <p class="lead">Flat parts in a sheet material go to the laser. Everything else is printed. You'll see the machine, the material and the price for each part, and you can open any part in our 3D viewer to measure and section it.</p>
+      <p class="fine">No file yet? Draw your part in our <a href="/studio">design studio</a>, or <a href="/request">tell us what you need</a> and an engineer will reply, usually within two business days.</p>
+    </div>
+    {% include "_upload.html" %}
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap cta-band-row">
+    <div>
+      <h2>Need it designed first?</h2>
+      <p>We design complete systems, mechanical and electrical, and furnish the blueprints and schematics to build, wire and maintain them. Then we make the parts in our own shop.</p>
+    </div>
+    <a class="button" href="/request">Request a design quote</a>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/shop-anim.js" defer></script>{% endblock %}

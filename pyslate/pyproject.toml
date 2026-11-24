@@ -1,0 +1,38 @@
+[project]
+name = "pyslate"
+version = "0.1.0"
+description = "Upload or design a part, get an instant quote, and have the shop 3D print or laser cut it."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy>=2.0",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+    "numpy>=1.26",
+    "trimesh>=4.0",
+    "networkx>=3.0",
+    "scipy>=1.11",
+    "shapely>=2.0",
+    "mapbox-earcut>=1.0",
+    "lxml>=5.0",
+    "ezdxf>=1.3",
+    "stripe>=10.0",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.1"]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pyslate*"]
+
+[tool.setuptools.package-data]
+pyslate = ["templates/*.html", "templates/admin/*.html", "templates/library/*.html", "templates/account/*.html", "library/data/*", "static/library/nasa/*", "static/*", "static/vendor/three/*", "static/vendor/opentype/*", "static/vendor/polygon-clipping/*", "static/fonts/*", "static/img/made/*", "static/img/shop/*", "static/img/hero/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

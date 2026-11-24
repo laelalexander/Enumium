@@ -1,0 +1,233 @@
+"""Database tables and the order and job state machines."""
+
+from __future__ import annotations
+
+import secrets
+import uuid
+from datetime import datetime, timezone
+
+from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, Text, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
+
+
+def utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def new_id() -> str:
+    return uuid.uuid4().hex
+
+
+def new_token() -> str:
+    return secrets.token_urlsafe(18)
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+# Order states the customer sees, in order.
+ORDER_STATES = [
+    "awaiting_payment",
+    "paid",
+    "in_queue",
+    "making",
+    "finishing",
+    "shipped",
+    "delivered",
+    "cancelled",
+]
+ORDER_LABELS = {
+    "awaiting_payment": "Awaiting payment",
+    "paid": "Paid",
+    "in_queue": "In queue",
+    "making": "Making",
+    "finishing": "Finishing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+}
+
+# Machine job states and the moves the shop may make.
+JOB_TRANSITIONS = {
+    "queued": {"running", "review"},
+    "review": {"queued"},
+    "running": {"done", "failed"},
+    "failed": {"queued"},
+    "done": set(),
+}
+
+
+class Setting(Base):
+    __tablename__ = "settings"
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    value: Mapped[dict] = mapped_column(JSON)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class Part(Base):
+    __tablename__ = "parts"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    filename: Mapped[str] = mapped_column(String(255))
+    stored_name: Mapped[str] = mapped_column(String(64))
+    preview_name: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    geometry: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class Quote(Base):
+    __tablename__ = "quotes"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    token: Mapped[str] = mapped_column(String(32), unique=True, index=True, default=new_token)
+    lead_tier: Mapped[str] = mapped_column(String(16), default="standard")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    lines: Mapped[list["QuoteLine"]] = relationship(
+        back_populates="quote", cascade="all, delete-orphan", order_by="QuoteLine.position"
+    )
+    order: Mapped["Order | None"] = relationship(back_populates="quote", uselist=False)
+
+
+class QuoteLine(Base):
+    __tablename__ = "quote_lines"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    quote_id: Mapped[str] = mapped_column(ForeignKey("quotes.id"))
+    part_id: Mapped[str] = mapped_column(ForeignKey("parts.id"))
+    position: Mapped[int] = mapped_column(Integer, default=0)
+    material_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    quantity: Mapped[int] = mapped_column(Integer, default=1)
+    line: Mapped[str] = mapped_column(String(16))  # print, laser, review
+    machine_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    route_reason: Mapped[str] = mapped_column(Text, default="")
+    price: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    quote: Mapped[Quote] = relationship(back_populates="lines")
+    part: Mapped[Part] = relationship()
+
+
+class Order(Base):
+    __tablename__ = "orders"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    number: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    quote_id: Mapped[str] = mapped_column(ForeignKey("quotes.id"), unique=True)
+    access_token: Mapped[str] = mapped_column(String(32), default=new_token)
+    email: Mapped[str] = mapped_column(String(255))
+    name: Mapped[str] = mapped_column(String(255))
+    shipping_address: Mapped[str] = mapped_column(Text)
+    notes: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(32), default="awaiting_payment")
+    total_cents: Mapped[int] = mapped_column(Integer)
+    lead_days: Mapped[int] = mapped_column(Integer)
+    stripe_session_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    tracking: Mapped[str] = mapped_column(String(255), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    quote: Mapped[Quote] = relationship(back_populates="order")
+    events: Mapped[list["OrderEvent"]] = relationship(
+        back_populates="order", cascade="all, delete-orphan", order_by="OrderEvent.at"
+    )
+    jobs: Mapped[list["Job"]] = relationship(back_populates="order", cascade="all, delete-orphan")
+
+    @property
+    def status_label(self) -> str:
+        return ORDER_LABELS.get(self.status, self.status)
+
+
+class OrderEvent(Base):
+    __tablename__ = "order_events"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"))
+    status: Mapped[str] = mapped_column(String(32))
+    note: Mapped[str] = mapped_column(Text, default="")
+    at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    order: Mapped[Order] = relationship(back_populates="events")
+
+
+class Job(Base):
+    """One machine job: a quote line's parts on one machine."""
+
+    __tablename__ = "jobs"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"))
+    quote_line_id: Mapped[str] = mapped_column(ForeignKey("quote_lines.id"))
+    line: Mapped[str] = mapped_column(String(16))
+    machine_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    quantity: Mapped[int] = mapped_column(Integer)
+    state: Mapped[str] = mapped_column(String(16), default="queued")
+    note: Mapped[str] = mapped_column(Text, default="")
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+    order: Mapped[Order] = relationship(back_populates="jobs")
+    quote_line: Mapped[QuoteLine] = relationship()
+
+
+class ServiceRequest(Base):
+    """A request for design or documentation work: system design, blueprints, schematics."""
+
+    __tablename__ = "service_requests"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    number: Mapped[int] = mapped_column(Integer, unique=True, index=True)
+    service: Mapped[str] = mapped_column(String(64))
+    name: Mapped[str] = mapped_column(String(255))
+    email: Mapped[str] = mapped_column(String(255))
+    company: Mapped[str] = mapped_column(String(255), default="")
+    phone: Mapped[str] = mapped_column(String(64), default="")
+    description: Mapped[str] = mapped_column(Text)
+    budget: Mapped[str] = mapped_column(String(64), default="")
+    needed_by: Mapped[str] = mapped_column(String(64), default="")
+    files: Mapped[list] = mapped_column(JSON, default=list)  # [{"name": original, "stored": stored name}]
+    status: Mapped[str] = mapped_column(String(32), default="new")
+    shop_notes: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+# ---- customer accounts (new tables only, so existing databases upgrade with create_all) ----
+
+
+class Customer(Base):
+    __tablename__ = "customers"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    name: Mapped[str] = mapped_column(String(255), default="")
+    company: Mapped[str] = mapped_column(String(255), default="")
+    phone: Mapped[str] = mapped_column(String(64), default="")
+    shipping_address: Mapped[str] = mapped_column(Text, default="")
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    session_version: Mapped[int] = mapped_column(Integer, default=1)  # bump to sign out everywhere
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class CustomerOrder(Base):
+    """Orders a customer placed while signed in, or added with the order's private link."""
+
+    __tablename__ = "customer_orders"
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), primary_key=True)
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"), primary_key=True)
+    added_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    order: Mapped[Order] = relationship()
+
+
+class SavedQuote(Base):
+    __tablename__ = "saved_quotes"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), index=True)
+    quote_id: Mapped[str] = mapped_column(ForeignKey("quotes.id"))
+    name: Mapped[str] = mapped_column(String(255), default="")
+    saved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    quote: Mapped[Quote] = relationship()
+
+
+class SavedDesign(Base):
+    """A design-studio drawing the customer saved to come back to."""
+
+    __tablename__ = "saved_designs"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), index=True)
+    name: Mapped[str] = mapped_column(String(255))
+    design: Mapped[dict] = mapped_column(JSON)  # the studio's own shapes, machine and material
+    saved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+def make_session_factory(url: str):
+    connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
+    engine = create_engine(url, connect_args=connect_args, future=True)
+    Base.metadata.create_all(engine)
+    return sessionmaker(bind=engine, expire_on_commit=False, future=True)
