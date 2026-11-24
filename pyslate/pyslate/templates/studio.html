@@ -65,6 +65,12 @@
 
       <button class="button wide" type="button" id="get-price">Get instant price</button>
       <button class="button ghost wide" type="button" id="ask-engineer">Send to an engineer</button>
+      <div class="save-design">
+        <label class="sr-only" for="design-name">Design name</label>
+        <input id="design-name" maxlength="255" placeholder="Name this design">
+        <button class="button secondary small" type="button" id="save-design">Save</button>
+      </div>
+      <p class="fine save-hint">{% if customer %}Saved designs are in <a href="/account#saved">your account</a>.{% else %}<a href="/account/login?next=/studio">Sign in</a> to save designs to your account.{% endif %}</p>
       <form id="engineer-form" class="stack" hidden>
         <label>Name <input id="eng-name" name="name" autocomplete="name" required maxlength="255"></label>
         <label>Email <input id="eng-email" name="email" type="email" autocomplete="email" required maxlength="255"></label>

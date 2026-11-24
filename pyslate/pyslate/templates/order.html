@@ -2,7 +2,17 @@
 {% block title %}Order #{{ order.number }} · Pyslate{% endblock %}
 {% block content %}
 <div class="wrap order-page">
-  <h1>Order #{{ order.number }}</h1>
+  <div class="order-head">
+    <h1>Order #{{ order.number }}</h1>
+    {% if added %}<p class="notice">Added to <a href="/account">your account</a>.</p>
+    {% elif owned %}<a class="button small secondary" href="/account">Back to my account</a>
+    {% elif customer %}
+    <form method="post" action="/account/orders/add">
+      <input type="hidden" name="number" value="{{ order.number }}"><input type="hidden" name="token" value="{{ order.access_token }}">
+      <button class="button small secondary">Add to my account</button>
+    </form>
+    {% else %}<p class="fine"><a href="/account/signup">Create an account</a> to keep all your orders in one place.</p>{% endif %}
+  </div>
   {% if just_paid and order.status == 'awaiting_payment' %}
   <p class="notice">Thanks! We are confirming your payment. This page will update in a minute.</p>
   {% elif payment_error %}
@@ -25,7 +35,7 @@
         <thead><tr><th>Part</th><th>Material</th><th>Qty</th><th>Price</th></tr></thead>
         <tbody>
         {% for line in order.quote.lines %}
-        <tr><td>{{ line.part.filename }}</td><td>{{ line.material_id }}</td><td>{{ line.quantity }}</td><td>{{ line.price.total | money }}</td></tr>
+        <tr><td>{{ line.part.filename }}</td><td>{{ material_names.get(line.material_id, line.material_id) if material_names else line.material_id }}</td><td>{{ line.quantity }}</td><td>{{ line.price.total | money }}</td></tr>
         {% endfor %}
         </tbody>
         <tfoot><tr><td colspan="3">Total</td><td>{{ order.total_cents | cents }}</td></tr></tfoot>

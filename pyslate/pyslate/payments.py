@@ -3,23 +3,62 @@
 from __future__ import annotations
 
 from .config import Settings
-from .models import Order
+from .models import Customer, Order
 
 
 class PaymentError(RuntimeError):
     pass
 
 
-def create_checkout(order: Order, settings: Settings) -> str:
-    """Start a Stripe Checkout session and return the URL to send the customer to."""
+def ensure_stripe_customer(customer: Customer, settings: Settings) -> str:
+    """The Stripe customer for a Pyslate account, created the first time it is needed.
+
+    The caller commits, so the new id is kept on the account.
+    """
+    import stripe
+
+    stripe.api_key = settings.stripe_secret_key
+    if not customer.stripe_customer_id:
+        try:
+            sc = stripe.Customer.create(email=customer.email, name=customer.name or None,
+                                        metadata={"pyslate_customer": customer.id})
+        except stripe.StripeError as exc:
+            raise PaymentError(str(exc)) from exc
+        customer.stripe_customer_id = sc.id
+    return customer.stripe_customer_id
+
+
+def billing_portal(customer: Customer, settings: Settings) -> str:
+    """A Stripe customer portal link where the customer adds, removes or changes saved cards."""
+    import stripe
+
+    sc = ensure_stripe_customer(customer, settings)
+    try:
+        session = stripe.billing_portal.Session.create(customer=sc, return_url=f"{settings.public_url}/account/settings")
+    except stripe.StripeError as exc:
+        raise PaymentError(str(exc)) from exc
+    return session.url
+
+
+def create_checkout(order: Order, settings: Settings, customer: Customer | None = None) -> str:
+    """Start a Stripe Checkout session and return the URL to send the customer to.
+
+    For a signed-in customer the session uses their Stripe customer, so saved cards are
+    offered and a new card can be kept for next time.
+    """
     import stripe
 
     stripe.api_key = settings.stripe_secret_key
     order_url = f"{settings.public_url}/order/{order.number}?t={order.access_token}"
+    who: dict = {"customer_email": order.email}
+    if customer is not None:
+        who = {"customer": ensure_stripe_customer(customer, settings),
+               "payment_intent_data": {"setup_future_usage": "on_session"},
+               "saved_payment_method_options": {"payment_method_save": "enabled"}}
     try:
         session = stripe.checkout.Session.create(
             mode="payment",
-            customer_email=order.email,
+            **who,
             line_items=[
                 {
                     "quantity": 1,

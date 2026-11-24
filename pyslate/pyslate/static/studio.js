@@ -863,6 +863,26 @@ $('engineer-form').addEventListener('submit', async ev => {
   btn.disabled = false;
 });
 
+// Save the editable drawing (not the flattened outlines) to the customer's account.
+let savedDesignId = '';
+$('save-design').addEventListener('click', async ev => {
+  if (!state.shapes.length) { status('Add a shape first.', true); return; }
+  const f = new FormData();
+  const { shapes, machine: m, material, height, quantity } = state;
+  f.append('design', JSON.stringify({ shapes, machine: m, material, height, quantity }));
+  f.append('name', $('design-name').value.trim()); f.append('design_id', savedDesignId);
+  ev.target.disabled = true; status('Saving…');
+  try {
+    const r = await fetch('/account/designs', { method: 'POST', body: f, credentials: 'same-origin' });
+    const d = await r.json().catch(() => ({}));
+    if (r.status === 401) { status('Sign in to save designs. Your drawing stays here while you do.', true); location.href = d.login || '/account/login?next=/studio'; return; }
+    if (!r.ok) throw new Error(d.error || 'Could not save. Please try again.');
+    savedDesignId = d.id; $('design-name').value = d.name;
+    status(`Saved "${d.name}" to your account.`);
+  } catch (e) { status(e.message, true); }
+  ev.target.disabled = false;
+});
+
 /* ---------------- start ---------------- */
 const restored = load();
 if (!cfg.machines.some(m => m.id === state.machine)) state.machine = (cfg.machines.find(m => m.line === 'laser') || cfg.machines[0]).id;
@@ -880,6 +900,10 @@ if (designUrl && designUrl.startsWith('/') && !designUrl.startsWith('//')) {
     if (!shapes.length) throw new Error();
     state.shapes = shapes.map(x => ({ rot: 0, ...x, id: uid++ }));
     if (d.machine && cfg.machines.some(m => m.id === d.machine)) { state.machine = d.machine; buildMachines(); fillMaterials(); }
+    if (d.material && [...$('material').options].some(o => o.value === d.material)) { state.material = d.material; $('material').value = d.material; }
+    if (isFinite(d.height) && d.height > 0) { state.height = +d.height; $('height').value = d.height; }
+    if (Number.isInteger(d.quantity) && d.quantity > 0) { state.quantity = d.quantity; $('quantity').value = d.quantity; }
+    if (d.id && typeof d.id === 'string' && designUrl.startsWith('/account/designs/')) { savedDesignId = d.id; $('design-name').value = d.name || ''; }
     select(-1); buildProps(); fit(); render(); save(); refresh3d();
     window.history.replaceState(null, '', location.pathname);
     status(d.name ? `Loaded ${d.name}. Change anything you like, then get a price.` : 'Design loaded.');

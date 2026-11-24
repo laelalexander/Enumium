@@ -19,10 +19,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from . import __version__, catalog, payments, services, studio
-from . import library
+from . import accounts, library
 from . import geometry as geo
 from .config import Settings, settings as default_settings
-from .models import ORDER_LABELS, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
+from .models import ORDER_LABELS, CustomerOrder, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
 from .routing import compatible_materials
 
 HERE = Path(__file__).parent
@@ -57,6 +57,14 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
             db.close()
 
     def render(request: Request, name: str, status_code: int = 200, **ctx) -> HTMLResponse:
+        if "customer" not in ctx and not name.startswith("admin/"):
+            ctx["customer"] = None
+            if request.cookies.get(accounts.COOKIE):
+                with SessionLocal() as db:
+                    c = app.state.current_customer(request, db)
+                    if c is not None:
+                        db.expunge(c)
+                    ctx["customer"] = c
         return templates.TemplateResponse(request, name, ctx, status_code=status_code)
 
     # ---- admin session (signed cookie, SameSite=Strict blocks cross-site form posts) ----
@@ -313,7 +321,8 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
             messages = [str(m) for m in messages][:20] if isinstance(messages, list) else []
         except ValueError:
             messages = []
-        return render(request, "quote.html", errors=messages, **quote_context(db, quote))
+        return render(request, "quote.html", errors=messages, just_saved=request.query_params.get("saved") == "1",
+                      **quote_context(db, quote))
 
     @app.post("/quote/{token}/line/{line_id}")
     def change_line(
@@ -428,10 +437,13 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
             order = services.place_order(db, quote, email, name, address, notes)
         except services.ServiceError as exc:
             return render(request, "quote.html", 400, errors=[str(exc)], **quote_context(db, quote))
+        customer = app.state.current_customer(request, db)
+        if customer is not None:
+            app.state.link_order(db, customer, order)
         order_url = f"/order/{order.number}?t={order.access_token}"
         if cfg.stripe_enabled and order.status == "awaiting_payment":
             try:
-                url = payments.create_checkout(order, cfg)
+                url = payments.create_checkout(order, cfg, customer)
                 db.commit()
                 return RedirectResponse(url, status_code=303)
             except payments.PaymentError:
@@ -444,7 +456,14 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         db: Session = Depends(get_db),
     ):
         order = load_order(db, number, t)
-        return render(request, "order.html", order=order, just_paid=bool(paid), payment_error=bool(payment_error))
+        customer = app.state.current_customer(request, db)
+        owned = customer is not None and db.get(CustomerOrder, (customer.id, order.id)) is not None
+        profile = services.get_profile(db)
+        names = {ln.material_id: (profile.material(ln.material_id) or {}).get("name", ln.material_id)
+                 for ln in order.quote.lines if ln.material_id}
+        return render(request, "order.html", order=order, just_paid=bool(paid), payment_error=bool(payment_error),
+                      customer=customer, owned=owned, added=request.query_params.get("added") == "1",
+                      material_names=names)
 
     @app.post("/stripe/webhook")
     async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
@@ -647,5 +666,6 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     app.state.session_factory = SessionLocal
     app.state.settings = cfg
     library.register(app, render, get_db, cfg)
+    accounts.register(app, render, get_db, cfg)
 
     return app

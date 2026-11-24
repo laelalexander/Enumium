@@ -178,6 +178,54 @@ class ServiceRequest(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+# ---- customer accounts (new tables only, so existing databases upgrade with create_all) ----
+
+
+class Customer(Base):
+    __tablename__ = "customers"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    name: Mapped[str] = mapped_column(String(255), default="")
+    company: Mapped[str] = mapped_column(String(255), default="")
+    phone: Mapped[str] = mapped_column(String(64), default="")
+    shipping_address: Mapped[str] = mapped_column(Text, default="")
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    session_version: Mapped[int] = mapped_column(Integer, default=1)  # bump to sign out everywhere
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class CustomerOrder(Base):
+    """Orders a customer placed while signed in, or added with the order's private link."""
+
+    __tablename__ = "customer_orders"
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), primary_key=True)
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"), primary_key=True)
+    added_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    order: Mapped[Order] = relationship()
+
+
+class SavedQuote(Base):
+    __tablename__ = "saved_quotes"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), index=True)
+    quote_id: Mapped[str] = mapped_column(ForeignKey("quotes.id"))
+    name: Mapped[str] = mapped_column(String(255), default="")
+    saved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    quote: Mapped[Quote] = relationship()
+
+
+class SavedDesign(Base):
+    """A design-studio drawing the customer saved to come back to."""
+
+    __tablename__ = "saved_designs"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), index=True)
+    name: Mapped[str] = mapped_column(String(255))
+    design: Mapped[dict] = mapped_column(JSON)  # the studio's own shapes, machine and material
+    saved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
 def make_session_factory(url: str):
     connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
     engine = create_engine(url, connect_args=connect_args, future=True)

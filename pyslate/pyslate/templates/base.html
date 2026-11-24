@@ -33,6 +33,8 @@
         <a href="/request" {% if path == '/request' %}aria-current="page"{% endif %}>Design services</a>
       </nav>
       <div class="header-actions">
+        {% if customer %}<a class="account-link" href="/account" {% if path.startswith('/account') %}aria-current="page"{% endif %}>Account</a>
+        {% else %}<a class="account-link" href="/account/login{% if not path.startswith('/account') %}?next={{ path | urlencode }}{% endif %}">Sign in</a>{% endif %}
         <a class="button small" href="/quote">Get a quote</a>
         <details class="mobile-menu">
           <summary aria-label="Menu"><span></span><span></span><span></span></summary>
@@ -45,6 +47,7 @@
             <a href="/materials">Materials</a>
             <a href="/about">About</a>
             <a href="/request">Design services</a>
+            {% if customer %}<a href="/account">Your account</a><a class="sub" href="/account/settings">Settings</a>{% else %}<a href="/account/login">Sign in</a>{% endif %}
           </nav>
         </details>
       </div>
@@ -62,7 +65,7 @@
     <div class="wrap footer-grid">
       <div>
         <a class="brand" href="/">PY<span>/</span>SLATE</a>
-        <p>Parts cut, printed and designed to order, in our own shop on Bambu Lab printers and xTool lasers.</p>
+        <p>Parts cut, printed and designed to order, in our own shop: 3D printers, xTool lasers, a Tormach metal shop and injection molding.</p>
       </div>
       <div>
         <h4>Make</h4>

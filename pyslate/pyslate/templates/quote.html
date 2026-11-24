@@ -4,7 +4,15 @@
 <div class="wrap quote-page">
   <div class="quote-head">
     <h1>Your quote</h1>
-    <p class="fine">Save this page's link to come back to it.</p>
+    {% if just_saved %}<p class="notice">Saved to <a href="/account#saved">your account</a>.</p>
+    {% elif customer %}
+    <form method="post" action="/account/quotes/save" class="save-quote">
+      <input type="hidden" name="token" value="{{ quote.token }}">
+      <button class="button small secondary">Save to my account</button>
+    </form>
+    {% else %}
+    <p class="fine">Save this page's link to come back to it, or <a href="/account/login?next={{ request.url.path | urlencode }}">sign in</a> to keep it in your account.</p>
+    {% endif %}
   </div>
 
   <div class="quote-grid">
@@ -101,9 +109,9 @@
       <p>This quote is order #{{ quote.order.number }}.</p>
       {% elif orderable %}
       <form method="post" action="/quote/{{ quote.token }}/checkout" class="checkout">
-        <label>Name <input name="name" required maxlength="255" autocomplete="name"></label>
-        <label>Email <input name="email" type="email" required maxlength="255" autocomplete="email"></label>
-        <label>Shipping address <textarea name="address" rows="3" required autocomplete="street-address"></textarea></label>
+        <label>Name <input name="name" required maxlength="255" autocomplete="name" value="{{ customer.name if customer else '' }}"></label>
+        <label>Email <input name="email" type="email" required maxlength="255" autocomplete="email" value="{{ customer.email if customer else '' }}"></label>
+        <label>Shipping address <textarea name="address" rows="3" required autocomplete="street-address">{{ customer.shipping_address if customer else '' }}</textarea></label>
         <label>Notes for the shop <textarea name="notes" rows="2"></textarea></label>
         <button class="button wide">{% if stripe_enabled %}Pay {{ summary.total | money }}{% else %}Place order{% endif %}</button>
         {% if not stripe_enabled %}<p class="fine">The shop will send payment details by email.</p>{% endif %}
