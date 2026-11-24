@@ -153,9 +153,10 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     def studio_context(db: Session) -> dict:
         profile = services.get_profile(db).data
         machines = [{"id": m["id"], "name": m["name"], "line": m["line"], "bed": list(m["bed_mm"][:2])}
-                    for m in profile["machines"]]
+                    for m in profile["machines"] if m.get("kind") != "lathe" and m["line"] != "molding"]  # 2D outlines only
         mats = [{"id": m["id"], "name": m["name"], "line": m["line"], "thickness": m.get("thickness_mm"),
-                 "machines": m.get("machines", [])} for m in profile["materials"]]
+                 "engrave_only": bool(m.get("engrave_only")), "machines": m.get("machines", [])}
+                for m in profile["materials"]]
         return {"studio_config": {"machines": machines, "materials": mats}}
 
     @app.get("/studio", response_class=HTMLResponse)
@@ -163,7 +164,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         return render(request, "studio.html", **studio_context(db))
 
     def _studio_files(design: dict, process: str, height_mm: float, tmpdir: Path) -> tuple[str, Path]:
-        if process == studio.PRINT:
+        if process in studio.SOLID_PROCESSES:
             target = tmpdir / "studio-design.stl"
             studio.design_to_stl(design, height_mm, target, tmpdir)
             return "studio-design.stl", target
@@ -183,10 +184,10 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     ):
         try:
             clean = studio.validate_design(design)
-            if process not in (studio.LASER, studio.PRINT):
-                raise studio.DesignError("Choose laser cutting or 3D printing")
-            if process == studio.PRINT and not 0.4 <= height_mm <= 256:
-                raise studio.DesignError("Print height must be between 0.4 and 256 mm")
+            if process not in studio.PROCESSES:
+                raise studio.DesignError("Choose how the part is made")
+            if process in studio.SOLID_PROCESSES and not 0.4 <= height_mm <= 256:
+                raise studio.DesignError("Part height must be between 0.4 and 256 mm")
             with tempfile.TemporaryDirectory() as tmp:
                 name, path = _studio_files(clean, process, height_mm, Path(tmp))
                 part = services.store_part(db, cfg.upload_dir, name, path)
@@ -218,10 +219,10 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     ):
         try:
             clean = studio.validate_design(design)
-            if process not in (studio.LASER, studio.PRINT):
-                raise studio.DesignError("Choose laser cutting or 3D printing")
+            if process not in studio.PROCESSES:
+                raise studio.DesignError("Choose how the part is made")
             note = (f"{description.strip()}\n\nFrom the design studio: {len(clean['shapes'])} shapes, "
-                    f"{'3D print, ' + format(height_mm, 'g') + ' mm tall' if process == studio.PRINT else 'laser cut'}"
+                    f"{studio.PROCESSES[process] + ', ' + format(height_mm, 'g') + ' mm tall' if process in studio.SOLID_PROCESSES else studio.PROCESSES[process]}"
                     f"{', material ' + material_id if material_id else ''}.")
             with tempfile.TemporaryDirectory() as tmp:
                 tmpdir = Path(tmp)
@@ -231,7 +232,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
                 js.write_text(json.dumps({**clean, "process": process, "material_id": material_id,
                                           "height_mm": height_mm}, indent=1))
                 files = [("studio-design.dxf", dxf), ("studio-design.json", js)]
-                if process == studio.PRINT:
+                if process in studio.SOLID_PROCESSES:
                     files.insert(1, _studio_files(clean, process, height_mm, tmpdir))
                 req = services.create_service_request(
                     db, cfg.upload_dir, "product-design", name, email, note, files=files,

@@ -18,7 +18,9 @@ ENGRAVE_LAYER = "ENGRAVE"
 MAX_SHAPES = 200
 MIN_MM, MAX_MM = 0.5, 1000.0
 MAX_COORD = 2000.0
-LASER, PRINT = "laser", "print"
+LASER, PRINT, CNC, ROUTER, PLASMA = "laser", "print", "cnc", "router", "plasma"
+PROCESSES = {LASER: "laser cut", PRINT: "3D print", CNC: "CNC machined", ROUTER: "CNC routed", PLASMA: "plasma cut"}
+SOLID_PROCESSES = (PRINT, CNC)  # the outline is extruded to a height
 
 
 class DesignError(ValueError):

@@ -32,8 +32,8 @@
       {% if materials %}
       <h2>Materials</h2>
       <table class="data-table">
-        <thead><tr><th>Material</th><th>{{ 'Thickness' if detail.line == 'laser' else 'Process' }}</th></tr></thead>
-        <tbody>{% for m in materials %}<tr><td>{{ m.name }}</td><td>{{ '%g mm' % m.thickness_mm if m.thickness_mm else 'FDM print' }}</td></tr>{% endfor %}</tbody>
+        <thead><tr><th>Material</th><th>{{ 'Thickness' if detail.line in ('laser', 'router', 'plasma') else 'Process' }}</th></tr></thead>
+        <tbody>{% for m in materials %}<tr><td>{{ m.name }}</td><td>{% if m.engrave_only %}Engraved, not cut{% elif m.thickness_mm %}{{ '%g mm' % m.thickness_mm }}{% elif m.line == 'cnc' %}CNC machined{% elif m.line == 'molding' %}Injection molded{% else %}FDM print{% endif %}</td></tr>{% endfor %}</tbody>
       </table>
       {% endif %}
     </div>
