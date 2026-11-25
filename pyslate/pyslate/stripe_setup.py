@@ -56,6 +56,8 @@ def ask(prompt: str, default: str = "") -> str:
 def main() -> int:
     import stripe
 
+    from .payments import as_dict
+
     if not ENV_FILE.exists():
         print(f"{ENV_FILE} not found. Run the Pyslate installer first.")
         return 1
@@ -72,7 +74,7 @@ def main() -> int:
     stripe.api_key = key
     mode = "TEST" if "_test_" in key else "LIVE"
     try:
-        acct = stripe.Account.retrieve()
+        acct = as_dict(stripe.Account.retrieve())
     except stripe.StripeError as exc:
         print("Stripe refused that key:", exc.user_message or str(exc))
         return 1
@@ -82,7 +84,8 @@ def main() -> int:
         print("Note: Stripe hasn't enabled live charges on this account yet. Finish activation in the Stripe dashboard.")
 
     # The webhook. Stripe only shows a signing secret when the endpoint is created.
-    existing = [w for w in stripe.WebhookEndpoint.list(limit=100).auto_paging_iter() if w.get("url") == hook_url]
+    existing = [as_dict(w) for w in stripe.WebhookEndpoint.list(limit=100).auto_paging_iter()]
+    existing = [w for w in existing if w.get("url") == hook_url]
     if existing:
         print(f"A webhook for {hook_url} already exists in Stripe ({mode} mode).")
         if ask("Replace it with a new one so Pyslate gets its signing secret? [Y/n] ", "y").lower().startswith("n"):
@@ -97,7 +100,7 @@ def main() -> int:
     if not existing:
         hook = stripe.WebhookEndpoint.create(url=hook_url, enabled_events=EVENTS,
                                              description="Pyslate: marks orders paid")
-        secret = hook["secret"]
+        secret = as_dict(hook)["secret"]
         print(f"Created the webhook {hook_url}.")
 
     # The customer portal, where signed-in customers manage saved cards.

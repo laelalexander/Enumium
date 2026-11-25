@@ -82,8 +82,17 @@ def create_checkout(order: Order, settings: Settings, customer: Customer | None 
 PAID_EVENTS = ("checkout.session.completed", "checkout.session.async_payment_succeeded")
 
 
+def as_dict(obj) -> dict:
+    """Stripe's objects stopped acting like dicts (no .get); turn them into plain dicts."""
+    if isinstance(obj, dict) and type(obj) is dict:
+        return obj
+    to_dict = getattr(obj, "to_dict", None)
+    return to_dict() if callable(to_dict) else dict(obj)
+
+
 def session_payment(obj) -> dict | None:
     """The order id, amount and currency of a paid Checkout session, or None if it isn't paid yet."""
+    obj = as_dict(obj)
     if obj.get("payment_status") != "paid":
         return None
     return {

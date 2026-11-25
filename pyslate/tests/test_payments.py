@@ -144,3 +144,45 @@ def test_setup_env_writer(tmp_path):
     assert got["PYSLATE_AGENT_TOKEN"] == "abc" and env.read_text().count("STRIPE_SECRET_KEY") == 1
     write_env(env, {"STRIPE_SECRET_KEY": "sk_live_2"})
     assert read_env(env)["STRIPE_SECRET_KEY"] == "sk_live_2"
+
+
+def test_setup_command_with_real_stripe_objects(tmp_path, monkeypatch):
+    """Stripe's library returns objects without .get(); the setup must cope (it crashed on the server)."""
+    import stripe as real
+
+    import pyslate.stripe_setup as setup
+
+    S = real.StripeObject.construct_from
+    env = tmp_path / "pyslate.env"
+    env.write_text("PYSLATE_PUBLIC_URL=https://pyslate.com\n# STRIPE_SECRET_KEY=\n# STRIPE_WEBHOOK_SECRET=\n")
+    monkeypatch.setattr(setup, "ENV_FILE", env)
+    answers = iter(["sk_test_abc123"])
+    monkeypatch.setattr(setup.getpass, "getpass", lambda prompt="": next(answers))
+    monkeypatch.setattr(setup.subprocess, "run", lambda *a, **k: types.SimpleNamespace(returncode=0))
+    pager = lambda items: types.SimpleNamespace(auto_paging_iter=lambda: iter(items))  # noqa: E731
+    created = {}
+    monkeypatch.setattr(real.Account, "retrieve", staticmethod(lambda *a, **k: real.Account.construct_from(
+        {"id": "acct_1", "charges_enabled": True, "settings": {"dashboard": {"display_name": "Pyslate"}}}, "k")))
+    monkeypatch.setattr(real.WebhookEndpoint, "list", staticmethod(lambda **k: pager([S({"id": "we_0", "url": "https://other"}, "k")])))
+    monkeypatch.setattr(real.WebhookEndpoint, "create", staticmethod(
+        lambda **k: created.setdefault("hook", k) and real.WebhookEndpoint.construct_from({"id": "we_1", "secret": "whsec_new"}, "k")))
+    monkeypatch.setattr(real.billing_portal.Configuration, "list", staticmethod(lambda **k: pager([])))
+    monkeypatch.setattr(real.billing_portal.Configuration, "create", staticmethod(lambda **k: created.setdefault("portal", k)))
+    assert setup.main() == 0
+    got = setup.read_env(env)
+    assert got["STRIPE_SECRET_KEY"] == "sk_test_abc123" and got["STRIPE_WEBHOOK_SECRET"] == "whsec_new"
+    assert created["hook"]["url"] == "https://pyslate.com/stripe/webhook" and "portal" in created
+
+
+def test_webhook_with_real_stripe_event_objects(tmp_path, monkeypatch, cube_stl):
+    import stripe as real
+
+    from pyslate import payments
+
+    obj = {"id": "cs_1", "payment_status": "paid", "amount_total": 500, "currency": "usd", "metadata": {"order_id": "o1"}}
+    event = real.Event.construct_from({"type": "checkout.session.completed", "data": {"object": obj}}, "k")
+    monkeypatch.setattr(real.Webhook, "construct_event", staticmethod(lambda *a: event))
+    cfg = Settings(data_dir=tmp_path / "d", secret_key="k" * 32)
+    cfg.stripe_webhook_secret = "whsec_x"
+    typ, paid = payments.parse_webhook(b"{}", "sig", cfg)
+    assert paid == {"order_id": "o1", "session_id": "cs_1", "amount": 500, "currency": "usd"}
