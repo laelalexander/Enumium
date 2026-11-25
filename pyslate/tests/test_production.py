@@ -423,3 +423,10 @@ def test_full_journey_site_order_to_shipped(app, client, plate_stl, cube_stl):
     assert "Finishing" in page and "cube.stl: made, 1 of 1" in page
     admin = client.get(f"/admin/order/{number}").text
     assert "Machine runs" in admin and "yaeger" in admin
+
+
+def test_hud_in_the_admin(app, client, cube_stl):
+    page = client.get("/admin/hud?line=print").text
+    assert "/admin/production/board.json" in page and "SHOP FLOOR" in page
+    assert "Terminal view" in client.get("/admin/production").text
+    assert TestClient(app).get("/admin/hud", follow_redirects=False).status_code == 303

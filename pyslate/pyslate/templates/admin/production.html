@@ -3,6 +3,7 @@
 {% block admin %}
 <div class="prod-head">
   <h1>Production</h1>
+  <a class="button small secondary" href="/admin/hud{{ '?line=' ~ only_line if only_line else '' }}" target="_blank">Terminal view</a>
   <div class="agent-line" id="agent-line">
     {% if not agent_enabled %}
       <span class="dot dot-offline"></span> Shop agent off · <a href="/admin/agent">set it up</a>

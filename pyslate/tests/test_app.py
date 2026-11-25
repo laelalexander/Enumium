@@ -412,3 +412,16 @@ def test_legal_pages(client, app):
     terms = client.get("/terms").text
     assert "State of Texas" in terms and "Pyslate LLC (doing business as Pyslate)" in terms and "legal@pyslate.com" in terms
     assert "Copyright Agent, legal@pyslate.com" in client.get("/copyright").text
+
+
+def test_every_template_folder_is_packaged():
+    """A template folder left out of package-data works in tests but 500s on the server."""
+    import tomllib
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    data = tomllib.loads((root / "pyproject.toml").read_text())["tool"]["setuptools"]["package-data"]["pyslate"]
+    for folder in (root / "pyslate" / "templates").rglob("*"):
+        if folder.is_dir() and any(folder.glob("*.html")) and folder.name != "__pycache__":
+            rel = folder.relative_to(root / "pyslate").as_posix()
+            assert f"{rel}/*.html" in data, f"{rel} is missing from package-data in pyproject.toml"

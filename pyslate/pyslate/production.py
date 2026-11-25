@@ -611,6 +611,11 @@ def register(app: FastAPI, render, get_db, cfg, require_admin) -> None:
         require_agent(request)
         return board_feed(db)
 
+    @app.get("/admin/hud", dependencies=admin)
+    def admin_hud(request: Request, line: str = "", title: str = ""):
+        """The shop-floor heads-up display in the browser: same feed as the terminal HUD."""
+        return render(request, "admin/hud.html", line=line[:20], title=(title or "SHOP FLOOR")[:40].upper())
+
     @app.get("/admin/production/board.json", dependencies=admin)
     def admin_board(db: Session = Depends(get_db)):
         return board_feed(db)

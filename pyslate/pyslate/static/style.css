@@ -626,3 +626,4 @@ table.rates .num { text-align: right; font-variant-numeric: tabular-nums; }
 @media (max-width: 800px) { .legal-grid { grid-template-columns: 1fr; gap: 16px; } .legal-nav { position: static; flex-direction: row; flex-wrap: wrap; } }
 .pay-now { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--accent-soft); border: 1px solid var(--accent-fill); border-radius: var(--radius); padding: 14px 18px; margin: 12px 0 4px; }
 .pay-now div { display: flex; flex-direction: column; }
+.admin { padding-bottom: 80px; }
