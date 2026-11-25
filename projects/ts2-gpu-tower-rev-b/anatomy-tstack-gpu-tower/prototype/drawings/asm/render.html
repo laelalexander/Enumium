@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>TS-2 rev B assembly renderer</title>
+<script type="importmap">{"imports":{"three":"../../../sim-rev-b/vendor/three/build/three.module.js","three/addons/":"../../../sim-rev-b/vendor/three/examples/jsm/"}}</script>
+<style>html,body{margin:0;background:#ffffff;overflow:hidden}canvas{display:block}</style>
+</head><body>
+<script type="module">
+// Headless renderer for the illustrated assembly sheets (TS2B-ASM-100).  Driven by drawings/asm/make_asm.mjs:
+// window.render(cfg) shows the requested nodes, colours the new ones, explodes them, frames the camera and returns
+// the screen position of each balloon target.
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const W = 1800, H = 1300;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.setClearColor(0xffffff, 1);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8890a0, 1.25));
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(1, -1.4, 2.2); scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 0.6); fill.position.set(-1.5, 1, 0.6); scene.add(fill);
+const camera = new THREE.PerspectiveCamera(24, W / H, 5, 40000); camera.up.set(0, 0, 1);
+const root = new THREE.Group(); scene.add(root);
+const asm = await (await fetch('../../mechanical/assembled/assembly.json')).json();
+const byNode = {}; for (const n of asm.nodes) byNode[n.node] = n;
+const buf = await (await fetch('../../mechanical/assembled/' + asm.glb)).arrayBuffer();
+const gltf = await new Promise((ok, bad) => new GLTFLoader().parse(buf, '', ok, bad));
+const model = gltf.scene;
+const bb0 = new THREE.Box3().setFromObject(model); const sz0 = bb0.getSize(new THREE.Vector3());
+if (sz0.y > sz0.z * 1.2) model.rotation.x = Math.PI / 2;
+root.add(model); model.updateMatrixWorld(true);
+const meshes = [];
+model.traverse((o) => {
+  if (!o.isMesh) return;
+  let n = o, rec = null; while (n && !rec) { rec = byNode[n.name]; n = n.parent; }
+  o.userData.node = rec ? rec.node : o.name;
+  o.userData.base = o.material;
+  o.userData.pos0 = o.position.clone();
+  const edges = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry, 32), new THREE.LineBasicMaterial({ color: 0x15171a, transparent: true, opacity: 0.55 }));
+  o.add(edges); o.userData.edges = edges;
+  meshes.push(o);
+});
+const match = (nm, pats) => pats.some((p) => p.startsWith('^') ? new RegExp(p).test(nm) : nm.includes(p));
+const RED = new THREE.MeshStandardMaterial({ color: 0xc8102e, metalness: 0.2, roughness: 0.5 });
+const GHOST = new THREE.MeshStandardMaterial({ color: 0xb8bcc4, transparent: true, opacity: 0.18, depthWrite: false });
+window.render = (cfg) => {
+  const box = new THREE.Box3();
+  const tgt = {};
+  for (const o of meshes) {
+    const nm = o.userData.node;
+    o.position.copy(o.userData.pos0);
+    const vis = match(nm, cfg.show) && !(cfg.hide && match(nm, cfg.hide));
+    o.visible = vis;
+    if (!vis) continue;
+    const hi = cfg.highlight && match(nm, cfg.highlight);
+    const gh = cfg.ghost && match(nm, cfg.ghost) && !hi;
+    o.material = gh ? GHOST : (hi && cfg.red ? RED : o.userData.base);
+    o.userData.edges.visible = !gh;
+    o.userData.edges.material.opacity = hi ? 0.9 : 0.45;
+    o.updateMatrixWorld(true);
+    if (!gh || cfg.fitGhost) box.expandByObject(o);
+  }
+  // explode the new parts along a world vector (mm)
+  if (cfg.explode) {
+    const v = new THREE.Vector3(...cfg.explode.vec);
+    for (const o of meshes) if (o.visible && match(o.userData.node, cfg.explode.nodes)) {
+      const inv = new THREE.Matrix4().copy(o.parent.matrixWorld).invert();
+      const p = o.getWorldPosition(new THREE.Vector3()).add(v).applyMatrix4(inv);
+      o.position.copy(p); o.updateMatrixWorld(true); box.expandByObject(o);
+    }
+  }
+  if (cfg.fitTo) {             // frame on a subset only
+    box.makeEmpty();
+    for (const o of meshes) if (o.visible && match(o.userData.node, cfg.fitTo)) box.expandByObject(o);
+  }
+  const c = box.getCenter(new THREE.Vector3()); const s = box.getSize(new THREE.Vector3());
+  const dir = new THREE.Vector3(...(cfg.dir || [1.0, -1.25, 0.8])).normalize();
+  const r = 0.5 * s.length();
+  const dist = r / Math.sin(THREE.MathUtils.degToRad(camera.fov / 2)) * (cfg.zoom || 1.0);
+  camera.position.copy(c).addScaledVector(dir, dist); camera.lookAt(c); camera.updateMatrixWorld(true);
+  renderer.render(scene, camera);
+  // balloon targets: centre of each listed node group, projected
+  const out = {};
+  for (const [label, pats] of Object.entries(cfg.balloons || {})) {
+    const b = new THREE.Box3();
+    for (const o of meshes) if (o.visible && match(o.userData.node, pats)) b.expandByObject(o);
+    if (b.isEmpty()) continue;
+    const p = b.getCenter(new THREE.Vector3()).project(camera);
+    out[label] = [(p.x + 1) / 2 * W, (1 - p.y) / 2 * H];
+  }
+  return out;
+};
+window.ready = true;
+</script></body></html>

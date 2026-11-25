@@ -1,0 +1,28 @@
+{
+ "title": "TS-2 T-Stack GPU tower rev B: 64 GPUs, 16 per column, chilled-water tracing + Peltier trim",
+ "summary": "Revision B puts the GPUs in the tower: four columns of 16 NVIDIA RTX PRO 6000 Blackwell Max-Q cards (64 per tower). Each card plugs into a CBP-8 backplane (2 per column, 8-layer Megtron 6, x16 CEM slots wired x8, MCIO 8i to the host switch cards, per-slot hot-swap and 12V-2x6 power), is held by a tail-guide comb, bracket screw rail and hinged hold-down bars, and is cooled by inlet air drawn through a chilled-water tracing coil (dew point + 2 K) and trimmed by a 4-TEC Peltier module on a split copper cold block; the crown turbines evacuate the hot plenum air. Power: 4 CRPS 2000 W per column into the CPD-1 board, straps, 4/0 cables and 14 x 10 mm copper busbars. Four KiCad boards (CBP-8, CPD-1, CCM-1 cooling controller, TCD-1 Peltier driver) each have a RushPCB turnkey package; the harness has a numbered wire list and a PCIe Gen4 loss budget. Parametric build123d CAD (1058 placed parts), 33 dual-unit drawings with DXF cut files, a 12-step illustrated column build, a rolled-up BOM, and a digital twin with 9 acceptance tests (all pass). Nothing has been built or measured.",
+ "blueprint": "REV-B.md",
+ "apps": [
+  {
+   "name": "TS-2 rev B digital twin",
+   "kind": "simulator",
+   "description": "3D twin of the rev B tower from the CAD export (click a part), 64 GPUs tinted by core temperature, chilled-water + Peltier cooling model, faults (chiller off, TEC trim off, impeller loss, CRPS loss, filter clog, feed loss), live plots and acceptance tests.",
+   "cwd": "anatomy-tstack-gpu-tower/sim-rev-b",
+   "run": [
+    "node server.mjs 8791"
+   ],
+   "url": "http://127.0.0.1:8791/",
+   "needs": [
+    "Node.js 18+"
+   ],
+   "startup_ms": 2000
+  }
+ ],
+ "tests": {
+  "cwd": "anatomy-tstack-gpu-tower/sim-rev-b",
+  "run": "node run-tests.mjs",
+  "results": "anatomy-tstack-gpu-tower/sim-rev-b/results/latest.json"
+ },
+ "build": "build/build.json",
+ "assembly": "anatomy-tstack-gpu-tower/prototype/mechanical/assembled/assembly.json"
+}

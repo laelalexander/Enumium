@@ -1,0 +1,3 @@
+schematic netlist vs design table: MATCH
+components 150, named nets 83
+

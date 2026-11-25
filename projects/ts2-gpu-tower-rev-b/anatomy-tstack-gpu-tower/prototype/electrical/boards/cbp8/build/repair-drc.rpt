@@ -1,0 +1,178 @@
+** Drc report for /home/claude/ts2b/proj/ts2b/prototype/electrical/boards/cbp8/cbp8.kicad_pcb **
+** Created on 2026-11-25 01:25:23 **
+
+** Found 46 DRC violations **
+[starved_thermal]: Thermal relief connection to zone incomplete (zone min spoke count 2; actual 1)
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(314.5800 mm, 262.0000 mm): PTH pad 9 [GND] of J905
+[copper_edge_clearance]: Board edge clearance violation (board setup constraints edge clearance 0.3000 mm; actual 0.1069 mm)
+    Rule: board setup constraints edge; Severity: error
+    @(54.0000 mm, 480.4000 mm): Arc on Edge.Cuts
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[copper_edge_clearance]: Board edge clearance violation (board setup constraints edge clearance 0.3000 mm; actual 0.0000 mm)
+    Rule: board setup constraints edge; Severity: error
+    @(54.0000 mm, 480.4000 mm): Arc on Edge.Cuts
+    @(52.0000 mm, 482.4000 mm): Track [GND] on F.Cu, length 1.6125 mm
+[clearance]: Clearance violation (zone clearance 0.2500 mm; actual 0.1332 mm)
+    Local override; Severity: error
+    @(277.5021 mm, 187.9295 mm): Track [+3V3] on B.Cu, length 6.6137 mm
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on B.Cu
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.1673 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(79.0000 mm, 457.4000 mm): Track [S1_12V] on F.Cu, length 1.0590 mm
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.1669 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(77.3625 mm, 405.8500 mm): Track [S2_12V] on F.Cu, length 1.3008 mm
+    @(79.2110 mm, 406.5919 mm): Track [S2_BST] on F.Cu, length 2.0236 mm
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.0734 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(77.3625 mm, 405.8500 mm): Track [S2_12V] on F.Cu, length 1.3008 mm
+    @(77.1874 mm, 406.5919 mm): Track [S2_BST] on F.Cu, length 9.1675 mm
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.0505 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(74.7850 mm, 195.9468 mm): Track [S6_12V] on F.Cu, length 1.1276 mm
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.1133 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(79.1625 mm, 103.8049 mm): Track [S8_12V] on F.Cu, length 2.6836 mm
+    @(79.9902 mm, 103.9506 mm): Track [S8_BST] on F.Cu, length 1.2309 mm
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.0849 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(74.7338 mm, 103.9719 mm): Track [S8_12V] on In2.Cu, length 4.4318 mm
+    @(102.4709 mm, 103.1550 mm): Track [S8_HTX7_N] on In2.Cu, length 39.8351 mm
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(254.4000 mm, 255.2000 mm): Via [S5_12V] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 455.8000 mm): Via [S1_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 454.2000 mm): Via [S1_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 451.0000 mm): Via [S1_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 452.6000 mm): Via [S1_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 403.4000 mm): Via [S2_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 400.2000 mm): Via [S2_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 405.0000 mm): Via [S2_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 401.8000 mm): Via [S2_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 349.4000 mm): Via [S3_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 352.6000 mm): Via [S3_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 351.0000 mm): Via [S3_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 347.8000 mm): Via [S3_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 354.2000 mm): Via [S3_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 300.2000 mm): Via [S4_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 298.6000 mm): Via [S4_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 301.8000 mm): Via [S4_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 303.4000 mm): Via [S4_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 252.6000 mm): Via [S5_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 249.4000 mm): Via [S5_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 247.8000 mm): Via [S5_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 201.8000 mm): Via [S6_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 197.0000 mm): Via [S6_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 200.2000 mm): Via [S6_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 198.6000 mm): Via [S6_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 149.4000 mm): Via [S7_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 147.8000 mm): Via [S7_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 151.0000 mm): Via [S7_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 146.2000 mm): Via [S7_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 144.6000 mm): Via [S7_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 95.4000 mm): Via [S8_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 100.2000 mm): Via [S8_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 98.6000 mm): Via [S8_12V_SNS] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(276.6000 mm, 97.0000 mm): Via [S8_12V_SNS] on F.Cu - B.Cu
+
+** Found 5 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(283.9375 mm, 240.6500 mm): Pad 3 [+12V] of U502 on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(255.0000 mm, 255.2000 mm): Zone [S5_12V] on F.Cu
+    @(255.0000 mm, 255.2000 mm): Zone [S5_12V] on F.Cu
+
+** Found 0 Footprint errors **
+
+** End of Report **

@@ -1,0 +1,128 @@
+Wire,Cable,Cable name,From,From pin,To,To pin,Signal (board net),AWG,Colour,Length mm,Length in,Twist,Columns
+W001,C01,+12 V straps to column busbar (CPD-1 TS2B-232 -> TS2B-215),CPD STRAP+ lug M8,L1,BUSBAR+ lug M8,L1,+12V,4/0,RED,400,15.7,,all
+W002,C01,+12 V straps to column busbar (CPD-1 TS2B-232 -> TS2B-215),CPD STRAP+ lug M8,L2,BUSBAR+ lug M8,L2,+12V,4/0,RED,400,15.7,,all
+W003,C02,RTN straps to column busbar (CPD-1 TS2B-233 -> TS2B-216),CPD STRAP- lug M8,L1,BUSBAR- lug M8,L1,RTN,4/0,BLK,425,16.7,,all
+W004,C02,RTN straps to column busbar (CPD-1 TS2B-233 -> TS2B-216),CPD STRAP- lug M8,L2,BUSBAR- lug M8,L2,RTN,4/0,BLK,425,16.7,,all
+W005,C03,RSP-750-12 output to TCD-1 studs,RSP-750-12 +V/-V M4 TB,+V,TCD-1 T1-T4 M5,T1,12V_IN,10,RED,700,27.6,,all
+W006,C03,RSP-750-12 output to TCD-1 studs,RSP-750-12 +V/-V M4 TB,+V,TCD-1 T1-T4 M5,T2,12V_IN,10,RED,700,27.6,,all
+W007,C03,RSP-750-12 output to TCD-1 studs,RSP-750-12 +V/-V M4 TB,-V,TCD-1 T1-T4 M5,T3,GND,10,BLK,700,27.6,,all
+W008,C03,RSP-750-12 output to TCD-1 studs,RSP-750-12 +V/-V M4 TB,-V,TCD-1 T1-T4 M5,T4,GND,10,BLK,700,27.6,,all
+W009,C04,RSP-750-12 output to CCM-1 J1 (12V_AUX),CCM-1 J1,1,RSP-750-12 +V/-V M4 TB,+V,12V_AUX,18,RED,500,19.7,,all
+W010,C04,RSP-750-12 output to CCM-1 J1 (12V_AUX),CCM-1 J1,2,RSP-750-12 +V/-V M4 TB,+V,12V_AUX,18,RED,500,19.7,,all
+W011,C04,RSP-750-12 output to CCM-1 J1 (12V_AUX),CCM-1 J1,3,RSP-750-12 +V/-V M4 TB,-V,GND,18,BLK,500,19.7,,all
+W012,C04,RSP-750-12 output to CCM-1 J1 (12V_AUX),CCM-1 J1,4,RSP-750-12 +V/-V M4 TB,-V,GND,18,BLK,500,19.7,,all
+W013,C05,AC feed to RSP-750-12,ARM AC TB TB1,L,RSP-750-12 L/N/PE,L,AC L,14,BRN,375,14.8,,all
+W014,C05,AC feed to RSP-750-12,ARM AC TB TB1,N,RSP-750-12 L/N/PE,N,AC N,14,BLU,375,14.8,,all
+W015,C05,AC feed to RSP-750-12,ARM AC TB TB1,PE,RSP-750-12 L/N/PE,PE,PE,14,GRN/YEL,375,14.8,,all
+W016,C10,Column bus: CCM-1 J4 -> TCD-1 J5,CCM-1 J4,1,TCD-1 J5,1,COL_A / BUS_A,24,WHT/BLU,450,17.7,TP,all
+W017,C10,Column bus: CCM-1 J4 -> TCD-1 J5,CCM-1 J4,2,TCD-1 J5,2,COL_B / BUS_B,24,BLU,450,17.7,TP,all
+W018,C10,Column bus: CCM-1 J4 -> TCD-1 J5,CCM-1 J4,3,TCD-1 J5,3,GND,22,BLK,450,17.7,,all
+W019,C10,Column bus: CCM-1 J4 -> TCD-1 J5,CCM-1 J4,6,TCD-1 J5,6,GND,22,BLK,450,17.7,,all
+W020,C11,Column bus: TCD-1 J6 -> CPD-1 J6,TCD-1 J6,1,CPD-1 J6,1,BUS_A,24,WHT/BLU,1025,40.4,TP,all
+W021,C11,Column bus: TCD-1 J6 -> CPD-1 J6,TCD-1 J6,2,CPD-1 J6,2,BUS_B,24,BLU,1025,40.4,TP,all
+W022,C11,Column bus: TCD-1 J6 -> CPD-1 J6,TCD-1 J6,3,CPD-1 J6,3,GND,22,BLK,1025,40.4,,all
+W023,C11,Column bus: TCD-1 J6 -> CPD-1 J6,TCD-1 J6,6,CPD-1 J6,6,GND,22,BLK,1025,40.4,,all
+W024,C12,Column bus: CPD-1 J8 -> CBP-8 lower J903,CPD-1 J8,1,CBP-8 lower J903,1,BUS_A,24,WHT/BLU,1175,46.3,TP,all
+W025,C12,Column bus: CPD-1 J8 -> CBP-8 lower J903,CPD-1 J8,2,CBP-8 lower J903,2,BUS_B,24,BLU,1175,46.3,TP,all
+W026,C12,Column bus: CPD-1 J8 -> CBP-8 lower J903,CPD-1 J8,3,CBP-8 lower J903,3,GND,22,BLK,1175,46.3,,all
+W027,C12,Column bus: CPD-1 J8 -> CBP-8 lower J903,CPD-1 J8,6,CBP-8 lower J903,6,GND,22,BLK,1175,46.3,,all
+W028,C13,Column bus: CBP-8 lower J904 -> CBP-8 upper J903,CBP-8 lower J904,1,CBP-8 upper J903,1,BUS_A,24,WHT/BLU,1425,56.1,TP,all
+W029,C13,Column bus: CBP-8 lower J904 -> CBP-8 upper J903,CBP-8 lower J904,2,CBP-8 upper J903,2,BUS_B,24,BLU,1425,56.1,TP,all
+W030,C13,Column bus: CBP-8 lower J904 -> CBP-8 upper J903,CBP-8 lower J904,3,CBP-8 upper J903,3,GND,22,BLK,1425,56.1,,all
+W031,C13,Column bus: CBP-8 lower J904 -> CBP-8 upper J903,CBP-8 lower J904,6,CBP-8 upper J903,6,GND,22,BLK,1425,56.1,,all
+W032,C14,"SYS: CPD-1 J7 <-> CCM-1 J2 (standby power, PSON_REQ#, COL_PWR_OK)",CPD-1 J7,1,CCM-1 J2,1,VSB_OUT / VSB,18,RED,925,36.4,,all
+W033,C14,"SYS: CPD-1 J7 <-> CCM-1 J2 (standby power, PSON_REQ#, COL_PWR_OK)",CPD-1 J7,2,CCM-1 J2,2,VSB_OUT / VSB,18,RED,925,36.4,,all
+W034,C14,"SYS: CPD-1 J7 <-> CCM-1 J2 (standby power, PSON_REQ#, COL_PWR_OK)",CPD-1 J7,3,CCM-1 J2,3,PSON_REQ#,22,ORN,925,36.4,,all
+W035,C14,"SYS: CPD-1 J7 <-> CCM-1 J2 (standby power, PSON_REQ#, COL_PWR_OK)",CPD-1 J7,4,CCM-1 J2,4,GND,18,BLK,925,36.4,,all
+W036,C14,"SYS: CPD-1 J7 <-> CCM-1 J2 (standby power, PSON_REQ#, COL_PWR_OK)",CPD-1 J7,5,CCM-1 J2,5,GND,18,BLK,925,36.4,,all
+W037,C14,"SYS: CPD-1 J7 <-> CCM-1 J2 (standby power, PSON_REQ#, COL_PWR_OK)",CPD-1 J7,6,CCM-1 J2,6,COL_PWR_OK,22,GRN,925,36.4,,all
+W038,C20,SHT45 room T/RH sensor,CCM-1 J7,1,SHT45 sensor pigtail,VDD,+3V3,24,RED,575,22.6,,all
+W039,C20,SHT45 room T/RH sensor,CCM-1 J7,2,SHT45 sensor pigtail,SDA,SDA1,24,BLU,575,22.6,,all
+W040,C20,SHT45 room T/RH sensor,CCM-1 J7,3,SHT45 sensor pigtail,SCL,SCL1,24,YEL,575,22.6,,all
+W041,C20,SHT45 room T/RH sensor,CCM-1 J7,4,SHT45 sensor pigtail,GND,GND,24,BLK,575,22.6,,all
+W042,C21,SDP810-500Pa coil differential pressure,CCM-1 J8,1,SDP810 JST GHR-04V-S [verify],VDD,+3V3,24,RED,500,19.7,,all
+W043,C21,SDP810-500Pa coil differential pressure,CCM-1 J8,2,SDP810 JST GHR-04V-S [verify],SDA,SDA3,24,BLU,500,19.7,,all
+W044,C21,SDP810-500Pa coil differential pressure,CCM-1 J8,3,SDP810 JST GHR-04V-S [verify],SCL,SCL3,24,YEL,500,19.7,,all
+W045,C21,SDP810-500Pa coil differential pressure,CCM-1 J8,4,SDP810 JST GHR-04V-S [verify],GND,GND,24,BLK,500,19.7,,all
+W046,C22,NTC coolant supply (CCM-1 J9),CCM-1 J9,1,NTC coolant supply probe leads,A,NTC1,26,WHT,300,11.8,,all
+W047,C22,NTC coolant supply (CCM-1 J9),CCM-1 J9,2,NTC coolant supply probe leads,B,GND,26,WHT,300,11.8,,all
+W048,C23,NTC coolant return (CCM-1 J10),CCM-1 J10,1,NTC coolant return probe leads,A,NTC2,26,WHT,1375,54.1,,all
+W049,C23,NTC coolant return (CCM-1 J10),CCM-1 J10,2,NTC coolant return probe leads,B,GND,26,WHT,1375,54.1,,all
+W050,C24,NTC room air (CCM-1 J11),CCM-1 J11,1,NTC room air probe leads,A,NTC3,26,WHT,900,35.4,,all
+W051,C24,NTC room air (CCM-1 J11),CCM-1 J11,2,NTC room air probe leads,B,GND,26,WHT,900,35.4,,all
+W052,C25,NTC GPU inlet L (CCM-1 J12),CCM-1 J12,1,NTC GPU inlet L probe leads,A,NTC4,26,WHT,725,28.5,,all
+W053,C25,NTC GPU inlet L (CCM-1 J12),CCM-1 J12,2,NTC GPU inlet L probe leads,B,GND,26,WHT,725,28.5,,all
+W054,C26,NTC GPU inlet U (CCM-1 J13),CCM-1 J13,1,NTC GPU inlet U probe leads,A,NTC5,26,WHT,1300,51.2,,all
+W055,C26,NTC GPU inlet U (CCM-1 J13),CCM-1 J13,2,NTC GPU inlet U probe leads,B,GND,26,WHT,1300,51.2,,all
+W056,C27,NTC cold block (CCM-1 J14),CCM-1 J14,1,NTC cold block probe leads,A,NTC6,26,WHT,300,11.8,,all
+W057,C27,NTC cold block (CCM-1 J14),CCM-1 J14,2,NTC cold block probe leads,B,GND,26,WHT,300,11.8,,all
+W058,C28,Leak drip tray rope sensor leader,CCM-1 J15,1,Leak drip tray rope leader,SENSE,LEAK1,24,YEL,450,17.7,,all
+W059,C28,Leak drip tray rope sensor leader,CCM-1 J15,2,Leak drip tray rope leader,GND,GND,24,BLK,450,17.7,,all
+W060,C29,Leak module floor rope sensor leader,CCM-1 J16,1,Leak module floor rope leader,SENSE,LEAK2,24,YEL,200,7.9,,all
+W061,C29,Leak module floor rope sensor leader,CCM-1 J16,2,Leak module floor rope leader,GND,GND,24,BLK,200,7.9,,all
+W062,C30,Flow column supply meter,CCM-1 J17,1,Flow column supply meter pigtail,+V,12V_IN,24,RED,375,14.8,,all
+W063,C30,Flow column supply meter,CCM-1 J17,2,Flow column supply meter pigtail,GND,GND,24,BLK,375,14.8,,all
+W064,C30,Flow column supply meter,CCM-1 J17,3,Flow column supply meter pigtail,PULSE,FLOW1_IN,24,WHT,375,14.8,,all
+W065,C31,Flow pump loop meter,CCM-1 J18,1,Flow pump loop meter pigtail,+V,12V_IN,24,RED,225,8.9,,all
+W066,C31,Flow pump loop meter,CCM-1 J18,2,Flow pump loop meter pigtail,GND,GND,24,BLK,225,8.9,,all
+W067,C31,Flow pump loop meter,CCM-1 J18,3,Flow pump loop meter pigtail,PULSE,FLOW2_IN,24,WHT,225,8.9,,all
+W068,C32,D5 pump (CCM-1 J19),CCM-1 J19,1,D5 pump 4-pin fan socket 47054-1000,2,PUMP_12V,18,YEL,350,13.8,,all
+W069,C32,D5 pump (CCM-1 J19),CCM-1 J19,2,D5 pump 4-pin fan socket 47054-1000,1,GND,18,BLK,350,13.8,,all
+W070,C32,D5 pump (CCM-1 J19),CCM-1 J19,3,D5 pump 4-pin fan socket 47054-1000,4,PUMP_PWM,24,BLU,350,13.8,,all
+W071,C32,D5 pump (CCM-1 J19),CCM-1 J19,4,D5 pump 4-pin fan socket 47054-1000,3,PUMP_TACH_IN,24,GRN,350,13.8,,all
+W072,C33,Impeller 3 tach (column 3 only),CCM-1 J20,1,Impeller 3 motor control lead (TMC-1 harness),TACH,IMP3_TACH_IN,24,WHT,2425,95.5,,3
+W073,C33,Impeller 3 tach (column 3 only),CCM-1 J20,2,Impeller 3 motor control lead (TMC-1 harness),GND,GND,24,BLK,2425,95.5,,3
+W074,C34,Light bar SK6812 (TS2B-212),CCM-1 J21,1,Light bar strip pads,+5V,+5V_LED,22,RED,575,22.6,,all
+W075,C34,Light bar SK6812 (TS2B-212),CCM-1 J21,2,Light bar strip pads,DIN,LED_DIN,24,GRN,575,22.6,,all
+W076,C34,Light bar SK6812 (TS2B-212),CCM-1 J21,3,Light bar strip pads,GND,GND,22,BLK,575,22.6,,all
+W077,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,1,Chiller bulkhead M12 8P A-coded panel [verify],1,CHL_COM,22,VIO,525,20.7,,1
+W078,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,2,Chiller bulkhead M12 8P A-coded panel [verify],2,CHL_NO,22,GRY,525,20.7,,1
+W079,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,3,Chiller bulkhead M12 8P A-coded panel [verify],3,CHL_NC,22,WHT,525,20.7,,1
+W080,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,4,Chiller bulkhead M12 8P A-coded panel [verify],4,CHL_ALM,22,ORN,525,20.7,,1
+W081,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,5,Chiller bulkhead M12 8P A-coded panel [verify],5,GND,22,BLK,525,20.7,,1
+W082,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,6,Chiller bulkhead M12 8P A-coded panel [verify],6,CHL_SP,22,YEL,525,20.7,,1
+W083,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,7,Chiller bulkhead M12 8P A-coded panel [verify],7,GND,22,BLK,525,20.7,,1
+W084,C35,Chiller interface (column 1 only) to the rear bulkhead,CCM-1 J22,8,Chiller bulkhead M12 8P A-coded panel [verify],8,GND,22,BLK,525,20.7,,1
+W085,C36,Door / latch switches (3 branches),CCM-1 J23,1,Door switches switch tabs 2.8 mm,SW1,DOOR1,24,WHT,475,18.7,,all
+W086,C36,Door / latch switches (3 branches),CCM-1 J23,2,Door switches switch tabs 2.8 mm,SW2,DOOR2,24,GRY,475,18.7,,all
+W087,C36,Door / latch switches (3 branches),CCM-1 J23,3,Door switches switch tabs 2.8 mm,SW3,LATCH,24,VIO,475,18.7,,all
+W088,C36,Door / latch switches (3 branches),CCM-1 J23,4,Door switches switch tabs 2.8 mm,COM,GND,24,BLK,475,18.7,,all
+W089,C40,CPD-1 strap NTC,CPD-1 J9,1,NTC strap ring-lug NTC,A,NTC1,26,WHT,350,13.8,,all
+W090,C40,CPD-1 strap NTC,CPD-1 J9,2,NTC strap ring-lug NTC,B,GND,26,WHT,350,13.8,,all
+W091,C41,CPD-1 arm inlet air NTC,CPD-1 J10,1,NTC arm inlet probe leads,A,NTC2,26,WHT,600,23.6,,all
+W092,C41,CPD-1 arm inlet air NTC,CPD-1 J10,2,NTC arm inlet probe leads,B,GND,26,WHT,600,23.6,,all
+W093,C50,TEC 1 (TCD-1 J1),TCD-1 J1,1,TEC 1 TEC leads,+,T1_OUT,18,RED,275,10.8,,all
+W094,C50,TEC 1 (TCD-1 J1),TCD-1 J1,2,TEC 1 TEC leads,+,T1_OUT,18,RED,275,10.8,,all
+W095,C50,TEC 1 (TCD-1 J1),TCD-1 J1,3,TEC 1 TEC leads,-,T1_RET,18,BLK,275,10.8,,all
+W096,C50,TEC 1 (TCD-1 J1),TCD-1 J1,4,TEC 1 TEC leads,-,T1_RET,18,BLK,275,10.8,,all
+W097,C51,TEC 2 (TCD-1 J2),TCD-1 J2,1,TEC 2 TEC leads,+,T2_OUT,18,RED,300,11.8,,all
+W098,C51,TEC 2 (TCD-1 J2),TCD-1 J2,2,TEC 2 TEC leads,+,T2_OUT,18,RED,300,11.8,,all
+W099,C51,TEC 2 (TCD-1 J2),TCD-1 J2,3,TEC 2 TEC leads,-,T2_RET,18,BLK,300,11.8,,all
+W100,C51,TEC 2 (TCD-1 J2),TCD-1 J2,4,TEC 2 TEC leads,-,T2_RET,18,BLK,300,11.8,,all
+W101,C52,TEC 3 (TCD-1 J3),TCD-1 J3,1,TEC 3 TEC leads,+,T3_OUT,18,RED,300,11.8,,all
+W102,C52,TEC 3 (TCD-1 J3),TCD-1 J3,2,TEC 3 TEC leads,+,T3_OUT,18,RED,300,11.8,,all
+W103,C52,TEC 3 (TCD-1 J3),TCD-1 J3,3,TEC 3 TEC leads,-,T3_RET,18,BLK,300,11.8,,all
+W104,C52,TEC 3 (TCD-1 J3),TCD-1 J3,4,TEC 3 TEC leads,-,T3_RET,18,BLK,300,11.8,,all
+W105,C53,TEC 4 (TCD-1 J4),TCD-1 J4,1,TEC 4 TEC leads,+,T4_OUT,18,RED,300,11.8,,all
+W106,C53,TEC 4 (TCD-1 J4),TCD-1 J4,2,TEC 4 TEC leads,+,T4_OUT,18,RED,300,11.8,,all
+W107,C53,TEC 4 (TCD-1 J4),TCD-1 J4,3,TEC 4 TEC leads,-,T4_RET,18,BLK,300,11.8,,all
+W108,C53,TEC 4 (TCD-1 J4),TCD-1 J4,4,TEC 4 TEC leads,-,T4_RET,18,BLK,300,11.8,,all
+W109,C54,TEC hot-side NTC 1 (TCD-1 J8),TCD-1 J8,1,NTC hot side 1 probe leads,A,NTC1,26,WHT,200,7.9,,all
+W110,C54,TEC hot-side NTC 1 (TCD-1 J8),TCD-1 J8,2,NTC hot side 1 probe leads,B,GND,26,WHT,200,7.9,,all
+W111,C55,TEC hot-side NTC 2 (TCD-1 J9),TCD-1 J9,1,NTC hot side 2 probe leads,A,NTC2,26,WHT,375,14.8,,all
+W112,C55,TEC hot-side NTC 2 (TCD-1 J9),TCD-1 J9,2,NTC hot side 2 probe leads,B,GND,26,WHT,375,14.8,,all
+W501,T01,Tower bus: HOST USB-RS485 (FTDI USB-RS485-WE class) -> CCM-1 column 1 J5,HOST USB-RS485 (FTDI USB-RS485-WE class) ,1,CCM-1 col 1 J5,1,TWR_A,24,WHT/BLU,900,35.4,TP,tower
+W502,T01,Tower bus: HOST USB-RS485 (FTDI USB-RS485-WE class) -> CCM-1 column 1 J5,HOST USB-RS485 (FTDI USB-RS485-WE class) ,2,CCM-1 col 1 J5,2,TWR_B,24,BLU,900,35.4,TP,tower
+W503,T01,Tower bus: HOST USB-RS485 (FTDI USB-RS485-WE class) -> CCM-1 column 1 J5,HOST USB-RS485 (FTDI USB-RS485-WE class) ,3,CCM-1 col 1 J5,3,GND,22,BLK,900,35.4,,tower
+W504,T02,Tower bus: CCM-1 column 1 J6 -> CCM-1 column 2 J5,CCM-1 column 1 J6 ,1,CCM-1 col 2 J5,1,TWR_A,24,WHT/BLU,1600,63.0,TP,tower
+W505,T02,Tower bus: CCM-1 column 1 J6 -> CCM-1 column 2 J5,CCM-1 column 1 J6 ,2,CCM-1 col 2 J5,2,TWR_B,24,BLU,1600,63.0,TP,tower
+W506,T02,Tower bus: CCM-1 column 1 J6 -> CCM-1 column 2 J5,CCM-1 column 1 J6 ,3,CCM-1 col 2 J5,3,GND,22,BLK,1600,63.0,,tower
+W507,T03,Tower bus: CCM-1 column 2 J6 -> CCM-1 column 3 J5,CCM-1 column 2 J6 ,1,CCM-1 col 3 J5,1,TWR_A,24,WHT/BLU,1600,63.0,TP,tower
+W508,T03,Tower bus: CCM-1 column 2 J6 -> CCM-1 column 3 J5,CCM-1 column 2 J6 ,2,CCM-1 col 3 J5,2,TWR_B,24,BLU,1600,63.0,TP,tower
+W509,T03,Tower bus: CCM-1 column 2 J6 -> CCM-1 column 3 J5,CCM-1 column 2 J6 ,3,CCM-1 col 3 J5,3,GND,22,BLK,1600,63.0,,tower
+W510,T04,Tower bus: CCM-1 column 3 J6 -> CCM-1 column 4 J5,CCM-1 column 3 J6 ,1,CCM-1 col 4 J5,1,TWR_A,24,WHT/BLU,1600,63.0,TP,tower
+W511,T04,Tower bus: CCM-1 column 3 J6 -> CCM-1 column 4 J5,CCM-1 column 3 J6 ,2,CCM-1 col 4 J5,2,TWR_B,24,BLU,1600,63.0,TP,tower
+W512,T04,Tower bus: CCM-1 column 3 J6 -> CCM-1 column 4 J5,CCM-1 column 3 J6 ,3,CCM-1 col 4 J5,3,GND,22,BLK,1600,63.0,,tower
+W513,T05,"Tower bus: CCM-1 column 4 J6 -> TMC-1 RS-485 (end node, terminated)",CCM-1 col 4 J6,1,TMC-1 RS-485 port [per TMC-1 drawing],A,TWR_A,24,WHT/BLU,1500,59.1,TP,tower
+W514,T05,"Tower bus: CCM-1 column 4 J6 -> TMC-1 RS-485 (end node, terminated)",CCM-1 col 4 J6,2,TMC-1 RS-485 port [per TMC-1 drawing],B,TWR_B,24,BLU,1500,59.1,TP,tower
+W515,T05,"Tower bus: CCM-1 column 4 J6 -> TMC-1 RS-485 (end node, terminated)",CCM-1 col 4 J6,3,TMC-1 RS-485 port [per TMC-1 drawing],GND,GND,22,BLK,1500,59.1,,tower

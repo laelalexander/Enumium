@@ -1,0 +1,500 @@
+[
+ {
+  "id": "01",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$"
+   ],
+   "highlight": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "balloons": {
+    "1": [
+     "C1_base_plate"
+    ],
+    "2": [
+     "C1_post_1"
+    ],
+    "3": [
+     "C1_bulkhead"
+    ],
+    "4": [
+     "C1_top_plate"
+    ],
+    "5": [
+     "C1_crossmember"
+    ]
+   }
+  }
+ },
+ {
+  "id": "02",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "C1_bp_carrier",
+    "C1_busbar"
+   ],
+   "highlight": [
+    "C1_bp_carrier",
+    "C1_busbar"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$"
+   ],
+   "dir": [
+    0.55,
+    -1.35,
+    0.45
+   ],
+   "balloons": {
+    "1": [
+     "C1_bp_carrier"
+    ],
+    "2": [
+     "C1_busbar_12V"
+    ],
+    "3": [
+     "C1_busbar_RTN"
+    ]
+   }
+  }
+ },
+ {
+  "id": "03",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "C1_bp_carrier",
+    "C1_busbar",
+    "^C1[LU]_cbp8"
+   ],
+   "highlight": [
+    "^C1[LU]_cbp8"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$"
+   ],
+   "dir": [
+    0.55,
+    -1.35,
+    0.45
+   ],
+   "balloons": {
+    "1": [
+     "^C1L_cbp8$"
+    ],
+    "2": [
+     "^C1U_cbp8$"
+    ],
+    "3": [
+     "C1L_cbp8_rear"
+    ],
+    "4": [
+     "C1_busbar_12V"
+    ]
+   }
+  }
+ },
+ {
+  "id": "04",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "C1_bp_carrier",
+    "C1_busbar",
+    "^C1[LU]_cbp8",
+    "^C1_S\\d\\d_(cem|mcio)"
+   ],
+   "highlight": [
+    "^C1_S\\d\\d_(cem|mcio)"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "C1_bp_carrier",
+    "C1_busbar"
+   ],
+   "dir": [
+    0.55,
+    -1.35,
+    0.45
+   ],
+   "balloons": {
+    "1": [
+     "C1_S04_cem"
+    ],
+    "2": [
+     "^C1_S04_mcio$"
+    ],
+    "3": [
+     "C1_S04_mcio_cable"
+    ],
+    "4": [
+     "C1_S12_mcio_cable"
+    ]
+   }
+  }
+ },
+ {
+  "id": "05",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "C1_bp_carrier",
+    "C1_busbar",
+    "^C1[LU]_cbp8",
+    "^C1_S\\d\\d_(cem|mcio)",
+    "^C1[LU]?_(bracket_rail|tail_comb|comb_liners|hinge_block)"
+   ],
+   "highlight": [
+    "^C1[LU]?_(bracket_rail|tail_comb|comb_liners|hinge_block)"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "C1_bp_carrier",
+    "C1_busbar",
+    "^C1[LU]_cbp8",
+    "^C1_S\\d\\d_(cem|mcio)"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "balloons": {
+    "1": [
+     "C1L_bracket_rail"
+    ],
+    "2": [
+     "C1_tail_comb_lower"
+    ],
+    "3": [
+     "C1_comb_liners"
+    ],
+    "4": [
+     "C1L_hinge_block"
+    ]
+   }
+  }
+ },
+ {
+  "id": "06",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1[LU]_cbp8",
+    "^C1_S\\d\\d_(cem|mcio)",
+    "^C1[LU]?_(bracket_rail|tail_comb|comb_liners|hinge_block)",
+    "C1_S01_gpu",
+    "C1_S02_gpu",
+    "C1_S03_gpu"
+   ],
+   "highlight": [
+    "C1_S03_gpu"
+   ],
+   "red": false,
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1_S\\d\\d_(cem|mcio)"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "explode": {
+    "nodes": [
+     "C1_S03_gpu"
+    ],
+    "vec": [
+     0,
+     260,
+     0
+    ]
+   },
+   "fitTo": [
+    "^C1_S0[1-4]_"
+   ],
+   "zoom": 0.75,
+   "balloons": {
+    "1": [
+     "C1_S03_gpu_shroud"
+    ],
+    "2": [
+     "C1_S03_gpu_bracket"
+    ],
+    "3": [
+     "C1_S03_cem"
+    ],
+    "4": [
+     "C1_tail_comb_lower"
+    ],
+    "5": [
+     "C1L_bracket_rail"
+    ]
+   }
+  }
+ },
+ {
+  "id": "07",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1[LU]_cbp8",
+    "^C1[LU]?_(bracket_rail|tail_comb|comb_liners|hinge_block)",
+    "^C1_S0[1-4]_"
+   ],
+   "highlight": [
+    "^C1_S\\d\\d_(h12v|gpu_cable)"
+   ],
+   "red": true,
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "fitTo": [
+    "^C1_S0[2-4]_"
+   ],
+   "zoom": 0.6,
+   "balloons": {
+    "1": [
+     "C1_S03_h12v"
+    ],
+    "2": [
+     "C1_S03_gpu_cable"
+    ],
+    "3": [
+     "C1_S03_gpu_pwr"
+    ]
+   }
+  }
+ },
+ {
+  "id": "08",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1[LU]_cbp8",
+    "^C1_S\\d\\d_(cem|mcio)",
+    "^C1[LU]?_(bracket_rail|tail_comb|comb_liners|hinge_block)",
+    "^C1_S\\d\\d_gpu_",
+    "^C1_S\\d\\d_(h12v|gpu_cable)"
+   ],
+   "highlight": [
+    "^C1_S\\d\\d_gpu_"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1_S\\d\\d_(cem|mcio)"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "balloons": {
+    "1": [
+     "C1_S01_gpu_shroud"
+    ],
+    "2": [
+     "C1_S08_gpu_shroud"
+    ],
+    "3": [
+     "C1_S09_gpu_shroud"
+    ],
+    "4": [
+     "C1_S16_gpu_shroud"
+    ]
+   }
+  }
+ },
+ {
+  "id": "09",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1[LU]_cbp8",
+    "^C1[LU]?_(bracket_rail|tail_comb|comb_liners|hinge_block)",
+    "^C1_S\\d\\d_gpu_",
+    "^C1_S\\d\\d_(h12v|gpu_cable)",
+    "^C1[LU]_(holddown|latch)"
+   ],
+   "highlight": [
+    "^C1[LU]_(holddown|latch)"
+   ],
+   "red": true,
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "balloons": {
+    "1": [
+     "C1L_holddown_bar"
+    ],
+    "2": [
+     "C1L_holddown_pads"
+    ],
+    "3": [
+     "C1L_latch"
+    ],
+    "4": [
+     "C1U_holddown_bar"
+    ]
+   }
+  }
+ },
+ {
+  "id": "10",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1_S\\d\\d_gpu_",
+    "^C1[LU]_(holddown|latch)",
+    "C1_coil_",
+    "C1_drip_tray",
+    "C1_filter",
+    "C1_grille"
+   ],
+   "highlight": [
+    "C1_coil_",
+    "C1_drip_tray",
+    "C1_filter",
+    "C1_grille"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1_S\\d\\d_gpu_",
+    "^C1[LU]_(holddown|latch)"
+   ],
+   "dir": [
+    1.4,
+    0.6,
+    0.5
+   ],
+   "balloons": {
+    "1": [
+     "C1_coil_fins"
+    ],
+    "2": [
+     "C1_coil_headers"
+    ],
+    "3": [
+     "C1_drip_tray"
+    ],
+    "4": [
+     "C1_filter_frame"
+    ],
+    "5": [
+     "C1_grille_2"
+    ]
+   }
+  }
+ },
+ {
+  "id": "11",
+  "view": {
+   "show": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1_S\\d\\d_gpu_",
+    "^C1[LU]_(holddown|latch)",
+    "C1_coil_",
+    "C1_drip_tray",
+    "C1_filter",
+    "C1_grille",
+    "C1_side_skin",
+    "C1_light_bar",
+    "C1_plenum_corner"
+   ],
+   "highlight": [
+    "C1_side_skin",
+    "C1_light_bar",
+    "C1_plenum_corner"
+   ],
+   "ghost": [
+    "^C1_(base_plate|top_plate|bulkhead|post_\\d|crossmember)$",
+    "^C1_S\\d\\d_gpu_"
+   ],
+   "dir": [
+    1.15,
+    1.35,
+    0.55
+   ],
+   "balloons": {
+    "1": [
+     "C1_side_skin_pos"
+    ],
+    "2": [
+     "C1_light_bar"
+    ],
+    "3": [
+     "C1_plenum_corner"
+    ]
+   }
+  }
+ },
+ {
+  "id": "12",
+  "view": {
+   "show": [
+    "C1_arm",
+    "C1_crps",
+    "C1_cpd1",
+    "C1_tec",
+    "C1_busbar",
+    "C1_host_tray"
+   ],
+   "highlight": [
+    "C1_cpd1",
+    "C1_tec",
+    "C1_crps"
+   ],
+   "ghost": [
+    "C1_arm",
+    "C1_host_tray"
+   ],
+   "dir": [
+    0.9,
+    -1.3,
+    1.1
+   ],
+   "fitTo": [
+    "C1_crps",
+    "C1_cpd1",
+    "C1_tec"
+   ],
+   "balloons": {
+    "1": [
+     "^C1_crps_2$"
+    ],
+    "2": [
+     "^C1_cpd1$"
+    ],
+    "3": [
+     "C1_cpd1_strap_p12"
+    ],
+    "4": [
+     "C1_cpd1_strap_rtn"
+    ],
+    "5": [
+     "C1_tec_housing"
+    ],
+    "6": [
+     "C1_tec_cold"
+    ]
+   }
+  }
+ }
+]

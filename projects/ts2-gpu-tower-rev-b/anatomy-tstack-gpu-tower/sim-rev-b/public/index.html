@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TS-2 rev B digital twin</title>
+<script type="importmap">{"imports":{"three":"../vendor/three/build/three.module.js","three/addons/":"../vendor/three/examples/jsm/"}}</script>
+<style>
+:root{--bg:#0b0b0d;--p:#15161a;--e:#2a2c31;--t:#e6e7ea;--d:#8a8e96;--red:#c8102e;--ok:#3fb27f;--warn:#e3a52b;--alu:#c9ccd1;--blue:#4aa3ff}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--t);font:13px/1.35 "Segoe UI",Roboto,system-ui,sans-serif}
+header{height:46px;display:flex;align-items:center;gap:12px;padding:0 14px;background:linear-gradient(180deg,#d7dade,#9ea3aa 48%,#7c8188 52%,#b3b7bd);color:#111;border-bottom:2px solid var(--red)}
+header h1{font-size:15px;margin:0;letter-spacing:2px}.badge{padding:3px 10px;border-radius:10px;font-weight:700;color:#fff;background:#2d6cdf}
+#alarms span{background:var(--red);color:#fff;border-radius:4px;padding:2px 7px;margin-right:4px;font-weight:600;font-size:11px}
+#alarms{flex:1;overflow:hidden;white-space:nowrap}
+main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,1fr);gap:10px;padding:10px;height:calc(100% - 46px)}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0;min-width:0}
+.card{background:var(--p);border:1px solid var(--e);border-radius:10px;padding:10px}
+.card h3{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--alu)}
+#view{flex:1;min-height:320px;position:relative;padding:0;overflow:hidden}#view canvas{display:block}
+#view .over{position:absolute;left:10px;top:8px;color:var(--d);pointer-events:none;max-width:70%}
+#vtools{position:absolute;left:10px;bottom:10px;display:flex;gap:6px;flex-wrap:wrap}
+#pinfo{position:absolute;right:10px;top:10px;width:310px;background:rgba(15,16,19,.94);border:1px solid var(--e);border-left:3px solid var(--red);border-radius:8px;padding:8px 10px;display:none}
+#pinfo .k{color:var(--d)}
+button,select,input{font:inherit}button{background:#23252b;color:var(--t);border:1px solid var(--e);border-radius:7px;padding:5px 10px;cursor:pointer}
+button.on{background:var(--red);border-color:#000;color:#fff}button.pri{background:var(--red);color:#fff;border-color:#000}
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.tile{background:#1b1c20;border:1px solid var(--e);border-radius:8px;padding:5px 8px}
+.tile .k{color:var(--d);font-size:10.5px;text-transform:uppercase}.tile .v{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.gpugrid{display:grid;grid-template-columns:28px repeat(16,1fr);gap:3px;font-size:10.5px}.gpugrid div{border-radius:4px;text-align:center;padding:3px 0;font-weight:600;font-variant-numeric:tabular-nums;color:#111}
+.gpugrid .h{color:var(--d);background:none;font-weight:500}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}.tabs button{border-radius:7px 7px 0 0}.pane{display:none;overflow:auto;min-height:0}.pane.on{display:block}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:5px 0}
+table{width:100%;border-collapse:collapse}td,th{padding:4px 5px;border-bottom:1px solid var(--e);text-align:left;vertical-align:top}th{color:var(--d);font-weight:500}
+.pass{color:var(--ok);font-weight:700}.fail{color:var(--red);font-weight:700}.small{color:var(--d);font-size:11px}
+input[type=range]{width:130px;accent-color:var(--red)}canvas.plot{width:100%;height:120px;background:#101114;border-radius:6px}
+#loading{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#0b0b0df2;transition:opacity .35s}#loading.gone{opacity:0;pointer-events:none}
+.lbox{width:min(480px,90vw);background:#15161a;border:1px solid var(--e);border-top:3px solid var(--red);border-radius:10px;padding:22px 24px}
+.lt{font-size:17px;font-weight:700}.ls{color:var(--d);margin:2px 0 14px}.lbar{height:10px;border-radius:6px;background:#2a2c31;overflow:hidden}
+.lbar i{display:block;height:100%;width:0;background:var(--red);border-radius:6px;transition:width .25s}.lbar.ind i{width:30%!important;animation:lind 1.2s ease-in-out infinite}
+@keyframes lind{0%{margin-left:-30%}100%{margin-left:100%}}.lpct{display:flex;justify-content:space-between;color:var(--d);font-variant-numeric:tabular-nums;margin:6px 0 10px}
+#lsteps{list-style:none;margin:0;padding:0}#lsteps li{padding:3px 0 3px 22px;position:relative;color:var(--d)}#lsteps li:before{content:'○';position:absolute;left:2px}
+#lsteps li.on{color:var(--t);font-weight:600}#lsteps li.on:before{content:'◐';color:var(--red)}#lsteps li.ok{color:var(--t)}#lsteps li.ok:before{content:'✓';color:var(--ok)}#lsteps li.bad{color:var(--red)}#lsteps li.bad:before{content:'✕'}
+#lerr{display:none;margin-top:12px;padding:9px 11px;border-radius:6px;background:#3a1218;color:#ffd5da;white-space:pre-wrap;word-break:break-word}#lerr button{margin-top:8px}
+@media (max-width:900px){main{grid-template-columns:1fr;height:auto}#view{min-height:60vh}}
+</style></head><body>
+<header><h1>TS-2 REV B · 64-GPU TOWER · DIGITAL TWIN</h1><span class="badge">SIM</span><span id="alarms"></span><span id="clock" class="small" style="color:#222"></span></header>
+<main>
+<div class="col">
+  <div class="card" id="view"><div class="over" id="viewMsg"></div><div id="pinfo"></div>
+    <div id="vtools"><button id="bSkins">Show skins + grilles</button><button id="bCoil">Hide tracing coils</button><button id="bCut">Section C1</button><button id="bFrame">Frame</button>
+      <span class="small" style="align-self:center">Build step</span><input type="range" id="stepR" min="0" max="11" value="11"><span id="stepT" class="small" style="align-self:center"></span></div></div>
+  <div class="card">
+    <div class="tiles" id="tiles"></div>
+    <h3 style="margin-top:8px">GPU core temperature, C <span class="small">(rows = columns C1-C4, slots 1-16 bottom to top; click a tile to fail that card's blower)</span></h3>
+    <div class="gpugrid" id="gpus"></div>
+  </div>
+</div>
+<div class="col">
+  <div class="card"><div class="tabs" id="tabs"><button data-p="op" class="on">Operate</button><button data-p="cool">Cooling path</button><button data-p="pwr">Power</button><button data-p="tests">Tests</button><button data-p="about">Design</button></div></div>
+  <div class="card pane on" id="p-op">
+    <h3>Room and workload</h3>
+    <div class="row">Room <input type="range" id="room" min="15" max="38" step="0.5"><span id="roomV"></span> C &nbsp; RH <input type="range" id="rh" min="20" max="80" step="1"><span id="rhV"></span> %</div>
+    <div class="row">Load C1..C4 <input type="range" id="load" min="0" max="100" step="5"><span id="loadV"></span> %</div>
+    <div class="row">Speed <select id="speed"><option>1</option><option selected>10</option><option>60</option><option>300</option></select> x <button id="pause">Pause</button><button id="reset">Reset</button></div>
+    <h3>Faults</h3>
+    <div class="row"><button data-f="chiller">Chiller off</button><button data-f="tec">Peltier trim off</button><button data-f="imp0">Impeller 1</button><button data-f="imp1">Impeller 2</button><button data-f="imp2">Impeller 3</button></div>
+    <div class="row"><button data-f="crps0">C1 CRPS 1</button><button data-f="crps1">C1 CRPS 2</button><button data-f="clog3">C4 filter 70 %</button><button data-f="feedA">Feed A lost</button></div>
+    <canvas class="plot" id="plot"></canvas><div class="small">red: hottest GPU core, white: plenum, blue: coolant supply, green: GPU inlet (C1). Last 10 min sim time.</div>
+  </div>
+  <div class="card pane" id="p-cool"><table id="coolT"></table></div>
+  <div class="card pane" id="p-pwr"><table id="pwrT"></table></div>
+  <div class="card pane" id="p-tests"><div class="row"><button id="runT" class="pri">Run all acceptance tests</button><span id="tStat" class="small"></span></div><table id="testT"></table></div>
+  <div class="card pane" id="p-about"><div id="about" class="small" style="color:var(--t)"></div></div>
+</div>
+</main>
+<div id="loading"><div class="lbox"><div class="lt">Starting the TS-2 rev B twin</div><div class="ls">64 GPUs in 4 columns, tracing coils, crown turbine, power and controls</div>
+<div class="lbar ind" id="lbar"><i id="lfill"></i></div><div class="lpct"><span id="lnow">Loading the 3D engine</span><span id="lpct"></span></div>
+<ol id="lsteps"><li data-k="engine" class="on">3D engine and simulation code</li><li data-k="design">Design data (design basis, thermal calc, assembly map)</li><li data-k="model">3D model of the tower (CAD export)</li><li data-k="scene">Building the scene</li><li data-k="sim">Settling the plant at the design point</li></ol>
+<div id="lerr"></div></div></div>
+<script>
+// Loading screen: app.js reports each stage through window.TwinLoad; anything that fails shows here instead of a frozen page.
+window.TwinLoad = (function () {
+  var W = { engine: 10, design: 6, model: 70, scene: 8, sim: 6 }, done = 0, cur = 'engine', $ = function (i) { return document.getElementById(i); };
+  function li(k) { return document.querySelector('#lsteps li[data-k="' + k + '"]'); }
+  function bar(f) { var p = Math.max(0, Math.min(100, done + (W[cur] || 0) * (f || 0))); $('lbar').classList.remove('ind'); $('lfill').style.width = p + '%'; $('lpct').textContent = Math.round(p) + ' %'; }
+  var T = {
+    stage: function (k, text) { if (cur && cur !== k && li(cur)) { li(cur).className = 'ok'; done += W[cur] || 0; } cur = k; if (li(k)) li(k).className = 'on'; $('lnow').textContent = text || li(k).textContent; bar(0); },
+    progress: function (f, text) { bar(f); if (text) $('lnow').textContent = text; },
+    indeterminate: function (text) { $('lbar').classList.add('ind'); if (text) $('lnow').textContent = text; },
+    done: function () { if (li(cur)) li(cur).className = 'ok'; done = 100; bar(0); $('lnow').textContent = 'Ready'; setTimeout(function () { $('loading').classList.add('gone'); setTimeout(function () { $('loading').remove(); }, 400); }, 250); T.finished = true; },
+    fail: function (msg) { if (T.finished) return; if (li(cur)) li(cur).className = 'bad'; $('lbar').classList.remove('ind'); $('lfill').style.background = '#c62828';
+      $('lnow').textContent = 'Could not start'; var e = $('lerr'); e.style.display = 'block'; e.textContent = String(msg && msg.message || msg).replace(/^Uncaught (Error: )?/, '') + '\n\nIf it keeps failing, the twin files may be incomplete: open it from Anatomy on your PC.';
+      var b = document.createElement('button'); b.textContent = 'Try again'; b.onclick = function () { location.reload(); }; e.append(document.createElement('br'), b); }
+  };
+  addEventListener('error', function (e) { if (!T.finished) T.fail(e.message || 'A file failed to load'); }, true);
+  addEventListener('unhandledrejection', function (e) { T.fail(e.reason); });
+  setTimeout(function () { if (cur === 'engine' && !T.finished) T.fail('The 3D engine or the simulation code did not load within 45 seconds.'); }, 45000);
+  return T;
+})();
+</script>
+<script type="module" src="./app.js" onerror="TwinLoad.fail('Could not load the simulator code (app.js or one of its modules).')"></script>
+</body></html>

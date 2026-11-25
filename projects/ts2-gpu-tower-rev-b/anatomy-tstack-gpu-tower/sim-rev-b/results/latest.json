@@ -1,0 +1,59 @@
+{
+ "when": "2026-11-24T11:41:22.103Z",
+ "results": [
+  {
+   "id": "AC-THM-01",
+   "name": "Design point 27 C / 50 %: every GPU inlet <= 25 C and core <= 85 C",
+   "pass": true,
+   "detail": "inlet max 21.4 C, core max 72.1 C"
+  },
+  {
+   "id": "AC-THM-02",
+   "name": "Hot room 35 C / 40 %: no GPU reaches slowdown (90 C)",
+   "pass": true,
+   "detail": "core max 77.7 C"
+  },
+  {
+   "id": "AC-THM-03",
+   "name": "Chiller trips at full load, 27 C room: tower rides through on room air, no slowdown",
+   "pass": true,
+   "detail": "core max 77.7 C, CHILLER_OFF raised"
+  },
+  {
+   "id": "AC-THM-04",
+   "name": "One impeller fails: the other two hold the plenum within 10 Pa of set, cores <= 85 C",
+   "pass": true,
+   "detail": "plenum error 0.0 Pa, core max 72.1 C"
+  },
+  {
+   "id": "AC-THM-05",
+   "name": "Humid room 27 C / 70 %: coolant lifts to dew + 2 K, coil never condenses",
+   "pass": true,
+   "detail": "coolant 23.1 C vs dew 21.1 C"
+  },
+  {
+   "id": "AC-THM-06",
+   "name": "Blower failure on C2 slot 07: only that card slows down; neighbours unaffected",
+   "pass": true,
+   "detail": "throttled: C2S07"
+  },
+  {
+   "id": "AC-PWR-01",
+   "name": "One CRPS fails in C1: remaining three share, none above 2000 W",
+   "pass": true,
+   "detail": "max CRPS 1616 W"
+  },
+  {
+   "id": "AC-PWR-02",
+   "name": "Full load: each 60 A feed below 48 A (80 % continuous)",
+   "pass": true,
+   "detail": "feed A 35.2 A, feed B 35.2 A"
+  },
+  {
+   "id": "AC-THM-07",
+   "name": "Filter on C4 70 % clogged: alarm raised before any slowdown",
+   "pass": true,
+   "detail": "max core C4 89.9 C"
+  }
+ ]
+}
