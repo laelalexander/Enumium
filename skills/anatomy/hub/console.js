@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { StringDecoder } = require('string_decoder');
 
 const HIDDEN = new Set(['.anatomy', 'CLAUDE.md', '.tools', 'venv', 'env', '.pio', '.mypy_cache', '.pytest_cache', 'dist-info', '.git', 'node_modules', '.claude', '__pycache__', '.venv']);
 const MIME = {
@@ -17,6 +18,66 @@ const MIME = {
   '.csv': 'text/plain; charset=utf-8', '.py': 'text/plain; charset=utf-8', '.gcode': 'text/plain; charset=utf-8',
 };
 const READ_ONLY = 'This is the web console. Runs, uploads and folder actions happen in Anatomy on one of your PCs.';
+
+// ---------------------------------------------------------------- run history (Live view) replay
+// A project's .anatomy/events.jsonl can be 100 MB+ (single tool results reach 2 MB). Reading it whole crashed the hub,
+// so it is streamed from disk a line at a time and only part of it is sent: the run's opening (the prompt and the
+// first steps) and the most recent EVENTS_TAIL bytes, with a note in between. Oversized lines are shrunk (long strings
+// cut) so the browser gets a light Live view. Memory stays at about one line, whatever the log size.
+const EVENTS_HEAD = 256 * 1024;          // bytes from the start of the log (run-start, first phase)
+const EVENTS_TAIL = 4 * 1024 * 1024;     // bytes from the end (latest work, run-end)
+const EVENTS_LINE_MAX = 64 * 1024;       // longer lines are shrunk before sending
+const EVENTS_STR_MAX = 4000;             // ... by cutting strings longer than this
+
+function shrinkLine(line) {
+  if (line.length <= EVENTS_LINE_MAX) return line;
+  let ev; try { ev = JSON.parse(line); } catch { return null; }               // a cut or broken line: skip it
+  const cut = v => typeof v === 'string' ? (v.length > EVENTS_STR_MAX ? v.slice(0, EVENTS_STR_MAX) + `\n… [${Math.round((v.length - EVENTS_STR_MAX) / 1024)} KB more, see the full log on the PC]` : v)
+    : Array.isArray(v) ? v.map(cut) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, cut(x)])) : v;
+  const s = JSON.stringify(cut(ev));
+  return s.length <= EVENTS_LINE_MAX * 4 ? s : null;                          // still huge (many large strings): skip
+}
+
+// Read [start, end) of a file line by line (lines are cut at the range ends only at the caller's request) and send each
+// as an SSE "data:" frame, waiting for the socket to drain. skipFirst drops a partial first line when starting mid-file.
+async function sendRange(file, start, end, res, isClosed, { skipFirst = false, stopAtEnd = false } = {}) {
+  if (end <= start) return;
+  const rs = fs.createReadStream(file, { start, end: end - 1, highWaterMark: 256 * 1024 });
+  let buf = '', first = skipFirst; const dec = new StringDecoder('utf8');
+  const emit = async line => {
+    if (first) { first = false; return; }
+    if (!line.trim()) return;
+    const s = shrinkLine(line); if (!s) return;
+    if (!res.write(`data: ${s}\n\n`)) await new Promise(r => res.once('drain', r));
+  };
+  try {
+    for await (const chunk of rs) {
+      if (isClosed()) break;
+      buf += dec.write(chunk);
+      let i;
+      while ((i = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, i); buf = buf.slice(i + 1);
+        await emit(line);
+        if (isClosed()) break;
+      }
+      if (buf.length > 8 * 1024 * 1024) { buf = ''; first = true; }        // absurd line: drop it and resync at the next newline
+    }
+    if (!stopAtEnd && buf && !isClosed()) await emit(buf);
+  } finally { rs.destroy(); }
+}
+
+async function replayEvents(file, res, isClosed) {
+  let size = 0; try { size = fs.statSync(file).size; } catch { return; }
+  if (size <= EVENTS_HEAD + EVENTS_TAIL) return sendRange(file, 0, size, res, isClosed);
+  // opening: whole lines inside the first EVENTS_HEAD bytes (a line crossing the boundary is dropped)
+  await sendRange(file, 0, EVENTS_HEAD, res, isClosed, { stopAtEnd: true });
+  if (isClosed()) return;
+  const skipped = size - EVENTS_HEAD - EVENTS_TAIL;
+  const note = { type: 'assistant', message: { content: [{ type: 'text',
+    text: `_… ${(skipped / 1048576).toFixed(0)} MB of this run's history is not shown in the web console, to keep it fast. The latest part follows. The full history is in Anatomy on the PC that ran it._` }] } };
+  res.write(`data: ${JSON.stringify(note)}\n\n`);
+  await sendRange(file, size - EVENTS_TAIL, size, res, isClosed, { skipFirst: true });
+}
 
 function create({ PROJ, UI, PREFIX, loadIndex, ID_RE }) {
   const BASE = PREFIX + '/console';
@@ -120,8 +181,9 @@ function create({ PROJ, UI, PREFIX, loadIndex, ID_RE }) {
     if (!action) return send(res, 200, { id, ...m, status: m.status === 'running' ? 'stopped' : m.status, running: false });
     if (action === 'events') {
       res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
-      let past = ''; try { past = fs.readFileSync(path.join(dir, '.anatomy', 'events.jsonl'), 'utf8'); } catch {}
-      for (const line of past.split('\n')) if (line.trim()) res.write(`data: ${line}\n\n`);
+      let closed = false; req.on('close', () => { closed = true; });
+      try { await replayEvents(path.join(dir, '.anatomy', 'events.jsonl'), res, () => closed); } catch (e) { console.error('events replay', id, e.message); }
+      if (closed) return;
       res.write(`data: ${JSON.stringify({ type: 'anatomy', kind: 'replay-done', running: false })}\n\n`);
       const ping = setInterval(() => res.write(': ping\n\n'), 20000);
       req.on('close', () => clearInterval(ping));
