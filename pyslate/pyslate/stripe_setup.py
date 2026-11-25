@@ -48,6 +48,30 @@ def write_env(path: Path, values: dict[str, str]) -> None:
     tmp.replace(path)
 
 
+KEY_RE = re.compile(r"(sk|rk)_(test|live)_[A-Za-z0-9]{10,}")
+
+
+def find_key(raw: str) -> str | None:
+    """Pull the key out of what was pasted. Web consoles often wrap a paste in escape
+    codes or add spaces and line breaks, so search instead of expecting an exact match."""
+    m = KEY_RE.search(raw or "")
+    return m.group(0) if m else None
+
+
+def describe_bad_key(raw: str) -> str:
+    """Say what arrived without printing the secret."""
+    raw = (raw or "").strip()
+    if not raw:
+        return ("Nothing was pasted. In the DigitalOcean web console, right-click paste may not work: "
+                "try Ctrl+Shift+V, or run the command again with --show at the end to see what you paste.")
+    if raw.startswith(("pk_test_", "pk_live_")):
+        return "That's the publishable key (pk_...). Copy the Secret key instead, the one that starts with sk_test_."
+    if raw.startswith("whsec_"):
+        return "That's a webhook signing secret. Copy the Secret key from the API keys page instead (sk_test_...)."
+    return (f"That doesn't look like a Stripe secret key (got {len(raw)} characters starting with '{raw[:3]}'). "
+            "It starts with sk_test_ or sk_live_. Run the command again with --show at the end to see what you paste.")
+
+
 def ask(prompt: str, default: str = "") -> str:
     got = input(prompt).strip()
     return got or default
@@ -67,9 +91,11 @@ def main() -> int:
 
     print("Stripe setup for", public_url)
     print("Find your secret key at https://dashboard.stripe.com/apikeys (use a test key, sk_test_..., to try it first).")
-    key = getpass.getpass("Paste your Stripe secret key (hidden): ").strip()
-    if not re.match(r"^(sk|rk)_(test|live)_[A-Za-z0-9]+$", key):
-        print("That doesn't look like a Stripe secret key. It starts with sk_test_ or sk_live_.")
+    show = "--show" in sys.argv
+    raw = input("Paste your Stripe secret key: ") if show else getpass.getpass("Paste your Stripe secret key (hidden): ")
+    key = find_key(raw)
+    if not key:
+        print(describe_bad_key(raw))
         return 1
     stripe.api_key = key
     mode = "TEST" if "_test_" in key else "LIVE"

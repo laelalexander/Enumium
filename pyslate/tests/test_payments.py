@@ -186,3 +186,15 @@ def test_webhook_with_real_stripe_event_objects(tmp_path, monkeypatch, cube_stl)
     cfg.stripe_webhook_secret = "whsec_x"
     typ, paid = payments.parse_webhook(b"{}", "sig", cfg)
     assert paid == {"order_id": "o1", "session_id": "cs_1", "amount": 500, "currency": "usd"}
+
+
+def test_setup_finds_key_in_messy_paste():
+    from pyslate.stripe_setup import describe_bad_key, find_key
+
+    key = "sk_test_51AbcDEF0123456789xyz"
+    assert find_key(f"\x1b[200~{key}\x1b[201~") == key
+    assert find_key(f"  {key}\r\n") == key
+    assert find_key("") is None and "Nothing was pasted" in describe_bad_key("")
+    assert "publishable" in describe_bad_key("pk_test_123")
+    msg = describe_bad_key("hello-secret-value")
+    assert "hello-secret" not in msg and "18 characters" in msg
