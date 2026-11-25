@@ -1,0 +1,9 @@
+CBP8 rev A - TEST NOTES
+============================================================
+1. Visual + AOI both sides; X-ray the CEM (SMT, 164 pins) and MCIO solder joints on the first article.
+2. Power-up with no cards on a 12 V 10 A current-limited supply at T1/T2: +3V3 = 3.30 V +/-2 %; MCU heartbeat LED blinks.
+3. Per slot with ON driven: S#_12V ramps in 15-25 ms, PG asserts above 10.3 V, S#_3V3 = 3.30 V; IMON reads 0 A +/-0.3 A.
+4. Electronic load 25 A on each 12V-2x6 header (one at a time, 5 min): IMON within 3 %; hot-swap FET case < 85 C; 30 A trips.
+5. PERST# check: with host PERST# high, card PERST# follows slot PG; with ON low, card PERST# stays low.
+6. Modbus: read holding registers over the column bus at the strapped address; slot presence follows a test card.
+7. PCIe: link-train an RTX PRO 6000 Max-Q in every slot at Gen4 x8 through a 0.8 m MCIO cable; lspci -vv must show 'LnkSta: Speed 16GT/s, Width x8'; then a 30 min nvbandwidth loop with no AER errors.

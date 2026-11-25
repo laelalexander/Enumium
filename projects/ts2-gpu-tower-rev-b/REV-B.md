@@ -81,6 +81,8 @@ tower rides through on room air with no slowdown (test AC-THM-03).
 | CCM-1 cooling controller | 4 | dew point, coil dP, NTCs, leak, flow, pump, chiller run/set point, light bar, doors; power interlock master |
 | TCD-1 Peltier driver | 4 | 4 x 14 A synchronous buck into the TECs, hot-side fans |
 
+CPD-1, CCM-1 and TCD-1 pass KiCad DRC with 0 errors and 0 unrouted connections. CBP-8 is routed (PCIe lanes pre-routed as length-matched coupled striplines, the rest autorouted), but 24 DRC items are still open. Most are small leftover stubs and fill islands, and two are slot-sense connections. They are listed in `electrical/boards/cbp8/fab/CBP8-OPEN-ITEMS.md`. Do not order CBP-8 until that list is closed.
+
 Each board has its schematic, layout, netlist check and DRC report in `fab/`. Each also has a RushPCB turnkey zip in
 `fab/<board>-rushpcb.zip` with: Gerbers, drill, an Excel BOM (MPN, supplier PN, DNP), a centroid in mm and inches,
 assembly drawings with polarity, and fab and test notes. The parts still to confirm against datasheets are listed in
@@ -139,4 +141,5 @@ cd prototype/bom && python3 make_bom.py
 - Confirm the supplier part numbers marked [verify] in `electrical/part-verification.md`.
 - Get vendor ratings for the coil and the impellers, then run a first-article airflow test.
 - Measure the PCIe channel S-parameters, in place of the loss estimates.
+- Close the CBP-8 open DRC items (`electrical/boards/cbp8/fab/CBP8-OPEN-ITEMS.md`).
 - The rev A blueprint documents, `software/` and `build/` in this folder still describe the rev A 8-node tower.

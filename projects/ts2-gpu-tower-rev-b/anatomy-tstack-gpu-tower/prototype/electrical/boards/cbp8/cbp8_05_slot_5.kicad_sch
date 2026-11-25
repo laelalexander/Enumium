@@ -7108,7 +7108,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ed369e5e-76b2-5640-b307-71b7972d0cba")
+		(uuid "86cffeab-b6bf-5d00-9617-570726598f21")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -7140,7 +7140,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4e0bf6c9-f321-5280-a20c-246f509087f1")
+		(uuid "ea8dd3c0-8171-53d6-93d2-713df0e6363b")
 	)
 	(global_label "S5_3V3"
 		(shape passive)
@@ -7172,7 +7172,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e4b59bf1-b5c7-5982-a4a0-d54f10d0e4a8")
+		(uuid "bae83278-dd6c-5bd6-95bb-d58359194468")
 	)
 	(global_label "S5_PERST_C#"
 		(shape passive)
@@ -7204,7 +7204,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3ffa8ff8-2ba5-522f-b03b-1910a927bda7")
+		(uuid "c036d461-17a9-5be9-ac9c-13c14f7573c8")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -7236,7 +7236,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ee858af9-c3d2-5358-8ca9-3557259a56b7")
+		(uuid "08889c71-be1b-5808-9f32-8eaf949c4a67")
 	)
 	(global_label "S5_REFCLK_P"
 		(shape passive)
@@ -7268,7 +7268,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "eccbb9e9-56dd-5f0b-961e-e7e3b17c1fb2")
+		(uuid "841c972b-7df5-5e3b-9391-6a54db6f4c94")
 	)
 	(global_label "S5_REFCLK_N"
 		(shape passive)
@@ -7300,7 +7300,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8ac011b5-f63c-56ed-b0d7-b108d2e1e01f")
+		(uuid "cb14189b-fa75-56ad-89d6-c7e2883c32e6")
 	)
 	(global_label "S5_HRX0_P"
 		(shape passive)
@@ -7332,7 +7332,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "17aa28b7-0343-5df8-a096-43bd03ad192c")
+		(uuid "8894c791-5de1-51ec-b9b2-6b9238136995")
 	)
 	(global_label "S5_HRX0_N"
 		(shape passive)
@@ -7368,7 +7368,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f2f80f3b-94ff-56e3-b5d1-275068264efa")
+		(uuid "a3f04c4f-6aef-5247-95ff-e55f32148840")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -7400,7 +7400,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "17bb2a4c-395e-5bf8-8fe9-aaed061e77c2")
+		(uuid "d1b9c398-b946-5b74-b7df-dbdeb4c89096")
 	)
 	(global_label "S5_HRX1_P"
 		(shape passive)
@@ -7432,7 +7432,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "25d53ac4-ba4d-5109-b035-7d873d304855")
+		(uuid "7e4144dd-68f4-5029-b5b4-effb0e55c430")
 	)
 	(global_label "S5_HRX1_N"
 		(shape passive)
@@ -7464,7 +7464,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5fcf06ec-4865-584b-a6ea-e89cbcc9c114")
+		(uuid "a5e23717-2656-54e9-ac26-3dabcf651525")
 	)
 	(global_label "S5_HRX2_P"
 		(shape passive)
@@ -7496,7 +7496,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "be0b4ce1-d3b7-5898-ac3e-ad0235d397e5")
+		(uuid "3ff3c9bf-5a25-5209-809a-d1513a573816")
 	)
 	(global_label "S5_HRX2_N"
 		(shape passive)
@@ -7528,7 +7528,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "10fdf191-5d13-5077-8e21-5399da6cc0d7")
+		(uuid "07fe29a8-2448-5826-b442-14ce9711e337")
 	)
 	(global_label "S5_HRX3_P"
 		(shape passive)
@@ -7560,7 +7560,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fc74d4f5-a176-58c8-a84c-273d29af5be0")
+		(uuid "dfef1abd-1ed9-57d9-8e72-f2e42edbe4b7")
 	)
 	(global_label "S5_HRX3_N"
 		(shape passive)
@@ -7600,7 +7600,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1b0071b4-632c-5d85-94ba-316f71fb89da")
+		(uuid "caa799c1-fe75-521c-8c0d-3231d8976fcb")
 	)
 	(global_label "S5_HRX4_P"
 		(shape passive)
@@ -7632,7 +7632,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "eece2a61-06ba-5dea-a353-11e2dcb5998b")
+		(uuid "34cef4bb-eec7-57ce-af7f-0fb95e929e35")
 	)
 	(global_label "S5_HRX4_N"
 		(shape passive)
@@ -7664,7 +7664,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6aafe7ee-a867-5efb-80a2-68188f324c4e")
+		(uuid "33de273b-a478-5bd2-8e9f-3f4d8b7ef317")
 	)
 	(global_label "S5_HRX5_P"
 		(shape passive)
@@ -7696,7 +7696,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ec8adfe0-6cfb-52f6-a563-196f08a6de8e")
+		(uuid "2e62cd89-5fab-57a2-88e9-c5bbab93eb84")
 	)
 	(global_label "S5_HRX5_N"
 		(shape passive)
@@ -7728,7 +7728,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e02a6dfc-be01-53bd-88b6-d774d7a38cbb")
+		(uuid "be5f3f15-6d08-5f6d-a00a-1f5adb102688")
 	)
 	(global_label "S5_HRX6_P"
 		(shape passive)
@@ -7760,7 +7760,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a8d6c18a-e503-5055-a95c-63d5b8e3f5f5")
+		(uuid "5083a211-a52e-5b3b-89d8-63f5f3014929")
 	)
 	(global_label "S5_HRX6_N"
 		(shape passive)
@@ -7792,7 +7792,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "08e80167-7005-5ca6-9173-f7ddd8aebe51")
+		(uuid "ebb7eb39-fc20-5bbc-8a9f-4b6f625628c9")
 	)
 	(global_label "S5_HRX7_P"
 		(shape passive)
@@ -7824,7 +7824,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9c73c58d-8291-52c1-b0fd-db252ae2d0c6")
+		(uuid "ba1a42f0-188d-54c0-83ec-1b5e1dcc8841")
 	)
 	(global_label "S5_HRX7_N"
 		(shape passive)
@@ -7940,7 +7940,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "48decf28-d7b1-5e30-aad2-623c790ba70f")
+		(uuid "9ce84850-a0fd-5956-b3a8-0b60cb95fc98")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -7980,7 +7980,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f0ccf615-307b-5f1a-87c3-2aecd9fa1b17")
+		(uuid "7b7ebed5-0bc8-5cb6-a54f-19bad8fdeb49")
 	)
 	(global_label "S5_HTX0_P"
 		(shape passive)
@@ -8012,7 +8012,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "63a3d5e4-d4af-50bc-af06-616eaca6c2bd")
+		(uuid "a4fe55fb-0c56-5453-b18a-0625a81b6dfb")
 	)
 	(global_label "S5_HTX0_N"
 		(shape passive)
@@ -8048,7 +8048,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1bbc0225-2c12-5fcd-817d-bec357abc603")
+		(uuid "a472a7fe-df78-51d0-9ed5-7912df4a20f7")
 	)
 	(global_label "S5_HTX1_P"
 		(shape passive)
@@ -8080,7 +8080,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a379840a-381d-5de4-947f-b40fe6cbf16b")
+		(uuid "a7f58474-c0ea-5121-a622-042379ecb3c6")
 	)
 	(global_label "S5_HTX1_N"
 		(shape passive)
@@ -8112,7 +8112,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fd737070-1ab5-5b2b-96b4-20f78ae13e11")
+		(uuid "14d7598f-914c-517d-80de-38a3683ab6fb")
 	)
 	(global_label "S5_HTX2_P"
 		(shape passive)
@@ -8144,7 +8144,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d4a7af00-e85e-525a-a6eb-96d1eb62a11c")
+		(uuid "5e9e909b-ed85-5d47-af17-d51623cbe060")
 	)
 	(global_label "S5_HTX2_N"
 		(shape passive)
@@ -8176,7 +8176,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9b591901-0a3c-5a01-8204-d0cbd2b9db3b")
+		(uuid "153bdf4f-2601-5e8f-adbf-bc258cd6d5da")
 	)
 	(global_label "S5_HTX3_P"
 		(shape passive)
@@ -8208,7 +8208,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a7b7bbe9-9562-5316-9265-b0b86b7678e1")
+		(uuid "8ebf4e22-34fc-57ab-9627-d4e9faf2897c")
 	)
 	(global_label "S5_HTX3_N"
 		(shape passive)
@@ -8248,7 +8248,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a4f77742-450f-5998-9bc6-b16003884543")
+		(uuid "56c25374-0b24-5378-83a2-1ba4ab8e944a")
 	)
 	(global_label "S5_HTX4_P"
 		(shape passive)
@@ -8280,7 +8280,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1061e3d3-ef24-5fbb-9c90-45096a193bec")
+		(uuid "ed17b62b-2817-51e1-a85d-0da00150152b")
 	)
 	(global_label "S5_HTX4_N"
 		(shape passive)
@@ -8312,7 +8312,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d85d2c3e-fe5f-5217-a875-89828aa73fb6")
+		(uuid "9bbcac25-be8c-540a-996f-1432e946d361")
 	)
 	(global_label "S5_HTX5_P"
 		(shape passive)
@@ -8344,7 +8344,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f8c1cf7c-ace5-59be-9289-79591ec8e502")
+		(uuid "3b94ddf4-a05a-50d2-be71-0a328cf1440e")
 	)
 	(global_label "S5_HTX5_N"
 		(shape passive)
@@ -8376,7 +8376,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5cf4dcb6-bd52-520c-a340-c698dc3eeeeb")
+		(uuid "830f7566-c89c-53ba-b08f-4f82b0817e8c")
 	)
 	(global_label "S5_HTX6_P"
 		(shape passive)
@@ -8408,7 +8408,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3595a3f2-ab13-5629-a1af-50861e7e903e")
+		(uuid "b14cf7e4-b700-531c-83b8-5d18ae298d41")
 	)
 	(global_label "S5_HTX6_N"
 		(shape passive)
@@ -8440,7 +8440,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f08075ae-7eac-5903-b04f-c8111863d7f4")
+		(uuid "10241c25-6979-5def-8924-5bbf15c0bb8e")
 	)
 	(global_label "S5_HTX7_P"
 		(shape passive)
@@ -8472,7 +8472,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "af36530b-addb-58c1-a704-64b2d9e898e2")
+		(uuid "5b481e6e-ebbc-5ae8-acd4-54dd20bb9f18")
 	)
 	(global_label "S5_HTX7_N"
 		(shape passive)
@@ -8508,7 +8508,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c4f652d5-e1f9-54a8-980a-5981e4e06ca6")
+		(uuid "18a6467a-fa8b-5155-af57-f7448a97c5a9")
 	)
 	(global_label "S5_SMBCLK"
 		(shape passive)
@@ -8564,7 +8564,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2f97ac29-0443-505b-a948-0d7609670a2b")
+		(uuid "de08d77f-6710-5ce6-ba0c-f54fb99e9114")
 	)
 	(global_label "S5_SMBDAT"
 		(shape passive)
@@ -8636,7 +8636,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3af0b60f-e1f8-5654-b794-6e9e5a5044aa")
+		(uuid "cc13484d-7c11-52f7-9669-8f73e2b177af")
 	)
 	(global_label "S5_PRSNT#"
 		(shape passive)
@@ -8999,7 +8999,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4813f49f-2c4f-5bbd-b088-4bf3e8282278")
+		(uuid "9f59fcc8-8e6e-56ec-971a-f61493ccdfbc")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9031,7 +9031,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "60246f40-097d-5b68-aee3-8728e16e6ef0")
+		(uuid "a45397f5-f493-5a25-8791-c0d3c4f955ee")
 	)
 	(global_label "S5_HTX0_P"
 		(shape passive)
@@ -9063,7 +9063,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "49b6e8f1-d51d-55b5-b767-9c783493e018")
+		(uuid "61eeb1cf-bea4-5482-b0b9-5e88e09ac8ee")
 	)
 	(global_label "S5_HTX0_N"
 		(shape passive)
@@ -9095,7 +9095,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b66d2b25-fd87-5684-8097-19871f69b521")
+		(uuid "a920530a-5c86-58d7-bb98-726686f96619")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9127,7 +9127,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "95db4cbd-71e5-554f-a790-21ffe2fc6b9f")
+		(uuid "92d408d4-01d1-536c-b101-e3d17e4d10bb")
 	)
 	(global_label "S5_HTX1_P"
 		(shape passive)
@@ -9159,7 +9159,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d3943fe9-227f-5c5a-ba59-b5221cdb2d11")
+		(uuid "ae48735b-0c5a-590c-9a71-9ed10cae4f50")
 	)
 	(global_label "S5_HTX1_N"
 		(shape passive)
@@ -9191,7 +9191,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "425c7395-3702-5c63-a045-6280aa1ddf03")
+		(uuid "bb42d5d3-46f6-500e-ad66-9d0261c0653d")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9223,7 +9223,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e4c3a51f-2b05-55f9-8664-38316148cd03")
+		(uuid "5fc77a48-a13c-5e50-8744-878c04a5c203")
 	)
 	(global_label "S5_SMBCLK"
 		(shape passive)
@@ -9255,7 +9255,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "37f68190-6bb2-58d0-b828-7b86e0438d58")
+		(uuid "9bd045db-a100-5c6f-88ce-1f280d2fd355")
 	)
 	(global_label "S5_SMBDAT"
 		(shape passive)
@@ -9287,7 +9287,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1d81bc9f-5214-5037-bc04-26eead973a08")
+		(uuid "fda15c31-09d2-552b-a8df-00514b915134")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9319,7 +9319,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e6d109fd-39e1-535b-a9af-19e1b214d822")
+		(uuid "ef37fdb0-9104-58aa-85d3-346ed9632845")
 	)
 	(global_label "S5_PERST_H#"
 		(shape passive)
@@ -9351,7 +9351,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d666e56f-69f5-5628-9cdb-8b4fd9ea8c5c")
+		(uuid "415d3274-0b85-5d3d-8c3b-52ab70b827b1")
 	)
 	(global_label "S5_PRSNT#"
 		(shape passive)
@@ -9383,7 +9383,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ab177a38-0675-598a-a83a-227652e2bcc2")
+		(uuid "567dbe0e-3580-5e8a-9554-4616af344f81")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9415,7 +9415,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "da2ca647-212a-58fd-9a96-30284a634a9d")
+		(uuid "a885e6dc-1ed1-5f29-858b-34710baefd37")
 	)
 	(global_label "S5_HTX2_P"
 		(shape passive)
@@ -9447,7 +9447,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "41b90286-b090-5ba4-87de-dfb21d0d674d")
+		(uuid "b756bbab-98cb-5593-995e-8b2ac7a4ee54")
 	)
 	(global_label "S5_HTX2_N"
 		(shape passive)
@@ -9479,7 +9479,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "17a4f831-c7be-5fed-b4fd-b41fda3766fd")
+		(uuid "e2bb6503-51b4-5e6b-bc09-89a5164a2c02")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9511,7 +9511,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8ff70c71-6b00-5dd7-abe1-791fd578535f")
+		(uuid "63ff4aad-f364-5eeb-847a-61964b407173")
 	)
 	(global_label "S5_HTX3_P"
 		(shape passive)
@@ -9543,7 +9543,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a4e0bee3-32dd-5ea6-a192-d40bec917c95")
+		(uuid "e6cacf9d-0d97-5be1-ab39-9d64da129895")
 	)
 	(global_label "S5_HTX3_N"
 		(shape passive)
@@ -9575,7 +9575,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "442f1caa-ce28-5490-a6db-d15bbcd922a6")
+		(uuid "5f0f4e67-2723-5094-94f9-7661f1ef6b56")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9607,7 +9607,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8cd89b1f-b043-5d6d-88d5-8a4cba4bb264")
+		(uuid "3bdaa542-29b4-528e-bda1-a2b7cfd3e5bc")
 	)
 	(global_label "S5_HTX4_P"
 		(shape passive)
@@ -9639,7 +9639,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b091bc9c-9c0a-5525-890b-19463ecc521d")
+		(uuid "864a7ca5-e6b2-5ad6-994c-4b77436e202c")
 	)
 	(global_label "S5_HTX4_N"
 		(shape passive)
@@ -9671,7 +9671,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1ff72b8e-de09-5675-99a6-756b03dd2fda")
+		(uuid "dcfa68b9-a9a3-55b5-9afd-06318f09a561")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9703,7 +9703,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a3fa1b2a-3653-51b4-8d30-66bc27e68f37")
+		(uuid "b5bf2790-7150-57fb-9815-18ddf44b82e4")
 	)
 	(global_label "S5_HTX5_P"
 		(shape passive)
@@ -9735,7 +9735,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "57ebf1d2-6c35-5660-a3ad-9c09c5d7f70d")
+		(uuid "98dcd8bb-0fa7-5633-ae0f-19c0594c469d")
 	)
 	(global_label "S5_HTX5_N"
 		(shape passive)
@@ -9767,7 +9767,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1bf6f8a7-2350-5910-819d-b816f66ddb76")
+		(uuid "a185194a-262b-5362-85d5-9176e17b72df")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9807,7 +9807,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "84b35fc9-fd14-53d0-996e-6234e381205a")
+		(uuid "b01f7c55-50d9-5997-a7d0-632579290b83")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9847,7 +9847,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8173f2af-1dc9-50f9-a47d-78c32f8a2631")
+		(uuid "f49fc120-4407-5e4f-aaaf-5230f6204feb")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9879,7 +9879,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3d83329b-d93e-5b6b-97c1-60e82f6bdf69")
+		(uuid "5658ffc0-c45e-509e-a172-c40e6f1fd0ad")
 	)
 	(global_label "S5_HTX6_P"
 		(shape passive)
@@ -9911,7 +9911,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e5e4ec8b-c1a3-5344-ab21-f705dd154ab3")
+		(uuid "2ecd30f5-dcd4-5361-a195-9ec6894bf669")
 	)
 	(global_label "S5_HTX6_N"
 		(shape passive)
@@ -9943,7 +9943,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "76da55a6-7b56-5560-bad8-d6c31cdb2ee2")
+		(uuid "4d423e71-36f3-52e2-8eef-741ab0e12f93")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -9975,7 +9975,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6a924402-6efa-5597-80a1-ba9a5da81c5c")
+		(uuid "cb165d9f-e987-5e1a-a26f-054454d08608")
 	)
 	(global_label "S5_HTX7_P"
 		(shape passive)
@@ -10007,7 +10007,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a751af9c-8d4d-557a-b767-5fe728dcf840")
+		(uuid "0226ba7a-7e26-56a8-886b-08d61531bd77")
 	)
 	(global_label "S5_HTX7_N"
 		(shape passive)
@@ -10039,7 +10039,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f9b4a29f-fc4c-59d8-9f5e-cdd71b739cc4")
+		(uuid "22271532-b185-5c61-b051-1df59e3fbf10")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10071,7 +10071,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b653b722-cc0d-50a5-8d55-8f562a148ad3")
+		(uuid "e0e47a13-3887-53e7-94c4-d333340f2967")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10103,7 +10103,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ac41e26f-b5a7-5d3a-8363-fc2bb2fdc6bc")
+		(uuid "63ccf8d8-5e51-507a-984e-1a2af15dd01f")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10135,7 +10135,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "cb65cbc8-0fcc-589c-b22e-2ce2c117639c")
+		(uuid "1b8264de-7a73-5cbe-aabd-7cee5901d930")
 	)
 	(global_label "S5_HRX0_P"
 		(shape passive)
@@ -10167,7 +10167,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b894b6e3-bb40-58c0-86fb-5a5156e8c250")
+		(uuid "add20aed-450d-57cf-a3cb-5eca10e76f65")
 	)
 	(global_label "S5_HRX0_N"
 		(shape passive)
@@ -10199,7 +10199,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0c7ed4a1-3de5-5b92-b603-dc121a5b37eb")
+		(uuid "b7568371-fbfb-51ec-b525-586c47ca3cc2")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10231,7 +10231,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "53978016-4d11-52f8-8047-b5b91535a73c")
+		(uuid "3b51bb36-ec94-53bf-b537-878756b828ed")
 	)
 	(global_label "S5_HRX1_P"
 		(shape passive)
@@ -10263,7 +10263,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "698c2777-7174-5a8b-b3b2-bbb92f0e0a09")
+		(uuid "04f50c28-5a5b-5181-82db-5fb48ee73e3a")
 	)
 	(global_label "S5_HRX1_N"
 		(shape passive)
@@ -10295,7 +10295,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4ff21daa-c0cd-5627-8c35-1eb291d8d8a2")
+		(uuid "15a386b9-9bb0-5b44-b9c5-db3b8f506db4")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10335,7 +10335,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ef12db7d-f2bb-55ea-bc44-a2f72cf67351")
+		(uuid "155fedb2-faa3-5d3d-81e2-487e2271958b")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10367,7 +10367,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "35a563dd-e95b-5704-80c8-19d057e0f6e8")
+		(uuid "7528eb6e-df09-5337-834d-b11625e2292f")
 	)
 	(global_label "S5_REFCLK_P"
 		(shape passive)
@@ -10399,7 +10399,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7f9702cc-8910-5bbf-8217-9edfbaf72e69")
+		(uuid "c4a6704e-1143-5269-95c1-36c827fd8dfd")
 	)
 	(global_label "S5_REFCLK_N"
 		(shape passive)
@@ -10431,7 +10431,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "53960b93-080d-514b-98f3-c21de6efdf33")
+		(uuid "fd2737ef-4c84-5dbe-9c0f-4bb7fdf106ee")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10463,7 +10463,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "43c3e427-2f0c-577f-8114-06eba557cfeb")
+		(uuid "f1fe6177-7d73-5181-9edc-08bc7f12b891")
 	)
 	(global_label "S5_HRX2_P"
 		(shape passive)
@@ -10495,7 +10495,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b201169f-3910-5525-a661-d06b6e206c16")
+		(uuid "8dec1ea1-1e90-53e6-91bd-882dca1955dd")
 	)
 	(global_label "S5_HRX2_N"
 		(shape passive)
@@ -10527,7 +10527,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "667c9da5-7efa-5557-b15a-9d13611917e8")
+		(uuid "19fda975-e9f9-5226-80df-4bb525d8e18d")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10559,7 +10559,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "886f6b3e-29d4-54bb-a89d-9e838a1dcecd")
+		(uuid "92c99d70-cd51-5c96-a0f5-19fc84b17616")
 	)
 	(global_label "S5_HRX3_P"
 		(shape passive)
@@ -10591,7 +10591,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f2e4b5c3-3a56-5bbe-937f-b0e100c5e926")
+		(uuid "a851f5ec-b4e8-58cd-8da1-bd1c66154f86")
 	)
 	(global_label "S5_HRX3_N"
 		(shape passive)
@@ -10623,7 +10623,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a85280f6-e0a9-59fd-babe-c4542a0efc9d")
+		(uuid "5989e668-ba20-5e53-b10a-59ff90ed539e")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10655,7 +10655,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8fbe56a1-de6b-5157-b627-eeb5e0704e2f")
+		(uuid "93c729aa-7191-56da-b6cf-c6b60a02c769")
 	)
 	(global_label "S5_HRX4_P"
 		(shape passive)
@@ -10687,7 +10687,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "66fae95f-4985-5d59-82d3-02f6e4f790ba")
+		(uuid "725dc5d0-b801-5432-8b6d-fa26cff1ffcf")
 	)
 	(global_label "S5_HRX4_N"
 		(shape passive)
@@ -10719,7 +10719,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "32d7f217-0b08-5f8b-a911-6b8707e19e5d")
+		(uuid "2a2423f7-f9a9-553a-a3a7-c781fe622b87")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10751,7 +10751,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4f63e4bd-e0a3-5ac4-a388-b6298470f94c")
+		(uuid "599ae26f-6d16-5a60-8fad-e8f08a978c0a")
 	)
 	(global_label "S5_HRX5_P"
 		(shape passive)
@@ -10783,7 +10783,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "22080116-31d9-5f14-8100-d300b8f56988")
+		(uuid "1246f368-4b27-5e98-b382-971953aea0bd")
 	)
 	(global_label "S5_HRX5_N"
 		(shape passive)
@@ -10815,7 +10815,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c9710fe9-2dd7-5d9a-b9b1-76d81b9912c5")
+		(uuid "09a0b70c-157a-5e6a-a57b-f513baa4f58f")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10855,7 +10855,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "70f8c583-7492-50c5-937f-593dd5774737")
+		(uuid "8a69af9c-8b35-5c08-9f2e-34cedd0ce87d")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10895,7 +10895,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "46bfbf5d-6a96-5283-8ef9-b2c984f5bb55")
+		(uuid "040c6830-ebf2-5225-85a2-0520bd1a25c6")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -10927,7 +10927,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "27dd6162-0655-54d3-9278-7fb31df1db7c")
+		(uuid "df1ac55d-ce3c-534f-b41a-381ae05a0fd8")
 	)
 	(global_label "S5_HRX6_P"
 		(shape passive)
@@ -10959,7 +10959,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "39ffb183-f8f1-56f5-8195-815d8c88dc76")
+		(uuid "39ed024f-7166-5604-b2ea-74efe41ed613")
 	)
 	(global_label "S5_HRX6_N"
 		(shape passive)
@@ -10991,7 +10991,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e679196e-9c12-5a2d-afa8-09ac6bf07882")
+		(uuid "b1102fe7-574d-5afa-bdb6-ea86e016cb2e")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11023,7 +11023,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4db7d30b-1089-53b7-a554-b7bea9d2b228")
+		(uuid "b627abd6-8706-587f-a6a0-9714db05f067")
 	)
 	(global_label "S5_HRX7_P"
 		(shape passive)
@@ -11055,7 +11055,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "04232bc4-db1e-5b28-a803-6e199c768196")
+		(uuid "6cab837a-f95a-5710-9945-5f6baf37e722")
 	)
 	(global_label "S5_HRX7_N"
 		(shape passive)
@@ -11087,7 +11087,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "81209006-956c-5eaf-84b0-a4d679e5425d")
+		(uuid "92e03bdd-4ad9-5eb8-b1e4-c6cc24910097")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11271,7 +11271,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8da0473d-cafe-59ec-ba38-f574d5c9a340")
+		(uuid "b0addc29-b4c6-55fe-b3b5-327ea4ee1335")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -11303,7 +11303,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "822e7df0-7be3-51ee-a437-18d9ea51b1de")
+		(uuid "916c3075-11a0-5a40-a758-08fbc7375c8e")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -11335,7 +11335,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b36bf074-6a22-5e92-81f0-a8ccb14f9a3e")
+		(uuid "130dfb07-ebd4-549e-bf93-ed8ce7589320")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -11367,7 +11367,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5383f6dd-91f5-5375-943a-7c6d4d155f81")
+		(uuid "b1e81738-e63e-535b-9b19-c33a7d8a0757")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -11399,7 +11399,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "65c93503-ffd3-59b9-85d0-3488673fbf1b")
+		(uuid "8b0a970d-ed51-5c0d-8b87-ef797e1082fe")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -11431,7 +11431,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3e080d4e-a02a-589a-93ca-0acf21bc38a7")
+		(uuid "d741bd86-5465-550f-94e3-da2fd17f26a6")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -11467,7 +11467,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ba9e4e5c-1643-5892-9a4d-7fe89539708f")
+		(uuid "4bcb19c0-b8ed-56d6-b285-59cfa907b733")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11499,7 +11499,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a5a94967-7226-5ac1-af4a-eeb59d7dc1c6")
+		(uuid "dac58f35-5201-5e7b-9ad5-3bcaaad007de")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11531,7 +11531,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "dd4a8431-6a09-5483-989a-42f94d997ef6")
+		(uuid "553d7552-922f-5acd-9aa0-d924bc14e03a")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11563,7 +11563,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "72f93202-4e3e-51ad-8cdc-aab9f23d09ac")
+		(uuid "9acb4b4b-352c-52d1-921e-f19dcd3ea6bf")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11595,7 +11595,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "edec60d9-649f-5e08-8948-3372c57f8ea7")
+		(uuid "326a8444-f448-5c49-ab39-32a16280e607")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11627,7 +11627,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f820c901-ed26-56b6-9822-16a4c0bf421b")
+		(uuid "22a14e6e-2296-5883-92b5-a183ef5e7205")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11659,7 +11659,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "17b15a93-1e78-572a-9879-7729a34350e4")
+		(uuid "743ac161-c226-577a-bf28-7625433aaf0a")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11691,7 +11691,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6e61578f-7e9e-54cd-a922-7ed5b2a6e87d")
+		(uuid "20367262-3d7e-5737-963e-20c3c6b5227c")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11723,7 +11723,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "67e61d28-304e-50ed-889e-d41a4ca6ae43")
+		(uuid "e2deaa9d-6fd8-550c-9bfc-ca81421618ba")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11755,7 +11755,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "03fc0c0d-7506-57fe-bffe-4b9018713f40")
+		(uuid "33b00699-2de0-5a07-9e41-75cd7604590b")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11787,7 +11787,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f59cccc1-b169-5242-a569-425cdbddde33")
+		(uuid "190b9732-8dcb-55be-bb5d-85233e848b52")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11941,7 +11941,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e8267b33-9b5c-516c-b5a0-0b76676c7a00")
+		(uuid "68bc04b3-d298-5edc-88b3-81eee8e3a1a4")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -11973,7 +11973,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7383f28e-6dff-514d-9e89-d60c8031fe16")
+		(uuid "c2196f36-5ab0-5869-bef9-77c24b15567f")
 	)
 	(global_label "S5_ON"
 		(shape passive)
@@ -12005,7 +12005,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "aa1289ab-6c27-51a3-8900-223d8138c43c")
+		(uuid "a6f0a928-8aba-5b63-bc5f-7ba59b3210ab")
 	)
 	(global_label "S5_FB"
 		(shape passive)
@@ -12037,7 +12037,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f6ec95db-cb91-55d5-8d18-3ea24d4214dd")
+		(uuid "89697d96-be69-5c3d-b5ca-c811a1172a65")
 	)
 	(global_label "S5_PG"
 		(shape passive)
@@ -12069,7 +12069,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "cf71ba03-b1cf-5510-8299-855354de75c2")
+		(uuid "75a089a1-e686-506f-9865-17342225cefe")
 	)
 	(global_label "S5_TMR"
 		(shape passive)
@@ -12101,7 +12101,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "072f7871-831e-5ea1-b648-3209f4173e3a")
+		(uuid "5565d644-56e3-5316-92b6-7df6de4e0302")
 	)
 	(global_label "S5_GATE"
 		(shape passive)
@@ -12133,7 +12133,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "982d1e04-ea38-5649-b7bb-7b61aeda038b")
+		(uuid "bb597e34-1e76-554f-a4c3-3e3b99ed9e1f")
 	)
 	(global_label "S5_12V_SNS"
 		(shape passive)
@@ -12165,7 +12165,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f65c7d38-2ce9-5439-b0ff-8f20771fd7c1")
+		(uuid "2caca02c-9aa3-5763-95f1-9c4d1945eb07")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -12310,7 +12310,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "95581273-6370-56c5-b9e9-a1e04d06a2c2")
+		(uuid "a446fca3-0357-5607-97bf-2bee69b70ef0")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -12342,7 +12342,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "bde95dca-e56a-52cb-bc2e-df08a2ff3d86")
+		(uuid "2f36dd55-2dcd-5971-a963-dbd9cdb8bc2b")
 	)
 	(global_label "S5_G"
 		(shape passive)
@@ -12374,7 +12374,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b8b8ea14-7ad8-5867-9347-eb40caec91c7")
+		(uuid "2b24bfaf-a2db-5c9c-b838-35d82e6c4744")
 	)
 	(global_label "S5_12V_SNS"
 		(shape passive)
@@ -12508,7 +12508,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "05344010-0d34-5005-968f-a0ebd0e14154")
+		(uuid "6c95e223-e154-530b-9076-1c32b1f6f665")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -12540,7 +12540,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "64600a41-12c0-53ab-bbd0-c3f539c34e80")
+		(uuid "de114100-81f9-5527-bb7e-0d36de244985")
 	)
 	(global_label "S5_12V_SNS"
 		(shape passive)
@@ -12674,7 +12674,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3218fd72-a347-5f4a-b021-5f5b1f59d3a5")
+		(uuid "6c21ea18-eb8e-5353-954c-dc80ca768bbb")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -12706,7 +12706,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "865a9f71-2aa1-5cf8-ad38-21284db34cb6")
+		(uuid "adebef41-ce23-5a4a-9c01-482713f721da")
 	)
 	(global_label "S5_12V_SNS"
 		(shape passive)
@@ -12840,7 +12840,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "76fd68b1-1906-527a-b654-ca5dc1b90ab9")
+		(uuid "bffafc41-4c70-5d96-a6af-b52204d04e9d")
 	)
 	(global_label "S5_GATE"
 		(shape passive)
@@ -12872,7 +12872,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e0297620-3074-59a6-9b56-e41eeddcded7")
+		(uuid "c81edfc9-69d1-5329-8bd2-7d108559a632")
 	)
 	(global_label "S5_G"
 		(shape passive)
@@ -13006,7 +13006,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "981ceb13-255f-5fb7-b94d-294c1a5280fc")
+		(uuid "7e3c1ca3-7ca6-5865-ac65-753622ab3a7a")
 	)
 	(global_label "S5_G"
 		(shape passive)
@@ -13038,7 +13038,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9fb34636-ef70-5737-9eb3-5711fcc2533a")
+		(uuid "d4540cf8-058d-50df-b496-b2f16a8cb8c5")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -13172,7 +13172,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "659a64a8-a1b3-5da5-964e-9a8ab940926f")
+		(uuid "9f8057e9-00b6-5656-925d-46cf66d3868d")
 	)
 	(global_label "S5_TMR"
 		(shape passive)
@@ -13204,7 +13204,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "861def3a-f33c-5169-a355-53aec84222de")
+		(uuid "cd235f56-97d5-50a0-aeee-88997f494204")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -13338,7 +13338,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "faaa2811-68a7-517a-9212-51e4af2afb27")
+		(uuid "964fc8b4-b893-5452-9862-7e2494d01ad9")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -13370,7 +13370,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3cb0f723-47b1-54b6-99e8-56fc407317b7")
+		(uuid "8ec6f878-7974-5864-b1bc-c432ca095bce")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -13504,7 +13504,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f053eef3-f0cd-5726-aa6b-5df6a625384d")
+		(uuid "79afabd4-3083-5cdf-b267-b2d4c570bda4")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -13536,7 +13536,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1e0313cf-8739-5543-b0a2-626cd5666e86")
+		(uuid "bfe1a0fb-fb37-5bfc-b8b8-56042d600d84")
 	)
 	(global_label "S5_FB"
 		(shape passive)
@@ -13670,7 +13670,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a89c1d69-d4bc-58ea-b8f7-e1f78db0c431")
+		(uuid "572edf50-9b7a-59fd-92ab-3fa4e51f70f9")
 	)
 	(global_label "S5_FB"
 		(shape passive)
@@ -13702,7 +13702,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "774c1f8b-5341-5c7b-a8c2-a61b5afdc778")
+		(uuid "ebe34daa-9d25-56cc-8db3-24848a751a66")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -13836,7 +13836,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "09a483c7-9d5e-550d-89a5-97bfe0be0efd")
+		(uuid "1c088e29-674c-541f-aa95-5ae3c70753e4")
 	)
 	(global_label "S5_ON_MCU"
 		(shape passive)
@@ -13868,7 +13868,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e096e755-e205-5df4-9712-89bcda3089a7")
+		(uuid "8b51367d-e310-5f38-a8ca-e656228300b1")
 	)
 	(global_label "S5_ON"
 		(shape passive)
@@ -14002,7 +14002,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "5ff5745b-1171-54a0-9b05-eb5437c39bba")
+		(uuid "7a41ac1f-5c3d-559c-8ff8-0ef2fda71f75")
 	)
 	(global_label "S5_ON"
 		(shape passive)
@@ -14034,7 +14034,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "59ef4911-4ab9-5c7b-8bb2-5bfaf4fac6ae")
+		(uuid "d6b7ddb7-2ded-59d4-be33-a8bdd0abb083")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -14168,7 +14168,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f74b4fde-111b-544c-a5b6-0d7527dcc657")
+		(uuid "57d17b65-ba33-53cb-a07b-eabfdf126335")
 	)
 	(global_label "S5_PG"
 		(shape passive)
@@ -14200,7 +14200,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "bd57b26a-205f-5ef9-85cf-ed6c58afa07f")
+		(uuid "90676318-229f-5fd3-949c-91813f69ccb1")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -14334,7 +14334,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fc6ab1f0-b9f6-59e0-92c8-5d7d984d639e")
+		(uuid "d76cbf56-11af-57b5-b11b-859f9e5f80e0")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -14366,7 +14366,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "23e45131-d5d1-50d4-8c25-94bdc9019736")
+		(uuid "a49a3f6d-cf39-5878-bb90-2a34dab34eb9")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -14500,7 +14500,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b4caabc1-0f2f-55ab-8159-459c24fe776f")
+		(uuid "f521d72e-a0f3-50c7-977b-4d0b6d132aec")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -14532,7 +14532,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e0d0c681-caa6-5f9e-a37e-bbeb3d58bcd2")
+		(uuid "1c464a1c-4737-5db6-90dc-2bae8b7f71f2")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -14666,7 +14666,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "69b83ea6-c21a-526a-b23e-a8b1d674f356")
+		(uuid "f66e8437-2454-5883-b1b6-94970545ffcd")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -14698,7 +14698,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "45003ca2-a009-58c9-847d-e0fc6bc07faa")
+		(uuid "1498e797-059d-5712-8b84-a9e7d2eff791")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -14832,7 +14832,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "033d0300-dedd-5817-ad7c-21a6f17c5c65")
+		(uuid "13982f87-1dd5-56a4-b666-1d54ee7746ee")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -14864,7 +14864,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6fb0455c-b8d6-5e79-9180-e8724a216cc4")
+		(uuid "a7253fa6-09e2-55df-9904-507e89220d06")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -15012,7 +15012,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "041b0c51-032e-5721-ba1d-171bb90ad275")
+		(uuid "bbecf0fe-ed14-5786-aca2-3dfb7e3406fe")
 	)
 	(global_label "S5_IMON_A"
 		(shape passive)
@@ -15044,7 +15044,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f3e8b833-c283-5a71-9dc2-d4ad04b6deb2")
+		(uuid "b4ecde2c-bc99-5f86-b262-2621f21e8a57")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -15076,7 +15076,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6d06500c-3b8d-5b56-b8b0-0152ce1ecb86")
+		(uuid "2dc65c72-d8f9-59d1-87e3-1810cbedc85d")
 	)
 	(global_label "+12V"
 		(shape passive)
@@ -15108,7 +15108,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0e7af789-804d-5786-81ca-bb858a648005")
+		(uuid "736dac05-3864-5b76-9e2e-268128263405")
 	)
 	(global_label "S5_12V_SNS"
 		(shape passive)
@@ -15140,7 +15140,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b27c2ed5-f829-5bfe-8fa8-2eea1d4a58c0")
+		(uuid "6b772fe8-09b6-552b-9b59-2f743bb222c5")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -15172,7 +15172,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1548353a-0939-5cff-ace2-3b475f50abd0")
+		(uuid "de7c8412-7127-57b8-a90e-6977c676563f")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -15306,7 +15306,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "cc2157de-402e-5618-b986-8d5126a3d4f2")
+		(uuid "658fbfdb-8ba7-5904-9ad1-a59a1c2ee854")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -15338,7 +15338,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "14de0820-5744-50d6-ac1b-9564e3c240e4")
+		(uuid "8f75da56-9b47-58a1-8081-38bf084ae579")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -15472,7 +15472,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7255619e-c9c3-50c2-9e30-542c06d23645")
+		(uuid "8e4da466-7a3e-50e6-8e08-2179d00294ab")
 	)
 	(global_label "S5_IMON_A"
 		(shape passive)
@@ -15504,7 +15504,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "57bde98d-650d-5df3-a452-364e5591522a")
+		(uuid "af6226b2-511a-52e3-b4f2-04eb527bf4f3")
 	)
 	(global_label "S5_IMON"
 		(shape passive)
@@ -15638,7 +15638,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "0c806a06-de94-518e-acc1-333dedbb6659")
+		(uuid "a0df824d-ab00-50d8-8613-f471d5566be2")
 	)
 	(global_label "S5_IMON"
 		(shape passive)
@@ -15670,7 +15670,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "300ca68f-9a2a-59bb-adfe-0329d8eebcf8")
+		(uuid "84ea3240-69f9-5d4f-a222-f7267e3d829d")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -15818,7 +15818,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "e58ca927-502f-5726-8e37-a855683fad00")
+		(uuid "7def9bcb-0e54-5aaa-8799-9934f2603a6d")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -15850,7 +15850,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "294674e2-9114-5021-821e-0b81c970ecf5")
+		(uuid "cb30cda6-0221-5abe-a240-2126f9b9c797")
 	)
 	(global_label "S5_SW"
 		(shape passive)
@@ -15882,7 +15882,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d931a034-1868-53e6-92f2-4e284a2abf41")
+		(uuid "d99e37d5-eda9-5691-84ba-1683092aa005")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -15914,7 +15914,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ed5d88aa-fa4a-5484-b236-d7783e6520f6")
+		(uuid "ff095291-9cbe-5347-834a-14090d7c61d9")
 	)
 	(global_label "S5_FB33"
 		(shape passive)
@@ -15950,7 +15950,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b05369ce-87d1-55cd-9380-169cfb1d9cac")
+		(uuid "df333e81-8cf5-51d4-a5fe-dbe31d97f4fe")
 	)
 	(global_label "S5_BST"
 		(shape passive)
@@ -16084,7 +16084,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b1a39ce7-7dd4-527c-bc8c-0504ab5fc629")
+		(uuid "77b7b312-bcb4-5a8a-b2ee-6fadd63d55ed")
 	)
 	(global_label "S5_SW"
 		(shape passive)
@@ -16116,7 +16116,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3ab392d2-dc52-5d4c-8415-824d17c78a3e")
+		(uuid "7b6f9094-8866-5c0f-b7c2-9984099c46b4")
 	)
 	(global_label "S5_3V3"
 		(shape passive)
@@ -16250,7 +16250,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "96880555-c5d1-535c-b25b-381bd24ffe2a")
+		(uuid "2bc59df5-2fb7-564d-871a-beb1cfe0575b")
 	)
 	(global_label "S5_BST"
 		(shape passive)
@@ -16282,7 +16282,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "68e2932b-b64a-58e8-bc86-7f99a8282c38")
+		(uuid "80d2d398-ed8f-5d06-9a00-a73a9fa4f618")
 	)
 	(global_label "S5_SW"
 		(shape passive)
@@ -16416,7 +16416,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "6da7d2c5-bc24-54bb-859d-0a54f8805922")
+		(uuid "f4d451e6-7b16-5699-ad71-6f4f2019497d")
 	)
 	(global_label "S5_12V"
 		(shape passive)
@@ -16448,7 +16448,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "1ffb9d5a-88c3-5bd1-8f91-b2260db04622")
+		(uuid "5cc4dd60-e8a7-5df9-a9bb-a1dac4e4dfc9")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -16582,7 +16582,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "db6f9588-1191-5a55-bb54-25d31d726fe3")
+		(uuid "5e543e25-189b-599e-833d-54a509774829")
 	)
 	(global_label "S5_3V3"
 		(shape passive)
@@ -16614,7 +16614,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fbc97671-4129-57be-b86a-2344f6b110f4")
+		(uuid "c2e29727-b4e0-5c79-ab81-6569a7e0bc29")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -16748,7 +16748,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8c1cd297-4b6a-5997-b1b8-3cb62adfe789")
+		(uuid "45bf38b8-50aa-52c7-9932-a40f24882f49")
 	)
 	(global_label "S5_3V3"
 		(shape passive)
@@ -16780,7 +16780,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "06869092-e949-57f4-87e3-278e4e29dd50")
+		(uuid "6010896b-aa56-5166-803b-592cb139080d")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -16914,7 +16914,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "dfe3bcf8-62ca-5fbc-bc68-45ce5aa1966c")
+		(uuid "915c1edf-3913-5b73-943e-d4f4d2ef314c")
 	)
 	(global_label "S5_3V3"
 		(shape passive)
@@ -16946,7 +16946,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9798b5c9-06aa-5784-aa81-990382b78405")
+		(uuid "56485563-9e11-51b7-b5ca-4c030c81b5bc")
 	)
 	(global_label "S5_FB33"
 		(shape passive)
@@ -17080,7 +17080,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8a6cf82e-7b27-5537-867b-d1a932d14506")
+		(uuid "ce660511-db4c-53df-b9d9-85d49ed3218f")
 	)
 	(global_label "S5_FB33"
 		(shape passive)
@@ -17112,7 +17112,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "b76bae15-e832-5421-8370-c6dba2726147")
+		(uuid "94ad04a7-ef2d-52b9-8332-7349364f2534")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -17255,7 +17255,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "fd490cec-5146-5314-b38d-58e9322fe179")
+		(uuid "1c3a44b3-34ef-515f-a8b5-c77d36544eee")
 	)
 	(global_label "S5_PERST_H#"
 		(shape passive)
@@ -17287,7 +17287,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "66664f5c-c641-5237-98aa-476c360968ba")
+		(uuid "9098d842-9310-5ef1-923b-d62f6302fe01")
 	)
 	(global_label "S5_PG"
 		(shape passive)
@@ -17319,7 +17319,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a47c1dee-6d12-557e-9bb1-309da4f8c7a2")
+		(uuid "a1403512-b66c-5eb4-b23b-cb96cf92a98e")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -17351,7 +17351,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "7c9618d7-c84e-5da0-8b4d-e7889455ccc0")
+		(uuid "083817a8-a955-5f86-aa27-0e04db96cc74")
 	)
 	(global_label "S5_PERST_C#"
 		(shape passive)
@@ -17383,7 +17383,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "22c0d9a3-0788-55b2-b0b5-5b174b69bfe7")
+		(uuid "811b7c49-50af-5c52-9292-78bdb90cabb6")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -17517,7 +17517,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "a779ead2-7b1f-5fe9-81e5-b4d576443e53")
+		(uuid "2c09baf5-72f8-5b23-ba53-5199557237b9")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -17549,7 +17549,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "34d78b6f-b1c0-521c-ad9c-8f758f6c07e5")
+		(uuid "81495359-72e1-59bd-9498-4d5d63558c05")
 	)
 	(global_label "GND"
 		(shape passive)
@@ -17683,7 +17683,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "523312b2-22f7-5aa3-9b7a-c8e08497df97")
+		(uuid "cd0708d4-65b6-5228-8493-f169b2775240")
 	)
 	(global_label "S5_PERST_H#"
 		(shape passive)
@@ -17715,7 +17715,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "d30f0cc0-9313-5a8c-a857-df71e887cc2f")
+		(uuid "909bf630-3f47-5ee3-88df-e94cf40caf6f")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -17849,7 +17849,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "830ea477-f7eb-528f-be93-590b91ac6812")
+		(uuid "2588274d-d09c-5272-84b8-d11f64339476")
 	)
 	(global_label "S5_PRSNT#"
 		(shape passive)
@@ -17881,7 +17881,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f45e4ea3-9a79-53c5-bea2-8890b1f7f8fc")
+		(uuid "f127816c-693b-54fc-9cc2-3d8363e7a5c8")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -18015,7 +18015,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "00419b32-e818-50ad-97af-8476fe58596d")
+		(uuid "e65ee3c9-5787-512c-acac-1f7092022925")
 	)
 	(global_label "S5_SMBCLK"
 		(shape passive)
@@ -18047,7 +18047,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "3c1a90f9-01b2-5f41-ad9e-1aaec90cc31a")
+		(uuid "9595b745-9061-5113-b2a6-136a11bf2b38")
 	)
 	(global_label "+3V3"
 		(shape passive)
@@ -18181,7 +18181,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "8b286fc0-8357-52e7-a7ec-0042156f9cf2")
+		(uuid "e821c0a4-0b05-512c-a5d1-7323ac5d8759")
 	)
 	(global_label "S5_SMBDAT"
 		(shape passive)
@@ -18213,7 +18213,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "9f49e824-17f7-566b-8e96-04b6511000db")
+		(uuid "157b7c67-f54b-5f85-ae21-28cd5eba7a60")
 	)
 	(global_label "+3V3"
 		(shape passive)

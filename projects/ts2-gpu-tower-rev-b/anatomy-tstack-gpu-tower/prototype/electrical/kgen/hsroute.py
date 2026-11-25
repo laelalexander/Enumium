@@ -18,6 +18,7 @@ H = (W + GAP) / 2  # centreline -> trace centreline
 P = 1.0           # pair-to-pair pitch in a bundle
 CH = 0.6          # 45 degree chamfer at every bend
 VIA = dict(drill=0.2, dia=0.4)
+HOLE_CLR = 0.55 + 0.2 + H + W / 2   # MCIO peg hole radius + hole clearance + pair half-span
 
 NEAR = [(14, 15), (19, 20), (23, 24), (27, 28), (33, 34), (37, 38), (41, 42), (45, 46)]   # CEM row B, lanes 0-7
 FAR = [(16, 17), (21, 22), (25, 26), (29, 30), (35, 36), (39, 40), (43, 44), (47, 48)]    # CEM row A, lanes 0-7
@@ -89,7 +90,7 @@ def deskew(a, b, hb=0.25, run=0.5):
     short, long_ = (a, b) if La < Lb else (b, a)
     need = abs(La - Lb)
     per = 2 * hb * (math.sqrt(2) - 1)
-    nb = int(round(need / per))
+    nb = int(math.ceil(need / per - 1e-9))
     hb2 = need / (nb * 2 * (math.sqrt(2) - 1)) if nb else 0
     if nb == 0:
         return a, b
@@ -99,9 +100,11 @@ def deskew(a, b, hb=0.25, run=0.5):
     u = ((p1[0] - p0[0]) / L, (p1[1] - p0[1]) / L)
     n = (-u[1], u[0])
     mid = ((p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2)
-    # partner side: nearest point of the other trace to the segment midpoint
-    q = min(long_, key=lambda p: math.hypot(p[0] - mid[0], p[1] - mid[1]))
-    if (q[0] - mid[0]) * n[0] + (q[1] - mid[1]) * n[1] > 0:
+    # bumps go away from the partner: test a point one bump-height off the segment midpoint on each side and keep
+    # the side farther from the partner polyline (a nearest-vertex test picks the wrong side on long segments)
+    def dpoly(pt):
+        return min(seg_dist(pt, pt, q1, q2) for q1, q2 in zip(long_[:-1], long_[1:]))
+    if dpoly((mid[0] + n[0] * hb, mid[1] + n[1] * hb)) < dpoly((mid[0] - n[0] * hb, mid[1] - n[1] * hb)):
         n = (-n[0], -n[1])
     pitch = 2 * hb2 + run + 0.6
     if nb * pitch > L - 4.0:
@@ -175,7 +178,12 @@ def route_slot(slot, cem_x, cem_c, mcio_x, mcio_c, nets, x_end):
                 pts += [(ex, yt), (ex, ey)]
             else:
                 ylim = mvA + 1.0                                       # just past the A-row via line
-                pts += [(gx, yt), (gx, ylim), (ex, ylim + abs(gx - ex)), (ex, ey)]
+                jog = []
+                for hx, hy in ((mx - 11.0, my + 1.5), (mx + 11.0, my + 1.5)):     # MCIO locating-peg NPTHs
+                    if abs(gx - hx) < HOLE_CLR and yt < hy < ylim:
+                        gx2 = hx + math.copysign(HOLE_CLR + 0.05, mx - hx)       # pass the peg on the body side
+                        jog = [(gx2, yt), (gx2, hy + 1.0), (gx, hy + 1.0 + abs(gx - gx2))]
+                pts += (jog or [(gx, yt)]) + [(gx, ylim), (ex, ylim + abs(gx - ex)), (ex, ey)]
             centre[k] = chamfer(pts)
         # spacing check on this layer
         worst = 99.0

@@ -144,7 +144,8 @@ def poly_zone(board, c, pts, layers, net=None, name='', rule=False, prio=0, clea
         z.SetMinThickness(mm(minw))
         z.SetThermalReliefGap(mm(0.3))
         z.SetThermalReliefSpokeWidth(mm(0.5))
-        z.SetPadConnection(pcbnew.ZONE_CONNECTION_THERMAL if thermal else pcbnew.ZONE_CONNECTION_FULL)
+        z.SetPadConnection(pcbnew.ZONE_CONNECTION_THT_THERMAL if thermal == 'tht' else
+                        pcbnew.ZONE_CONNECTION_THERMAL if thermal else pcbnew.ZONE_CONNECTION_FULL)
         z.SetIslandRemovalMode(pcbnew.ISLAND_REMOVAL_MODE_ALWAYS)
         z.SetAssignedPriority(prio)
     z.SetZoneName(name)
@@ -247,6 +248,10 @@ def build(D, out, padnet, ses=None):
                 hit = [hx for hx, hy in D.holes
                        if max(cx - 4.0, min(hx, cx + w + 4.0)) == hx and cy - h - 4.0 <= hy <= cy + 4.0
                        and math.hypot(max(cx - hx, 0, hx - cx - w), max(cy - h - hy, 0, hy - cy)) < 4.0]
+                # other holes / spots to keep clear of (x, y, r): e.g. connector locating-peg NPTHs
+                for hx, hy, hr in getattr(D, 'pack_avoid', ()):
+                    if math.hypot(max(cx - hx, 0, hx - cx - w), max(cy - h - hy, 0, hy - cy)) < hr:
+                        hit.append(hx + hr - 4.0)
                 if not hit:
                     break
                 cx = max(hit) + 4.0
@@ -567,6 +572,140 @@ def fill(board):
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
 
 
+def keepout_test(board):
+    """f(x_mm, y_mm, layer or None, r_mm, via) -> True when copper of radius r at page point (x, y) would sit in a
+    rule-area keep-out (layer None = a through via, every layer)."""
+    kos = []
+    for z in board.Zones():
+        if not z.GetIsRuleArea():
+            continue
+        ol = z.Outline()
+        bb = ol.BBox()
+        kos.append((z.GetLayerSet(), ol, z.GetDoNotAllowTracks(), z.GetDoNotAllowVias(),
+                    (pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom()))))
+
+    def hit(x, y, layer, r, via):
+        for (ls, ol, nt, nv, (bx0, by0, bx1, by1)) in kos:
+            if x < bx0 - r - 0.05 or x > bx1 + r + 0.05 or y < by0 - r - 0.05 or y > by1 + r + 0.05:
+                continue
+            if via and not nv:
+                continue
+            if not via and not nt:
+                continue
+            if layer is not None and not ls.Contains(layer):
+                continue
+            v = pcbnew.VECTOR2I(mm(x), mm(y))
+            if ol.Contains(v) or math.sqrt(ol.SquaredDistance(v)) / 1e6 < r:
+                return True
+        return False
+    return hit
+
+
+def stitch_islands(board, c, netname, outer=('F', 'B'), drill=0.3, dia=0.6, gap=0.3):
+    """Tie every outer-layer fill island of a plane net that holds no through via / THT pad of that net to the inner
+    planes with one via inside it (an island fenced in by fan-out and pairs is otherwise left floating)."""
+    D = c.D
+    lid = {'F': pcbnew.F_Cu, 'B': pcbnew.B_Cu}
+    net = board.FindNet(netname)
+    obst = []
+    for t in board.GetTracks():
+        if t.GetNetname() == netname:
+            continue
+        if t.GetClass() == 'PCB_VIA':
+            q = t.GetPosition()
+            obst.append((pcbnew.ToMM(q.x), pcbnew.ToMM(q.y), pcbnew.ToMM(q.x), pcbnew.ToMM(q.y), pcbnew.ToMM(t.GetWidth()) / 2))
+        else:
+            a, b = t.GetStart(), t.GetEnd()
+            obst.append((pcbnew.ToMM(a.x), pcbnew.ToMM(a.y), pcbnew.ToMM(b.x), pcbnew.ToMM(b.y), pcbnew.ToMM(t.GetWidth()) / 2))
+    rects = []
+    anchors = []
+    holes = []                                  # every drilled hole, any net: hole-to-hole spacing
+    for t in board.GetTracks():
+        if t.GetClass() == 'PCB_VIA':
+            holes.append((pcbnew.ToMM(t.GetPosition().x), pcbnew.ToMM(t.GetPosition().y), pcbnew.ToMM(t.GetDrillValue()) / 2))
+    for fp in board.GetFootprints():
+        for p in fp.Pads():
+            q = p.GetPosition()
+            if p.GetDrillSize().x > 0:
+                holes.append((pcbnew.ToMM(q.x), pcbnew.ToMM(q.y), pcbnew.ToMM(max(p.GetDrillSize().x, p.GetDrillSize().y)) / 2))
+            if p.GetNetname() == netname and p.GetDrillSize().x > 0:
+                anchors.append(q)
+            if p.GetNetname() == netname and p.GetNetname():
+                continue
+            bb = p.GetBoundingBox()
+            rects.append((pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())))
+    for t in board.GetTracks():
+        if t.GetClass() == 'PCB_VIA' and t.GetNetname() == netname:
+            anchors.append(t.GetPosition())
+    lim = dia / 2 + gap
+    ko = keepout_test(board)
+
+    def clear(x, y):
+        for (x0, y0, x1, y1, r) in obst:
+            if abs(x - x0) > 6 and abs(x - x1) > 6:
+                continue
+            if _sd(x, y, x0, y0, x1, y1) < r + lim:
+                return False
+        for (ax, ay, bx, by) in rects:
+            if math.hypot(max(ax - x, 0, x - bx), max(ay - y, 0, y - by)) < lim:
+                return False
+        for (hx, hy, hr) in holes:
+            if abs(hx - x) < 3 and math.hypot(hx - x, hy - y) < hr + drill / 2 + 0.35:
+                return False
+        return True
+    def others(layer):
+        return [z.GetFilledPolysList(l) for z in board.Zones() if z.GetNetname() == netname and not z.GetIsRuleArea()
+                for l in z.GetLayerSet().Seq() if l != layer]
+    n = 0
+    for z in list(board.Zones()):
+        if z.GetIsRuleArea() or z.GetNetname() != netname:
+            continue
+        for side in outer:
+            l = lid[side]
+            if not z.GetLayerSet().Contains(l):
+                continue
+            fpoly = z.GetFilledPolysList(l)
+            inner = others(l)
+            for i in range(fpoly.OutlineCount()):
+                isl = pcbnew.SHAPE_POLY_SET()
+                isl.AddOutline(fpoly.Outline(i))
+                for h in range(fpoly.HoleCount(i)):
+                    isl.AddHole(fpoly.Hole(i, h))
+                if any(isl.Contains(a) for a in anchors):
+                    continue
+                bb = fpoly.Outline(i).BBox()
+                x0, y0 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop())
+                x1, y1 = pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())
+                if (x1 - x0) < dia or (y1 - y0) < dia:
+                    continue
+                done = False
+                step = 0.2
+                yy = y0 + dia / 2
+                while yy <= y1 - dia / 2 and not done:
+                    xx = x0 + dia / 2
+                    while xx <= x1 - dia / 2:
+                        v = pcbnew.VECTOR2I(mm(xx), mm(yy))
+                        ring = [pcbnew.VECTOR2I(mm(xx + dx), mm(yy + dy)) for dx, dy in
+                                ((dia / 2 + 0.05, 0), (-dia / 2 - 0.05, 0), (0, dia / 2 + 0.05), (0, -dia / 2 - 0.05))]
+                        if all(isl.Contains(r) for r in [v] + ring) and clear(xx, yy) and not ko(xx, yy, None, dia / 2, True) and \
+                                all(any(f.Contains(v) for f in inner_l) for inner_l in [inner] if inner_l):
+                            via = pcbnew.PCB_VIA(board)
+                            via.SetPosition(v)
+                            via.SetWidth(mm(dia))
+                            via.SetDrill(mm(drill))
+                            via.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
+                            via.SetNet(net)
+                            board.Add(via)
+                            anchors.append(v)
+                            holes.append((xx, yy, drill / 2))
+                            n += 1
+                            done = True
+                            break
+                        xx += step
+                    yy += step
+    return n
+
+
 def stitch(board, c, netname, pitch, layers_need, exclude, drill=0.3, dia=0.6):
     """GND stitching vias on a grid where every listed layer's fill contains a ring around the point."""
     net = board.FindNet(netname)
@@ -617,11 +756,12 @@ def stitch(board, c, netname, pitch, layers_need, exclude, drill=0.3, dia=0.6):
             if math.hypot(x - (x0 + t * dx), y - (y0 + t * dy)) < r + dia / 2 + gap:
                 return False
         return True
+    ko = keepout_test(board)
     x = 2.0
     while x < D.W - 2.0:
         y = 2.0
         while y < D.H - 2.0:
-            if not exclude(x, y) and _clear(x, y):
+            if not exclude(x, y) and _clear(x, y) and not ko(D.X0 + x, D.Y0 + D.H - y, None, dia / 2, True):
                 ok = True
                 for need in layers_need:
                     lf = [z.GetFilledPolysList(need) for z in zs if z.GetLayerSet().Contains(need)]
@@ -696,6 +836,10 @@ def finish(D, out, padnet):
         n = stitch(board, c, D.stitch['net'], D.stitch['pitch'], need, excl)
         print('stitching vias:', n)
         fill(board)
+        ni = sum(stitch_islands(board, c, n_) for n_ in sorted({z['net'] for z in D.pours if z['layer'] in ('F', 'B')}))
+        if ni:
+            print('island stitch vias:', ni)
+            fill(board)
     # repair: read KiCad's own unconnected list and close what a straight / L track or a via can close cleanly
     tmp = os.path.join(out, 'build', 'repair-drc.rpt')
     pcbnew.WriteDRCReport(board, tmp, pcbnew.EDA_UNITS_MILLIMETRES, True)
@@ -703,11 +847,21 @@ def finish(D, out, padnet):
     if nrm:
         print('clearance clashes: removed %d unlocked track/via items (re-joined by the repair pass)' % nrm)
         fill(board)
-    for it in range(3):
+    last_n = 10 ** 9
+    for it in range(8):
         pcbnew.WriteDRCReport(board, tmp, pcbnew.EDA_UNITS_MILLIMETRES, True)
+        if it:                    # copper a repair pass added can itself clash: drop it and let the next pass retry
+            nrm2 = drop_clashes(board, tmp)
+            if nrm2:
+                print('  pass %d: removed %d clashing items' % (it + 1, nrm2))
+                fill(board)
+                pcbnew.WriteDRCReport(board, tmp, pcbnew.EDA_UNITS_MILLIMETRES, True)
         pairs = drc_pairs(tmp, board)
         if not pairs:
             break
+        if it >= 2 and len(pairs) >= last_n:
+            break                 # no progress over the last pass: stop instead of cycling the same items
+        last_n = len(pairs)
         clr = max([0.25, getattr(D, 'signal_clearance', 0.2)] + [nc.get('clearance', 0.2) for nc in getattr(D, 'netclasses', {}).values()])
         fixed, failed = repair(board, c, pairs, clearance=clr)
         print('repair pass %d: %d unconnected, fixed %d, left %s' % (it + 1, len(pairs), fixed, sorted(set(failed))[:12]))
@@ -936,6 +1090,8 @@ def repair(board, c, pairs=None, clearance=0.25, width=0.25):
                 if l in obst:
                     rects[l].append((p.GetNetname(), ax, ay, bx, by))
 
+    ko = keepout_test(board)
+
     def sd(px, py, x0, y0, x1, y1):
         dx, dy = x1 - x0, y1 - y0
         L = dx * dx + dy * dy
@@ -968,6 +1124,14 @@ def repair(board, c, pairs=None, clearance=0.25, width=0.25):
                 px, py = x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n
                 if math.hypot(max(a - px, 0, px - cc), max(b - py, 0, py - d)) < lim:
                     return False
+        nko = max(1, int(math.hypot(x1 - x0, y1 - y0) / 0.1))
+        for i_ in range(nko + 1):
+            px_, py_ = x0 + (x1 - x0) * i_ / nko, y0 + (y1 - y0) * i_ / nko
+            if (x0, y0) == (x1, y1):
+                if ko(px_, py_, None, w / 2, True):
+                    return False
+            elif ko(px_, py_, lay, w / 2, False):
+                return False
         ex0, ey0 = D.X0, D.Y0
         for x, y in ((x0, y0), (x1, y1)):
             if x < ex0 + 0.6 or x > ex0 + D.W - 0.6 or y < ey0 + 0.6 or y > ey0 + D.H - 0.6:
@@ -1029,6 +1193,10 @@ def repair(board, c, pairs=None, clearance=0.25, width=0.25):
                     other = pa if pv is pb else pb
                     for path in ([other, pv], [other, (pv[0], other[1]), pv], [other, (other[0], pv[1]), pv]):
                         plans.append((lay, path, pv))
+        drilled = [bxy(pd.GetPosition()) for fp in board.GetFootprints() for pd in fp.Pads()
+                   if pd.GetNetname() == net and pd.GetDrillSize().x > 0]
+        plans = [(lay, path, None if via is not None and any(math.hypot(via[0] - q[0], via[1] - q[1]) < 0.3 for q in drilled) else via)
+                 for lay, path, via in plans]
         done = False
         for lay, path, via in plans:
             segs = [(a[0], a[1], b[0], b[1]) for a, b in zip(path[:-1], path[1:]) if a != b]
@@ -1179,6 +1347,27 @@ def maze(board, c, net, netinfo, pa, la, pb, lb, obst, cu, vd, clearance=0.2, wi
     vblk = np.zeros((ny, nx), dtype=bool)
     for l in cu:
         vblk |= raster(segs_l[l], rects_l[l], clearance + vd[0] / 2 + 0.005)
+    # rule-area keep-outs
+    for z in board.Zones():
+        if not z.GetIsRuleArea():
+            continue
+        bb = z.Outline().BBox()
+        zx0, zy0, zx1, zy1 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())
+        i0, i1 = max(0, int((zx0 - 0.5 - x0) / grid)), min(nx - 1, int((zx1 + 0.5 - x0) / grid) + 1)
+        j0, j1 = max(0, int((zy0 - 0.5 - y0) / grid)), min(ny - 1, int((zy1 + 0.5 - y0) / grid) + 1)
+        if i0 > i1 or j0 > j1:
+            continue
+        ol = z.Outline()
+        for jj in range(j0, j1 + 1):
+            for ii in range(i0, i1 + 1):
+                v = pcbnew.VECTOR2I(mm(x0 + ii * grid), mm(y0 + jj * grid))
+                dd = 0.0 if ol.Contains(v) else math.sqrt(ol.SquaredDistance(v)) / 1e6
+                if z.GetDoNotAllowTracks() and dd < width / 2 + 0.01:
+                    for l in outer:
+                        if z.GetLayerSet().Contains(l):
+                            blk[l][jj, ii] = True
+                if z.GetDoNotAllowVias() and dd < vd[0] / 2 + 0.01:
+                    vblk[jj, ii] = True
 
     def cell(p):
         return (int(round((p[1] - y0) / grid)), int(round((p[0] - x0) / grid)))
@@ -1300,6 +1489,10 @@ def maze(board, c, net, netinfo, pa, la, pb, lb, obst, cu, vd, clearance=0.2, wi
             vias.append(pb)
         else:
             return False
+    # an end on a plated through pad needs no via (the barrel already joins every layer)
+    drilled = [bxy(pd.GetPosition()) for fp in board.GetFootprints() for pd in fp.Pads()
+               if pd.GetNetname() == net and pd.GetDrillSize().x > 0]
+    vias = [v_ for v_ in vias if not any(math.hypot(v_[0] - q[0], v_[1] - q[1]) < 0.3 for q in drilled)]
     # every via must clear other-net copper on all layers (end vias sit on inner track ends, not on grid cells)
     for v_ in vias:
         j_, i_ = cell(v_)
@@ -1345,10 +1538,19 @@ def drop_clashes(board, rpt):
     tracks = list(board.GetTracks())
     kill = set()
     for blk in re.split(r'\n(?=\[)', txt):
+        if blk.startswith('[items_not_allowed]'):          # routed copper inside a keep-out: it goes
+            for (x, y, kind, net, lay, ln) in item.findall(blk):
+                for t in tracks:
+                    if t.GetNetname() == net and not t.IsLocked() and t.GetClass() == ('PCB_VIA' if kind == 'Via' else 'PCB_TRACK'):
+                        q = t.GetPosition() if kind == 'Via' else t.GetStart()
+                        e = q if kind == 'Via' else t.GetEnd()
+                        if _sd(float(x), float(y), pcbnew.ToMM(q.x), pcbnew.ToMM(q.y), pcbnew.ToMM(e.x), pcbnew.ToMM(e.y)) < 0.05:
+                            kill.add(t.m_Uuid.AsString())
+            continue
         if not blk.startswith('[clearance]') and not blk.startswith('[hole_clearance]'):
             continue
         its = item.findall(blk)
-        if len(its) == 1 and re.search(r'\]: Pad |\): (PTH )?[Pp]ad ', blk):
+        if len(its) == 1 and re.search(r'\]: Pad |\): (N?PTH )?[Pp]ad ', blk):
             pass                                     # track / via against a pad: the routed item goes
         elif len(its) != 2 or its[0][3] == its[1][3]:
             continue

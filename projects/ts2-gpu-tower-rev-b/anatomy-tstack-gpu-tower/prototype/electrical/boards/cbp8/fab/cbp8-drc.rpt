@@ -1,0 +1,97 @@
+** Drc report for /home/claude/ts2b/proj/ts2b/prototype/electrical/boards/cbp8/cbp8.kicad_pcb **
+** Created on 2026-11-25 00:00:51 **
+
+** Found 12 DRC violations **
+[copper_sliver]: Copper sliver (In2.Cu)
+    Local override; Severity: warning
+[starved_thermal]: Thermal relief connection to zone incomplete (zone min spoke count 2; actual 1)
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(314.5800 mm, 262.0000 mm): PTH pad 9 [GND] of J905
+[starved_thermal]: Thermal relief connection to zone incomplete (zone min spoke count 2; actual 1)
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on B.Cu
+    @(310.7700 mm, 262.0000 mm): PTH pad 3 [GND] of J905
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.0580 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(79.1625 mm, 104.6844 mm): Track [S8_12V] on F.Cu, length 0.3019 mm
+    @(79.0967 mm, 105.6454 mm): Track [S8_FB33] on F.Cu, length 2.8861 mm
+[clearance]: Clearance violation (netclass 'PWR12' clearance 0.2500 mm; actual 0.1235 mm)
+    Rule: netclass 'PWR12'; Severity: error
+    @(75.1436 mm, 104.8128 mm): Track [S8_12V] on In2.Cu, length 4.0210 mm
+    @(73.3113 mm, 103.7609 mm): Track [S8_3V3] on In2.Cu, length 17.9368 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(269.5000 mm, 406.5000 mm): Track [S2_12V_SNS] on B.Cu, length 0.1414 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(255.4000 mm, 355.7000 mm): Track [S3_12V] on B.Cu, length 0.1414 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(268.2750 mm, 203.7500 mm): Track [S6_12V] on B.Cu, length 12.4000 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(255.4000 mm, 152.5000 mm): Track [S7_12V] on B.Cu, length 0.1414 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(270.7625 mm, 140.2500 mm): Track [S7_12V_SNS] on B.Cu, length 1.8385 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(255.4000 mm, 101.7000 mm): Track [S8_12V] on B.Cu, length 0.1414 mm
+[track_dangling]: Track has unconnected end
+    Local override; Severity: warning
+    @(270.7625 mm, 89.4500 mm): Track [S8_12V_SNS] on B.Cu, length 1.8385 mm
+
+** Found 12 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(279.1375 mm, 291.4500 mm): Pad 3 [+12V] of U402 on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(279.1375 mm, 342.2500 mm): Pad 3 [+12V] of U302 on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(303.0500 mm, 271.7750 mm): Track [+3V3] on B.Cu, length 0.9899 mm
+    @(306.1217 mm, 262.0000 mm): Track [+3V3] on In2.Cu, length 10.9754 mm
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(268.9000 mm, 355.8000 mm): Track [S3_12V] on B.Cu, length 2.2810 mm
+    @(276.0750 mm, 357.4500 mm): Pad 1 [S3_12V] of C307 on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(269.6000 mm, 355.6000 mm): Zone [S3_12V_SNS] on B.Cu
+    @(276.8625 mm, 342.2500 mm): Pad 4 [S3_12V_SNS] of U302 on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(269.6000 mm, 304.8000 mm): Zone [S4_12V_SNS] on B.Cu
+    @(276.8625 mm, 291.4500 mm): Pad 4 [S4_12V_SNS] of U402 on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(68.9000 mm, 319.0500 mm): Pad A11 [S4_PERST_C#] of J401 on F.Cu
+    @(278.8125 mm, 308.1500 mm): Pad 4 [S4_PERST_C#] of U404 on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(255.0000 mm, 255.2000 mm): Zone [S5_12V] on F.Cu
+    @(255.0000 mm, 255.2000 mm): Zone [S5_12V] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(273.6450 mm, 180.1300 mm): Track [S6_12V] on B.Cu, length 0.9000 mm
+    @(266.4000 mm, 194.2000 mm): Via [S6_12V] on F.Cu - B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(276.6000 mm, 144.6000 mm): Track [S7_12V_SNS] on In2.Cu, length 5.5351 mm
+    @(270.7625 mm, 140.2500 mm): Track [S7_12V_SNS] on B.Cu, length 1.8385 mm
+
+** Found 0 Footprint errors **
+
+** End of Report **

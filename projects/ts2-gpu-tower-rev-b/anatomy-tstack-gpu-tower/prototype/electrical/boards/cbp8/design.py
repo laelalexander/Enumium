@@ -309,12 +309,12 @@ for i in range(NS):
     D.regions.append(((205.5, y0 + 6.0, 234.5, y0 + 12.5), ['C%d04' % k, 'C%d05' % k, 'C%d06' % k, 'C%d07' % k,
                                                            'U%d04' % k, 'C%d14' % k, 'R%d13' % k, 'R%d14' % k, 'R%d15' % k,
                                                            'R%d16' % k], 'B'))
-    D.regions.append(((20.0, y0 + 19.5, 48.0, y0 + 25.0), ['C%d10' % k, 'C%d11' % k, 'C%d12' % k, 'C%d13' % k,
+    D.regions.append(((20.0, y0 + 18.8, 48.0, y0 + 23.6), ['C%d10' % k, 'C%d11' % k, 'C%d12' % k, 'C%d13' % k,
                                                           'R%d11' % k, 'R%d12' % k], 'F'))
 # management cluster in the band-3 / band-4 gaps right of the card tails (F side, x 237-267)
 g3 = ys(3) + 29.0
 D.place['U902'] = (248.0, g3 + 14.0, 0, 'F')
-D.place['J905'] = (263.0, g3 + 27.0, 90, 'F')
+D.place['J905'] = (259.5, g3 + 27.0, 90, 'F')       # pins 1..9 run +x: last pin 5.1 mm in from the edge
 D.regions.append(((237.0, g3 + 0.8, 267.0, g3 + 6.6), ['C910', 'C911', 'C912', 'C913', 'C914', 'C915', 'FB901', 'C916', 'C917',
                                                        'C918'], 'F'))
 D.regions.append(((237.0, g3 + 22.0, 257.0, g3 + 33.5), ['R903', 'R905', 'R906', 'R909', 'R910', 'D904', 'D905'], 'F'))
@@ -341,9 +341,26 @@ for i in range(NS):
     cx, cy = CEM_CX, y0 + 2.8
     mx, my = mcio_cx(i), y0 + 20.0
     tr, vi, rep = hsroute.route_slot(k, lambda n: cx + fpgen.cem_x(n), (cx, cy), lambda n: mx - fpgen.mcio_x(n), (mx, my),
-                                     lambda kind, l, k=k: lane_nets(k, kind, l), cx + 41.65 + 4.5)
+                                     lambda kind, l, k=k: lane_nets(k, kind, l), cx + 49.2)   # U-turn columns clear the CEM key NPTH at cx + 47.4
     D.prerouted += tr + vi
     REPORT += rep
+    # the slot's 25 A F-side pour (via array -> 12V-2x6 header) must stay whole: no other copper may cross it
+    D.keepouts.append(dict(name='S%d_12V_F' % k, rect=(217.5, y0 + 12.5, 238.3, y0 + 28.0), layers=['F'], pour=False, vias=False))
+    # same on B for the hot-swap source pour and the sense pour (tracks only: their own via arrays stay)
+    D.keepouts.append(dict(name='S%d_12V_B' % k, rect=(205.5, y0 + 13.2, 217.4, y0 + 24.0), layers=['B'], pour=False, vias=False))
+    D.keepouts.append(dict(name='S%d_SNS_B' % k, rect=(219.6, y0 + 13.2, 229.9, y0 + 24.0), layers=['B'], pour=False, vias=False))
+    # MCIO GND pins: a B-side bridge between the A and B rows ties every GND pin of both rows together, so the GND
+    # pins at the In4 pair gaps (no via possible there) still reach the GND vias of their neighbours
+    D.pack_avoid = getattr(D, 'pack_avoid', []) + [(mx - 11.0, my + 1.5, 1.2), (mx + 11.0, my + 1.5, 1.2)]   # MCIO pegs
+    # no routed copper inside hole clearance of the locating-peg NPTHs (CEM 2.35 mm, MCIO 1.10 mm), every layer
+    ALL = ['F', 'In1', 'In2', 'In3', 'In4', 'In5', 'In6', 'B']
+    for j_, (hx, hy, hr) in enumerate([(cx - 47.4, cy, 1.45), (cx + 47.4, cy, 1.45), (mx - 11.0, my + 1.5, 0.76), (mx + 11.0, my + 1.5, 0.76)]):
+        D.keepouts.append(dict(name='S%d_peg%d' % (k, j_), circle=(hx, hy, hr), layers=ALL, pour=False))
+    gpins = (1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37)
+    xs = [mx - fpgen.mcio_x(n) for n in gpins]
+    D.prerouted.append(dict(net='GND', layer='B', width=0.15, pts=[(min(xs), my + 7.0), (max(xs), my + 7.0)]))
+    for x in xs:
+        D.prerouted.append(dict(net='GND', layer='B', width=0.15, pts=[(x, my + 6.0), (x, my + 7.0), (x, my + 8.0)]))
     # 25 A path: hot-swap output (B pour) <-> F pour under the 12V-2x6 header: 6 x 7 via array 0.3/0.6
     for a in range(7):
         for b in range(6):
@@ -359,8 +376,8 @@ D.pours = [
     dict(net='GND', layer='In1', rect=(e, e, W - e, H - e)),
     dict(net='GND', layer='In3', rect=(e, e, W - e, H - e)),
     dict(net='GND', layer='In5', rect=(e, e, W - e, H - e)),
-    dict(net='GND', layer='F', rect=(e, e, W - e, H - e), prio=0),
-    dict(net='GND', layer='B', rect=(e, e, W - e, H - e), prio=0),
+    dict(net='GND', layer='F', rect=(e, e, W - e, H - e), prio=0, thermal='tht'),     # SMD pads solid, THT relieved
+    dict(net='GND', layer='B', rect=(e, e, W - e, H - e), prio=0, thermal='tht'),
     dict(net='+12V', layer='In2', rect=(236.5, e, W - e, H - e), prio=1),
     dict(net='+12V', layer='In4', rect=(236.5, e, W - e, H - e), prio=1),
     dict(net='+12V', layer='In6', rect=(236.5, e, W - e, H - e), prio=1),
