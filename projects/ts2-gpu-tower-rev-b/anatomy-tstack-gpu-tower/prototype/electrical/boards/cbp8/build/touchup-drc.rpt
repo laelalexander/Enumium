@@ -1,0 +1,98 @@
+** Drc report for /home/claude/ts2b/proj/ts2b/prototype/electrical/boards/cbp8/cbp8.kicad_pcb **
+** Created on 2026-11-25 01:32:59 **
+
+** Found 16 DRC violations **
+[starved_thermal]: Thermal relief connection to zone incomplete (zone min spoke count 2; actual 1)
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(314.5800 mm, 262.0000 mm): PTH pad 9 [GND] of J905
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(254.4000 mm, 255.2000 mm): Via [S5_12V] on F.Cu - B.Cu
+    @(254.4000 mm, 255.2000 mm): Via [S5_12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(287.1625 mm, 454.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(287.1625 mm, 454.2000 mm): Via [+12V] on F.Cu - B.Cu
+[holes_co_located]: Drilled holes co-located
+    Local override; Severity: warning
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+    @(283.2000 mm, 483.2000 mm): Via [+12V] on F.Cu - B.Cu
+[copper_edge_clearance]: Board edge clearance violation (board setup constraints edge clearance 0.3000 mm; actual 0.1069 mm)
+    Rule: board setup constraints edge; Severity: error
+    @(54.0000 mm, 480.4000 mm): Arc on Edge.Cuts
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[copper_edge_clearance]: Board edge clearance violation (board setup constraints edge clearance 0.3000 mm; actual 0.1069 mm)
+    Rule: board setup constraints edge; Severity: error
+    @(54.0000 mm, 480.4000 mm): Arc on Edge.Cuts
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(254.4000 mm, 255.2000 mm): Via [S5_12V] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(254.4000 mm, 255.2000 mm): Via [S5_12V] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; Severity: warning
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+
+** Found 7 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+    @(283.9375 mm, 240.6500 mm): Pad 3 [+12V] of U502 on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+    @(283.2000 mm, 483.8000 mm): Zone [+12V] on B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(52.0000 mm, 482.4000 mm): Via [GND] on F.Cu - B.Cu
+    @(50.6000 mm, 483.2000 mm): Via [GND] on F.Cu - B.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+    @(50.6000 mm, 483.8000 mm): Zone [GND] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(255.0000 mm, 255.2000 mm): Zone [S5_12V] on F.Cu
+    @(255.0000 mm, 255.2000 mm): Zone [S5_12V] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; Severity: error
+    @(256.8000 mm, 253.0000 mm): Via [S5_12V] on F.Cu - B.Cu
+    @(254.4000 mm, 255.2000 mm): Via [S5_12V] on F.Cu - B.Cu
+
+** Found 0 Footprint errors **
+
+** End of Report **

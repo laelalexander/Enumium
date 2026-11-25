@@ -299,7 +299,7 @@ for i in range(NS):
     D.place['R%d02' % k] = (231.5, y0 + 16.2, 0, 'B')
     D.place['R%d03' % k] = (231.5, y0 + 20.8, 0, 'B')
     D.place['U%d01' % k] = (213.0, y0 + 29.5, 0, 'B')
-    D.place['U%d02' % k] = (228.0, y0 + 27.5, 0, 'B')
+    D.place['U%d02' % k] = (232.8, y0 + 27.5, 0, 'B')     # IN+ (pin 3) sits in the +12V B pour: Kelvin at the bus side
     D.place['U%d03' % k] = (30.0, y0 + 15.0, 0, 'F')
     D.place['L%d01' % k] = (40.0, y0 + 15.0, 0, 'F')
     # small parts: B side cluster below/above the power path, F side around the buck
@@ -347,8 +347,8 @@ for i in range(NS):
     # the slot's 25 A F-side pour (via array -> 12V-2x6 header) must stay whole: no other copper may cross it
     D.keepouts.append(dict(name='S%d_12V_F' % k, rect=(217.5, y0 + 12.5, 238.3, y0 + 28.0), layers=['F'], pour=False, vias=False))
     # same on B for the hot-swap source pour and the sense pour (tracks only: their own via arrays stay)
-    D.keepouts.append(dict(name='S%d_12V_B' % k, rect=(205.5, y0 + 13.2, 217.4, y0 + 24.0), layers=['B'], pour=False, vias=False))
-    D.keepouts.append(dict(name='S%d_SNS_B' % k, rect=(219.6, y0 + 13.2, 229.9, y0 + 24.0), layers=['B'], pour=False, vias=False))
+    D.keepouts.append(dict(name='S%d_12V_B' % k, rect=(206.1, y0 + 13.8, 216.8, y0 + 23.4), layers=['B'], pour=False, vias=False))   # 0.6 mm inside the pour edge
+    D.keepouts.append(dict(name='S%d_SNS_B' % k, rect=(220.2, y0 + 13.8, 229.3, y0 + 23.4), layers=['B'], pour=False, vias=False))
     # MCIO GND pins: a B-side bridge between the A and B rows ties every GND pin of both rows together, so the GND
     # pins at the In4 pair gaps (no via possible there) still reach the GND vias of their neighbours
     D.pack_avoid = getattr(D, 'pack_avoid', []) + [(mx - 11.0, my + 1.5, 1.2), (mx + 11.0, my + 1.5, 1.2)]   # MCIO pegs
@@ -381,7 +381,7 @@ D.pours = [
     dict(net='+12V', layer='In2', rect=(236.5, e, W - e, H - e), prio=1),
     dict(net='+12V', layer='In4', rect=(236.5, e, W - e, H - e), prio=1),
     dict(net='+12V', layer='In6', rect=(236.5, e, W - e, H - e), prio=1),
-    dict(net='+12V', layer='B', rect=(233.2, e, W - e, H - e), prio=1),
+    dict(net='+12V', layer='B', rect=(233.2, e, W - e, H - e), prio=1, thermal='tht'),     # shunt +12V pads solid (slot current)
 ]
 for i in range(NS):
     k = i + 1

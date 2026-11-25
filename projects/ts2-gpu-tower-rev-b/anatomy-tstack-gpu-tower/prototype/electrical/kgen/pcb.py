@@ -629,14 +629,15 @@ def stitch_islands(board, c, netname, outer=('F', 'B'), drill=0.3, dia=0.6, gap=
             if p.GetDrillSize().x > 0:
                 holes.append((pcbnew.ToMM(q.x), pcbnew.ToMM(q.y), pcbnew.ToMM(max(p.GetDrillSize().x, p.GetDrillSize().y)) / 2))
             if p.GetNetname() == netname and p.GetDrillSize().x > 0:
-                anchors.append(q)
+                anchors.append(pcbnew.VECTOR2I(int(q.x), int(q.y)))
             if p.GetNetname() == netname and p.GetNetname():
                 continue
             bb = p.GetBoundingBox()
             rects.append((pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop()), pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())))
     for t in board.GetTracks():
         if t.GetClass() == 'PCB_VIA' and t.GetNetname() == netname:
-            anchors.append(t.GetPosition())
+            q = t.GetPosition()
+            anchors.append(pcbnew.VECTOR2I(int(q.x), int(q.y)))
     lim = dia / 2 + gap
     ko = keepout_test(board)
 
@@ -671,7 +672,9 @@ def stitch_islands(board, c, netname, outer=('F', 'B'), drill=0.3, dia=0.6, gap=
                 isl.AddOutline(fpoly.Outline(i))
                 for h in range(fpoly.HoleCount(i)):
                     isl.AddHole(fpoly.Hole(i, h))
-                if any(isl.Contains(a) for a in anchors):
+                if fpoly.Outline(i).Area() / 1e12 > 60.0:       # a main plane body, never an orphan island
+                    continue
+                if any(fpoly.Outline(i).PointInside(a) for a in anchors):
                     continue
                 bb = fpoly.Outline(i).BBox()
                 x0, y0 = pcbnew.ToMM(bb.GetLeft()), pcbnew.ToMM(bb.GetTop())
