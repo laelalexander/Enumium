@@ -336,18 +336,117 @@ function projectPython(dir) {
   for (const p of [path.join(dir, '.venv', 'Scripts', 'python.exe'), path.join(dir, '.venv', 'bin', 'python')]) if (fs.existsSync(p)) return p;
   return null;
 }
-function startApp(id, n) {
+// ---------------------------------------------------------------- stale app servers on the app's port
+// Project app servers are started through a shell, so they can outlive the Anatomy server (an app restart, a crash).
+// "Open" then started a fresh copy that could not take the port, and the window showed the old server's code
+// (a twin from before its last fix, failing with "Script error."). Before starting, look at who holds the port:
+//   nobody                                   -> start as usual
+//   this project's server, newer than files  -> reuse it
+//   this project's server, older than files  -> stop it and start fresh, but only when no run is active
+//   anything else (another project, a foreign program, or a run is active) -> never kill it: start on a free port when
+//     the port is part of the run command, otherwise refuse with a plain message naming the process.
+// "This project's server" means: its command line ends with one of the app's run commands, and the page it serves has
+// the same <title> as the app's page on disk.
+const net = require('net');
+function appPortOf(app) {
+  try { const u = new URL(app.url); if (/^(127\.0\.0\.1|localhost|\[::1\])$/.test(u.hostname)) return +u.port || 80; } catch {}
+  return null;
+}
+function execOut(cmd, args, timeout = 8000) {
+  return new Promise(res => execFile(cmd, args, { windowsHide: true, timeout, maxBuffer: 8 * 1024 * 1024 }, (e, out) => res(e ? '' : String(out))));
+}
+function portFree(port) {
+  return new Promise(res => { const s = net.createServer(); s.once('error', () => res(false)); s.listen(port, '127.0.0.1', () => s.close(() => res(true))); });
+}
+function freePort() { return new Promise(res => { const s = net.createServer(); s.listen(0, '127.0.0.1', () => { const p = s.address().port; s.close(() => res(p)); }); }); }
+async function portOwner(port) {
+  if (process.platform !== 'win32') return null;            // owner lookup is Windows-only; elsewhere only "in use" is known
+  const out = await execOut('netstat', ['-ano', '-p', 'TCP']);
+  for (const l of out.split(/\r?\n/)) {
+    const m = l.trim().split(/\s+/);
+    if (m.length >= 5 && /LISTEN/i.test(m[3]) && new RegExp(`:${port}$`).test(m[1])) return +m[4];
+  }
+  return null;
+}
+async function procInfo(pid) {
+  const out = await execOut('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command',
+    `$p = Get-CimInstance Win32_Process -Filter "ProcessId=${Number(pid)}"; if ($p) { [pscustomobject]@{ cmd = $p.CommandLine; started = $p.CreationDate.ToUniversalTime().ToString('o') } | ConvertTo-Json -Compress }`]);
+  try { return JSON.parse(out); } catch { return null; }
+}
+const cmdTail = s => String(s || '').replace(/"/g, '').trim().split(/\s+/).slice(1).join(' ').toLowerCase();
+function newestFile(dir, depth = 0) {
+  let t = 0; let es = []; try { es = fs.readdirSync(dir, { withFileTypes: true }); } catch { return 0; }
+  for (const e of es) {
+    if (/^(node_modules|\.venv|venv|__pycache__|results|screenshots|screens|data|\.git|\.pio)$/i.test(e.name)) continue;
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { if (depth < 4) t = Math.max(t, newestFile(p, depth + 1)); }
+    else if (/\.(js|mjs|html|css|py|json)$/i.test(e.name)) { try { t = Math.max(t, fs.statSync(p).mtimeMs); } catch {} }
+  }
+  return t;
+}
+function pageTitles(cwd) {
+  const titles = new Set();
+  const look = (d, depth) => { let es = []; try { es = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of es) { const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (depth < 3 && !/^(node_modules|\.venv|vendor|results)$/i.test(e.name)) look(p, depth + 1); }
+      else if (/\.html?$/i.test(e.name)) { try { const m = fs.readFileSync(p, 'utf8').match(/<title>([^<]*)<\/title>/i); if (m) titles.add(m[1].trim()); } catch {} } } };
+  look(cwd, 0); return titles;
+}
+function servedTitle(url) {
+  return new Promise(res => {
+    const rq = http.get(url, { timeout: 2500 }, r => {
+      if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location) { r.resume(); return servedTitle(new URL(r.headers.location, url).href).then(res); }
+      let b = ''; r.setEncoding('utf8'); r.on('data', d => { if (b.length < 65536) b += d; }); r.on('end', () => { const m = b.match(/<title>([^<]*)<\/title>/i); res(m ? m[1].trim() : null); });
+    });
+    rq.on('timeout', () => rq.destroy()); rq.on('error', () => res(null));
+  });
+}
+function killTree(pid) { return new Promise(res => execFile('taskkill', ['/pid', String(pid), '/T', '/F'], { windowsHide: true }, () => res())); }
+
+async function preparePort(id, app, cwd) {
+  const port = appPortOf(app); if (!port || await portFree(port)) return {};
+  const pid = await portOwner(port), info = pid ? await procInfo(pid) : null;
+  const sameCmd = !!info && (app.run || []).some(c => cmdTail(c) && cmdTail(info.cmd).endsWith(cmdTail(c)));
+  const sameTitle = sameCmd && pageTitles(cwd).has(await servedTitle(app.url) || '\0');
+  const who = info ? `${String(info.cmd || '').slice(0, 120)} (process ${pid})` : (pid ? `process ${pid}` : 'another program');
+  if (sameCmd && sameTitle) {
+    const started = Date.parse(info.started) || 0;
+    if (started >= newestFile(cwd)) return { reuse: true, note: `Already running (process ${pid}) with the current files; reusing it.` };
+    if (!runs.get(id)?.proc) {
+      await killTree(pid);
+      for (let i = 0; i < 25 && !(await portFree(port)); i++) await new Promise(r => setTimeout(r, 200));
+      if (await portFree(port)) return { note: `Restarted: an older copy of this simulator (process ${pid}, started ${new Date(started).toLocaleString()}) was still running from before its files changed.` };
+    }
+  }
+  // not ours to stop: move to a free port when the run command names the port
+  const re = new RegExp(`\\b${port}\\b`);
+  if ((app.run || []).some(c => re.test(c))) {
+    const np = await freePort(), g = new RegExp(`\\b${port}\\b`, 'g');
+    return { run: app.run.map(c => c.replace(g, String(np))), url: app.url.replace(`:${port}`, `:${np}`),
+      note: `Port ${port} is in use by ${who}, so this started on port ${np} instead.` };
+  }
+  throw new Error(`Port ${port} is already in use by ${who}, and this app's port is fixed in its code. Close that program (or restart Anatomy if it is an older copy of this simulator), then try again.`);
+}
+
+async function startApp(id, n) {
   const dir = projectDir(id);
   const m = findManifest(dir); const app = m && m.apps && m.apps[n];
   if (!app) throw new Error('no such app');
   const key = `${id}/${n}`;
-  stopApp(key);
   const cwd = safeJoin(dir, path.posix.join(m._base || '', app.cwd || '.'));
+  const mine = apps.get(key);                                       // started by us and still up: reuse it unless its files changed since
+  if (mine && mine.procs.some(p => p.exitCode === null) && (mine.started || 0) >= newestFile(cwd)) return { url: mine.url || app.url, note: null, reused: true };
+  const had = !!mine;
+  stopApp(key);
+  const port0 = appPortOf(app);                                     // our own copy may need a moment to let go of the port
+  if (had && port0) for (let i = 0; i < 40 && !(await portFree(port0)); i++) await new Promise(r => setTimeout(r, 200));
+  const prep = await preparePort(id, app, cwd);
+  if (prep.reuse) { apps.set(key, { procs: [], log: prep.note + '\n', url: app.url }); return { url: app.url, note: prep.note, reused: true }; }
   const env = cleanEnv();
   const py = projectPython(dir);
   if (py) env.PATH = path.dirname(py) + path.delimiter + env.PATH;   // use the project's own venv first
-  const st = { procs: [], log: '' };
-  for (const cmd of app.run || []) {
+  const st = { procs: [], log: prep.note ? prep.note + '\n' : '', url: prep.url || app.url, started: Date.now() };
+  for (const cmd of prep.run || app.run || []) {
     const p = spawn(cmd, { cwd, env, shell: true, windowsHide: true });
     const add = d => { st.log = (st.log + d.toString('utf8')).slice(-20000); };
     p.stdout.on('data', add); p.stderr.on('data', add);
@@ -355,6 +454,7 @@ function startApp(id, n) {
     st.procs.push(p);
   }
   apps.set(key, st);
+  return { url: st.url, note: prep.note || null };
 }
 function stopApp(key) {
   const st = apps.get(key); if (!st) return;
@@ -550,12 +650,12 @@ const server = http.createServer(async (req, res) => {
       }
       if (action === 'manifest' && req.method === 'GET') {
         const m = findManifest(dir);
-        if (m && m.apps) m.apps = m.apps.map((a, n) => ({ ...a, running: !!apps.get(`${id}/${n}`) }));
+        if (m && m.apps) m.apps = m.apps.map((a, n) => { const st = apps.get(`${id}/${n}`); return { ...a, running: !!st, ...(st && st.url ? { url: st.url } : {}) }; });
         return send(res, 200, m || {});
       }
       if (action === 'apps' && parts[4] !== undefined) {
         const n = Number(parts[4]); const key = `${id}/${n}`;
-        if (parts[5] === 'start' && req.method === 'POST') { try { startApp(id, n); } catch (e) { return send(res, 400, { error: e.message }); } return send(res, 200, { ok: true }); }
+        if (parts[5] === 'start' && req.method === 'POST') { let r; try { r = await startApp(id, n); } catch (e) { return send(res, 400, { error: e.message }); } return send(res, 200, { ok: true, ...r }); }
         if (parts[5] === 'stop' && req.method === 'POST') { stopApp(key); return send(res, 200, { ok: true }); }
         if (parts[5] === 'log' && req.method === 'GET') { const st = apps.get(key); return send(res, 200, { running: !!st, log: st ? st.log : '' }); }
       }

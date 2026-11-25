@@ -35,6 +35,45 @@ Match that depth for the product at hand.
    - **Live checks:** limits, collisions, torque, current and temperature light up while the user drives the twin.
 6. **Hardware link:** the same UI connects to the real device and runs the same tests on it, with a clear SIM / HARDWARE indicator. Ship it disabled until the user connects.
 
+## Runs on the hub (required)
+The user opens most twins from the Anatomy Hub web console (pyrails.com), which serves the project's synced files as
+plain static files at `/anatomy-hub/console/p/<project>/<path>`. There is no sim server, no `/api`, no WebSocket, and no
+`node_modules`, `.venv`, `.pio` or `__pycache__` (they never sync). A twin that only works through its own server opens
+there as an unstyled page stuck on "connecting…", or an error. That has happened on nearly every project, so these
+rules are not optional:
+- **Relative URLs only**, in HTML, CSS, JS, import maps and loaders: `./app.js`, `../vendor/three/...`,
+  `../../prototype/mechanical/assembled/assembly.json`. Never `/vendor/...`, `/api/...`, `/static/...`, `/model/...`.
+  Make the sim server answer the same relative paths (map the project-tree path, e.g. `/prototype/...`), so one set of
+  URLs works on both. A server-only call that the page makes only after detecting its server may stay root-relative
+  if its line carries the comment `simcheck:server-only`.
+- **Vendor files inside the project, outside `node_modules`** (copy three.js `build/three.module.js` and the
+  `examples/jsm` files you import into the sim, e.g. `sim/public/vendor/three/`).
+- **The shared loading screen.** Copy `tools/simcheck/twinload.js` next to the page and load the app through it:
+  `<script src="twinload.js" data-title="Opening the <product> digital twin" data-sub="..." data-entry="app.js"></script>`
+  (keep the import map; drop the page's own `<script type="module" src="app.js">`). It shows real staged progress
+  (engine and code bytes, data, model bytes of total, scene), plain-language errors naming the file and HTTP status,
+  Try again, and a stall timeout. In the app call `TwinLoad.stage('model')` before loading meshes and `TwinLoad.done()`
+  when the scene is up.
+- **Server detection without 404s.** Ship a static `twin-server.json` containing `{"server": false}` next to the page and
+  have the sim server answer `{"server": true}` at the same relative path. Probe that, not `/api/...`.
+- **Browser-only mode when there is no server.** Run the behaviour model in the page (port it to JS, or load the JS/WASM
+  core directly), read saved data by relative path (design numbers, `sim/results/latest.json`, a `static-data/` snapshot
+  with a note on how to regenerate it), and keep the 3D view, controls and live checks working. What truly needs the PC
+  (native firmware, Python-only models, the hardware link, headless test runs) is disabled with a tooltip, under one
+  polite banner: "Browser-only mode: ... runs in Anatomy on your PC". Never an error page, never "connecting…" forever.
+- **The hub check passes** (see below). It is part of finishing the simulator, like the headless tests.
+
+### The hub check
+```
+node <skill>/tools/simcheck/simcheck.mjs <project folder>
+```
+It serves the project like the hub (deep sub-path, unsynced folders hidden, no server), opens every simulator and
+viewer page in headless Chromium, and fails on any root-absolute URL in the page or its scripts, any console error or
+uncaught exception, any failed request or HTTP error, a missing or failed loading screen, a loader that never finishes,
+or a blank canvas. It writes `sim/results/hub-check.json`. Needs Playwright once (the script prints the one-line install).
+Fix every failure in the twin itself and run it again until it passes; then also start the twin through its own server
+(the `anatomy.json` url) and check it still works there.
+
 ## By product type
 - **Robots and mechanisms:** everything above. Add path planning and the payload as an adjustable test fixture.
 - **Mobile robots and vehicles:**
@@ -59,7 +98,8 @@ Match that depth for the product at hand.
 
 ## Quality bar
 - It starts with one click from the Anatomy app (an `anatomy.json` entry) and works with no hardware attached.
-- It also opens and runs in the pyrails.com web console (static files, relative URLs, no server needed).
+- It also opens and runs in the pyrails.com web console (static files, relative URLs, no server needed): the hub check
+  (`tools/simcheck/simcheck.mjs`) passes, and `sim/results/hub-check.json` says so.
 - Every number in the model traces to the design. Put a `sim/README.md` table of parameters, each with its source.
 - All tests run headless, and their results are in `sim/results/latest.json`. Any failure is reported as a design finding, not hidden.
 - Start it yourself, run every scenario, and take screenshots of the twin and the test results before you present it.

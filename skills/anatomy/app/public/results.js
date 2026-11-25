@@ -161,7 +161,15 @@ async function run(el) {
       appsEl.append(card); return;
     }
     const start = btn(a.running ? 'Open' : 'Start', async () => {
-      if (!a.running) { start.disabled = true; start.textContent = 'Starting…'; await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }); a.running = true; await new Promise(r => setTimeout(r, a.startup_ms || 4000)); start.disabled = false; start.textContent = 'Open'; }
+      if (!a.running) {
+        start.disabled = true; start.textContent = 'Starting…';
+        const r = await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }).catch(e => ({ error: e.message }));
+        start.disabled = false; start.textContent = 'Start';
+        if (r && r.error) { appsEl.insertAdjacentHTML('afterbegin', `<div class="alert">${esc(r.error)}</div>`); return; }
+        if (r && r.url) a.url = r.url;
+        if (r && r.note) appsEl.insertAdjacentHTML('afterbegin', `<div class="alert">${esc(r.note)}</div>`);
+        a.running = true; if (!(r && r.reused)) await new Promise(r => setTimeout(r, a.startup_ms || 4000)); start.textContent = 'Open';
+      }
       if (a.url) window.open(a.url, '_blank', 'width=1400,height=900');
       pollLog(n);
     }, 'primary');
@@ -511,7 +519,7 @@ Build a digital twin in sim/ from this project's own assembly and numbers. It ne
 - automated test scenarios traced to the blueprint's requirements, with pass/fail and margins;
 - headless test runs that write sim/results/latest.json;
 - a hardware link that drives the real device from the same UI.
-Add it to anatomy.json as an app with "kind": "simulator", plus a "tests" entry {"cwd", "run", "results"} for the headless run. Start it, run every scenario, look at the result, and report any failures as design findings.`;
+Add it to anatomy.json as an app with "kind": "simulator", plus a "tests" entry {"cwd", "run", "results"} for the headless run. It must also open from the Anatomy Hub with no server (relative URLs, vendor files inside the project, the shared twinload.js loading screen, a browser-only mode): run tools/simcheck/simcheck.mjs of the anatomy skill on this project and fix the twin until it passes. Start it, run every scenario, look at the result, and report any failures as design findings.`;
 async function sim(el) {
   const m = S.manifest || {}, apps = m.apps || [];
   let n = apps.findIndex(a => a.kind === 'simulator');
@@ -533,9 +541,14 @@ async function sim(el) {
   const b = el.querySelector('.b');
   const open = btn('Open simulator', async () => {
     open.disabled = true; open.textContent = 'Starting…';
-    await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }).catch(() => {});
-    await new Promise(r => setTimeout(r, a.startup_ms || 4000)); open.disabled = false; open.textContent = 'Open simulator';
-    if (a.url) window.open(a.url, '_blank', 'width=1500,height=950');
+    const r = await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }).catch(e => ({ error: e.message }));
+    const log = el.querySelector('#simlog');
+    if (r && (r.error || r.note)) { log.classList.remove('hidden'); log.textContent = r.error || r.note; }
+    if (r && r.error) { open.disabled = false; open.textContent = 'Open simulator'; return; }
+    if (!(r && r.reused)) await new Promise(r => setTimeout(r, a.startup_ms || 4000));
+    open.disabled = false; open.textContent = 'Open simulator';
+    const url = (r && r.url) || a.url;
+    if (url) window.open(url, '_blank', 'width=1500,height=950');
   }, 'primary');
   b.append(open);
   if (m.tests && m.tests.run) b.append(btn('Run all tests', async e => {
