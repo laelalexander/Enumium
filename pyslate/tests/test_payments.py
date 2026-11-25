@@ -156,7 +156,7 @@ def test_setup_command_with_real_stripe_objects(tmp_path, monkeypatch):
     env = tmp_path / "pyslate.env"
     env.write_text("PYSLATE_PUBLIC_URL=https://pyslate.com\n# STRIPE_SECRET_KEY=\n# STRIPE_WEBHOOK_SECRET=\n")
     monkeypatch.setattr(setup, "ENV_FILE", env)
-    answers = iter(["sk_test_abc123"])
+    answers = iter(["sk_test_abc123def456"])
     monkeypatch.setattr(setup.getpass, "getpass", lambda prompt="": next(answers))
     monkeypatch.setattr(setup.subprocess, "run", lambda *a, **k: types.SimpleNamespace(returncode=0))
     pager = lambda items: types.SimpleNamespace(auto_paging_iter=lambda: iter(items))  # noqa: E731
@@ -170,7 +170,7 @@ def test_setup_command_with_real_stripe_objects(tmp_path, monkeypatch):
     monkeypatch.setattr(real.billing_portal.Configuration, "create", staticmethod(lambda **k: created.setdefault("portal", k)))
     assert setup.main() == 0
     got = setup.read_env(env)
-    assert got["STRIPE_SECRET_KEY"] == "sk_test_abc123" and got["STRIPE_WEBHOOK_SECRET"] == "whsec_new"
+    assert got["STRIPE_SECRET_KEY"] == "sk_test_abc123def456" and got["STRIPE_WEBHOOK_SECRET"] == "whsec_new"
     assert created["hook"]["url"] == "https://pyslate.com/stripe/webhook" and "portal" in created
 
 
