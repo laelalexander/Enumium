@@ -29,6 +29,12 @@ DEFAULT_PROFILE: dict[str, Any] = {
     "lead_days": {"standard": 7, "rush": 3},
     # Quantity at or above the key gets the multiplier.
     "quantity_breaks": {"1": 1.0, "10": 0.9, "50": 0.8},
+    # Return address printed on Pyslate's own shipping and box labels. Set the real one in
+    # Admin > Rates and machines.
+    "ship_from": {"name": "Pyslate", "address": "Set the shop's return address\nin Rates and machines", "phone": ""},
+    # Who the legal pages (/terms, /privacy, /policies, /copyright) name. Fill in the
+    # registered company name, the state whose law applies and the contact email.
+    "legal": {"company": "Pyslate", "legal_name": "", "state": "", "email": "", "copyright_agent": ""},
     "machines": [
         {
             "id": "bambu",

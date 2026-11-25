@@ -1,8 +1,9 @@
 """What the shop offers, shown on the main page.
 
-"instant" services are priced by uploading a file. "request" services
-(design and documentation work) go through the project request form and
-the shop replies with a quote.
+"instant" services are priced by uploading a file. "print" services (color
+and large format printing) and "request" services (design and documentation
+work) go through the project request form with artwork attached, and the shop
+replies with a quote.
 """
 
 from __future__ import annotations
@@ -19,6 +20,8 @@ ICONS = {
     "system": '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8.5" y="14" width="7" height="7" rx="1"/><path d="M6.5 10v2h11v-2"/><path d="M12 12v2"/>',
     "blueprint": '<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M7 16V9h6v7"/><path d="M7 12h6"/><path d="M16 8v8"/><path d="M15 8h2M15 16h2"/>',
     "schematic": '<path d="M2 12h4l2-4 3 8 3-8 2 4h6"/><circle cx="20" cy="12" r="1"/><circle cx="4" cy="12" r="1"/>',
+    "colorprint": '<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="1.5"/><path d="M7 14h10v7H7z"/><circle cx="17.5" cy="12" r=".6"/>',
+    "wideformat": '<path d="M2 6h20v5H2z"/><path d="M5 11v9h14v-9"/><path d="M8 15h8M8 18h5"/><path d="M18 8.5h1.5"/>',
     "design": '<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
 }
 
@@ -66,6 +69,20 @@ CAPABILITIES = [
         "blurb": "Mild steel and aluminium plate cut on the Tormach 1300PL plasma table.",
     },
     {
+        "slug": "color-printing",
+        "title": "Color Printing",
+        "icon": "colorprint",
+        "kind": "print",
+        "blurb": "Full color prints for posters, signs, photos, menus and labels, on paper, cardstock and vinyl.",
+    },
+    {
+        "slug": "large-format-printing",
+        "title": "Large Format Printing",
+        "icon": "wideformat",
+        "kind": "print",
+        "blurb": "Banners, posters, blueprints and wall graphics up to 44 inches wide, in any length.",
+    },
+    {
         "slug": "injection-molding",
         "title": "Injection Molding",
         "icon": "mold",
@@ -102,7 +119,8 @@ CAPABILITIES = [
     },
 ]
 
-REQUEST_SERVICES = {c["slug"]: c["title"] for c in CAPABILITIES if c["kind"] == "request"}
+REQUEST_SERVICES = {c["slug"]: c["title"] for c in CAPABILITIES if c["kind"] in ("print", "request")}
+KIND_LABELS = {"instant": "Instant quote", "print": "Priced from your artwork", "request": "Quoted by an engineer"}
 
 REQUEST_STATES = ["new", "reviewing", "quoted", "in_progress", "delivered", "declined"]
 REQUEST_LABELS = {
@@ -210,6 +228,31 @@ DETAILS = {
                   ("Files", "DXF"), ("Lead time", "About 7 days, 3 with rush")],
         "line": "plasma",
         "machines": ["1300pl"],
+    },
+    "color-printing": {
+        "headline": "Full color prints, from a single photo to a box of flyers.",
+        "intro": "Send your artwork as a PDF or image, tell us the size, paper and quantity, and we reply with a price, usually the same business day. Prints ship with the rest of your order or are ready for pickup.",
+        "points": [
+            "Posters, flyers, menus, photos and presentation boards",
+            "Product labels and stickers on vinyl",
+            "Matte, satin and gloss paper, cardstock and adhesive vinyl",
+            "We check your file for resolution and bleed before printing",
+        ],
+        "specs": [("Sizes", "Letter, tabloid and custom sizes"), ("Files", "PDF, PNG, JPG, TIFF, SVG"),
+                  ("Artwork", "300 dpi at print size is best"), ("Quote", "Usually the same business day")],
+    },
+    "large-format-printing": {
+        "headline": "Large format prints up to 44 inches wide.",
+        "intro": "Our wide format printer takes rolls up to 44 inches (1118 mm) wide, so posters, banners, maps, blueprints and wall graphics come out in one piece at any length. Send your artwork with the size and media you want, and we reply with a price.",
+        "points": [
+            "Posters, trade show banners and backdrops",
+            "Engineering drawings, blueprints and site plans",
+            "Maps, photo enlargements and wall graphics",
+            "Matte and photo paper, banner vinyl and adhesive vinyl",
+            "Pair them with our design services: we draw it, then print it",
+        ],
+        "specs": [("Max width", "44 in (1118 mm), any length"), ("Files", "PDF, PNG, JPG, TIFF, SVG"),
+                  ("Artwork", "150 dpi at full size is enough for most prints"), ("Quote", "Usually the same business day")],
     },
     "injection-molding": {
         "headline": "Injection molded parts, from mold to production run.",

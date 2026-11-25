@@ -22,7 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 postgres = ["psycopg[binary]>=3.1"]
-dev = ["pytest>=8.0", "httpx>=0.27"]
+dev = ["pytest>=8.0", "httpx>=0.27", "rich>=13.0"]
 
 [build-system]
 requires = ["setuptools>=68"]
@@ -32,7 +32,7 @@ build-backend = "setuptools.build_meta"
 include = ["pyslate*"]
 
 [tool.setuptools.package-data]
-pyslate = ["templates/*.html", "templates/admin/*.html", "templates/library/*.html", "templates/account/*.html", "library/data/*", "static/library/nasa/*", "static/*", "static/vendor/three/*", "static/vendor/opentype/*", "static/vendor/polygon-clipping/*", "static/fonts/*", "static/img/made/*", "static/img/shop/*", "static/img/hero/*"]
+pyslate = ["templates/*.html", "templates/admin/*.html", "templates/library/*.html", "templates/account/*.html", "templates/legal/*.html", "shop_agent/*.md", "shop_agent/*.bat", "shop_agent/*.txt", "library/data/*", "static/library/nasa/*", "static/*", "static/vendor/three/*", "static/vendor/opentype/*", "static/vendor/polygon-clipping/*", "static/fonts/*", "static/img/made/*", "static/img/shop/*", "static/img/hero/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

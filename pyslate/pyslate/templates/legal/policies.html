@@ -1,0 +1,49 @@
+{% extends "legal/_layout.html" %}
+{% block legal %}
+<p class="lead">How orders work at {{ co.name }}, in plain terms. These policies are part of our <a href="/terms">Terms of Service</a>.</p>
+
+<h2 id="orders">Orders and payment</h2>
+<ul>
+  <li>Instant quotes are valid for 30 days. Orders are paid when placed; production starts once payment clears.</li>
+  <li>Every order is checked by our shop. If something can't be made as quoted, we ask you before changing anything.</li>
+  <li>The minimum order is ${{ '%.2f' % profile.minimum_order }}. Orders of 10 or more of a part get a quantity discount, shown on the quote.</li>
+</ul>
+
+<h2 id="leadtimes">Lead times and rush</h2>
+<p>Standard orders ship in about {{ profile.lead_days.standard }} business days, rush orders in about {{ profile.lead_days.rush }}. Rush costs more and is shown on the quote. Engineer-quoted and artwork-quoted work has its own schedule in the quote. Your order page shows each part's progress, from queue to machine to packing.</p>
+
+<h2 id="shipping">Shipping, pickup and delivery</h2>
+<ul>
+  <li>We ship within the United States with USPS, UPS and FedEx, and you can choose local pickup. Each box gets a tracking number, shown on your order page.</li>
+  <li>Check your shipping address before you order. If a package is returned because the address was wrong, we will reship it at your cost.</li>
+  <li><strong>Damaged or lost packages.</strong> Tell us within 7 days of delivery (or of the expected delivery date, for a lost package) with photos of the damage and the box. We will remake or refund the affected parts and handle the carrier claim ourselves.</li>
+</ul>
+
+<h2 id="cancel">Changes and cancellations</h2>
+<ul>
+  <li><strong>Before production starts</strong>, you can change or cancel an order for a full refund.</li>
+  <li><strong>After production starts</strong>, we can still stop the remaining parts. We refund the order minus the parts and material already made or used, which you can have shipped.</li>
+  <li><strong>Once shipped</strong>, an order cannot be cancelled. See returns below.</li>
+  <li>Design services and molds follow the payment and cancellation terms in their written quote.</li>
+</ul>
+
+<h2 id="returns">Returns, remakes and refunds</h2>
+<p>Everything we make is custom, to your file, so we can't accept returns for a change of mind, a wrong file or a design that doesn't fit your project. We do stand behind our work:</p>
+<ul>
+  <li>If a part or print doesn't match your accepted order, or has a defect in our workmanship, tell us within 14 days of delivery with photos.</li>
+  <li>We will remake it at no cost, or refund it if you prefer or a remake isn't possible. We may ask you to send the part back with a prepaid label we provide.</li>
+  <li>Refunds go back to the original payment method, usually within 5 to 10 business days.</li>
+</ul>
+
+<h2 id="prints">Color and large format prints</h2>
+<p>Screens and printers show color differently, so prints are matched as closely as the media allows. Send artwork at print size: 300 dpi for small prints, 150 dpi for large format. We check your file for resolution and bleed and tell you before printing if something looks wrong. Low-resolution artwork you choose to print anyway is not a defect.</p>
+
+<h2 id="files">Your files and confidentiality</h2>
+<p>Your files are used only to quote and make your order, seen only by our shop, and never shared or sold. Need a non-disclosure agreement before you send a design? Ask and we will sign one. You can ask us to delete your files once the order is complete.</p>
+
+<h2 id="acceptable">What we won't make</h2>
+<p>We don't make items that infringe someone else's rights, are illegal to make or ship, or are intended to deceive. See <a href="/terms#prohibited">section 5 of our Terms</a> for the full list.</p>
+
+<h2 id="accounts">Accounts</h2>
+<p>You can order as a guest. With an account you can see all your orders, save quotes and designs, and store your shipping details. You can ask us to close your account at any time; we keep order records as tax and accounting law requires.</p>
+{% endblock %}

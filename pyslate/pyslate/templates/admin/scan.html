@@ -1,0 +1,62 @@
+{% extends "admin/base.html" %}
+{% block title %}Scan · Pyslate shop{% endblock %}
+{% block admin %}
+<h1>Scan</h1>
+<form method="get" action="/admin/scan" class="scan-form">
+  <input name="code" id="scan-code" value="" autofocus autocomplete="off" placeholder="Scan a box label, tracking number or order number"
+         aria-label="Scanned code">
+  <button class="button">Look up</button>
+</form>
+<p class="fine">Point the scanner at any Pyslate box label. It types the code and presses Enter for you.</p>
+
+{% if missing %}<p class="alert">Nothing found for <strong>{{ code }}</strong>.</p>{% endif %}
+
+{% if order %}{% set s = shipment %}{% set here = '/admin/scan?code=' ~ (code | urlencode) %}
+<section class="scan-result scan-{{ order.status }}">
+  <header>
+    <div>
+      <p class="fine mono">{{ code }}</p>
+      <h2>#{{ order.number }} · {{ order.name }}</h2>
+      <p class="scan-status">{{ order.status_label }}{% if found.box %} · box {{ found.box }} of {{ found.boxes }}{% endif %}
+        {% if s and s.packed_at and order.status == 'finishing' %} · packed{% endif %}</p>
+    </div>
+    <div class="job-actions">
+      <a class="button small secondary" href="/admin/order/{{ order.number }}">Order</a>
+      <a class="button small secondary" href="/admin/order/{{ order.number }}/labels" target="_blank">Labels</a>
+      <a class="button small secondary" href="/admin/order/{{ order.number }}/packing-slip" target="_blank">Packing slip</a>
+    </div>
+  </header>
+  <ul class="pack-list">
+    {% for ln in order.quote.lines %}{% set job = order.jobs | selectattr('quote_line_id', 'equalto', ln.id) | first %}
+    <li>{{ ln.quantity }} × {{ ln.part.filename }} <span class="fine">{{ ln.material_id }} · {{ job.label if job else 'not queued' }}</span></li>
+    {% endfor %}
+  </ul>
+  <pre class="address">{{ order.shipping_address }}</pre>
+
+  {% if order.status == 'finishing' and not (s and s.packed_at) %}
+  <form method="post" action="/admin/order/{{ order.number }}/pack" class="inline-form">
+    <input type="hidden" name="back" value="{{ here }}">
+    <label class="fine">Boxes <input type="number" name="packages" value="1" min="1" max="50" class="small-num"></label>
+    <label class="fine">Weight g <input type="number" name="weight_g" min="0" class="small-num"></label>
+    <button class="button">Mark packed</button>
+  </form>
+  {% elif order.status == 'finishing' %}
+  <p><a class="button" href="/admin/order/{{ order.number }}/postage">Buy postage</a></p>
+  <form method="post" action="/admin/order/{{ order.number }}/ship" class="inline-form">
+    <input type="hidden" name="back" value="{{ here }}">
+    <select name="carrier" aria-label="Carrier">{% for key, c in carriers.items() %}<option value="{{ key }}">{{ c[0] }}</option>{% endfor %}</select>
+    <input name="service" placeholder="Service" aria-label="Service">
+    <input name="tracking" placeholder="Scan or type tracking" aria-label="Tracking number">
+    <button class="button">Mark shipped</button>
+  </form>
+  {% elif order.status == 'shipped' %}
+  <p>{{ carrier_name(s.carrier) if s else '' }} {{ order.tracking }}</p>
+  <form method="post" action="/admin/order/{{ order.number }}/delivered"><input type="hidden" name="back" value="{{ here }}">
+    <button class="button">Mark delivered</button></form>
+  {% elif order.status in ('in_queue', 'making') %}
+  <p class="fine">Still being made. <a href="/admin/production">Open Production</a>.</p>
+  {% endif %}
+</section>
+{% endif %}
+<script>document.getElementById('scan-code').focus();</script>
+{% endblock %}

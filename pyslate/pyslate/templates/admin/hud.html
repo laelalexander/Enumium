@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }} · Pyslate HUD</title>
+<style>
+  :root { --bg: #07080a; --panel: #0d0f12; --line: #23262d; --ink: #e8e6e1; --dim: #7c8089; --hot: #ff7a1a;
+          --ok: #39d98a; --warn: #ffc53d; --bad: #ff4d4f; --info: #4cc9f0; --mono: "JetBrains Mono", "Cascadia Mono", ui-monospace, Menlo, Consolas, monospace; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 var(--mono); }
+  body { display: flex; flex-direction: column; gap: 10px; padding: 10px; min-height: 100vh;
+         background-image: repeating-linear-gradient(0deg, rgb(255 255 255 / .018) 0 1px, transparent 1px 3px); }
+  a { color: var(--hot); }
+  .head { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; border: 2px solid var(--hot); padding: 6px 12px; }
+  .badge { background: var(--hot); color: #000; font-weight: 800; padding: 1px 8px; letter-spacing: .08em; }
+  .title { font-weight: 700; letter-spacing: .12em; }
+  .totals { display: flex; gap: 16px; flex-wrap: wrap; margin: 0 auto; }
+  .totals span { color: var(--dim); } .totals b { font-size: 18px; margin-left: 4px; }
+  .right { display: flex; gap: 14px; align-items: center; color: var(--dim); }
+  .right b { color: var(--ink); font-size: 18px; }
+  .link.ok { color: var(--ok); } .link.bad { color: var(--bad); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: .25; } }
+  .tools { display: flex; gap: 8px; align-items: center; }
+  .tools select, .tools button { background: var(--panel); color: var(--ink); border: 1px solid var(--line); font: inherit; padding: 2px 8px; }
+  .machines { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 10px; flex: 1; align-content: start; }
+  .m { border: 1px solid var(--line); background: var(--panel); padding: 8px 10px 10px; position: relative; min-width: 0; }
+  .m.running { border-color: var(--hot); } .m.idle { border-color: #1f5a3b; } .m.offline { border-color: var(--bad); }
+  .m.attention { border-color: var(--warn); }
+  .m h2 { position: absolute; top: -10px; left: 8px; margin: 0; padding: 0 6px; background: var(--bg); font-size: 13px; letter-spacing: .08em; }
+  .state { font-weight: 700; margin: 4px 0; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .state small { color: var(--dim); font-weight: 400; }
+  .s-running { color: var(--hot); } .s-idle { color: var(--ok); } .s-offline { color: var(--bad); } .s-manual { color: var(--dim); }
+  .s-attention, .s-paused, .s-sent { color: var(--warn); }
+  .m.sent { border-color: var(--warn); }
+  .bar { white-space: pre; color: var(--hot); overflow: hidden; } .bar i { color: #2c2f36; font-style: normal; }
+  .job b { color: var(--hot); } .dim { color: var(--dim); }
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; table-layout: fixed; }
+  th { color: var(--dim); font-weight: 400; text-align: left; font-size: 12px; }
+  td, th { padding: 1px 6px 1px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  th.part { width: 44%; } th.n { width: 12%; } .late { color: var(--bad); font-weight: 700; } .soon { color: var(--warn); } .fail { color: var(--bad); }
+  .foot { color: var(--dim); font-size: 12px; margin-top: 6px; }
+  .bottom { display: grid; grid-template-columns: 3fr 2fr; gap: 10px; }
+  .box { border: 1px solid var(--line); padding: 8px 10px; position: relative; min-width: 0; }
+  .box h3 { position: absolute; top: -10px; left: 8px; margin: 0; padding: 0 6px; background: var(--bg); font-size: 12px; letter-spacing: .1em; }
+  .gantt { display: grid; grid-template-columns: 150px 1fr; gap: 3px 8px; font-size: 12px; margin-top: 4px; }
+  .gantt .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track { position: relative; height: 14px; background: repeating-linear-gradient(90deg, #15171b 0 calc(100% / 12 - 1px), #23262d calc(100% / 12 - 1px) calc(100% / 12)); }
+  .seg { position: absolute; top: 2px; bottom: 2px; background: #6b3a12; border-left: 1px solid var(--bg); }
+  .seg.cur { background: var(--hot); } .seg.late { background: var(--bad); }
+  .axis { grid-column: 2; display: flex; justify-content: space-between; color: var(--dim); }
+  .ticker { overflow: hidden; white-space: nowrap; border-top: 1px solid var(--line); padding-top: 6px; }
+  .ticker div { display: inline-block; padding-left: 100%; animation: scroll 60s linear infinite; }
+  .ticker span { margin-right: 32px; } .t-pay { background: var(--info); color: #000; padding: 0 6px; }
+  .t-review { background: var(--warn); color: #000; padding: 0 6px; } .t-ok { color: var(--ok); } .t-bad { color: var(--bad); }
+  @keyframes scroll { to { transform: translateX(-100%); } }
+  .empty { color: var(--dim); padding: 30px; text-align: center; }
+  @media (max-width: 900px) { .bottom { grid-template-columns: 1fr; } .gantt { grid-template-columns: 90px 1fr; } .machines { grid-template-columns: 1fr; } }
+</style></head>
+<body>
+<header class="head">
+  <span class="badge">PYSLATE</span><span class="title" id="title">{{ title }}</span>
+  <div class="totals" id="totals"></div>
+  <div class="tools">
+    <select id="line" aria-label="Line">
+      <option value="">All lines</option><option value="print">3D print</option><option value="laser">Laser</option>
+      <option value="cnc">CNC</option><option value="router">Router</option><option value="plasma">Plasma</option><option value="molding">Molding</option>
+    </select>
+    <button id="fs" title="Full screen (F)">⛶</button>
+    <a href="/admin/production">console</a>
+  </div>
+  <div class="right"><span class="link" id="link">● LINK</span><span id="date"></span><b id="clock"></b></div>
+</header>
+<main class="machines" id="machines"><div class="empty">Loading the shop floor…</div></main>
+<section class="bottom">
+  <div class="box"><h3 id="sched-title">SCHEDULE · NEXT 12H</h3><div class="gantt" id="gantt"></div></div>
+  <div class="box"><h3>ORDERS BY DUE DATE</h3><table><thead><tr><th>ORDER</th><th>CUSTOMER</th><th>PARTS</th><th>DUE</th></tr></thead><tbody id="orders"></tbody></table></div>
+</section>
+<footer class="ticker"><div id="ticker"></div></footer>
+<script>
+(() => {
+  const HOURS = 12, BAR = 28;
+  const params = new URLSearchParams(location.search);
+  const lineSel = document.getElementById('line');
+  lineSel.value = params.get('line') || '';
+  lineSel.onchange = () => { params.set('line', lineSel.value); if (!lineSel.value) params.delete('line'); history.replaceState(null, '', '?' + params); draw(); };
+  const fs = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  document.getElementById('fs').onclick = fs;
+  document.addEventListener('keydown', e => { if (e.key === 'f' || e.key === 'F') fs(); });
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+  const t = iso => iso ? new Date(iso) : null;
+  const hm = d => d ? d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false}) : '--:--';
+  const span = m => m < 60 ? `${Math.round(m)}m` : m < 1440 ? `${Math.floor(m / 60)}h${String(Math.round(m % 60)).padStart(2, '0')}` : `${(m / 1440).toFixed(1)}d`;
+  const due = (iso, now) => {
+    const d = t(iso); if (!d) return ['--', 'dim'];
+    const h = (d - now) / 3.6e6;
+    if (h < 0) return [`LATE ${span(-h * 60)}`, 'late'];
+    const day = d.toLocaleDateString([], {weekday: 'short'}) + ' ' + String(d.getDate()).padStart(2, '0');
+    return [h < 24 ? `${hm(d)} today` : day, h < 24 ? 'soon' : 'dim'];
+  };
+  const bar = pct => { const n = Math.round(BAR * Math.max(0, Math.min(100, pct || 0)) / 100); return '█'.repeat(n) + `<i>${'░'.repeat(BAR - n)}</i>`; };
+  const WORD = {sent: 'SENT · WAITING FOR MACHINE', running: 'RUNNING', idle: 'IDLE', offline: 'OFFLINE', manual: 'MANUAL', attention: 'NEEDS OPERATOR', paused: 'PAUSED'};
+
+  let feed = null, ok = false;
+  function machineCard(m, now) {
+    const waiting = m.current && ['pending', 'claimed'].includes(m.current.run_state);
+    const st = m.current ? (waiting ? 'sent' : 'running') : (m.state || 'manual');
+    const cur = m.current;
+    let html = `<h2>${esc(m.name.toUpperCase())}</h2><div class="state s-${st}">■ ${WORD[st] || st.toUpperCase()}`;
+    if (cur && !waiting) html += ` <span>${cur.progress ?? 0}%</span> <small>${cur.minutes_left ? span(cur.minutes_left) + ' left' : ''}</small>`;
+    else if (m.detail) html += ` <small>${esc(m.detail)}</small>`;
+    html += '</div>';
+    if (cur) {
+      html += `<div class="bar">${bar(cur.progress)}</div>`;
+      html += `<div class="job"><b>#${cur.order}</b> ${esc(cur.part)} <span class="dim">×${cur.copies} ${esc(cur.material)}</span></div>`;
+      if (cur.message) html += `<div class="dim">${esc(cur.run_label)}: ${esc(cur.message)}</div>`;
+    }
+    if (m.queue.length) {
+      html += '<table><thead><tr><th class="n">ORD</th><th class="part">PART</th><th class="n">QTY</th><th>START</th><th>DUE</th></tr></thead><tbody>';
+      for (const q of m.queue.slice(0, 6)) {
+        const [dt, cls] = due(q.due, now);
+        html += `<tr><td>${q.order}</td><td class="part ${q.state === 'failed' ? 'fail' : ''}">${esc(q.part)}${q.state === 'failed' ? ' ✖' : ''}</td>`
+              + `<td>${q.quantity - q.made}</td><td>${hm(t(q.start))}</td><td class="${q.late ? 'late' : cls}">${dt}</td></tr>`;
+      }
+      html += '</tbody></table>';
+      if (m.queue.length > 6) html += `<div class="dim">+ ${m.queue.length - 6} more</div>`;
+    } else if (!cur) html += '<div class="dim">queue empty</div>';
+    if (m.queued_minutes > 0) html += `<div class="foot">busy until ${hm(t(m.busy_until))} · ${span(m.queued_minutes)} of work</div>`;
+    return `<article class="m ${st}">${html}</article>`;
+  }
+
+  function draw() {
+    if (!feed) return;
+    const now = new Date(), line = lineSel.value;
+    const machines = feed.machines.filter(m => !line || m.line === line);
+    const T = feed.totals;
+    document.getElementById('totals').innerHTML = [['QUEUED', T.queued, 'var(--ink)'], ['RUNNING', T.running, 'var(--hot)'],
+      ['LATE', T.late, T.late ? 'var(--bad)' : 'var(--ink)'], ['DONE 24H', T.done_24h, 'var(--ok)'], ['TO SHIP', T.to_ship, 'var(--info)'],
+      ['AWAITING PAY', (feed.awaiting_payment || []).length, 'var(--info)']]
+      .map(([k, v, c]) => `<span>${k}<b style="color:${c}">${v}</b></span>`).join('');
+    document.getElementById('machines').innerHTML = machines.length ? machines.map(m => machineCard(m, now)).join('')
+      : '<div class="empty">No machines on this line.</div>';
+
+    // Schedule: each machine's current run and queue laid end to end over the next 12 hours.
+    const start = now.getTime(), width = HOURS * 3.6e6;
+    let g = '';
+    for (const m of machines.slice(0, 12)) {
+      let segs = '';
+      const add = (a, b, cls, label) => {
+        const l = Math.max(0, (a - start) / width), r = Math.min(1, (b - start) / width);
+        if (r > l) segs += `<span class="seg ${cls}" style="left:${l * 100}%;width:${(r - l) * 100}%" title="${esc(label)}"></span>`;
+      };
+      if (m.current) add(start, start + (m.current.minutes_left || 0) * 6e4, 'cur', `#${m.current.order} ${m.current.part}`);
+      for (const q of m.queue) add(t(q.start).getTime(), t(q.end).getTime(), q.late ? 'late' : '', `#${q.order} ${q.part}`);
+      g += `<span class="name">${esc(m.name)}</span><span class="track">${segs}</span>`;
+    }
+    const ticks = Array.from({length: 5}, (_, i) => hm(new Date(start + i * width / 4)));
+    document.getElementById('gantt').innerHTML = g + `<div class="axis">${ticks.map(x => `<span>${x}</span>`).join('')}</div>`;
+
+    document.getElementById('orders').innerHTML = feed.orders.slice(0, 10).map(o => {
+      const [dt, cls] = due(o.due, now);
+      return `<tr><td>#${o.order}</td><td>${esc(o.customer)}</td><td>${esc(o.status)} <span class="dim">${o.jobs_done}/${o.jobs}</span></td><td class="${o.late ? 'late' : cls}">${dt}</td></tr>`;
+    }).join('') || '<tr><td colspan="4" class="dim">no open orders</td></tr>';
+
+    let tk = '';
+    if ((feed.awaiting_payment || []).length) tk += `<span class="t-pay">$ AWAITING PAYMENT ${feed.awaiting_payment.slice(0, 5).map(a => '#' + a.order).join(' ')}</span>`;
+    for (const r of feed.review) tk += `<span class="t-review">◆ NEEDS MACHINE #${r.order} ${esc(r.part)}</span>`;
+    for (const e of feed.events) {
+      const good = e.state === 'done';
+      tk += `<span class="${good ? 't-ok' : 't-bad'}">${good ? '✔' : '✖'} ${hm(t(e.at))} ${esc(e.machine_id.toUpperCase())} #${e.order} ${esc(e.part)} ×${e.copies}</span>`;
+    }
+    document.getElementById('ticker').innerHTML = tk || '<span class="dim">nothing finished in the last 24 hours</span>';
+  }
+
+  function clock() {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString([], {hour12: false});
+    document.getElementById('date').textContent = now.toLocaleDateString([], {weekday: 'short', day: '2-digit', month: 'short'});
+    const link = document.getElementById('link');
+    link.textContent = ok ? '● LINK' : '● NO LINK'; link.className = 'link ' + (ok ? 'ok' : 'bad');
+  }
+
+  async function pull() {
+    try {
+      const r = await fetch('/admin/production/board.json', {cache: 'no-store', credentials: 'same-origin'});
+      if (r.status === 401 || r.status === 403 || r.redirected) { location.href = '/admin/login'; return; }
+      if (!r.ok) throw new Error(r.status);
+      feed = await r.json(); ok = true; draw();
+    } catch (e) { ok = false; }
+    clock();
+  }
+  pull(); setInterval(pull, 5000); setInterval(clock, 1000); setInterval(draw, 30000);
+})();
+</script>
+</body></html>

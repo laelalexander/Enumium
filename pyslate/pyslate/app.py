@@ -19,10 +19,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from . import __version__, catalog, payments, services, studio
-from . import accounts, library
+from . import accounts, legal, library, production, shopops
 from . import geometry as geo
 from .config import Settings, settings as default_settings
-from .models import ORDER_LABELS, CustomerOrder, Job, Order, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
+from .models import ORDER_LABELS, CustomerOrder, Shipment, Job, Order, OrderEvent, Part, Quote, QuoteLine, ServiceRequest, make_session_factory
 from .routing import compatible_materials
 
 HERE = Path(__file__).parent
@@ -42,7 +42,7 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     templates = Jinja2Templates(directory=HERE / "templates")
     templates.env.globals.update(
         order_labels=ORDER_LABELS, stripe_enabled=cfg.stripe_enabled, version=__version__,
-        capabilities=catalog.CAPABILITIES, request_services=catalog.REQUEST_SERVICES,
+        capabilities=catalog.CAPABILITIES, request_services=catalog.REQUEST_SERVICES, kind_labels=catalog.KIND_LABELS,
         request_labels=catalog.REQUEST_LABELS, icon_svg=catalog.icon_svg,
     )
     templates.env.filters["money"] = lambda v: f"${v:,.2f}"
@@ -456,28 +456,51 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         db: Session = Depends(get_db),
     ):
         order = load_order(db, number, t)
+        if paid and cfg.stripe_enabled and order.status == "awaiting_payment" and payments.check_session(order, cfg):
+            services.mark_paid(db, order, "Paid by card through Stripe")
         customer = app.state.current_customer(request, db)
         owned = customer is not None and db.get(CustomerOrder, (customer.id, order.id)) is not None
         profile = services.get_profile(db)
         names = {ln.material_id: (profile.material(ln.material_id) or {}).get("name", ln.material_id)
                  for ln in order.quote.lines if ln.material_id}
+        jobs = {j.quote_line_id: j for j in order.jobs}
+        progress = {ln.id: production.part_progress(profile, jobs.get(ln.id)) for ln in order.quote.lines}
         return render(request, "order.html", order=order, just_paid=bool(paid), payment_error=bool(payment_error),
                       customer=customer, owned=owned, added=request.query_params.get("added") == "1",
-                      material_names=names)
+                      material_names=names, progress=progress, shipment=db.get(Shipment, order.id),
+                      tracking_url=shopops.tracking_url, carrier_name=shopops.carrier_name)
 
     @app.post("/stripe/webhook")
     async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         try:
-            _, order_id = payments.parse_webhook(
+            _, paid = payments.parse_webhook(
                 await request.body(), request.headers.get("stripe-signature", ""), cfg
             )
         except payments.PaymentError as exc:
             raise HTTPException(400, str(exc)) from exc
-        if order_id:
-            order = db.get(Order, order_id)
-            if order is not None:
+        order = db.get(Order, paid["order_id"]) if paid and paid["order_id"] else None
+        if order is not None:
+            if payments.matches(order, paid):
                 services.mark_paid(db, order, "Paid by card through Stripe")
+            elif order.status == "awaiting_payment":
+                order.events.append(OrderEvent(status="awaiting_payment",
+                                               note="Stripe reported a payment that doesn't match this order. Check Stripe."))
+                db.commit()
         return JSONResponse({"received": True})
+
+    @app.post("/order/{number}/pay")
+    def pay_order(request: Request, number: int, t: str = Form(""), db: Session = Depends(get_db)):
+        """Start (or restart) card payment for an order that is still waiting for it."""
+        order = load_order(db, number, t)
+        order_url = f"/order/{order.number}?t={order.access_token}"
+        if not cfg.stripe_enabled or order.status != "awaiting_payment":
+            return RedirectResponse(order_url, status_code=303)
+        try:
+            url = payments.create_checkout(order, cfg, app.state.current_customer(request, db))
+            db.commit()
+        except payments.PaymentError:
+            return RedirectResponse(order_url + "&payment_error=1", status_code=303)
+        return RedirectResponse(url, status_code=303)
 
     @app.get("/request", response_class=HTMLResponse)
     def request_form(request: Request, service: str = ""):
@@ -576,12 +599,13 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
         return render(request, "admin/order.html", order=order, profile=services.get_profile(db).data)
 
     @app.post("/admin/order/{number}/paid", dependencies=[Depends(require_admin)])
-    def admin_mark_paid(number: int, db: Session = Depends(get_db)):
+    def admin_mark_paid(number: int, back: str = Form(""), db: Session = Depends(get_db)):
         order = db.scalar(select(Order).where(Order.number == number))
         if order is None:
             raise HTTPException(404)
         services.mark_paid(db, order, "Payment recorded by the shop")
-        return RedirectResponse(f"/admin/order/{number}", status_code=303)
+        to = back if back.startswith("/admin") else f"/admin/order/{number}"
+        return RedirectResponse(to, status_code=303)
 
     @app.post("/admin/order/{number}/status", dependencies=[Depends(require_admin)])
     def admin_order_status(
@@ -667,5 +691,8 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     app.state.settings = cfg
     library.register(app, render, get_db, cfg)
     accounts.register(app, render, get_db, cfg)
+    production.register(app, render, get_db, cfg, require_admin)
+    shopops.register(app, render, get_db, cfg, require_admin)
+    legal.register(app, render, get_db)
 
     return app

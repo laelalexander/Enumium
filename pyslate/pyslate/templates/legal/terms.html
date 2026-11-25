@@ -1,0 +1,65 @@
+{% extends "legal/_layout.html" %}
+{% block legal %}
+<p class="lead">These terms are the agreement between you and {{ co.who }} ("{{ co.name }}", "we", "us") for using {{ co.name | lower }}.com and for ordering parts, prints and design work from our shop. By creating an account, uploading a file or placing an order, you agree to them. Our <a href="/policies">Shop Policies</a>, <a href="/privacy">Privacy Policy</a> and <a href="/copyright">Copyright and IP</a> page are part of these terms.</p>
+
+<h2 id="accounts">1. Your account</h2>
+<p>You can order as a guest or with an account. If you open an account, give us accurate details, keep your password private and tell us if you think someone else is using it. You are responsible for orders placed from your account. You must be at least 18, or have a parent or guardian place the order. We may suspend or close an account that breaks these terms; open orders are then completed or refunded.</p>
+
+<h2 id="quotes">2. Quotes and orders</h2>
+<ul>
+  <li><strong>Instant quotes</strong> are calculated from your file, material, quantity and lead time. They are valid for 30 days, while the materials stay available.</li>
+  <li><strong>Engineer and artwork quotes</strong> (injection molding, design services, color and large format printing) are written for your project and state what is included.</li>
+  <li><strong>Review.</strong> We check every order before production. If a part cannot be made as quoted, we contact you before going further. We never charge more than the price you accepted without your agreement; you can accept a revised price or cancel for a full refund.</li>
+  <li>An order is accepted when we confirm it by email or on your order page. We may decline any order, for example one that breaks section 5, with a full refund.</li>
+</ul>
+
+<h2 id="payment">3. Prices, payment and taxes</h2>
+<p>Prices are in US dollars. Orders are paid when placed, by card through our payment processor, Stripe, or by another method we agree in writing. We do not see or store your full card number. Applicable sales tax and shipping are shown before you pay. Orders below our minimum are topped up to the minimum, which is shown on the quote.</p>
+
+<h2 id="files">4. Your files and designs</h2>
+<p>You keep all rights to the files, drawings, artwork and ideas you send us. You give us a limited licence to store, view, copy and modify them only as needed to quote, review, make, ship and support your order. We do not sell your files, publish them, or use them to make parts for anyone else. You confirm that you own your files or have permission to have them made and, for prints, reproduced.</p>
+
+<h2 id="prohibited">5. What we will not make</h2>
+<p>We will not make, print or ship anything that:</p>
+<ul>
+  <li>copies someone else's copyrighted work, trademark, logo or patented product without their permission;</li>
+  <li>is illegal to make, own or ship where you or we are, including firearm frames or receivers, silencers or suppressors, and parts made to convert a firearm to automatic fire;</li>
+  <li>is meant to deceive, such as counterfeit goods, fake IDs, badges or currency, or keys and tools for unlawful entry;</li>
+  <li>contains hateful, harassing or sexually explicit content involving minors, or content that defames a real person;</li>
+  <li>is intended to be used as a medical device, or in a load-bearing, aircraft, vehicle or life-safety application, unless we have agreed to it in writing.</li>
+</ul>
+<p>We may refuse or cancel an order we believe falls into these categories and refund it.</p>
+
+<h2 id="making">6. Making your order</h2>
+<p>Parts are made to order on our 3D printers, lasers, CNC mills, router, plasma table and molding machines. Each process has normal limits: layer lines and small variations on 3D prints, kerf and edge marks on cut parts, tool marks on machined parts, and slight color variation between material batches and between screen and print. Unless your quote lists tighter tolerances or a finish, parts are made to our standard process tolerances. Prints are matched to your file as closely as the printer and media allow; we do not guarantee exact color matching unless agreed in writing.</p>
+
+<h2 id="leadtimes">7. Lead times and delivery</h2>
+<p>Lead times are business days from when the order is accepted and paid: about {{ profile.lead_days.standard }} days standard and {{ profile.lead_days.rush }} with rush. They are estimates, not guarantees, though we will tell you as soon as we know an order will be late. We ship with USPS, UPS or FedEx, or you can pick up from the shop. Delivery dates from carriers are their estimates. See <a href="/policies#shipping">Shipping</a> for lost and damaged packages.</p>
+
+<h2 id="cancel">8. Changes, cancellations, remakes and refunds</h2>
+<p>Because everything is custom made, our <a href="/policies#returns">Shop Policies</a> describe when you can cancel, and how we remake or refund defective or damaged parts. Nothing in these terms limits rights you have under consumer law that cannot be waived.</p>
+
+<h2 id="design">9. Design and engineering services</h2>
+<p>For design, blueprint, schematic, system design and product design work, the written quote sets the scope, price, deliverables and number of revisions. When you have paid in full, you own the deliverables made for you (models, drawings, schematics and files), and we assign our copyright in them to you. We keep ownership of our general know-how, tools, templates and standard parts, and you get a permanent licence to use any of them that end up in your deliverables. We may show non-confidential work in our portfolio only with your permission. If you need a non-disclosure agreement, ask before sending details.</p>
+
+<h2 id="library">10. The design library and design studio</h2>
+<p>Designs in our <a href="/designs">design library</a> come with the licence shown on each design. Most allow you to make and sell items from them; some require credit to the original artist. Pyslate originals may be made, changed and sold as finished items, but the design files may not be resold or shared as files. Designs you make in the design studio are yours.</p>
+
+<h2 id="site">11. Our website</h2>
+<p>The site, its text, photos, graphics, software and the {{ co.name }} name and logo belong to {{ co.legal_name }} or our licensors and are protected by copyright and trademark law. You may use the site to get quotes and place orders, but not copy or resell it, scrape it in bulk, interfere with its security or operation, or upload malware. We may change or pause parts of the site.</p>
+
+<h2 id="warranty">12. Our warranty</h2>
+<p>We warrant that parts and prints match your accepted order and are free of defects in our workmanship when delivered. If they are not, your remedy is a remake or a refund as described in our <a href="/policies#returns">Shop Policies</a>. We make parts to your design and do not warrant that your design is fit for your purpose, safe or free of infringement. Except for this warranty and any rights you have by law, the site and our products are provided "as is", without other warranties, including merchantability and fitness for a particular purpose.</p>
+
+<h2 id="liability">13. Limits on our liability</h2>
+<p>To the extent the law allows, we are not liable for indirect, incidental, special or consequential losses, lost profits or lost data, and our total liability for any claim about an order is limited to the amount you paid for that order. These limits do not apply to liability that cannot be limited by law, such as for fraud or for personal injury caused by our negligence.</p>
+
+<h2 id="indemnity">14. Your responsibility for your files</h2>
+<p>If someone makes a claim against us because a file, design or artwork you sent infringes their rights, or because of how you use the parts we made to your design, you agree to cover our reasonable costs of that claim, including legal fees.</p>
+
+<h2 id="law">15. Governing law and disputes</h2>
+<p>These terms are governed by the laws of {{ co.law }} and of the United States, without regard to conflict-of-law rules. Please contact us first; most problems are solved quickly. If we can't resolve it, disputes go to the state or federal courts serving {{ co.law if co.state else 'our shop' }}, unless the law where you live gives you the right to bring a claim there, or the claim qualifies for small claims court.</p>
+
+<h2 id="changes">16. Changes to these terms</h2>
+<p>We may update these terms. The date at the top shows the latest version. Changes apply to orders placed after that date; an order is always governed by the terms in place when you placed it.</p>
+{% endblock %}

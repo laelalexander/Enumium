@@ -106,8 +106,9 @@ def test_full_order_flow(app, client, cube_stl, plate_stl):
         assert {j.line for j in jobs} == {"print", "laser"}
         job_ids = [j.id for j in jobs]
 
-    queue = client.get("/admin").text
+    queue = client.get("/admin/production").text
     assert "cube.stl" in queue and "plate.stl" in queue
+    assert "Bambu Lab printer" in client.get("/admin").text
 
     client.post(f"/admin/job/{job_ids[0]}", data={"state": "running"})
     assert "Making" in client.get(order_url).text
@@ -384,3 +385,43 @@ def test_studio_hides_lathe_and_molder(client):
 def test_new_capability_pages(client):
     for slug, word in (("cnc-routing", "24R"), ("plasma-cutting", "1300PL"), ("injection-molding", "Noitavonne")):
         assert word in client.get(f"/capabilities/{slug}").text
+
+
+def test_print_services_take_artwork(client):
+    menu = client.get("/").text
+    assert "Color Printing" in menu and "Large Format Printing" in menu and "Priced from your artwork" in menu
+    page = client.get("/capabilities/large-format-printing").text
+    assert "44 in (1118 mm)" in page and "/request?service=large-format-printing" in page
+    assert 'value="color-printing"' in client.get("/request?service=color-printing").text
+
+
+def test_legal_pages(client, app):
+    for path, words in {"/terms": "Governing law", "/privacy": "We do not sell your personal information",
+                        "/policies": "Returns, remakes and refunds", "/copyright": "Copyright Agent"}.items():
+        r = client.get(path)
+        assert r.status_code == 200 and words in r.text
+    assert "the state where our shop is located" in client.get("/terms").text
+    home = client.get("/").text
+    assert 'href="/terms"' in home and "All rights reserved" in home
+    with app.state.session_factory() as db:
+        from pyslate import services
+        data = dict(services.get_profile(db).data)
+        data["legal"] = {"company": "Pyslate", "legal_name": "Pyslate LLC", "state": "Texas", "email": "legal@pyslate.com"}
+        services.save_profile(db, data)
+        db.commit()
+    terms = client.get("/terms").text
+    assert "State of Texas" in terms and "Pyslate LLC (doing business as Pyslate)" in terms and "legal@pyslate.com" in terms
+    assert "Copyright Agent, legal@pyslate.com" in client.get("/copyright").text
+
+
+def test_every_template_folder_is_packaged():
+    """A template folder left out of package-data works in tests but 500s on the server."""
+    import tomllib
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    data = tomllib.loads((root / "pyproject.toml").read_text())["tool"]["setuptools"]["package-data"]["pyslate"]
+    for folder in (root / "pyslate" / "templates").rglob("*"):
+        if folder.is_dir() and any(folder.glob("*.html")) and folder.name != "__pycache__":
+            rel = folder.relative_to(root / "pyslate").as_posix()
+            assert f"{rel}/*.html" in data, f"{rel} is missing from package-data in pyproject.toml"

@@ -1,0 +1,72 @@
+{% extends "admin/base.html" %}
+{% block title %}Postage #{{ order.number }} · Pyslate shop{% endblock %}
+{% block admin %}
+<div class="prod-head">
+  <h1>Buy postage · #{{ order.number }}</h1>
+  <a class="button small secondary" href="/admin/shipping">Pack and ship</a>
+  <p class="fine">Straight from the carrier with the shop's own UPS, FedEx and USPS accounts.</p>
+</div>
+
+{% if error %}<p class="alert">{{ error }}</p>{% endif %}
+{% for p in problems %}<p class="alert">{{ p }}</p>{% endfor %}
+
+{% if not connected %}
+<section class="card">
+  <h2>No carrier connected yet</h2>
+  <p>Add the shop's carrier API keys to <code>/etc/pyslate.env</code> on the server, then run <code>systemctl restart pyslate</code>.
+     Start with the test setting so no real postage is charged.</p>
+  <pre class="fine">UPS_CLIENT_ID=…  UPS_CLIENT_SECRET=…  UPS_ACCOUNT=…  UPS_ENV=test
+FEDEX_CLIENT_ID=…  FEDEX_CLIENT_SECRET=…  FEDEX_ACCOUNT=…  FEDEX_ENV=test
+USPS_CLIENT_ID=…  USPS_CLIENT_SECRET=…  USPS_CRID=…  USPS_MID=…  USPS_EPS_ACCOUNT=…  USPS_ENV=test</pre>
+  <p class="fine">Until then, ship with a label made elsewhere and type the tracking number on Pack and ship.</p>
+</section>
+{% endif %}
+
+<form method="get" action="/admin/order/{{ order.number }}/postage" class="postage-addresses">
+  {% for side, title in (('from', 'Ship from'), ('to', 'Ship to')) %}
+  <fieldset class="card">
+    <legend>{{ title }}</legend>
+    {% for key, label in (('name', 'Name'), ('company', 'Company'), ('street1', 'Street'), ('street2', 'Street line 2'),
+                          ('city', 'City'), ('state', 'State'), ('postal', 'ZIP'), ('phone', 'Phone')) %}
+    <label class="fine">{{ label }} <input name="{{ side }}_{{ key }}" value="{{ fields.get(side ~ '_' ~ key, '') }}"></label>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
+  <div class="send-actions"><button class="button small secondary">Get rates for these addresses</button></div>
+</form>
+
+{% if parcels %}
+<p class="fine">{{ parcels | length }} box{{ 'es' if parcels | length > 1 else '' }} ·
+  {% for p in parcels %}{{ '%.2f' % p.weight_lb }} lb{% set d = p.dims_in() %}{% if d %} ({{ d[0] }} × {{ d[1] }} × {{ d[2] }} in){% endif %}{{ ', ' if not loop.last }}{% endfor %}
+  · <a href="/admin/shipping">change on Pack and ship</a></p>
+{% endif %}
+
+{% for code, msg in errors.items() %}<p class="alert">{{ all_carriers[code][0] }}: {{ msg }}</p>{% endfor %}
+
+{% if rates %}
+<table class="table rates">
+  <thead><tr><th>Carrier</th><th>Service</th><th>Arrives</th><th class="num">Price</th><th></th></tr></thead>
+  <tbody>
+  {% for r in rates %}
+  <tr>
+    <td>{{ all_carriers[r.carrier][0] }}</td>
+    <td>{{ r.name }}</td>
+    <td>{% if r.days %}{{ r.days }} day{{ 's' if r.days > 1 }}{% else %}<span class="fine">n/a</span>{% endif %}</td>
+    <td class="num">${{ '%.2f' % r.amount }}</td>
+    <td>
+      <form method="post" action="/admin/order/{{ order.number }}/postage">
+        <input type="hidden" name="carrier" value="{{ r.carrier }}">
+        <input type="hidden" name="service" value="{{ r.service }}">
+        <input type="hidden" name="service_name" value="{{ r.name }}">
+        {% for k, v in fields.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+        <button class="button small">Buy label</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% elif connected and not problems %}
+<p class="fine">No rates came back. Check the addresses and the packed weight.</p>
+{% endif %}
+{% endblock %}

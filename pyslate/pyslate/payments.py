@@ -79,8 +79,43 @@ def create_checkout(order: Order, settings: Settings, customer: Customer | None 
     return session.url
 
 
-def parse_webhook(payload: bytes, signature: str, settings: Settings) -> tuple[str, str | None]:
-    """Verify a Stripe webhook. Returns (event type, order id or None)."""
+PAID_EVENTS = ("checkout.session.completed", "checkout.session.async_payment_succeeded")
+
+
+def as_dict(obj) -> dict:
+    """Stripe's objects stopped acting like dicts (no .get); turn them into plain dicts."""
+    if isinstance(obj, dict) and type(obj) is dict:
+        return obj
+    to_dict = getattr(obj, "to_dict", None)
+    return to_dict() if callable(to_dict) else dict(obj)
+
+
+def session_payment(obj) -> dict | None:
+    """The order id, amount and currency of a paid Checkout session, or None if it isn't paid yet."""
+    obj = as_dict(obj)
+    if obj.get("payment_status") != "paid":
+        return None
+    return {
+        "order_id": (obj.get("metadata") or {}).get("order_id"),
+        "session_id": obj.get("id"),
+        "amount": obj.get("amount_total"),
+        "currency": (obj.get("currency") or "").lower(),
+    }
+
+
+def matches(order: Order, paid: dict | None) -> bool:
+    """A payment counts only for the right order, session and full amount."""
+    return bool(
+        paid
+        and paid["order_id"] == order.id
+        and (not order.stripe_session_id or paid["session_id"] == order.stripe_session_id)
+        and paid["amount"] == order.total_cents
+        and paid["currency"] == "usd"
+    )
+
+
+def parse_webhook(payload: bytes, signature: str, settings: Settings) -> tuple[str, dict | None]:
+    """Verify a Stripe webhook. Returns (event type, the paid session's details or None)."""
     import stripe
 
     if not settings.stripe_webhook_secret:
@@ -89,8 +124,23 @@ def parse_webhook(payload: bytes, signature: str, settings: Settings) -> tuple[s
         event = stripe.Webhook.construct_event(payload, signature, settings.stripe_webhook_secret)
     except (ValueError, stripe.SignatureVerificationError) as exc:
         raise PaymentError("Invalid webhook") from exc
-    obj = event["data"]["object"]
-    order_id = None
-    if event["type"] == "checkout.session.completed" and obj.get("payment_status") == "paid":
-        order_id = (obj.get("metadata") or {}).get("order_id")
-    return event["type"], order_id
+    paid = session_payment(event["data"]["object"]) if event["type"] in PAID_EVENTS else None
+    return event["type"], paid
+
+
+def check_session(order: Order, settings: Settings) -> bool:
+    """Ask Stripe directly whether the order's Checkout session is paid.
+
+    Used when the customer comes back from Stripe, so the order is confirmed even if
+    the webhook is slow or not set up yet.
+    """
+    import stripe
+
+    if not order.stripe_session_id:
+        return False
+    stripe.api_key = settings.stripe_secret_key
+    try:
+        obj = stripe.checkout.Session.retrieve(order.stripe_session_id)
+    except stripe.StripeError:
+        return False
+    return matches(order, session_payment(obj))

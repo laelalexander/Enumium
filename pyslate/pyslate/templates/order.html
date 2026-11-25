@@ -14,9 +14,19 @@
     {% else %}<p class="fine"><a href="/account/signup">Create an account</a> to keep all your orders in one place.</p>{% endif %}
   </div>
   {% if just_paid and order.status == 'awaiting_payment' %}
-  <p class="notice">Thanks! We are confirming your payment. This page will update in a minute.</p>
+  <p class="notice">Thanks! We are confirming your payment with Stripe. This page will update in a few seconds.</p>
+  <script>setTimeout(() => location.reload(), 5000);</script>
+  {% elif just_paid and order.paid_at %}
+  <p class="notice">Payment received, thank you. Your parts are in the production queue.</p>
   {% elif payment_error %}
-  <p class="alert">We could not start card payment. Your order is saved and the shop will email you payment details.</p>
+  <p class="alert">We couldn't start card payment just now. Your order is saved. {% if stripe_enabled %}Try the button below again in a minute.{% else %}The shop will email you payment details.{% endif %}</p>
+  {% endif %}
+  {% if order.status == 'awaiting_payment' and stripe_enabled and not just_paid %}
+  <form method="post" action="/order/{{ order.number }}/pay" class="pay-now">
+    <input type="hidden" name="t" value="{{ order.access_token }}">
+    <div><strong>Waiting for payment</strong><span class="fine">Your parts go into the production queue as soon as you pay. Cards are handled by Stripe.</span></div>
+    <button class="button">Pay {{ order.total_cents | cents }} by card</button>
+  </form>
   {% endif %}
 
   <ol class="tracker">
@@ -26,7 +36,16 @@
     {% endfor %}
   </ol>
   {% if order.status == 'cancelled' %}<p class="alert">This order was cancelled.</p>{% endif %}
-  {% if order.tracking %}<p>Tracking: <strong>{{ order.tracking }}</strong></p>{% endif %}
+  {% if shipment and shipment.shipped_at %}
+  {% set turl = tracking_url(shipment.carrier, shipment.tracking) %}
+  <p class="notice ship-note">
+    {% if shipment.carrier == 'pickup' %}Your order is ready for pickup at the shop.
+    {% elif shipment.carrier == 'delivery' %}Your order is out for delivery from the shop.
+    {% else %}Shipped with <strong>{{ carrier_name(shipment.carrier) }}{% if shipment.service %} {{ shipment.service }}{% endif %}</strong>
+      {% if shipment.tracking %} · tracking {% if turl %}<a href="{{ turl }}" rel="noopener" target="_blank">{{ shipment.tracking }}</a>{% else %}{{ shipment.tracking }}{% endif %}{% endif %}
+      {% if shipment.packages > 1 %} · {{ shipment.packages }} boxes{% endif %}{% endif %}
+  </p>
+  {% elif order.tracking %}<p>Tracking: <strong>{{ order.tracking }}</strong></p>{% endif %}
 
   <div class="order-grid">
     <section>
@@ -36,6 +55,12 @@
         <tbody>
         {% for line in order.quote.lines %}
         <tr><td>{{ line.part.filename }}</td><td>{{ material_names.get(line.material_id, line.material_id) if material_names else line.material_id }}</td><td>{{ line.quantity }}</td><td>{{ line.price.total | money }}</td></tr>
+        {% if progress and order.status not in ('awaiting_payment', 'cancelled') %}{% set p = progress[line.id] %}
+        <tr class="part-progress"><td colspan="4">
+          <div class="pp-line"><span class="pp-step pp-{{ p.step }}">{{ p.text }}</span>{% if p.pct is not none %}<span class="fine">{{ p.pct }}%</span>{% endif %}</div>
+          <div class="bar"><span style="width: {{ p.pct if p.pct is not none else (100 if p.step >= 3 else 0) }}%"></span></div>
+        </td></tr>
+        {% endif %}
         {% endfor %}
         </tbody>
         <tfoot><tr><td colspan="3">Total</td><td>{{ order.total_cents | cents }}</td></tr></tfoot>
@@ -43,7 +68,7 @@
       <p class="fine">Ships {{ order.lead_days }} days after payment.</p>
     </section>
     <section>
-      <h2>History</h2>
+      <h2>Journey</h2>
       <ul class="events">
         {% for e in order.events | reverse %}
         <li><strong>{{ order_labels.get(e.status, e.status) }}</strong> · {{ e.at.strftime('%b %d, %Y %H:%M') }} UTC{% if e.note %}<br><span>{{ e.note }}</span>{% endif %}</li>

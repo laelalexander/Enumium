@@ -49,12 +49,37 @@ ORDER_LABELS = {
 }
 
 # Machine job states and the moves the shop may make.
+# "sent" means a run was handed to the shop agent and the machine has not started yet.
+# "running" -> "queued" happens when a run made some, but not all, of the job's copies.
 JOB_TRANSITIONS = {
-    "queued": {"running", "review"},
+    "queued": {"sent", "running", "review"},
     "review": {"queued"},
-    "running": {"done", "failed"},
+    "sent": {"queued", "running", "failed"},
+    "running": {"done", "failed", "queued"},
     "failed": {"queued"},
     "done": set(),
+}
+JOB_LABELS = {
+    "queued": "Queued",
+    "review": "Needs review",
+    "sent": "Sent to machine",
+    "running": "Running",
+    "failed": "Failed",
+    "done": "Done",
+}
+
+# A run is one send of a job to a machine. The shop agent on the shop PC claims pending
+# runs, starts the machine and reports back. "cancel_requested" asks the agent to stop.
+RUN_ACTIVE_STATES = ("pending", "claimed", "running", "cancel_requested")
+RUN_FINAL_STATES = ("done", "failed", "cancelled")
+RUN_LABELS = {
+    "pending": "Waiting for the shop agent",
+    "claimed": "Agent preparing",
+    "running": "Running",
+    "cancel_requested": "Stopping",
+    "done": "Done",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
 }
 
 
@@ -122,7 +147,8 @@ class Order(Base):
     paid_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     quote: Mapped[Quote] = relationship(back_populates="order")
     events: Mapped[list["OrderEvent"]] = relationship(
-        back_populates="order", cascade="all, delete-orphan", order_by="OrderEvent.at"
+        back_populates="order", cascade="all, delete-orphan",
+        order_by=lambda: [OrderEvent.at, OrderEvent.id]
     )
     jobs: Mapped[list["Job"]] = relationship(back_populates="order", cascade="all, delete-orphan")
 
@@ -156,6 +182,19 @@ class Job(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
     order: Mapped[Order] = relationship(back_populates="jobs")
     quote_line: Mapped[QuoteLine] = relationship()
+    runs: Mapped[list["JobRun"]] = relationship(order_by="JobRun.created_at", viewonly=True)
+
+    @property
+    def label(self) -> str:
+        return JOB_LABELS.get(self.state, self.state)
+
+    @property
+    def copies_done(self) -> int:
+        return sum(r.copies for r in self.runs if r.state == "done")
+
+    @property
+    def active_run(self) -> "JobRun | None":
+        return next((r for r in reversed(self.runs) if r.state in RUN_ACTIVE_STATES), None)
 
 
 class ServiceRequest(Base):
@@ -224,6 +263,96 @@ class SavedDesign(Base):
     name: Mapped[str] = mapped_column(String(255))
     design: Mapped[dict] = mapped_column(JSON)  # the studio's own shapes, machine and material
     saved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+# ---- production: machine runs and the shop agent (new tables only) ----
+
+
+class JobRun(Base):
+    __tablename__ = "job_runs"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    job_id: Mapped[str] = mapped_column(ForeignKey("jobs.id"), index=True)
+    machine_id: Mapped[str] = mapped_column(String(64), index=True)
+    copies: Mapped[int] = mapped_column(Integer, default=1)
+    state: Mapped[str] = mapped_column(String(20), default="pending", index=True)
+    file_kind: Mapped[str] = mapped_column(String(16), default="original")  # original, svg, dxf
+    settings: Mapped[dict] = mapped_column(JSON, default=dict)  # power, speed, passes, slicer profile...
+    progress: Mapped[int] = mapped_column(Integer, default=0)
+    message: Mapped[str] = mapped_column(Text, default="")
+    agent: Mapped[str] = mapped_column(String(64), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    job: Mapped[Job] = relationship()
+
+    @property
+    def label(self) -> str:
+        return RUN_LABELS.get(self.state, self.state)
+
+
+class MachineStatus(Base):
+    """What the shop agent last reported about one machine."""
+
+    __tablename__ = "machine_status"
+    machine_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    state: Mapped[str] = mapped_column(String(20), default="unknown")  # idle, busy, paused, error, offline, manual
+    detail: Mapped[str] = mapped_column(Text, default="")
+    progress: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    driver: Mapped[str] = mapped_column(String(32), default="")
+    agent: Mapped[str] = mapped_column(String(64), default="")
+    seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+# ---- shop operations: customer management, packing and shipping (new tables only) ----
+
+
+class CustomerFlag(Base):
+    """The shop's own notes on a customer account, and whether it is closed."""
+
+    __tablename__ = "customer_flags"
+    customer_id: Mapped[str] = mapped_column(ForeignKey("customers.id"), primary_key=True)
+    disabled: Mapped[bool] = mapped_column(default=False)
+    shop_notes: Mapped[str] = mapped_column(Text, default="")
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
+
+
+class Shipment(Base):
+    """Packing and shipping for one order."""
+
+    __tablename__ = "shipments"
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"), primary_key=True)
+    carrier: Mapped[str] = mapped_column(String(32), default="")
+    service: Mapped[str] = mapped_column(String(64), default="")
+    tracking: Mapped[str] = mapped_column(String(255), default="")
+    packages: Mapped[int] = mapped_column(Integer, default=1)
+    weight_g: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    dims_mm: Mapped[str] = mapped_column(String(64), default="")  # "300 x 200 x 100"
+    notes: Mapped[str] = mapped_column(Text, default="")
+    packed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    shipped_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    delivered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    order: Mapped[Order] = relationship()
+
+
+class CarrierLabel(Base):
+    """A postage label bought straight from UPS, FedEx or USPS for one box of an order."""
+
+    __tablename__ = "carrier_labels"
+    id: Mapped[str] = mapped_column(String(32), primary_key=True, default=new_id)
+    order_id: Mapped[str] = mapped_column(ForeignKey("orders.id"), index=True)
+    box: Mapped[int] = mapped_column(Integer, default=1)
+    carrier: Mapped[str] = mapped_column(String(16))
+    service: Mapped[str] = mapped_column(String(64))
+    service_name: Mapped[str] = mapped_column(String(128), default="")
+    tracking: Mapped[str] = mapped_column(String(64), index=True)
+    shipment_id: Mapped[str] = mapped_column(String(128), default="")
+    cost_cents: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    fmt: Mapped[str] = mapped_column(String(8))
+    stored_name: Mapped[str] = mapped_column(String(128))
+    voided: Mapped[bool] = mapped_column(default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    order: Mapped[Order] = relationship()
 
 
 def make_session_factory(url: str):

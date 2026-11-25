@@ -17,7 +17,8 @@ This folder is **phase 1** of the plan: upload, quote, checkout and a manual pro
 - **Checkout.** Payment goes through Stripe Checkout when `STRIPE_SECRET_KEY` is set. Without a key, the order waits for the shop to mark it paid.
 - **Order tracking page** for the customer: Awaiting payment, In queue, Making, Finishing, Shipped, Delivered.
 - **Shop console** at `/admin`:
-  - a queue lane per machine, with Start, Done, Failed and Requeue buttons;
+  - **Production** (`/admin/production`): a queue per machine, grouped by line, with live machine status. **Send to machine** creates a run for the shop agent. Laser, router and plasma jobs get a true-size SVG and DXF sheet with as many copies as fit the bed. Jobs can also be run by hand;
+  - **Shop agent** (`/admin/agent`): download the agent for the shop PC, with the token and machines filled in (see `pyslate/shop_agent/README.md`);
   - an order list and order detail with status, tracking and file downloads;
   - a rates and machines editor.
 
@@ -57,7 +58,7 @@ bash /root/pyslate-install.sh
 
 `docker-compose.yml` is an alternative for a server with spare memory: the app plus Postgres, behind `deploy/nginx-pyslate.conf`.
 
-For card payments, add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to `/etc/pyslate.env`. Point a Stripe webhook at `https://pyslate.com/stripe/webhook` for `checkout.session.completed`, then run `systemctl restart pyslate`.
+For card payments, run `/var/www/pyslate.com/venv/bin/python -m pyslate.stripe_setup` on the server and paste your Stripe secret key. It checks the key, creates the webhook (`/stripe/webhook`, for `checkout.session.completed` and `checkout.session.async_payment_succeeded`), turns on the customer portal for saved cards, writes both keys to `/etc/pyslate.env` and restarts Pyslate. Try it with a test key first.
 
 ## Layout
 
@@ -69,14 +70,14 @@ For card payments, add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to `/etc/
 | `pyslate/shop.py` | Default machines, materials and rates, and validation of edits |
 | `pyslate/services.py` | Quote, order and job operations |
 | `pyslate/app.py` | Web routes: customer pages, admin console, Stripe webhook |
-| `pyslate/models.py` | Database tables, plus order and job states |
+| `pyslate/models.py` | Database tables, plus order, job and run states |
+| `pyslate/production.py` | Production board, sending jobs to machines, and the shop agent API (`/api/agent/*`) |
+| `pyslate/jobfiles.py` | Machine-ready SVG and DXF sheets for laser, router and plasma jobs |
+| `pyslate/shop_agent/` | The shop agent for the shop PC: xTool, Bambu, Marlin serial and folder drivers |
 
 ## Next phases
 
 - **Phase 2:** STEP upload, in-browser designer, DFM warnings highlighted on the model.
-- **Phase 3:** a shop agent that pulls jobs and drives the machines:
-  - xTool X1, M2 and MetalFab over the WebSocket API on port 28900;
-  - Bambu Lab printers in LAN mode;
-  - the custom printers through Nero on-prem.
+- **Phase 3 (started):** the shop agent pulls jobs and drives the machines. Done: Bambu Lab in LAN mode, JG Maker printers over USB serial, xTool through xTool Studio hand-off, folder hand-off for the Tormach machines. Still to do: xTool direct over the WebSocket API on port 28900 (needs the file-upload capture), Nero on-prem.
 - **Phase 4:** scheduling, sheet nesting, stock and shipping labels.
 - **Phase 5:** the marketplace.
