@@ -98,7 +98,10 @@
       e.appendChild(document.createElement('br')); e.appendChild(b); L.lastError = text;
     },
     // fetch with byte progress reported on the current (or given) stage
-    fetch: function (url, opts) { return window.fetch(url, opts); }
+    fetch: function (url, opts) { return window.fetch(url, opts); },
+    // register the assembled model (a three.js Object3D) so checks can see how it stands: TwinLoad.model(root, THREE)
+    // (same as setting window.TwinModel = { object: root, THREE } yourself)
+    model: function (obj, THREE) { window.TwinModel = { object: obj, THREE: THREE }; }
   };
 
   // ---- failures before the twin is up land on the error screen

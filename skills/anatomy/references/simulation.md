@@ -61,6 +61,12 @@ rules are not optional:
   with a note on how to regenerate it), and keep the 3D view, controls and live checks working. What truly needs the PC
   (native firmware, Python-only models, the hardware link, headless test runs) is disabled with a tooltip, under one
   polite banner: "Browser-only mode: ... runs in Anatomy on your PC". Never an error page, never "connecting…" forever.
+- **The model stands the right way up.** CAD exports are Z-up (mm); three.js is Y-up. Convert once, from the export's
+  own declaration: write `"up": "Z"` in `assembly.json` (trimesh GLBs keep the CAD coordinates and add no root rotation)
+  and rotate a Z-up model by -90 degrees about X; never decide from the model's proportions (a long duct or arm makes
+  a tall machine "deeper than tall" and the guess lays it on its side). Put it on the floor (lowest point at y = 0), keep
+  the orbit above the floor (`controls.maxPolarAngle` just under 90 degrees), and register the assembled model for the
+  check: `window.TwinModel = { object: root, THREE }` (or `TwinLoad.model(root, THREE)`).
 - **The hub check passes** (see below). It is part of finishing the simulator, like the headless tests.
 
 ### The hub check
@@ -70,7 +76,8 @@ node <skill>/tools/simcheck/simcheck.mjs <project folder>
 It serves the project like the hub (deep sub-path, unsynced folders hidden, no server), opens every simulator and
 viewer page in headless Chromium, and fails on any root-absolute URL in the page or its scripts, any console error or
 uncaught exception, any failed request or HTTP error, a missing or failed loading screen, a loader that never finishes,
-or a blank canvas. It writes `sim/results/hub-check.json`. Needs Playwright once (the script prints the one-line install).
+a blank canvas, or a model lying on its side (the registered model's height share on screen against its height share
+in the GLB along the declared up axis). It writes `sim/results/hub-check.json`. Needs Playwright once (the script prints the one-line install).
 Fix every failure in the twin itself and run it again until it passes; then also start the twin through its own server
 (the `anatomy.json` url) and check it still works there.
 

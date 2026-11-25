@@ -110,6 +110,39 @@ function serve() {
   });
 }
 
+// ---------------------------------------------------------------- model orientation
+// Extents of a GLB in its own coordinates (node transforms applied), and which axis is up in it: assembly.json "up"
+// next to it, else trimesh exports with no root rotation keep the CAD's Z-up, else glTF's Y-up.
+function mat(n) {
+  if (n.matrix) return n.matrix.slice();
+  const [x, y, z, w] = n.rotation || [0, 0, 0, 1], [sx, sy, sz] = n.scale || [1, 1, 1], [tx, ty, tz] = n.translation || [0, 0, 0];
+  return [(1 - 2 * (y * y + z * z)) * sx, (2 * (x * y + z * w)) * sx, (2 * (x * z - y * w)) * sx, 0,
+    (2 * (x * y - z * w)) * sy, (1 - 2 * (x * x + z * z)) * sy, (2 * (y * z + x * w)) * sy, 0,
+    (2 * (x * z + y * w)) * sz, (2 * (y * z - x * w)) * sz, (1 - 2 * (x * x + y * y)) * sz, 0, tx, ty, tz, 1];
+}
+const mul = (a, b) => { const o = new Array(16).fill(0); for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) for (let k = 0; k < 4; k++) o[c * 4 + r] += a[k * 4 + r] * b[c * 4 + k]; return o; };
+function glbFacts(file) {
+  const b = fs.readFileSync(file); if (b.readUInt32LE(0) !== 0x46546c67) return null;
+  const j = JSON.parse(b.slice(20, 20 + b.readUInt32LE(12)).toString('utf8'));
+  const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+  const visit = (i, M) => {
+    const n = j.nodes[i], W = mul(M, mat(n));
+    if (n.mesh != null) for (const p of j.meshes[n.mesh].primitives) {
+      const a = j.accessors[p.attributes.POSITION]; if (!a || !a.min || !a.max) continue;
+      for (let c = 0; c < 8; c++) {
+        const v = [c & 1 ? a.max[0] : a.min[0], c & 2 ? a.max[1] : a.min[1], c & 4 ? a.max[2] : a.min[2]];
+        for (let r = 0; r < 3; r++) { const w = W[r] * v[0] + W[4 + r] * v[1] + W[8 + r] * v[2] + W[12 + r]; lo[r] = Math.min(lo[r], w); hi[r] = Math.max(hi[r], w); }
+      }
+    }
+    for (const c of n.children || []) visit(c, W);
+  };
+  const roots = (j.scenes[j.scene || 0] || {}).nodes || [];
+  roots.forEach(i => visit(i, [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]));
+  let up = null; try { up = JSON.parse(fs.readFileSync(path.join(path.dirname(file), 'assembly.json'), 'utf8')).up || null; } catch {}
+  if (!up) up = /trimesh/i.test(j.asset?.generator || '') && !roots.some(i => j.nodes[i].rotation || j.nodes[i].matrix) ? 'Z' : 'Y';
+  return { ext: hi.map((h, r) => h - lo[r]), up: String(up).toUpperCase() };
+}
+
 // ---------------------------------------------------------------- 3. headless browser
 function findPlaywright() {
   const tries = [process.env.ANATOMY_PLAYWRIGHT, HERE, projectDir, path.join(projectDir, 'sim'), process.cwd()].filter(Boolean);
@@ -137,6 +170,8 @@ async function main() {
     pg.on('pageerror', e => r.errors.push('uncaught: ' + String(e.message).slice(0, 240)));
     pg.on('requestfailed', q => { const why = (q.failure() || {}).errorText || ''; if (!/ERR_ABORTED/.test(why) || q.resourceType() !== 'media') r.errors.push(`request failed: ${q.url().replace(root, '')} ${why}`); });
     pg.on('response', q => { if (q.status() >= 400) r.errors.push(`HTTP ${q.status()}: ${q.url().replace(root, '').replace(/^http:\/\/127\.0\.0\.1:\d+/, '(root) ')}`); });
+    const glbs = [];
+    pg.on('response', q => { if (q.status() === 200 && /\.glb(\?|$)/i.test(q.url()) && q.url().startsWith(root)) glbs.push(decodeURIComponent(q.url().slice(root.length).split('?')[0])); });
     try { await pg.goto(root + t.page.split('/').map(encodeURIComponent).join('/'), { waitUntil: 'load', timeout: 60000 }); }
     catch (e) { r.errors.push('page did not load: ' + e.message.slice(0, 160)); }
     const t0 = Date.now(); let st = {};
@@ -182,6 +217,19 @@ async function main() {
       r.dragChangesView = !a1.equals(a2);
       if (!r.dragChangesView) r.warnings.push('dragging the canvas did not change the view (frozen render loop or no orbit controls?)');
     }
+    // stands upright? Compare the model's on-screen height share (three.js Y) with its height share in the CAD export.
+    let mb = null;
+    for (const f of pg.frames()) { mb = await f.evaluate(() => { const T = window.TwinModel; if (!T || !T.object || !T.THREE) return null;
+      const b = new T.THREE.Box3().setFromObject(T.object); if (b.isEmpty()) return null; const s = b.getSize(new T.THREE.Vector3()); return [s.x, s.y, s.z]; }).catch(() => null); if (mb) break; }
+    const glbFile = [...new Set(glbs)].map(g => path.join(projectDir, ...g.split('/'))).filter(f => fs.existsSync(f)).sort((a, b) => fs.statSync(b).size - fs.statSync(a).size)[0];
+    if (mb && glbFile) {
+      const g = glbFacts(glbFile);
+      if (g) {
+        const upIx = { X: 0, Y: 1, Z: 2 }[g.up] ?? 2, want = g.ext[upIx] / Math.max(...g.ext), got = mb[1] / Math.max(...mb);
+        r.orientation = { glb: path.relative(projectDir, glbFile).replace(/\\/g, '/'), up: g.up, cadHeightShare: +want.toFixed(2), shownHeightShare: +got.toFixed(2) };
+        if (Math.abs(want - got) > 0.15) r.errors.push(`the model is not standing upright: in the CAD export (${g.up}-up) its height is ${Math.round(want * 100)}% of its largest size, on screen ${Math.round(got * 100)}% - it is lying on its side or tipped (check the axis conversion; take "up" from assembly.json, not from the model's shape)`);
+      }
+    } else if (glbFile && t.simulator) r.warnings.push('orientation not checked: set window.TwinModel = { object: <the assembled model>, THREE } (or TwinLoad.model(object, THREE)) in the twin');
     if (shotsDir) { fs.mkdirSync(shotsDir, { recursive: true }); await pg.screenshot({ path: path.join(shotsDir, (ID + '__' + t.page).replace(/[\/\\:]/g, '_') + '.png') }); }
     r.errors = [...new Set(r.errors)]; r.status = r.errors.length ? 'FAIL' : 'PASS';
     results.push(r); await ctx.close();
