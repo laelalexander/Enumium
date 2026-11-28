@@ -160,18 +160,18 @@ async function run(el) {
       else b.innerHTML = `<span class="empty">This app runs as a program (${esc([].concat(a.run || []).join(' ') || 'a server')}), so open it in Anatomy on your PC.</span>`;
       appsEl.append(card); return;
     }
+    const say = t => { let x = card.querySelector('.alert'); if (!t) { if (x) x.remove(); return; } if (!x) { x = document.createElement('div'); x.className = 'alert'; card.insertBefore(x, card.querySelector('.b')); } x.textContent = t; };
     const start = btn(a.running ? 'Open' : 'Start', async () => {
       if (!a.running) {
-        start.disabled = true; start.textContent = 'Starting…';
+        start.disabled = true; start.textContent = 'Starting…'; say('');
         const r = await S.api(`/api/projects/${S.id}/apps/${n}/start`, { method: 'POST' }).catch(e => ({ error: e.message }));
         start.disabled = false; start.textContent = 'Start';
-        if (r && r.error) { appsEl.insertAdjacentHTML('afterbegin', `<div class="alert">${esc(r.error)}</div>`); return; }
+        if (r && r.error) { say(r.error); return; }
         if (r && r.url) a.url = r.url;
-        if (r && r.note) appsEl.insertAdjacentHTML('afterbegin', `<div class="alert">${esc(r.note)}</div>`);
+        if (r && r.note) say(r.note);
         a.running = true; if (!(r && r.reused)) await new Promise(r => setTimeout(r, a.startup_ms || 4000)); start.textContent = 'Open';
       }
       if (a.url) window.open(a.url, '_blank', 'width=1400,height=900');
-      pollLog(n);
     }, 'primary');
     b.append(start, btn('Stop', async () => { await S.api(`/api/projects/${S.id}/apps/${n}/stop`, { method: 'POST' }); a.running = false; start.textContent = 'Start'; }), btn('Log', () => pollLog(n)));
     appsEl.append(card);
