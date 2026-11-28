@@ -10,6 +10,7 @@ mentions a tool or path in any other way is reported, not rewritten, so a person
 Needs PyMuPDF.
 """
 import argparse
+import os
 import re
 import shutil
 import sys
@@ -21,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import branding as B  # noqa: E402
 
 TOOLS = re.compile(r"\b(build123d|cadquery|ocp|occ|hlr|matplotlib|ezdxf|svgwrite|pymupdf|numpy|zrender|techdraw|freecad)\b", re.I)
-PY = re.compile(r"[\w\-./\\:]*[\w\-]+\.py\b(\s*\([^)]*\))?", re.I)
+PY = re.compile(r"[\w\-./\\:*]*[\w\-*]+\.py\b(\s*\([^)]*\))?", re.I)
 PAREN = re.compile(r"\s*\((?:[^()]*?)\)")
 GENERATED = re.compile(r"\bgenerated (from|by)\b", re.I)
 # Internal file references -> plain document names (customer-facing wording).
@@ -52,11 +53,14 @@ PATHS = [
     (r"^(\d+\.\s*)?Regenerate:.*$", r"\1Drawings are updated from the CAD model at every revision."),
     (r"\b(also|ALSO) (?:[\w\-]+/)+([\w\-]+\.csv)", r"\1 \2"),
     (r"\b(?:[\w\-]+/)+([\w\-]+\.(csv|json|step|stl|zip|dxf|svg|pdf))\b", r"\1"),
-    (r"(?<![\w/])(?:[\w\-]+/)+(?=[\s,;.)]|$)", "on file"),
+    (r"(?:[\w\-]+/)*README\.md", "the drawing index"),
+    (r"(?:[\w\-]+/)*CHECK\.md", "the sheet checklist"),
+    (r"(?:[\w\-]+/)*([\w\-]+)\.md", lambda m: m.group(1).replace("-", " ").replace("_", " ")),
+    (r"(?<![\w/.])(?:[\w\-]+/)+(?=[\s,;.)]|$)", "the package"),
     (r"\belectrical/ \(KiCad\)", "the KiCad design"),
 ]
 PY_NAMES = [(r"[\w\-/]*mechanism_check\.py", "the mechanism check"), (r"[\w\-/]*\bpanel\.py", "the panel layout check"),
-            (r"[\w\-/]*\bparams\.py", "the design parameters"), (r"[\w\-/]*design\.py", "the board design"),
+            (r"[\w\-/]*\bparams\.py", "the design parameters"), (r"[\w\-/]*(electrical|board)[\w\-/]*design\.py", "the board design"), (r"[\w\-/]*design\.py", "the CAD model"),
             (r"[\w\-/]*wiring\.py", "the wiring model"), (r"\bbom\.csv", "the BOM")]
 
 
@@ -80,6 +84,14 @@ def _clean(t):
     if GENERATED.search(s):  # a whole "generated from/by ..." sentence becomes the branded cover note
         parts = re.split(r"(?<=[.;])\s+(?=[A-Z0-9])", s)
         s = " ".join(B.COVER_NOTE if GENERATED.search(x) else x for x in parts)
+    parts = re.split(r"(?<=[.;])\s+(?=[A-Z0-9])", s)
+    if any(len(PY.findall(x)) >= 2 or re.search(r"\bby [\w\-/]*gen/", x) for x in parts):
+        out = []
+        for x in parts:
+            x = B.COVER_NOTE if (len(PY.findall(x)) >= 2 or re.search(r"\bby [\w\-/]*gen/", x)) else x
+            if not (out and out[-1] == x == B.COVER_NOTE):
+                out.append(x)
+        s = " ".join(out)
     s = re.sub(r"^\s*(matplotlib|build123d|cadquery)\s+from\b", "Drawn from", s, flags=re.I)
     s = re.sub(r"\bdrawn by script from the build123d solids", "Drawn from the CAD solids", s, flags=re.I)
     s = re.sub(r"\bby script\b\s*", "", s, flags=re.I)
@@ -188,7 +200,7 @@ def process(path, fix, backup=True):
             page.insert_text((x, y), B.FOOTER, fontsize=fs, fontname="helv", color=(0.2, 0.2, 0.2))
     if fix:
         B.pdf_metadata(doc, doc.metadata.get("title") or Path(path).stem)
-        tmp = Path(str(path) + ".tmp")
+        tmp = Path(f"{path}.{os.getpid()}.tmp")
         doc.save(str(tmp), garbage=3, deflate=True)
         doc.close()
         if backup:
