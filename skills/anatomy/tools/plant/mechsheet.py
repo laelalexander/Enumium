@@ -19,6 +19,14 @@ Dual units: mm [in]. Third-angle projection. Pure Python + ezdxf; SVG out.
 import math
 from html import escape
 
+import pathlib as _pl
+import sys as _sys
+for _p in (_pl.Path(__file__).resolve().parent, _pl.Path(__file__).resolve().parents[1]):
+    if (_p / "branding.py").exists():
+        _sys.path.insert(0, str(_p))
+        break
+import branding as B  # noqa: E402  Noitavonne / NERO Design Studios title block + footer
+
 SW, SH = 3456, 2304
 IN = 25.4
 INK, DIM, HID, CEN, BAL, WELD, HAT = "#111", "#b00020", "#7b8288", "#2e7d32", "#0d47a1", "#4a148c", "#546e7a"
@@ -50,7 +58,7 @@ class Sheet:
     """ARCH D shop sheet. tb: dict(title, number, project, scale, material, finish, mass, rev, sheet, tol, qty, drawn)."""
 
     def __init__(self, **tb):
-        self.tb = dict(rev="A", sheet="1 of 1", scale="AS SHOWN", qty="1", drawn="Anatomy plant/mechsheet.py", date="2026-11-17",
+        self.tb = dict(rev="A", sheet="1 of 1", scale="AS SHOWN", qty="1", drawn=B.DRAWN_BY, date="2026-11-17",
                        tol="LINEAR ±0.5 [±.02] · HOLES +0.2/-0 · ANGLES ±0.5° · MACHINED X.X ±0.1, X.XX ±0.05", material="-", finish="-", mass="-")
         self.tb.update(tb)
         self.o = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{SW}" height="{SH}" viewBox="0 0 {SW} {SH}" font-family="Helvetica,Arial,sans-serif">',
@@ -74,7 +82,7 @@ class Sheet:
         cells = [("DRAWING NO.", t["number"], 0, 0, 2), ("REV", t["rev"], 2, 0, 1), ("SCALE", t["scale"], 3, 0, 1),
                  ("MATERIAL", t["material"], 0, 1, 4), ("FINISH", t["finish"], 0, 2, 4),
                  ("MASS (CALC.)", t["mass"], 0, 3, 1), ("QTY PER MACHINE", t["qty"], 1, 3, 1), ("UNITS", "mm [in]", 2, 3, 1), ("SHEET", f"ARCH D · {t['sheet']}", 3, 3, 1),
-                 ("DRAWN", t["drawn"], 0, 4, 2), ("DATE", t["date"], 2, 4, 1), ("STATUS", "FOR REVIEW", 3, 4, 1)]
+                 ("DRAWN", B.drawn_by(t["drawn"]), 0, 4, 2), ("DATE", t["date"], 2, 4, 1), ("STATUS", "FOR REVIEW", 3, 4, 1)]
         cw, rh = w / 4, 44
         for lab, val, c, r, span in cells:
             cx, cy = x + c * cw, y + 70 + r * rh
@@ -82,6 +90,7 @@ class Sheet:
                      f'<text x="{cx + 6}" y="{cy + 13}" font-size="10.5" fill="#555">{lab}</text>')
             fs = 17 if len(str(val)) * 9 < cw * span else max(10, int(17 * cw * span / (len(str(val)) * 9.5)))
             o.append(f'<text x="{cx + 6}" y="{cy + 35}" font-size="{fs}" font-weight="{"bold" if lab in ("DRAWING NO.", "REV") else "normal"}">{escape(str(val))}</text>')
+        o.append(B.svg_footer(SW, SH, 9.5, x=x + 12, y=y + h - 24, anchor="start"))
         o.append(f'<text x="{x + 12}" y="{y + h - 10}" font-size="10.5">UNLESS NOTED: {escape(t["tol"])} · THIRD-ANGLE PROJECTION · BREAK EDGES 0.5 · ASME Y14.5</text>')
         o.append('</g>')
         self.o += o

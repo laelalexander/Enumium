@@ -17,6 +17,14 @@ import math, re
 from datetime import date
 from html import escape
 
+import pathlib as _pl
+import sys as _sys
+for _p in (_pl.Path(__file__).resolve().parent, _pl.Path(__file__).resolve().parents[1]):
+    if (_p / "branding.py").exists():
+        _sys.path.insert(0, str(_p))
+        break
+import branding as B  # noqa: E402  Noitavonne / NERO Design Studios title block + footer
+
 import cadquery as cq
 from cadquery import Compound, Shape, Vector
 from cadquery.occ_impl.exporters.svg import getPaths
@@ -264,14 +272,14 @@ def frame():
     z = ""
     for i in range(8):
         x = 20 + (W - 40) * (i + 0.5) / 8
-        z += f'<text x="{x}" y="15" font-size="10" text-anchor="middle">{8 - i}</text><text x="{x}" y="{H - 6}" font-size="10" text-anchor="middle">{8 - i}</text>'
+        z += f'<text x="{x}" y="15" font-size="10" text-anchor="middle">{8 - i}</text>'  # bottom margin carries the footer
     for i in range(6):
         y = 20 + (H - 40) * (i + 0.5) / 6
         z += f'<text x="10" y="{y}" font-size="10" text-anchor="middle">{"FEDCBA"[i]}</text><text x="{W - 10}" y="{y}" font-size="10" text-anchor="middle">{"FEDCBA"[i]}</text>'
     ticks = "".join(f'<line x1="{20 + (W - 40) * i / 8}" y1="20" x2="{20 + (W - 40) * i / 8}" y2="26"/><line x1="{20 + (W - 40) * i / 8}" y1="{H - 20}" x2="{20 + (W - 40) * i / 8}" y2="{H - 26}"/>' for i in range(1, 8))
     ticks += "".join(f'<line x1="20" y1="{20 + (H - 40) * i / 6}" x2="26" y2="{20 + (H - 40) * i / 6}"/><line x1="{W - 20}" y1="{20 + (H - 40) * i / 6}" x2="{W - 26}" y2="{20 + (H - 40) * i / 6}"/>' for i in range(1, 6))
     return (f'<rect width="100%" height="100%" fill="#fff"/><rect x="20" y="20" width="{W - 40}" height="{H - 40}" fill="none" stroke="{INK}" stroke-width="2"/>'
-            f'<g stroke="{INK}" stroke-width="1">{ticks}</g><g fill="{INK}">{z}</g>')
+            f'<g stroke="{INK}" stroke-width="1">{ticks}</g><g fill="{INK}">{z}</g>' + B.svg_footer(W, H, 9, y=H - 7))
 
 
 def title_block(t):
@@ -286,13 +294,13 @@ def title_block(t):
          + f'<line x1="{x + 130}" y1="{y + 118}" x2="{x + 130}" y2="{H - 20}"/><line x1="{x + 260}" y1="{y + 154}" x2="{x + 260}" y2="{H - 20}"/></g>')
     g += f'<g fill="{INK}" font-family="Helvetica,Arial,sans-serif">'
     g += f'<text x="{x + 8}" y="{y + 20}" font-size="17" font-weight="bold">{escape(t["title"])}</text>'
-    g += f'<text x="{x + 8}" y="{y + 38}" font-size="11">{escape(t.get("project", "Anatomy project"))} · {escape(t.get("assy", ""))}</text>'
+    g += f'<text x="{x + 8}" y="{y + 38}" font-size="11">{escape(t.get("project", ""))} · {escape(t.get("assy", ""))}</text>'
     g += cell(x + 8, y + 58, "PART NO.", t["partno"], 13, True) + cell(x + 268, y + 58, "MATERIAL", t["material"], 10.5)
     g += cell(x + 8, y + 94, "PROCESS / FINISH", t["process"], 10.5) + cell(x + 268, y + 94, t.get("qty_label", "QTY PER UNIT"), t["qty"], 12, True)
     g += cell(x + 398, y + 94, "MASS (EST.)", t["mass"], 11)
     g += cell(x + 8, y + 130, "SCALE", t["scale"]) + cell(x + 138, y + 130, "SHEET", "A3 · 1 of 1") + cell(x + 268, y + 130, "UNITS", "mm [in]")
     g += cell(x + 398, y + 130, "REV", t.get("rev", "A"), 13, True)
-    g += cell(x + 8, y + 166, "DRAWN", "plant/partsheet.py") + cell(x + 138, y + 166, "DATE", date.today().isoformat())
+    g += cell(x + 8, y + 166, "DRAWN", B.DRAWN_BY) + cell(x + 138, y + 166, "DATE", date.today().isoformat())
     g += cell(x + 268, y + 166, "CHECKED", "verify before cutting")
     g += f'<text x="{x + 398}" y="{y + 166}" font-size="8.5" fill="#555">PROJECTION</text></g>' + third_angle(x + 405, y + 176)
     return g
@@ -462,7 +470,7 @@ def sheet(shape, info, fasteners=None, extra_notes=()):
     notes.append(f"Overall {mm_in(X, 1)} x {mm_in(Y, 1)} x {mm_in(Z, 1)}. Volume {sv.Volume() / 1000:.1f} cm³.")
     tb = dict(title=info["title"], partno=info["partno"], material=info["material"], process=info["process"],
               qty=info["qty"], mass=f"{mass_g:.0f} g [{mass_g / 453.6:.2f} lb]", scale=scale_txt, rev=info.get("rev", "A"),
-              project=info.get("project", "Anatomy project"), assy=info.get("assy", ""), qty_label=info.get("qty_label", "QTY PER UNIT"))
+              project=info.get("project", ""), assy=info.get("assy", ""), qty_label=info.get("qty_label", "QTY PER UNIT"))
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" '
            f'font-family="Helvetica,Arial,sans-serif">{frame()}{body}{ht}{notes_block(notes)}{title_block(tb)}</svg>')
     return svg, feats
