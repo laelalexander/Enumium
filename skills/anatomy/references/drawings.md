@@ -11,6 +11,14 @@
 
 Drawings are what a machinist, a fab house or a person at a workbench builds from. Treat them as a primary deliverable, not an illustration. Generate them from the same parametric model as the STEP/STL so they cannot drift, and look at every rendered sheet yourself before presenting it.
 
+## Branding (customer-facing, user rule 2026-11-28)
+
+Every drawing, cover page and PDF is issued by **Noitavonne Manufacturing, NERO Design Studios CAD (Prototype / Mechanical / CAD / Industrial Design)**, the Noitavonne on-prem engineering system. Nero and Anatomy are both built by Noitavonne. Drawings go to customers and manufacturers, so:
+
+- Import `tools/branding.py` (copy it next to a project's generator if the skill folder is not importable). Use `B.DRAWN_BY` for the title block DRAWN / PREPARED BY field, `B.svg_footer(...)` / `B.add_svgwrite_footer(...)` / `B.mpl_footer(fig)` for the footer on **every sheet**, `B.COVER_NOTE` on cover pages and `B.pdf_metadata(doc, title)` on every PDF.
+- **Never** credit a tool, library or script in drawing text: no build123d, CadQuery, FreeCAD, svgwrite, PyMuPDF, matplotlib; no "Claude"; no "Generated from ... by make_drawings.py"; no internal paths (`prototype/mechanical/cad`, `bom/bom.csv`, `fab/WIRELIST.csv`, `thermal-fluid/thermal.md`). Refer to other documents by name ("BOM", "wire list CSV", "thermal analysis on file").
+- Before presenting a set, run `python tools/rebrand_pdf.py --check <drawing-set.pdf>`; it must report no forbidden credits. For a set made before this rule, `python tools/rebrand_pdf.py <pdf>` fixes it in place (title-block credits replaced, footer and metadata added; a `.pre-branding.pdf` backup is kept).
+
 ## Tooling (in order of preference)
 1. **FreeCAD TechDraw, headless** (`FreeCADCmd` / `freecadcmd` with a Python script): import the STEP, create pages from a template with title block, add projection groups, section and detail views, dimensions and balloons, export PDF and SVG. Install with `winget install FreeCAD.FreeCAD` if missing (tell the user).
 2. **build123d / CadQuery** for the model, plus their 2D projection export (`ExportSVG`/`exporters.export(..., "svg")`) for views, with dimensions and title block added by script (svgwrite/matplotlib) when FreeCAD is not available.

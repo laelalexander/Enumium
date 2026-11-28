@@ -13,6 +13,14 @@ Usage: python layout.py layout.json equipment.json out_dir
 import json, math, pathlib, sys
 from html import escape
 
+import pathlib as _pl
+import sys as _sys
+for _p in (_pl.Path(__file__).resolve().parent, _pl.Path(__file__).resolve().parents[1]):
+    if (_p / "branding.py").exists():
+        _sys.path.insert(0, str(_p))
+        break
+import branding as B  # noqa: E402  Noitavonne / NERO Design Studios title block + footer
+
 IN = 25.4
 FT = 304.8
 
@@ -264,11 +272,11 @@ def svg(L, eqs, chk):
              f'<text x="{cx + 12}" y="{ty + 60}" font-size="16">{escape(t["project"])}</text>'
              f'<line x1="{cx}" y1="{ty + 76}" x2="{cx + 780}" y2="{ty + 76}" stroke="#111"/>')
     cells = [("DRAWING NO.", t["number"]), ("REV", t.get("rev", "A")), ("SCALE", f"1:{round(1 / k)}"), ("UNITS", "mm [ft-in]"),
-             ("SHEET", "ARCH D 36 x 24 in"), ("DRAWN", "plant/layout.py"), ("DATE", t["date"]), ("STATUS", t.get("status", "FOR REVIEW"))]
+             ("SHEET", "ARCH D 36 x 24 in"), ("DRAWN", B.DRAWN_BY), ("DATE", t["date"]), ("STATUS", t.get("status", "FOR REVIEW"))]
     for i, (a, b) in enumerate(cells):
         x = cx + 12 + (i % 4) * 192; y = ty + 100 + (i // 4) * 74
         o.append(f'<text x="{x}" y="{y}" font-size="12" fill="#555">{a}</text><text x="{x}" y="{y + 26}" font-size="18" font-weight="bold">{escape(str(b))}</text>')
-    o.append('</g></svg>')
+    o.append('</g>' + B.svg_footer(SW, SH, 13) + '</svg>')
     return "\n".join(o), k
 
 

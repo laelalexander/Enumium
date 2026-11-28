@@ -11,6 +11,14 @@ All dimensions are given as mm [in] or mm [ft-in]. Pure Python; SVG out. Render 
 """
 from html import escape
 
+import pathlib as _pl
+import sys as _sys
+for _p in (_pl.Path(__file__).resolve().parent, _pl.Path(__file__).resolve().parents[1]):
+    if (_p / "branding.py").exists():
+        _sys.path.insert(0, str(_p))
+        break
+import branding as B  # noqa: E402  Noitavonne / NERO Design Studios title block + footer
+
 SW, SH = 3456, 2304          # ARCH D 36 x 24 in at 96 px/in
 IN = 25.4
 INK, DIM, HATCH, BAL = "#111", "#b00020", "#455a64", "#0d47a1"
@@ -44,11 +52,12 @@ def frame(title, number, project, scale="NTS", rev="A", date="2026-11-17", sheet
              f'<text x="{x + 12}" y="{y + 36}" font-size="28" font-weight="bold">{escape(title)}</text>'
              f'<text x="{x + 12}" y="{y + 62}" font-size="16">{escape(project)}</text><line x1="{x}" y1="{y + 80}" x2="{x + w}" y2="{y + 80}" stroke="{INK}"/>')
     cells = [("DRAWING NO.", number), ("REV", rev), ("SCALE", scale), ("UNITS", "mm [in]"), ("SHEET", f"ARCH D · {sheet}"),
-             ("DRAWN", "plant/engsheets.py"), ("DATE", date), ("STATUS", "FOR REVIEW")]
+             ("DRAWN", B.DRAWN_BY), ("DATE", date), ("STATUS", "FOR REVIEW")]
     for i, (a, b) in enumerate(cells):
         cx = x + 12 + (i % 4) * 196; cy = y + 106 + (i // 4) * 78
         o.append(f'<text x="{cx}" y="{cy}" font-size="12" fill="#555">{a}</text><text x="{cx}" y="{cy + 26}" font-size="18" font-weight="bold">{escape(str(b))}</text>')
     o.append('</g>' + extra)
+    o.append(B.svg_footer(SW, SH, 13))
     return o
 
 
