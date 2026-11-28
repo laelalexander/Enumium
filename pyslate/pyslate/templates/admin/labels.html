@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+{% include "_favicon.html" %}
 <title>Labels #{{ order.number }}</title>
 <style>
   @page { size: {{ '4in 6in' if size == '4x6' else 'letter' }}; margin: {{ '0' if size == '4x6' else '0.5in' }}; }

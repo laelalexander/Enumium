@@ -425,3 +425,15 @@ def test_every_template_folder_is_packaged():
         if folder.is_dir() and any(folder.glob("*.html")) and folder.name != "__pycache__":
             rel = folder.relative_to(root / "pyslate").as_posix()
             assert f"{rel}/*.html" in data, f"{rel} is missing from package-data in pyproject.toml"
+
+
+def test_favicon_set_served_and_linked(client):
+    for path, media in [("/favicon.ico", "image/x-icon"), ("/apple-touch-icon.png", "image/png"),
+                        ("/site.webmanifest", "application/manifest+json"),
+                        ("/static/icons/favicon.svg", "image/svg+xml"), ("/static/icons/icon-512.png", "image/png")]:
+        r = client.get(path)
+        assert r.status_code == 200, path
+        assert r.headers["content-type"].startswith(media), path
+    page = client.get("/").text
+    assert 'rel="icon" href="/favicon.ico"' in page
+    assert 'rel="apple-touch-icon"' in page and 'rel="manifest"' in page

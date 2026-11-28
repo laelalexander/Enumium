@@ -551,6 +551,19 @@ def create_app(cfg: Settings | None = None) -> FastAPI:
     def health():
         return {"ok": True, "version": __version__}
 
+    # Browsers and phones ask for these at the site root, so serve them there too.
+    icons = HERE / "static" / "icons"
+    root_icons = {
+        "/favicon.ico": ("favicon.ico", "image/x-icon"),
+        "/apple-touch-icon.png": ("apple-touch-icon.png", "image/png"),
+        "/apple-touch-icon-precomposed.png": ("apple-touch-icon.png", "image/png"),
+        "/site.webmanifest": ("site.webmanifest", "application/manifest+json"),
+    }
+    for route, (fname, media) in root_icons.items():
+        def serve_icon(fname=fname, media=media):
+            return FileResponse(icons / fname, media_type=media, headers={"Cache-Control": "public, max-age=604800"})
+        app.add_api_route(route, serve_icon, methods=["GET", "HEAD"], include_in_schema=False)
+
     # ---- admin console ----
 
     @app.get("/admin/login", response_class=HTMLResponse)
