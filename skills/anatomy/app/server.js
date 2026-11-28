@@ -343,8 +343,10 @@ function projectPython(dir) {
 //   nobody                                   -> start as usual
 //   this project's server, newer than files  -> reuse it
 //   this project's server, older than files  -> stop it and start fresh, but only when no run is active
-//   anything else (another project, a foreign program, or a run is active) -> never kill it: start on a free port when
-//     the port is part of the run command, otherwise refuse with a plain message naming the process.
+//   anything else -> start on a free port when the port is part of the run command; otherwise:
+//     another project's twin started by Anatomy (now, or before an Anatomy restart), no run active -> stop it, start this
+//     a foreign program -> start on a free port with PORT=<port> set, and check the app really listens there
+//   A foreign program or an active run is never killed.
 // "This project's server" means: its command line ends with one of the app's run commands, and the page it serves has
 // the same <title> as the app's page on disk.
 const net = require('net');
@@ -370,7 +372,7 @@ async function portOwner(port) {
 }
 async function procInfo(pid) {
   const out = await execOut('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command',
-    `$p = Get-CimInstance Win32_Process -Filter "ProcessId=${Number(pid)}"; if ($p) { [pscustomobject]@{ cmd = $p.CommandLine; started = $p.CreationDate.ToUniversalTime().ToString('o') } | ConvertTo-Json -Compress }`]);
+    `$p = Get-CimInstance Win32_Process -Filter "ProcessId=${Number(pid)}"; if ($p) { [pscustomobject]@{ cmd = $p.CommandLine; ppid = $p.ParentProcessId; started = $p.CreationDate.ToUniversalTime().ToString('o') } | ConvertTo-Json -Compress }`]);
   try { return JSON.parse(out); } catch { return null; }
 }
 const cmdTail = s => String(s || '').replace(/"/g, '').trim().split(/\s+/).slice(1).join(' ').toLowerCase();
@@ -401,6 +403,34 @@ function servedTitle(url) {
     rq.on('timeout', () => rq.destroy()); rq.on('error', () => res(null));
   });
 }
+// The Anatomy project app that owns a listening process, or null. First the apps this server started (the listener
+// is the shell we spawned or a child of it), then copies left over from before an Anatomy restart: any project app on
+// the same port whose run command and page title match what is running.
+async function anatomyAppOn(pid, info, port, url) {
+  let p = pid, inf = info;
+  for (let i = 0; i < 4 && p; i++) {
+    const hit = [...apps].find(([, st]) => st.procs.some(q => q.pid === p && q.exitCode === null));
+    if (hit) { const k = hit[0], j = k.lastIndexOf('/'); return { key: k, id: k.slice(0, j), n: +k.slice(j + 1) }; }
+    if (!inf) inf = await procInfo(p);
+    p = inf && +inf.ppid; inf = null;
+  }
+  if (!info) return null;
+  const title = await servedTitle(url); if (!title) return null;
+  let ids = []; try { ids = fs.readdirSync(ROOT, { withFileTypes: true }).filter(e => e.isDirectory() && /^[a-z0-9-]+$/.test(e.name)).map(e => e.name); } catch {}
+  for (const id of ids) {
+    const dir = path.join(ROOT, id); if (!fs.existsSync(path.join(dir, META_DIR))) continue;
+    const m = findManifest(dir); if (!m || !Array.isArray(m.apps)) continue;
+    for (const [n, a] of m.apps.entries()) {
+      if (appPortOf(a) !== port || !(a.run || []).some(c => cmdTail(c) && cmdTail(info.cmd).endsWith(cmdTail(c)))) continue;
+      try { if (pageTitles(safeJoin(dir, path.posix.join(m._base || '', a.cwd || '.'))).has(title)) return { key: `${id}/${n}`, id, n }; } catch {}
+    }
+  }
+  return null;
+}
+function appLabel(id, n) {
+  try { const m = findManifest(projectDir(id)), a = m && m.apps && m.apps[n]; if (a && a.name) return a.name; } catch {}
+  return (readMeta(id) || {}).title || id;
+}
 function killTree(pid) { return new Promise(res => execFile('taskkill', ['/pid', String(pid), '/T', '/F'], { windowsHide: true }, () => res())); }
 
 async function preparePort(id, app, cwd) {
@@ -425,7 +455,24 @@ async function preparePort(id, app, cwd) {
     return { run: app.run.map(c => c.replace(g, String(np))), url: app.url.replace(`:${port}`, `:${np}`),
       note: `Port ${port} is in use by ${who}, so this started on port ${np} instead.` };
   }
-  throw new Error(`Port ${port} is already in use by ${who}, and this app's port is fixed in its code. Close that program (or restart Anatomy if it is an older copy of this simulator), then try again.`);
+  const other = pid ? await anatomyAppOn(pid, info, port, app.url) : null;
+  if (other && other.id !== id && !runs.get(other.id)?.proc) {
+    const label = appLabel(other.id, other.n);
+    if (apps.has(other.key)) stopApp(other.key);
+    await killTree(pid);
+    for (let i = 0; i < 25 && !(await portFree(port)); i++) await new Promise(r => setTimeout(r, 200));
+    if (await portFree(port)) return { note: `Closed ${label}, which was using port ${port}.` };
+  }
+  // the port is in the app's code: most servers still honour PORT, so try a free one and check it really listens there
+  const np = await freePort();
+  return { env: { PORT: String(np) }, verify: np, url: app.url.replace(`:${port}`, `:${np}`),
+    note: `Port ${port} is in use by another program, so this started on port ${np} instead.`,
+    fail: `Port ${port} is in use by ${who}, and this app only runs on that port. Close that program, then press Start again.` };
+}
+function listening(port, ms) {
+  return new Promise(res => { const end = Date.now() + ms;
+    (function tick() { const c = net.connect(port, '127.0.0.1'); c.once('connect', () => { c.destroy(); res(true); });
+      c.once('error', () => { c.destroy(); Date.now() > end ? res(false) : setTimeout(tick, 250); }); })(); });
 }
 
 async function startApp(id, n) {
@@ -445,6 +492,7 @@ async function startApp(id, n) {
   const env = cleanEnv();
   const py = projectPython(dir);
   if (py) env.PATH = path.dirname(py) + path.delimiter + env.PATH;   // use the project's own venv first
+  Object.assign(env, prep.env || {});
   const st = { procs: [], log: prep.note ? prep.note + '\n' : '', url: prep.url || app.url, started: Date.now() };
   for (const cmd of prep.run || app.run || []) {
     const p = spawn(cmd, { cwd, env, shell: true, windowsHide: true });
@@ -454,7 +502,8 @@ async function startApp(id, n) {
     st.procs.push(p);
   }
   apps.set(key, st);
-  return { url: st.url, note: prep.note || null };
+  if (prep.verify && !(await listening(prep.verify, Math.max(app.startup_ms || 0, 4000) + 4000))) { stopApp(key); throw new Error(prep.fail); }
+  return { url: st.url, note: prep.note || null, reused: !!prep.verify };
 }
 function stopApp(key) {
   const st = apps.get(key); if (!st) return;
